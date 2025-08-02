@@ -1,24 +1,22 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import App from "./App";
 import "./index.css";
-import { AuthProvider } from "common/providers/AuthProvider.tsx";
-import { DataProvider } from "common/providers/DataProvider";
-import { ModalProvider } from "common/providers/ModalProvider";
-import { BrowserRouter, Route, Routes } from "react-router";
-import Home from "pages/Home";
+import { AuthProvider } from "common/context/AuthProvider";
+import { ModalProvider } from "common/context/ModalProvider";
+import { PlayersProvider } from "features/players/context/PlayersProvider";
+import { BrowserRouter } from "react-router";
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
 		<AuthProvider>
-			<DataProvider>
+			<PlayersProvider>
 				<ModalProvider>
 					<BrowserRouter>
-						<Routes>
-							<Route index element={<Home />} />
-						</Routes>
+						<App />
 					</BrowserRouter>
 				</ModalProvider>
-			</DataProvider>
+			</PlayersProvider>
 		</AuthProvider>
 	</StrictMode>,
 );
