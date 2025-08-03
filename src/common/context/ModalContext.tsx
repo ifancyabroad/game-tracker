@@ -1,12 +1,18 @@
-import React from "react";
-import type { TModal } from "types/modals";
+import { createContext, useContext } from "react";
 
 interface ModalContextType {
-	modal: TModal | null;
-	setModal: React.Dispatch<React.SetStateAction<TModal | null>>;
+	isOpen: boolean;
+	modalContent: React.ReactNode | null;
+	openModal: (content: React.ReactNode) => void;
+	closeModal: () => void;
 }
 
-export const ModalContext = React.createContext<ModalContextType>({
-	modal: null,
-	setModal: () => {},
-});
+export const ModalContext = createContext<ModalContextType | null>(null);
+
+export const useModal = () => {
+	const context = useContext(ModalContext);
+	if (!context) {
+		throw new Error("useModal must be used within a ModalProvider");
+	}
+	return context;
+};

@@ -1,9 +1,23 @@
-import { type PropsWithChildren, useState } from "react";
+import { type PropsWithChildren, useCallback, useState } from "react";
 import { ModalContext } from "common/context/ModalContext";
-import type { TModal } from "types/modals";
 
 export const ModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
-	const [modal, setModal] = useState<TModal | null>(null);
+	const [isOpen, setIsOpen] = useState(false);
+	const [modalContent, setModalContent] = useState<React.ReactNode | null>(null);
 
-	return <ModalContext.Provider value={{ modal, setModal }}>{children}</ModalContext.Provider>;
+	const openModal = useCallback((content: React.ReactNode) => {
+		setModalContent(content);
+		setIsOpen(true);
+	}, []);
+
+	const closeModal = useCallback(() => {
+		setIsOpen(false);
+		setModalContent(null);
+	}, []);
+
+	return (
+		<ModalContext.Provider value={{ isOpen, modalContent, openModal, closeModal }}>
+			{children}
+		</ModalContext.Provider>
+	);
 };

@@ -11,8 +11,10 @@ interface PlayersContextValue {
 
 export const PlayersContext = createContext<PlayersContextValue | null>(null);
 
-export function usePlayers() {
-	const ctx = useContext(PlayersContext);
-	if (!ctx) throw new Error("usePlayers must be used inside <PlayersProvider>");
-	return ctx;
-}
+export const usePlayers = () => {
+	const context = useContext(PlayersContext);
+	if (!context) {
+		throw new Error("usePlayers must be used inside <PlayersProvider>");
+	}
+	return context;
+};
