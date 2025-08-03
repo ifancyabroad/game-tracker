@@ -38,7 +38,12 @@ export const GameResultsSection: React.FC<IGameResultsSectionProps> = ({
 
 		if (isParticipating) {
 			if (!gameEntry.results.some((r) => r.playerId === playerId)) {
-				gameEntry.results.push({ playerId });
+				gameEntry.results.push({
+					playerId,
+					rank: null,
+					isWinner: null,
+					isLoser: null,
+				});
 			}
 		} else {
 			gameEntry.results = gameEntry.results.filter((r) => r.playerId !== playerId);
@@ -124,7 +129,7 @@ export const GameResultsSection: React.FC<IGameResultsSectionProps> = ({
 												gameId,
 												playerId,
 												"rank",
-												Number(e.target.value) || undefined,
+												e.target.value === "" ? null : Number(e.target.value),
 											)
 										}
 									/>
@@ -135,7 +140,12 @@ export const GameResultsSection: React.FC<IGameResultsSectionProps> = ({
 											disabled={!isParticipating}
 											checked={playerResult?.isWinner ?? false}
 											onChange={(e) =>
-												updatePlayerField(gameId, playerId, "isWinner", e.target.checked)
+												updatePlayerField(
+													gameId,
+													playerId,
+													"isWinner",
+													e.target.checked ? true : null,
+												)
 											}
 											className="h-4 w-4 accent-green-500 disabled:opacity-30"
 										/>
@@ -148,7 +158,12 @@ export const GameResultsSection: React.FC<IGameResultsSectionProps> = ({
 											disabled={!isParticipating}
 											checked={playerResult?.isLoser ?? false}
 											onChange={(e) =>
-												updatePlayerField(gameId, playerId, "isLoser", e.target.checked)
+												updatePlayerField(
+													gameId,
+													playerId,
+													"isLoser",
+													e.target.checked ? true : null,
+												)
 											}
 											className="h-4 w-4 accent-red-500 disabled:opacity-30"
 										/>

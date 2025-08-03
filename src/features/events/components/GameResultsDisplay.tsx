@@ -69,6 +69,8 @@ export const GameResultsDisplay: React.FC<IGameResultsDisplayProps> = ({ results
 												const name =
 													player.preferredName || `${player.firstName} ${player.lastName}`;
 
+												const showAward = result.isWinner || result.rank === 1;
+
 												return (
 													<tr
 														key={result.playerId}
@@ -76,9 +78,7 @@ export const GameResultsDisplay: React.FC<IGameResultsDisplayProps> = ({ results
 													>
 														<td className="flex items-center gap-2 py-2 pr-4">
 															{name}
-															{result.isWinner && (
-																<Award className="h-4 w-4 text-yellow-400" />
-															)}
+															{showAward && <Award className="h-4 w-4 text-yellow-400" />}
 														</td>
 														<td className="px-2 py-2 text-center">
 															{typeof result.rank === "number" ? result.rank : "—"}
