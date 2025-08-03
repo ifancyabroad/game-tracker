@@ -4,6 +4,7 @@
 	--color-bg: #0f0f0f;
 	--color-surface: #1a1a1a;
 	--color-primary: #6366f1; /* Indigo */
+	--color-primary-contrast: #ffffff; /* White */
 	--color-text: #f1f1f1;
 	--font-sans: "Inter", sans-serif;
 }

@@ -147,7 +147,7 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData }
 			<button
 				type="submit"
 				disabled={loading}
-				className="w-full rounded-lg bg-[var(--color-primary)] py-2 font-semibold text-black transition-opacity hover:opacity-90 disabled:opacity-50"
+				className="w-full rounded-lg bg-[var(--color-primary)] py-2 font-semibold text-[var(--color-primary-contrast)] transition-opacity hover:opacity-90 disabled:opacity-50"
 			>
 				{loading ? (initialData ? "Saving..." : "Adding...") : initialData ? "Save Changes" : "Add Player"}
 			</button>
