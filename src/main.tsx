@@ -1,11 +1,14 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App";
 import "./index.css";
 import { AuthProvider } from "common/context/AuthProvider";
 import { ModalProvider } from "common/context/ModalProvider";
 import { PlayersProvider } from "features/players/context/PlayersProvider";
-import { BrowserRouter } from "react-router";
+import { BrowserRouter, Route, Routes } from "react-router";
+import Home from "pages/Home";
+import PlayersList from "features/players/pages/PlayersList";
+import { AppLayout } from "common/components/AppLayout";
+import { Modal } from "common/components/Modal";
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
@@ -13,7 +16,13 @@ createRoot(document.getElementById("root")!).render(
 			<PlayersProvider>
 				<ModalProvider>
 					<BrowserRouter>
-						<App />
+						<Routes>
+							<Route element={<AppLayout />}>
+								<Route path="/" element={<Home />} />
+								<Route path="/players" element={<PlayersList />} />
+							</Route>
+						</Routes>
+						<Modal />
 					</BrowserRouter>
 				</ModalProvider>
 			</PlayersProvider>
