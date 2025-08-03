@@ -1,10 +1,11 @@
 import { NavLink, Outlet } from "react-router";
-import { Home, Users, Calendar, BarChart } from "lucide-react";
+import { Home, Users, Calendar, BarChart, Gamepad2 } from "lucide-react";
 
 const navItems = [
 	{ to: "/", label: "Home", icon: Home },
 	{ to: "/players", label: "Players", icon: Users },
 	{ to: "/events", label: "Events", icon: Calendar },
+	{ to: "/games", label: "Games", icon: Gamepad2 },
 	{ to: "/stats", label: "Stats", icon: BarChart },
 ];
 
@@ -13,7 +14,7 @@ export const AppLayout: React.FC = () => {
 		<div className="flex h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
 			<aside className="flex w-64 flex-col border-r border-gray-800 bg-[var(--color-surface)] p-4">
 				<div className="mb-6 flex items-center gap-3 px-1">
-					<div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-primary)] text-lg font-bold text-black">
+					<div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-primary)] text-lg font-bold text-[var(--color-primary-contrast)]">
 						🎲
 					</div>
 					<div>
@@ -34,7 +35,7 @@ export const AppLayout: React.FC = () => {
 							className={({ isActive }) =>
 								`nav-link ${
 									isActive
-										? "bg-[var(--color-primary)] font-semibold text-black"
+										? "bg-[var(--color-primary)] font-semibold text-[var(--color-primary-contrast)]"
 										: "hover:bg-opacity-20 hover:bg-[var(--color-primary)]"
 								}`
 							}
