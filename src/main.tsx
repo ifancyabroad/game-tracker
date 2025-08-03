@@ -14,6 +14,7 @@ import PlayersList from "features/players/pages/PlayersList";
 import GamesPage from "features/games/pages/GamesPage";
 import { EventsPage } from "features/events/pages/EventsPage";
 import { EventDetailPage } from "features/events/pages/EventDetailPage";
+import { UIProvider } from "common/context/UIProvider";
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
@@ -21,20 +22,22 @@ createRoot(document.getElementById("root")!).render(
 			<PlayersProvider>
 				<GamesProvider>
 					<EventsProvider>
-						<ModalProvider>
-							<BrowserRouter>
-								<Routes>
-									<Route element={<AppLayout />}>
-										<Route path="/" element={<Home />} />
-										<Route path="/players" element={<PlayersList />} />
-										<Route path="/games" element={<GamesPage />} />
-										<Route path="/events" element={<EventsPage />} />
-										<Route path="/events/:eventId" element={<EventDetailPage />} />
-									</Route>
-								</Routes>
-								<Modal />
-							</BrowserRouter>
-						</ModalProvider>
+						<UIProvider>
+							<ModalProvider>
+								<BrowserRouter>
+									<Routes>
+										<Route element={<AppLayout />}>
+											<Route path="/" element={<Home />} />
+											<Route path="/players" element={<PlayersList />} />
+											<Route path="/games" element={<GamesPage />} />
+											<Route path="/events" element={<EventsPage />} />
+											<Route path="/events/:eventId" element={<EventDetailPage />} />
+										</Route>
+									</Routes>
+									<Modal />
+								</BrowserRouter>
+							</ModalProvider>
+						</UIProvider>
 					</EventsProvider>
 				</GamesProvider>
 			</PlayersProvider>
