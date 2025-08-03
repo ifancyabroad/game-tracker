@@ -31,7 +31,6 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData }
 		const newErrors: typeof errors = {};
 		if (!firstName.trim()) newErrors.firstName = "First name is required";
 		if (!lastName.trim()) newErrors.lastName = "Last name is required";
-		if (pictureUrl && !pictureUrl.startsWith("http")) newErrors.pictureUrl = "Must be a valid URL";
 		return newErrors;
 	};
 
@@ -49,7 +48,7 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData }
 		setLoading(true);
 
 		try {
-			let imageUrl = pictureUrl;
+			let imageUrl: string | null = pictureUrl?.trim() || null;
 
 			// Upload file to Firebase Storage if present
 			if (file) {
@@ -58,12 +57,11 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData }
 				imageUrl = await getDownloadURL(fileRef);
 			}
 
-			// Call parent onSubmit with full player data
 			await onSubmit({
-				firstName,
-				lastName,
-				preferredName,
-				pictureUrl: imageUrl || undefined,
+				firstName: firstName.trim(),
+				lastName: lastName.trim(),
+				preferredName: preferredName.trim() || null,
+				pictureUrl: imageUrl,
 			});
 		} catch (error) {
 			console.error("Error submitting form:", error);
@@ -126,7 +124,7 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData }
 						if (selected) {
 							setFile(selected);
 							setPictureUrl(""); // clear manual URL if switching
-							setPreviewUrl(URL.createObjectURL(selected)); // ✅ show preview
+							setPreviewUrl(URL.createObjectURL(selected));
 						}
 					}}
 					className="w-full rounded border border-gray-700 bg-gray-800 p-2 text-[var(--color-text)] focus:border-[var(--color-primary)] focus:outline-none"
