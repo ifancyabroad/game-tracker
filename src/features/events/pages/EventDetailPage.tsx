@@ -2,10 +2,14 @@ import { useParams, useNavigate } from "react-router";
 import { useEvents } from "features/events/context/EventsContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useGames } from "features/games/context/GamesContext";
+import { useResults } from "features/events/context/ResultsContext";
 import { ArrowLeft, CalendarDays, MapPin, Users, Gamepad2 } from "lucide-react";
 import { useModal } from "common/context/ModalContext";
 import { EventForm } from "features/events/components/EventForm";
-import { GameResultsDisplay } from "features/events/components/GameResultsDisplay";
+import { ResultForm } from "features/events/components/ResultForm";
+import { ResultDisplay } from "features/events/components/ResultDisplay";
+import type { IResult } from "features/events/types";
+import { ConfirmDelete } from "common/components/ConfirmDelete";
 
 export const EventDetailPage: React.FC = () => {
 	const { eventId } = useParams();
@@ -14,14 +18,14 @@ export const EventDetailPage: React.FC = () => {
 	const { players } = usePlayers();
 	const { games } = useGames();
 	const { openModal, closeModal } = useModal();
-
+	const { results, deleteResult } = useResults();
 	const event = events.find((e) => e.id === eventId);
 
 	if (!event) {
 		return <div className="text-red-500">Event not found.</div>;
 	}
 
-	const gameResults = event.gameResults ?? [];
+	const eventResults = results.filter((r) => r.eventId === event.id);
 
 	const getPlayerName = (id: string) => {
 		const p = players.find((p) => p.id === id);
@@ -40,6 +44,45 @@ export const EventDetailPage: React.FC = () => {
 				}}
 				players={players}
 				games={games}
+			/>,
+		);
+	};
+
+	const handleAddResult = () => {
+		openModal(
+			<ResultForm
+				eventId={event.id}
+				players={players}
+				games={games}
+				eventPlayerIds={event.playerIds}
+				onSuccess={closeModal}
+			/>,
+		);
+	};
+
+	const handleEditResult = (result: IResult) => {
+		openModal(
+			<ResultForm
+				initialData={result}
+				eventId={event.id}
+				players={players}
+				games={games}
+				eventPlayerIds={event.playerIds}
+				onSuccess={closeModal}
+			/>,
+		);
+	};
+
+	const handleDeleteResult = async (resultId: string) => {
+		openModal(
+			<ConfirmDelete
+				title="Delete Result"
+				message="Are you sure you want to delete this result?"
+				onConfirm={async () => {
+					await deleteResult(resultId);
+					closeModal();
+				}}
+				onCancel={closeModal}
 			/>,
 		);
 	};
@@ -102,12 +145,31 @@ export const EventDetailPage: React.FC = () => {
 					</ul>
 				</div>
 
-				{gameResults.length > 0 && (
-					<>
-						<hr className="my-6 border-gray-700" />
-						<h3 className="mb-2 text-lg font-semibold text-white">Game Results</h3>
-						<GameResultsDisplay results={gameResults} games={games} players={players} />
-					</>
+				<hr className="my-6 border-gray-700" />
+				<div className="mb-2 flex items-center justify-between">
+					<h3 className="text-lg font-semibold text-gray-100">Game Results</h3>
+					<button
+						onClick={handleAddResult}
+						className="rounded bg-[var(--color-primary)] px-4 py-1.5 text-sm font-semibold text-[var(--color-primary-contrast)] transition hover:opacity-90"
+					>
+						+ Add Result
+					</button>
+				</div>
+				{eventResults.length === 0 ? (
+					<p className="text-sm text-gray-400">No results recorded for this event.</p>
+				) : (
+					<div className="space-y-6">
+						{eventResults.map((result) => (
+							<ResultDisplay
+								key={result.id}
+								result={result}
+								games={games}
+								players={players}
+								onEdit={handleEditResult}
+								onDelete={handleDeleteResult}
+							/>
+						))}
+					</div>
 				)}
 			</div>
 		</div>
