@@ -7,11 +7,12 @@ interface IResultDisplayProps {
 	result: IResult;
 	games: IGame[];
 	players: IPlayer[];
+	canEdit?: boolean;
 	onEdit: (result: IResult) => void;
 	onDelete: (resultId: string) => void;
 }
 
-export const ResultDisplay: React.FC<IResultDisplayProps> = ({ result, games, players, onEdit, onDelete }) => {
+export const ResultDisplay: React.FC<IResultDisplayProps> = ({ result, games, players, canEdit, onEdit, onDelete }) => {
 	const game = games.find((g) => g.id === result.gameId);
 
 	const getPlayerName = (playerId: string): string => {
@@ -28,22 +29,24 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({ result, games, pl
 		<div key={result.id} className="rounded border border-gray-700 bg-gray-800 p-4">
 			<div className="mb-3 flex items-center justify-between">
 				<h4 className="text-md font-semibold text-[var(--color-primary)]">{game.name}</h4>
-				<div className="flex gap-2">
-					<button
-						onClick={() => onEdit(result)}
-						className="rounded p-2 transition-colors hover:bg-blue-500/20"
-						title="Edit"
-					>
-						<Edit size={18} className="text-blue-400" />
-					</button>
-					<button
-						onClick={() => onDelete(result.id)}
-						className="rounded p-2 transition-colors hover:bg-red-500/20"
-						title="Delete"
-					>
-						<Trash2 size={18} className="text-red-400" />
-					</button>
-				</div>
+				{canEdit && (
+					<div className="flex gap-2">
+						<button
+							onClick={() => onEdit(result)}
+							className="rounded p-2 transition-colors hover:bg-blue-500/20"
+							title="Edit"
+						>
+							<Edit size={18} className="text-blue-400" />
+						</button>
+						<button
+							onClick={() => onDelete(result.id)}
+							className="rounded p-2 transition-colors hover:bg-red-500/20"
+							title="Delete"
+						>
+							<Trash2 size={18} className="text-red-400" />
+						</button>
+					</div>
+				)}
 			</div>
 
 			{result.playerResults.length === 0 ? (

@@ -3,11 +3,12 @@ import type { IPlayer } from "features/players/types";
 
 interface IPlayerCardProps {
 	player: IPlayer;
+	canEdit?: boolean;
 	onEdit?: (player: IPlayer) => void;
 	onDelete?: (id: string) => void;
 }
 
-export const PlayerCard: React.FC<IPlayerCardProps> = ({ player, onEdit, onDelete }) => {
+export const PlayerCard: React.FC<IPlayerCardProps> = ({ player, canEdit, onEdit, onDelete }) => {
 	const displayName = player.preferredName || `${player.firstName} ${player.lastName}`;
 	const fullName = `${player.firstName} ${player.lastName}`;
 
@@ -30,22 +31,24 @@ export const PlayerCard: React.FC<IPlayerCardProps> = ({ player, onEdit, onDelet
 				{player.preferredName && <p className="text-sm text-gray-400">{fullName}</p>}
 			</div>
 
-			<div className="flex gap-2">
-				<button
-					onClick={() => onEdit?.(player)}
-					className="rounded p-2 transition-colors hover:bg-blue-500/20"
-					title="Edit"
-				>
-					<Edit size={18} className="text-blue-400" />
-				</button>
-				<button
-					onClick={handleDeleteClick}
-					className="rounded p-2 transition-colors hover:bg-red-500/20"
-					title="Delete"
-				>
-					<Trash2 size={18} className="text-red-400" />
-				</button>
-			</div>
+			{canEdit && (
+				<div className="flex gap-2">
+					<button
+						onClick={() => onEdit?.(player)}
+						className="rounded p-2 transition-colors hover:bg-blue-500/20"
+						title="Edit"
+					>
+						<Edit size={18} className="text-blue-400" />
+					</button>
+					<button
+						onClick={handleDeleteClick}
+						className="rounded p-2 transition-colors hover:bg-red-500/20"
+						title="Delete"
+					>
+						<Trash2 size={18} className="text-red-400" />
+					</button>
+				</div>
+			)}
 		</div>
 	);
 };

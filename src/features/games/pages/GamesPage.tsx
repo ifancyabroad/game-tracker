@@ -4,10 +4,12 @@ import { useGames } from "features/games/context/GamesContext";
 import type { IGame } from "features/games/types";
 import { ConfirmDelete } from "common/components/ConfirmDelete";
 import { GameCard } from "features/games/components/GameCard";
+import { useAuth } from "common/context/AuthContext";
 
 const GamesPage: React.FC = () => {
 	const { games, addGame, editGame, deleteGame } = useGames();
 	const { openModal, closeModal } = useModal();
+	const user = useAuth();
 
 	const handleAdd = () => {
 		openModal(
@@ -50,12 +52,14 @@ const GamesPage: React.FC = () => {
 		<div>
 			<div className="mb-6 flex items-center justify-between">
 				<h2 className="text-2xl font-bold">Games</h2>
-				<button
-					onClick={handleAdd}
-					className="rounded-lg bg-[var(--color-primary)] px-4 py-2 text-[var(--color-primary-contrast)] transition-opacity hover:opacity-90"
-				>
-					+ Add Game
-				</button>
+				{user && (
+					<button
+						onClick={handleAdd}
+						className="rounded-lg bg-[var(--color-primary)] px-4 py-2 text-[var(--color-primary-contrast)] transition-opacity hover:opacity-90"
+					>
+						+ Add Game
+					</button>
+				)}
 			</div>
 
 			{games.length === 0 ? (
@@ -64,7 +68,12 @@ const GamesPage: React.FC = () => {
 				<ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 					{games.map((game) => (
 						<li key={game.id}>
-							<GameCard game={game} onEdit={() => handleEdit(game)} onDelete={() => handleDelete(game)} />
+							<GameCard
+								game={game}
+								canEdit={!!user}
+								onEdit={() => handleEdit(game)}
+								onDelete={() => handleDelete(game)}
+							/>
 						</li>
 					))}
 				</ul>

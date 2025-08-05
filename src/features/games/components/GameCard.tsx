@@ -3,11 +3,12 @@ import type { IGame } from "features/games/types";
 
 interface IGameCardProps {
 	game: IGame;
+	canEdit?: boolean;
 	onEdit?: (game: IGame) => void;
 	onDelete?: (id: string) => void;
 }
 
-export const GameCard: React.FC<IGameCardProps> = ({ game, onEdit, onDelete }) => {
+export const GameCard: React.FC<IGameCardProps> = ({ game, canEdit, onEdit, onDelete }) => {
 	const handleDeleteClick = () => {
 		if (game.id) onDelete?.(game.id);
 	};
@@ -22,22 +23,24 @@ export const GameCard: React.FC<IGameCardProps> = ({ game, onEdit, onDelete }) =
 				<h3 className="text-lg font-semibold">{game.name}</h3>
 			</div>
 
-			<div className="flex gap-2">
-				<button
-					onClick={() => onEdit?.(game)}
-					className="rounded p-2 transition-colors hover:bg-blue-500/20"
-					title="Edit"
-				>
-					<Edit size={18} className="text-blue-400" />
-				</button>
-				<button
-					onClick={handleDeleteClick}
-					className="rounded p-2 transition-colors hover:bg-red-500/20"
-					title="Delete"
-				>
-					<Trash2 size={18} className="text-red-400" />
-				</button>
-			</div>
+			{canEdit && (
+				<div className="flex gap-2">
+					<button
+						onClick={() => onEdit?.(game)}
+						className="rounded p-2 transition-colors hover:bg-blue-500/20"
+						title="Edit"
+					>
+						<Edit size={18} className="text-blue-400" />
+					</button>
+					<button
+						onClick={handleDeleteClick}
+						className="rounded p-2 transition-colors hover:bg-red-500/20"
+						title="Delete"
+					>
+						<Trash2 size={18} className="text-red-400" />
+					</button>
+				</div>
+			)}
 		</div>
 	);
 };

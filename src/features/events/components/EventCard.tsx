@@ -3,13 +3,21 @@ import type { IEvent } from "features/events/types";
 
 interface IEventCardProps {
 	event: IEvent;
+	canEdit?: boolean;
 	onEdit?: (event: IEvent) => void;
 	onDelete?: (id: string) => void;
 	playerLookup: { id: string; preferredName?: string; firstName?: string; lastName?: string }[];
 	gameLookup: { id: string; name: string }[];
 }
 
-export const EventCard: React.FC<IEventCardProps> = ({ event, onEdit, onDelete, playerLookup, gameLookup }) => {
+export const EventCard: React.FC<IEventCardProps> = ({
+	event,
+	canEdit,
+	onEdit,
+	onDelete,
+	playerLookup,
+	gameLookup,
+}) => {
 	const resolveNames = (
 		ids: string[],
 		lookup: { id: string; name?: string; preferredName?: string; firstName?: string; lastName?: string }[],
@@ -42,30 +50,32 @@ export const EventCard: React.FC<IEventCardProps> = ({ event, onEdit, onDelete, 
 				<strong>Players:</strong> {resolveNames(event.playerIds, playerLookup)}
 			</div>
 
-			<div className="mt-2 flex justify-end gap-2">
-				<button
-					onClick={(e) => {
-						e.preventDefault();
-						e.stopPropagation();
-						onEdit?.(event);
-					}}
-					className="rounded p-2 transition-colors hover:bg-blue-500/20"
-					title="Edit"
-				>
-					<Edit size={18} className="text-blue-400" />
-				</button>
-				<button
-					onClick={(e) => {
-						e.preventDefault();
-						e.stopPropagation();
-						onDelete?.(event.id);
-					}}
-					className="rounded p-2 transition-colors hover:bg-red-500/20"
-					title="Delete"
-				>
-					<Trash2 size={18} className="text-red-400" />
-				</button>
-			</div>
+			{canEdit && (
+				<div className="mt-2 flex justify-end gap-2">
+					<button
+						onClick={(e) => {
+							e.preventDefault();
+							e.stopPropagation();
+							onEdit?.(event);
+						}}
+						className="rounded p-2 transition-colors hover:bg-blue-500/20"
+						title="Edit"
+					>
+						<Edit size={18} className="text-blue-400" />
+					</button>
+					<button
+						onClick={(e) => {
+							e.preventDefault();
+							e.stopPropagation();
+							onDelete?.(event.id);
+						}}
+						className="rounded p-2 transition-colors hover:bg-red-500/20"
+						title="Delete"
+					>
+						<Trash2 size={18} className="text-red-400" />
+					</button>
+				</div>
+			)}
 		</div>
 	);
 };
