@@ -7,12 +7,14 @@ import { ConfirmDelete } from "common/components/ConfirmDelete";
 import type { IEvent } from "features/events/types";
 import { EventCard } from "features/events/components/EventCard";
 import { NavLink } from "react-router";
+import { useAuth } from "common/context/AuthContext";
 
 export const EventsPage: React.FC = () => {
 	const { events, addEvent, editEvent, deleteEvent } = useEvents();
 	const { players } = usePlayers();
 	const { games } = useGames();
 	const { openModal, closeModal } = useModal();
+	const user = useAuth();
 
 	const handleAdd = () => {
 		openModal(
@@ -59,12 +61,14 @@ export const EventsPage: React.FC = () => {
 		<div>
 			<div className="mb-6 flex items-center justify-between">
 				<h2 className="text-2xl font-bold">Events</h2>
-				<button
-					onClick={handleAdd}
-					className="rounded-lg bg-[var(--color-primary)] px-4 py-2 text-[var(--color-primary-contrast)] transition-opacity hover:opacity-90"
-				>
-					+ Add Event
-				</button>
+				{user && (
+					<button
+						onClick={handleAdd}
+						className="rounded-lg bg-[var(--color-primary)] px-4 py-2 text-[var(--color-primary-contrast)] transition-opacity hover:opacity-90"
+					>
+						+ Add Event
+					</button>
+				)}
 			</div>
 
 			{events.length === 0 ? (
@@ -76,6 +80,7 @@ export const EventsPage: React.FC = () => {
 							<NavLink to={`/events/${event.id}`}>
 								<EventCard
 									event={event}
+									canEdit={!!user}
 									onEdit={() => handleEdit(event)}
 									onDelete={() => handleDelete(event)}
 									playerLookup={players}

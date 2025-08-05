@@ -10,6 +10,7 @@ import { ResultForm } from "features/events/components/ResultForm";
 import { ResultDisplay } from "features/events/components/ResultDisplay";
 import type { IResult } from "features/events/types";
 import { ConfirmDelete } from "common/components/ConfirmDelete";
+import { useAuth } from "common/context/AuthContext";
 
 export const EventDetailPage: React.FC = () => {
 	const { eventId } = useParams();
@@ -20,6 +21,7 @@ export const EventDetailPage: React.FC = () => {
 	const { openModal, closeModal } = useModal();
 	const { results, deleteResult } = useResults();
 	const event = events.find((e) => e.id === eventId);
+	const user = useAuth();
 
 	if (!event) {
 		return <div className="text-red-500">Event not found.</div>;
@@ -100,12 +102,14 @@ export const EventDetailPage: React.FC = () => {
 			<div className="rounded-xl border border-gray-800 bg-[var(--color-surface)] p-6 shadow-lg">
 				<div className="mb-6 flex items-center justify-between">
 					<h2 className="text-2xl font-bold text-white">Event Details</h2>
-					<button
-						onClick={handleEdit}
-						className="rounded bg-[var(--color-primary)] px-4 py-1.5 text-sm font-semibold text-[var(--color-primary-contrast)] transition hover:opacity-90"
-					>
-						Edit Event
-					</button>
+					{user && (
+						<button
+							onClick={handleEdit}
+							className="rounded bg-[var(--color-primary)] px-4 py-1.5 text-sm font-semibold text-[var(--color-primary-contrast)] transition hover:opacity-90"
+						>
+							Edit Event
+						</button>
+					)}
 				</div>
 
 				<div className="mb-4 flex flex-col gap-2 text-sm text-gray-300">
@@ -148,12 +152,14 @@ export const EventDetailPage: React.FC = () => {
 				<hr className="my-6 border-gray-700" />
 				<div className="mb-2 flex items-center justify-between">
 					<h3 className="text-lg font-semibold text-gray-100">Game Results</h3>
-					<button
-						onClick={handleAddResult}
-						className="rounded bg-[var(--color-primary)] px-4 py-1.5 text-sm font-semibold text-[var(--color-primary-contrast)] transition hover:opacity-90"
-					>
-						+ Add Result
-					</button>
+					{user && (
+						<button
+							onClick={handleAddResult}
+							className="rounded bg-[var(--color-primary)] px-4 py-1.5 text-sm font-semibold text-[var(--color-primary-contrast)] transition hover:opacity-90"
+						>
+							+ Add Result
+						</button>
+					)}
 				</div>
 				{eventResults.length === 0 ? (
 					<p className="text-sm text-gray-400">No results recorded for this event.</p>
@@ -165,6 +171,7 @@ export const EventDetailPage: React.FC = () => {
 								result={result}
 								games={games}
 								players={players}
+								canEdit={!!user}
 								onEdit={handleEditResult}
 								onDelete={handleDeleteResult}
 							/>
