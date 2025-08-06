@@ -5,7 +5,7 @@ interface ChartData {
 	winRate?: number;
 }
 
-interface CustomTooltipProps<T = ChartData> {
+interface IChartTooltipProps<T = ChartData> {
 	active?: boolean;
 	payload?: Array<{
 		name: string;
@@ -17,7 +17,7 @@ interface CustomTooltipProps<T = ChartData> {
 	suffix?: string;
 }
 
-export const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label, formatter, suffix }) => {
+export const ChartTooltip: React.FC<IChartTooltipProps> = ({ active, payload, label, formatter, suffix }) => {
 	if (!active || !payload || !payload.length) return null;
 
 	const data = payload[0];
