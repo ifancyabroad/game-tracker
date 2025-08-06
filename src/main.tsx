@@ -10,7 +10,7 @@ import { ResultsProvider } from "features/events/context/ResultsProvider";
 import { BrowserRouter, Route, Routes } from "react-router";
 import { AppLayout } from "common/components/AppLayout";
 import { Modal } from "common/components/Modal";
-import Home from "pages/Home";
+import HomePage from "pages/HomePage";
 import PlayersList from "features/players/pages/PlayersList";
 import GamesPage from "features/games/pages/GamesPage";
 import { EventsPage } from "features/events/pages/EventsPage";
@@ -30,7 +30,7 @@ createRoot(document.getElementById("root")!).render(
 									<BrowserRouter>
 										<Routes>
 											<Route element={<AppLayout />}>
-												<Route path="/" element={<Home />} />
+												<Route path="/" element={<HomePage />} />
 												<Route path="/players" element={<PlayersList />} />
 												<Route path="/games" element={<GamesPage />} />
 												<Route path="/events" element={<EventsPage />} />
