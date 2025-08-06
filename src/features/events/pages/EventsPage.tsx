@@ -83,8 +83,8 @@ export const EventsPage: React.FC = () => {
 									canEdit={!!user}
 									onEdit={() => handleEdit(event)}
 									onDelete={() => handleDelete(event)}
-									playerLookup={players}
-									gameLookup={games}
+									players={players}
+									games={games}
 								/>
 							</NavLink>
 						</li>
