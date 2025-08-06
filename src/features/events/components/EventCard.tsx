@@ -1,35 +1,31 @@
 import { CalendarDays, Edit, Trash2 } from "lucide-react";
 import type { IEvent } from "features/events/types";
+import type { IPlayer } from "features/players/types";
+import type { IGame } from "features/games/types";
 
 interface IEventCardProps {
 	event: IEvent;
 	canEdit?: boolean;
 	onEdit?: (event: IEvent) => void;
 	onDelete?: (id: string) => void;
-	playerLookup: { id: string; preferredName?: string; firstName?: string; lastName?: string }[];
-	gameLookup: { id: string; name: string }[];
+	players: IPlayer[];
+	games: IGame[];
 }
 
-export const EventCard: React.FC<IEventCardProps> = ({
-	event,
-	canEdit,
-	onEdit,
-	onDelete,
-	playerLookup,
-	gameLookup,
-}) => {
-	const resolveNames = (
-		ids: string[],
-		lookup: { id: string; name?: string; preferredName?: string; firstName?: string; lastName?: string }[],
-	) => {
-		return ids
-			.map((id) => {
-				const match = lookup.find((item) => item.id === id);
-				if (!match) return "Unknown";
-				return match.name || match.preferredName || `${match.firstName} ${match.lastName}`;
-			})
-			.join(", ");
-	};
+export const EventCard: React.FC<IEventCardProps> = ({ event, canEdit, onEdit, onDelete, players, games }) => {
+	const formattedGames = event.gameIds
+		.map((id) => {
+			const game = games.find((g) => g.id === id);
+			return game ? game.name : "Unknown Game";
+		})
+		.join(", ");
+
+	const formattedPlayers = event.playerIds
+		.map((id) => {
+			const player = players.find((p) => p.id === id);
+			return player ? player.preferredName || `${player.firstName} ${player.lastName}` : "Unknown Player";
+		})
+		.join(", ");
 
 	return (
 		<div className="flex flex-col gap-2 rounded-xl border border-gray-800 bg-[var(--color-surface)] p-4 shadow-lg">
@@ -44,10 +40,10 @@ export const EventCard: React.FC<IEventCardProps> = ({
 			</div>
 
 			<div className="text-sm text-gray-300">
-				<strong>Games:</strong> {resolveNames(event.gameIds, gameLookup)}
+				<strong>Games:</strong> {formattedGames}
 			</div>
 			<div className="text-sm text-gray-300">
-				<strong>Players:</strong> {resolveNames(event.playerIds, playerLookup)}
+				<strong>Players:</strong> {formattedPlayers}
 			</div>
 
 			{canEdit && (

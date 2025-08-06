@@ -1,4 +1,4 @@
-import { CheckCircle, XCircle, Award, Pencil, Trash2, Edit } from "lucide-react";
+import { CheckCircle, XCircle, Award, Trash2, Edit } from "lucide-react";
 import type { IGame } from "features/games/types";
 import type { IPlayer } from "features/players/types";
 import type { IResult } from "features/events/types";
