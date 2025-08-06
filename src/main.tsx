@@ -16,6 +16,7 @@ import GamesPage from "features/games/pages/GamesPage";
 import { EventsPage } from "features/events/pages/EventsPage";
 import { EventDetailPage } from "features/events/pages/EventDetailPage";
 import { UIProvider } from "common/context/UIProvider";
+import { StatsPage } from "features/stats/pages/StatsPage";
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
@@ -34,6 +35,8 @@ createRoot(document.getElementById("root")!).render(
 												<Route path="/games" element={<GamesPage />} />
 												<Route path="/events" element={<EventsPage />} />
 												<Route path="/events/:eventId" element={<EventDetailPage />} />
+												<Route path="/stats" element={<StatsPage />} />
+												<Route path="*" element={<div>404 Not Found</div>} />
 											</Route>
 										</Routes>
 										<Modal />
