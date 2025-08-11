@@ -16,7 +16,7 @@ export const GameCard: React.FC<IGameCardProps> = ({ game, canEdit, onEdit, onDe
 	return (
 		<div className="group relative flex items-center gap-4 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-4 shadow-sm transition-transform hover:-translate-y-0.5">
 			<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-black/30">
-				<Gamepad2 className="h-5 w-5 text-gray-200" />
+				<Gamepad2 className="h-5 w-5 text-[var(--color-primary)]" />
 			</div>
 
 			<div className="min-w-0">

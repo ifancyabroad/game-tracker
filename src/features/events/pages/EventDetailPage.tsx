@@ -108,7 +108,7 @@ export const EventDetailPage: React.FC = () => {
 
 	if (!event) {
 		return (
-			<div className="mx-auto max-w-6xl px-4 py-6">
+			<div className="mx-auto max-w-6xl">
 				<button
 					onClick={handleBack}
 					className="mb-4 inline-flex items-center gap-2 text-sm text-gray-300 hover:text-white"
@@ -128,12 +128,12 @@ export const EventDetailPage: React.FC = () => {
 		: date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
 
 	return (
-		<div className="mx-auto max-w-6xl px-4 py-6">
+		<div className="mx-auto max-w-6xl">
 			<div className="mb-4 flex flex-wrap items-center justify-between gap-3">
 				<div className="flex items-center gap-3">
 					<button
 						onClick={handleBack}
-						className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm text-gray-200 hover:bg-white/5"
+						className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm text-gray-200 hover:bg-[var(--color-primary)]/10"
 					>
 						<ArrowLeft size={16} /> Back
 					</button>
@@ -144,7 +144,7 @@ export const EventDetailPage: React.FC = () => {
 					<div className="flex items-center gap-2">
 						<button
 							onClick={() => handleEditEvent(event)}
-							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm text-gray-200 hover:bg-white/5"
+							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm text-gray-200 hover:bg-[var(--color-primary)]/10"
 						>
 							<Edit size={16} /> Edit
 						</button>
@@ -156,7 +156,7 @@ export const EventDetailPage: React.FC = () => {
 						</button>
 						<button
 							onClick={handleAddResult}
-							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm text-white hover:bg-white/5"
+							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm text-white hover:bg-[var(--color-primary)]/10"
 						>
 							<Plus size={16} /> Add Result
 						</button>
@@ -175,11 +175,12 @@ export const EventDetailPage: React.FC = () => {
 						<span>{event.location}</span>
 					</div>
 					<span className="inline-flex items-center gap-2 rounded-full border border-gray-700 bg-black/20 px-2 py-1 text-xs text-gray-300">
-						<Users size={14} /> {event.playerIds.length}{" "}
+						<Users size={14} className="text-[var(--color-primary)]" /> {event.playerIds.length}{" "}
 						{event.playerIds.length === 1 ? "player" : "players"}
 					</span>
 					<span className="inline-flex items-center gap-2 rounded-full border border-gray-700 bg-black/20 px-2 py-1 text-xs text-gray-300">
-						<Gamepad2 size={14} /> {event.gameIds.length} {event.gameIds.length === 1 ? "game" : "games"}
+						<Gamepad2 size={14} className="text-[var(--color-primary)]" /> {event.gameIds.length}{" "}
+						{event.gameIds.length === 1 ? "game" : "games"}
 					</span>
 				</div>
 
@@ -223,7 +224,7 @@ export const EventDetailPage: React.FC = () => {
 					{user && (
 						<button
 							onClick={handleAddResult}
-							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm text-white hover:bg-white/5"
+							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm text-white hover:bg-[var(--color-primary)]/10"
 						>
 							<Plus size={16} /> Add Result
 						</button>

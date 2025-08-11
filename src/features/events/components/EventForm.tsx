@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { IEvent } from "features/events/types";
 import type { IPlayer } from "features/players/types";
 import type { IGame } from "features/games/types";
+import { CalendarDays, MapPin, Users, Gamepad2 } from "lucide-react";
 
 interface IEventFormProps {
 	initialData?: IEvent;
@@ -16,62 +17,59 @@ export const EventForm: React.FC<IEventFormProps> = ({ initialData, players, gam
 	const [selectedPlayers, setSelectedPlayers] = useState<string[]>(initialData?.playerIds || []);
 	const [selectedGames, setSelectedGames] = useState<string[]>(initialData?.gameIds || []);
 
+	const toggle = (arr: string[], id: string) => (arr.includes(id) ? arr.filter((x) => x !== id) : [...arr, id]);
+
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-		if (!location || !date || selectedPlayers.length === 0 || selectedGames.length === 0) return;
-
-		onSubmit({
-			location,
-			date,
-			playerIds: selectedPlayers,
-			gameIds: selectedGames,
-		});
+		if (!location.trim() || !date) return;
+		onSubmit({ location: location.trim(), date, playerIds: selectedPlayers, gameIds: selectedGames });
 	};
 
-	const toggleSelection = (id: string, list: string[], setter: (v: string[]) => void) => {
-		setter(list.includes(id) ? list.filter((x) => x !== id) : [...list, id]);
-	};
+	const inputCls =
+		"w-full rounded-lg border border-gray-700 bg-black/20 px-3 py-2 text-sm text-[var(--color-text)] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent";
+	const chipBase = "inline-flex items-center gap-2 rounded-full border px-2 py-1 text-xs transition-colors";
 
 	return (
-		<form onSubmit={handleSubmit} className="flex flex-col gap-4">
-			<h3 className="text-xl font-bold text-[var(--color-primary)]">
-				{initialData ? "Edit Event" : "Add Event"}
-			</h3>
-
-			<input
-				type="text"
-				value={location}
-				onChange={(e) => setLocation(e.target.value)}
-				placeholder="Location"
-				className="w-full rounded border border-gray-700 bg-gray-800 p-2 text-[var(--color-text)] focus:border-[var(--color-primary)] focus:outline-none"
-				required
-			/>
-
-			<input
-				type="date"
-				value={date}
-				onChange={(e) => setDate(e.target.value)}
-				className="w-full rounded border border-gray-700 bg-gray-800 p-2 text-[var(--color-text)] focus:border-[var(--color-primary)] focus:outline-none"
-				required
-			/>
+		<form onSubmit={handleSubmit} className="m-0 flex flex-col gap-4 p-0">
+			<div className="flex items-center gap-2 text-gray-300">
+				<MapPin className="h-4 w-4 text-[var(--color-primary)]" />
+				<h3 className="text-sm font-semibold text-white">{initialData ? "Edit Event" : "Add Event"}</h3>
+			</div>
 
 			<div>
-				<label className="mb-1 block text-sm text-gray-400">Players</label>
+				<label className="mb-1 block text-xs text-gray-400">Location</label>
+				<input
+					value={location}
+					onChange={(e) => setLocation(e.target.value)}
+					placeholder="Location"
+					className={inputCls}
+				/>
+			</div>
+
+			<div>
+				<label className="mb-1 block text-xs text-gray-400">Date</label>
+				<div className="relative">
+					<input type="date" value={date} onChange={(e) => setDate(e.target.value)} className={inputCls} />
+					<CalendarDays className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-[var(--color-primary)]" />
+				</div>
+			</div>
+
+			<div>
+				<label className="mb-1 block text-xs text-gray-400">Players</label>
 				<div className="flex flex-wrap gap-2">
-					{players.map((player) => {
-						const name = player.preferredName || `${player.firstName} ${player.lastName}`;
+					{players.map((p) => {
+						const id = p.id;
+						const active = selectedPlayers.includes(id);
 						return (
 							<button
-								key={player.id}
 								type="button"
-								onClick={() => toggleSelection(player.id, selectedPlayers, setSelectedPlayers)}
-								className={`rounded-full border px-3 py-1 text-sm transition ${
-									selectedPlayers.includes(player.id)
-										? "border-transparent bg-[var(--color-primary)] text-[var(--color-primary-contrast)]"
-										: "border-gray-600 text-gray-300 hover:border-[var(--color-primary)]"
-								}`}
+								key={id}
+								onClick={() => setSelectedPlayers((prev) => toggle(prev, id))}
+								className={`${chipBase} ${active ? "border-[var(--color-primary)]/50 bg-[var(--color-primary)]/10 text-[var(--color-primary)]" : "border-gray-700 bg-black/20 text-gray-300 hover:border-[var(--color-primary)]/40 hover:bg-white/5"}`}
+								title={p.preferredName ?? `${p.firstName} ${p.lastName}`}
 							>
-								{name}
+								<Users className="h-3.5 w-3.5" />
+								<span className="max-w-[10rem] truncate">{p.preferredName ?? p.firstName}</span>
 							</button>
 						);
 					})}
@@ -79,28 +77,30 @@ export const EventForm: React.FC<IEventFormProps> = ({ initialData, players, gam
 			</div>
 
 			<div>
-				<label className="mb-1 block text-sm text-gray-400">Games</label>
+				<label className="mb-1 block text-xs text-gray-400">Games</label>
 				<div className="flex flex-wrap gap-2">
-					{games.map((game) => (
-						<button
-							key={game.id}
-							type="button"
-							onClick={() => toggleSelection(game.id, selectedGames, setSelectedGames)}
-							className={`rounded-full border px-3 py-1 text-sm transition ${
-								selectedGames.includes(game.id)
-									? "border-transparent bg-[var(--color-primary)] text-[var(--color-primary-contrast)]"
-									: "border-gray-600 text-gray-300 hover:border-[var(--color-primary)]"
-							}`}
-						>
-							{game.name}
-						</button>
-					))}
+					{games.map((g) => {
+						const id = g.id;
+						const active = selectedGames.includes(id);
+						return (
+							<button
+								type="button"
+								key={id}
+								onClick={() => setSelectedGames((prev) => toggle(prev, id))}
+								className={`${chipBase} ${active ? "border-[var(--color-primary)]/50 bg-[var(--color-primary)]/10 text-[var(--color-primary)]" : "border-gray-700 bg-black/20 text-gray-300 hover:border-[var(--color-primary)]/40 hover:bg-white/5"}`}
+								title={g.name}
+							>
+								<Gamepad2 className="h-3.5 w-3.5" />
+								<span className="max-w-[10rem] truncate">{g.name}</span>
+							</button>
+						);
+					})}
 				</div>
 			</div>
 
 			<button
 				type="submit"
-				className="w-full rounded-lg bg-[var(--color-primary)] py-2 font-semibold text-[var(--color-primary-contrast)] transition-opacity hover:opacity-90"
+				className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-[var(--color-primary-contrast)] transition-opacity hover:opacity-90"
 			>
 				{initialData ? "Save Changes" : "Add Event"}
 			</button>
