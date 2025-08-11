@@ -1,4 +1,4 @@
-import { CheckCircle, XCircle, Award, Trash2, Edit, Gamepad2 } from "lucide-react";
+import { XCircle, Award, Trash2, Edit, Gamepad2 } from "lucide-react";
 import type { IGame } from "features/games/types";
 import type { IPlayer } from "features/players/types";
 import type { IResult, IPlayerResult } from "features/events/types";
@@ -43,7 +43,7 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({ result, games, pl
 			<div className="mb-3 flex items-start justify-between gap-2">
 				<div className="flex min-w-0 items-center gap-2">
 					<div className="flex h-9 w-9 items-center justify-center rounded-xl bg-black/30">
-						<Gamepad2 className="h-5 w-5 text-gray-200" />
+						<Gamepad2 className="h-5 w-5 text-[var(--color-primary)]" />
 					</div>
 					<div className="min-w-0">
 						<p className="truncate text-sm font-semibold text-white">{game?.name ?? "Unknown Game"}</p>
@@ -57,7 +57,7 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({ result, games, pl
 					<div className="flex items-center gap-1">
 						<button
 							onClick={() => onEdit(result)}
-							className="rounded-lg border border-gray-700 bg-black/20 p-2 text-gray-200 hover:bg-white/10"
+							className="rounded-lg border border-gray-700 bg-black/20 p-2 text-gray-200 hover:bg-[var(--color-primary)]/10"
 							title="Edit Result"
 						>
 							<Edit size={16} />
@@ -85,7 +85,6 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({ result, games, pl
 					</thead>
 					<tbody>
 						{rows.map((r) => {
-							const isTop3 = (r.rank ?? 0) > 0 && (r.rank as number) <= 3;
 							return (
 								<tr key={r.playerId} className="border-b border-gray-700 last:border-b-0">
 									<td className="py-2 pr-4">
@@ -109,20 +108,20 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({ result, games, pl
 									</td>
 									<td className="px-2 py-2 text-center tabular-nums">
 										{r.rank ?? "—"}
-										{isTop3 && (
+										{r.rank === 1 && (
 											<Award className="ml-1 inline h-4 w-4 align-middle text-yellow-500" />
 										)}
 									</td>
 									<td className="px-2 py-2 text-center">
 										{r.isWinner ? (
-											<CheckCircle className="mx-auto h-5 w-5 text-green-500" />
+											<Award className="mx-auto h-4 w-4 text-yellow-500" />
 										) : (
 											<span className="text-gray-500">—</span>
 										)}
 									</td>
 									<td className="px-2 py-2 text-center">
 										{r.isLoser ? (
-											<XCircle className="mx-auto h-5 w-5 text-red-500" />
+											<XCircle className="mx-auto h-4 w-4 text-red-500" />
 										) : (
 											<span className="text-gray-500">—</span>
 										)}

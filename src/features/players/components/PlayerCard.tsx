@@ -44,5 +44,3 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, canEdit, onEdit,
 		</div>
 	);
 };
-
-export default PlayerCard;

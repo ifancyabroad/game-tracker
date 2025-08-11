@@ -1,3 +1,5 @@
+import { Trash2 } from "lucide-react";
+
 interface IConfirmDeleteProps {
 	title?: string;
 	message?: string;
@@ -12,14 +14,25 @@ export const ConfirmDelete: React.FC<IConfirmDeleteProps> = ({
 	onCancel,
 }) => {
 	return (
-		<div className="flex flex-col gap-4">
-			<h3 className="text-xl font-bold text-red-400">{title}</h3>
-			<p className="text-sm text-gray-300">{message}</p>
-			<div className="mt-4 flex justify-end gap-2">
-				<button onClick={onCancel} className="rounded bg-gray-700 px-4 py-2 text-gray-200 hover:bg-gray-600">
+		<div className="w-full max-w-md rounded-xl bg-[var(--color-surface)]">
+			<div className="mb-2 flex items-center gap-2">
+				<Trash2 className="h-4 w-4 text-red-400" />
+				<h3 className="text-sm font-semibold text-white">{title}</h3>
+			</div>
+			<p className="mb-4 text-sm text-gray-300">{message}</p>
+			<div className="flex justify-end gap-2">
+				<button
+					type="button"
+					onClick={onCancel}
+					className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-black/20 px-3 py-2 text-sm text-gray-200 hover:bg-[var(--color-primary)]/10 focus:ring-2 focus:ring-white/20 focus:outline-none"
+				>
 					Cancel
 				</button>
-				<button onClick={onConfirm} className="rounded bg-red-600 px-4 py-2 text-white hover:bg-red-500">
+				<button
+					type="button"
+					onClick={onConfirm}
+					className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-500 focus:ring-2 focus:ring-red-400 focus:outline-none"
+				>
 					Delete
 				</button>
 			</div>

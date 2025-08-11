@@ -64,8 +64,8 @@ export const Sidebar: React.FC = () => {
 							className={({ isActive }) =>
 								`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
 									isActive
-										? "bg-white/10 text-white"
-										: "text-gray-300 hover:bg-white/5 hover:text-white"
+										? "bg-[var(--color-primary)] text-[var(--color-primary-contrast)]"
+										: "text-gray-300 hover:bg-[var(--color-primary)]/10 hover:text-white"
 								}`
 							}
 							onClick={closeSidebar}
@@ -80,7 +80,7 @@ export const Sidebar: React.FC = () => {
 					{user ? (
 						<button
 							onClick={handleLogoutClick}
-							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-black/20 px-3 py-2 text-sm text-gray-200 hover:bg-white/10 focus:ring-2 focus:ring-white/20 focus:outline-none"
+							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-black/20 px-3 py-2 text-sm text-gray-200 hover:bg-[var(--color-primary)]/10 focus:ring-2 focus:ring-white/20 focus:outline-none"
 						>
 							<LogOut size={16} />
 							Logout
@@ -88,7 +88,7 @@ export const Sidebar: React.FC = () => {
 					) : (
 						<button
 							onClick={handleLoginClick}
-							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-black/20 px-3 py-2 text-sm text-gray-200 hover:bg-white/10 focus:ring-2 focus:ring-white/20 focus:outline-none"
+							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-black/20 px-3 py-2 text-sm text-gray-200 hover:bg-[var(--color-primary)]/10 focus:ring-2 focus:ring-white/20 focus:outline-none"
 						>
 							<LogIn size={16} />
 							Login
@@ -99,5 +99,3 @@ export const Sidebar: React.FC = () => {
 		</>
 	);
 };
-
-export default Sidebar;

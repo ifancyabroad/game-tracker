@@ -59,10 +59,10 @@ export const EventsPage: React.FC = () => {
 	};
 
 	return (
-		<div className="mx-auto max-w-6xl px-4 py-6">
+		<div className="mx-auto max-w-6xl">
 			<div className="mb-4 flex items-center justify-between gap-4">
 				<div className="flex items-center gap-2 text-white">
-					<CalendarDays className="h-5 w-5" />
+					<CalendarDays className="h-5 w-5 text-[var(--color-primary)]" />
 					<h1 className="text-base font-semibold">Events</h1>
 					<span className="rounded-full border border-gray-700 px-2 py-0.5 text-xs text-gray-300">
 						{events.length}
@@ -71,7 +71,7 @@ export const EventsPage: React.FC = () => {
 				{user && (
 					<button
 						onClick={handleAdd}
-						className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-white/5"
+						className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-[var(--color-primary)]/10"
 					>
 						<CalendarPlus className="h-4 w-4" /> Add Event
 					</button>

@@ -81,13 +81,13 @@ export const HomePage: React.FC = () => {
 	const hasData = leaderboard.length > 0;
 
 	return (
-		<div className="mx-auto grid max-w-6xl gap-8 px-4 py-6">
+		<div className="mx-auto grid max-w-6xl gap-8">
 			<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 				<FeaturedCard
-					label="Most Games Played"
-					player={mostGames?.player}
-					value={mostGames ? `${mostGames.games} games` : "—"}
-					icon={<Gamepad2 className="h-4 w-4" />}
+					label="Most Wins"
+					player={mostWins?.player}
+					value={mostWins ? `${mostWins.wins} wins` : "—"}
+					icon={<Award className="h-4 w-4 text-[var(--color-primary)]" />}
 				/>
 				<FeaturedCard
 					label="Best Win Rate (min 5)"
@@ -95,13 +95,13 @@ export const HomePage: React.FC = () => {
 					value={
 						bestWinRateMin5 ? `${formatPct(bestWinRateMin5.winRate)} · ${bestWinRateMin5.games} games` : "—"
 					}
-					icon={<Target className="h-4 w-4" />}
+					icon={<Target className="h-4 w-4 text-[var(--color-primary)]" />}
 				/>
 				<FeaturedCard
-					label="Most Wins"
-					player={mostWins?.player}
-					value={mostWins ? `${mostWins.wins} wins` : "—"}
-					icon={<Award className="h-4 w-4" />}
+					label="Most Games Played"
+					player={mostGames?.player}
+					value={mostGames ? `${mostGames.games} games` : "—"}
+					icon={<Gamepad2 className="h-4 w-4 text-[var(--color-primary)]" />}
 				/>
 			</div>
 
