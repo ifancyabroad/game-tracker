@@ -5,6 +5,7 @@ import type { IGame } from "features/games/types";
 import { ConfirmDelete } from "common/components/ConfirmDelete";
 import { GameCard } from "features/games/components/GameCard";
 import { useAuth } from "common/context/AuthContext";
+import { Gamepad2, Plus } from "lucide-react";
 
 const GamesPage: React.FC = () => {
 	const { games, addGame, editGame, deleteGame } = useGames();
@@ -14,8 +15,8 @@ const GamesPage: React.FC = () => {
 	const handleAdd = () => {
 		openModal(
 			<GameForm
-				onSubmit={async (data) => {
-					await addGame(data);
+				onSubmit={async (game: Omit<IGame, "id">) => {
+					await addGame(game);
 					closeModal();
 				}}
 			/>,
@@ -26,8 +27,8 @@ const GamesPage: React.FC = () => {
 		openModal(
 			<GameForm
 				initialData={game}
-				onSubmit={async (data) => {
-					await editGame(game.id, data);
+				onSubmit={async (changes: Omit<IGame, "id">) => {
+					await editGame(game.id, changes);
 					closeModal();
 				}}
 			/>,
@@ -37,10 +38,10 @@ const GamesPage: React.FC = () => {
 	const handleDelete = (game: IGame) => {
 		openModal(
 			<ConfirmDelete
-				title="Delete Game"
-				message={`Are you sure you want to delete "${game.name}"?`}
-				onConfirm={() => {
-					deleteGame(game.id);
+				title="Delete game?"
+				message={`This will remove ${game.name}.`}
+				onConfirm={async () => {
+					await deleteGame(game.id);
 					closeModal();
 				}}
 				onCancel={closeModal}
@@ -49,25 +50,33 @@ const GamesPage: React.FC = () => {
 	};
 
 	return (
-		<div>
-			<div className="mb-6 flex items-center justify-between">
-				<h2 className="text-2xl font-bold">Games</h2>
+		<div className="mx-auto max-w-6xl px-4 py-6">
+			<div className="mb-4 flex items-center justify-between gap-4">
+				<div className="flex items-center gap-2 text-white">
+					<Gamepad2 className="h-5 w-5" />
+					<h1 className="text-base font-semibold">Games</h1>
+					<span className="rounded-full border border-gray-700 px-2 py-0.5 text-xs text-gray-300">
+						{games.length}
+					</span>
+				</div>
 				{user && (
 					<button
 						onClick={handleAdd}
-						className="rounded-lg bg-[var(--color-primary)] px-4 py-2 text-[var(--color-primary-contrast)] transition-opacity hover:opacity-90"
+						className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-white/5"
 					>
-						+ Add Game
+						<Plus className="h-4 w-4" /> Add Game
 					</button>
 				)}
 			</div>
 
 			{games.length === 0 ? (
-				<p className="text-gray-400">No games added yet.</p>
+				<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)] p-8 text-center text-sm text-gray-400">
+					No games yet. {user ? "Add your first game to get started." : "Sign in to add games."}
+				</div>
 			) : (
-				<ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+				<ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 					{games.map((game) => (
-						<li key={game.id}>
+						<li key={game.id} className="transition-transform hover:-translate-y-0.5">
 							<GameCard
 								game={game}
 								canEdit={!!user}
@@ -81,4 +90,5 @@ const GamesPage: React.FC = () => {
 		</div>
 	);
 };
+
 export default GamesPage;
