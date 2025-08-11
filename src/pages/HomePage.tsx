@@ -1,144 +1,202 @@
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useResults } from "features/events/context/ResultsContext";
-import { Avatar } from "common/components/Avatar";
-import { Trophy } from "lucide-react";
 import type { IPlayer } from "features/players/types";
+import { Avatar } from "common/components/Avatar";
+import { Trophy, Target, Award, Gamepad2 } from "lucide-react";
+
+interface RowStat {
+	player: IPlayer | undefined;
+	playerId: string;
+	wins: number;
+	games: number;
+	winRate: number;
+}
+
+const formatPct = (n: number) => `${Math.round(n * 100)}%`;
+
+const rankTrophy = (rank: number) => {
+	if (rank === 1) return <Trophy aria-label="1st" className="h-5 w-5 text-yellow-400" />;
+	if (rank === 2) return <Trophy aria-label="2nd" className="h-5 w-5 text-slate-300" />;
+	if (rank === 3) return <Trophy aria-label="3rd" className="h-5 w-5 text-amber-600" />;
+	return null;
+};
+
+const rowBg = (rank: number) => {
+	if (rank === 1) return "bg-yellow-500/5";
+	if (rank === 2) return "bg-slate-500/5";
+	if (rank === 3) return "bg-amber-500/5";
+	return "";
+};
 
 export const HomePage: React.FC = () => {
 	const { players } = usePlayers();
 	const { results } = useResults();
 
-	const leaderboard = useMemo(() => {
+	const leaderboard: RowStat[] = useMemo(() => {
 		const stats: Record<string, { wins: number; games: number }> = {};
-
 		results.forEach((r) => {
 			r.playerResults.forEach((pr) => {
-				if (!stats[pr.playerId]) stats[pr.playerId] = { wins: 0, games: 0 };
-				if (pr.isWinner || pr.rank === 1) stats[pr.playerId].wins++;
-				stats[pr.playerId].games++;
+				const id = pr.playerId;
+				if (!stats[id]) stats[id] = { wins: 0, games: 0 };
+				stats[id].games += 1;
+				if (pr.isWinner) stats[id].wins += 1;
 			});
 		});
 
-		return Object.entries(stats)
-			.map(([playerId, { wins, games }]) => ({
-				player: players.find((p) => p.id === playerId),
-				wins,
-				games,
-				winRate: games ? Math.round((wins / games) * 100) : 0,
-			}))
-			.filter((p) => p.player)
-			.sort((a, b) => b.wins - a.wins);
-	}, [results, players]);
+		const rows: RowStat[] = Object.entries(stats).map(([playerId, s]) => ({
+			playerId,
+			player: players.find((p) => p.id === playerId),
+			wins: s.wins,
+			games: s.games,
+			winRate: s.games > 0 ? s.wins / s.games : 0,
+		}));
 
-	const mostGamesPlayer = leaderboard[0];
-	const bestWinRatePlayer = [...leaderboard]
-		.filter((p) => p.games >= 5) // minimum threshold
-		.sort((a, b) => b.winRate - a.winRate)[0];
-	const mostWinsPlayer = leaderboard[0];
+		rows.sort((a, b) => {
+			if (b.wins !== a.wins) return b.wins - a.wins;
+			if (b.winRate !== a.winRate) return b.winRate - a.winRate;
+			if (b.games !== a.games) return b.games - a.games;
+			const an = (a.player?.preferredName || a.player?.firstName || "").toLowerCase();
+			const bn = (b.player?.preferredName || b.player?.firstName || "").toLowerCase();
+			return an.localeCompare(bn);
+		});
+
+		return rows;
+	}, [players, results]);
+
+	const mostGames = useMemo(
+		() => (leaderboard[0] ? leaderboard.slice().sort((a, b) => b.games - a.games)[0] : undefined),
+		[leaderboard],
+	);
+	const mostWins = useMemo(
+		() => (leaderboard[0] ? leaderboard.slice().sort((a, b) => b.wins - a.wins)[0] : undefined),
+		[leaderboard],
+	);
+	const bestWinRateMin5 = useMemo(() => {
+		const eligible = leaderboard.filter((r) => r.games >= 5);
+		if (!eligible.length) return undefined;
+		return eligible.sort((a, b) => b.winRate - a.winRate || b.games - a.games)[0];
+	}, [leaderboard]);
+
+	const hasData = leaderboard.length > 0;
 
 	return (
-		<div className="space-y-10">
-			<h2 className="text-3xl font-bold text-white">Leaderboard</h2>
-
-			{/* Featured Stats */}
-			<div className="grid gap-4 sm:grid-cols-3">
-				<FeaturedStatCard
+		<div className="mx-auto grid max-w-6xl gap-8 px-4 py-6">
+			<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+				<FeaturedCard
 					label="Most Games Played"
-					player={mostGamesPlayer?.player}
-					value={`${mostGamesPlayer?.games ?? 0} games`}
+					player={mostGames?.player}
+					value={mostGames ? `${mostGames.games} games` : "—"}
+					icon={<Gamepad2 className="h-4 w-4" />}
 				/>
-				<FeaturedStatCard
-					label="Best Win Rate"
-					player={bestWinRatePlayer?.player}
-					value={`${bestWinRatePlayer?.winRate ?? 0}%`}
+				<FeaturedCard
+					label="Best Win Rate (min 5)"
+					player={bestWinRateMin5?.player}
+					value={
+						bestWinRateMin5 ? `${formatPct(bestWinRateMin5.winRate)} · ${bestWinRateMin5.games} games` : "—"
+					}
+					icon={<Target className="h-4 w-4" />}
 				/>
-				<FeaturedStatCard
+				<FeaturedCard
 					label="Most Wins"
-					player={mostWinsPlayer?.player}
-					value={`${mostWinsPlayer?.wins ?? 0} wins`}
+					player={mostWins?.player}
+					value={mostWins ? `${mostWins.wins} wins` : "—"}
+					icon={<Award className="h-4 w-4" />}
 				/>
 			</div>
 
-			{/* Leaderboard Table */}
-			<div className="overflow-x-auto rounded-xl border border-gray-700 bg-[var(--color-surface)]">
-				<table className="min-w-full divide-y divide-gray-700 text-sm">
-					<thead>
-						<tr className="bg-gray-800 text-gray-300">
-							<th className="px-2 py-3 text-center">#</th>
-							<th className="px-4 py-3 text-left">Player</th>
-							<th className="px-4 py-3 text-left">Win %</th>
-							<th className="px-4 py-3 text-left">Games</th>
-							<th className="px-4 py-3 text-left">Wins</th>
-						</tr>
-					</thead>
-					<tbody>
-						{leaderboard.map(({ player, games, wins, winRate }, index) => (
-							<tr
-								key={player!.id}
-								className={`${
-									index === 0
-										? "border-b border-yellow-500/20 bg-yellow-900/30"
-										: index === 1
-											? "border-b border-gray-500/20 bg-gray-700/30"
-											: index === 2
-												? "border-b border-orange-500/20 bg-orange-900/30"
-												: "border-b border-gray-800"
-								} last:border-b-0`}
-							>
-								<td className="px-2 py-3 text-center font-semibold text-gray-400">
-									{index === 0 || index === 1 || index === 2 ? (
-										<Trophy
-											className={`inline-block ${
-												index === 0
-													? "text-yellow-400"
-													: index === 1
-														? "text-gray-400"
-														: "text-orange-400"
-											}`}
-											size={18}
-										/>
-									) : (
-										index + 1
-									)}
-								</td>
-								<td className="flex items-center gap-2 px-4 py-3 font-medium text-white">
-									<Avatar
-										src={player?.pictureUrl || undefined}
-										name={player?.preferredName ?? "?"}
-										size={32}
-									/>
-									{player?.preferredName ?? "Unknown"}
-								</td>
-								<td className="px-4 py-3 text-gray-300">{winRate}%</td>
-								<td className="px-4 py-3 text-gray-300">{games}</td>
-								<td className="px-4 py-3 font-semibold text-gray-300">{wins}</td>
+			<div className="overflow-hidden rounded-xl border border-gray-700 bg-[var(--color-surface)]">
+				<div className="border-b border-gray-700 px-4 py-3">
+					<h2 className="text-base font-semibold text-white">Leaderboard</h2>
+					<p className="text-xs text-gray-400">Sorted by total wins</p>
+				</div>
+
+				{!hasData ? (
+					<div className="px-6 py-10 text-center text-sm text-gray-400">
+						No results yet. Play some games to populate the board!
+					</div>
+				) : (
+					<table className="min-w-full text-sm">
+						<thead className="bg-black/20 text-left text-gray-300">
+							<tr>
+								<th className="w-16 px-4 py-3 font-medium">Rank</th>
+								<th className="px-4 py-3 font-medium">Player</th>
+								<th className="px-4 py-3 text-center font-medium">Win %</th>
+								<th className="px-4 py-3 text-center font-medium">Games</th>
+								<th className="px-4 py-3 text-center font-medium">Wins</th>
 							</tr>
-						))}
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							{leaderboard.map((row, idx) => {
+								const rank = idx + 1;
+								const trophy = rankTrophy(rank);
+								return (
+									<tr
+										key={row.playerId}
+										className={`${rowBg(rank)} border-b border-gray-700 transition-colors last:border-b-0 hover:bg-white/5`}
+										title={`${row.player?.preferredName ?? "Unknown"} · ${formatPct(row.winRate)} over ${row.games} games`}
+									>
+										<td className="px-4 py-3 align-middle">
+											{trophy ? trophy : <span className="text-gray-300">{rank}</span>}
+										</td>
+										<td className="px-4 py-3">
+											<div className="flex items-center gap-3">
+												<Avatar
+													src={row.player?.pictureUrl || undefined}
+													name={row.player?.preferredName ?? row.player?.firstName ?? "?"}
+													size={40}
+												/>
+												<div className="leading-tight">
+													<div className="font-medium text-white">
+														{row.player?.preferredName ??
+															row.player?.firstName ??
+															"Unknown"}
+													</div>
+												</div>
+											</div>
+										</td>
+										<td className="px-4 py-3 text-center text-gray-200 tabular-nums">
+											{formatPct(row.winRate)}
+										</td>
+										<td className="px-4 py-3 text-center text-gray-200 tabular-nums">
+											{row.games}
+										</td>
+										<td className="px-4 py-3 text-center font-semibold text-white tabular-nums">
+											{row.wins}
+										</td>
+									</tr>
+								);
+							})}
+						</tbody>
+					</table>
+				)}
+			</div>
+		</div>
+	);
+};
+
+const FeaturedCard: React.FC<{
+	label: string;
+	player?: IPlayer;
+	value: string;
+	icon: React.ReactNode;
+}> = ({ label, player, value, icon }) => {
+	const name = player?.preferredName ?? player?.firstName ?? "Unknown";
+	return (
+		<div className="group relative flex items-center gap-4 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-4 shadow-sm transition-transform hover:-translate-y-0.5">
+			<div className="relative">
+				<Avatar src={player?.pictureUrl || undefined} name={name} size={48} />
+			</div>
+			<div className="min-w-0">
+				<p className="text-[11px] tracking-wide text-gray-400 uppercase">{label}</p>
+				<p className="truncate text-sm font-semibold text-white">{name}</p>
+				<p className="flex items-center gap-1 text-xs text-gray-300">
+					{icon}
+					{value}
+				</p>
 			</div>
 		</div>
 	);
 };
 
 export default HomePage;
-
-interface FeaturedStatCardProps {
-	label: string;
-	player?: IPlayer;
-	value: string;
-}
-
-const FeaturedStatCard: React.FC<FeaturedStatCardProps> = ({ label, player, value }) => {
-	return (
-		<div className="flex items-center gap-4 rounded-lg border border-gray-700 bg-[var(--color-surface)] p-4 shadow-sm">
-			<Avatar src={player?.pictureUrl || undefined} name={player?.preferredName ?? "?"} size={48} />
-			<div>
-				<p className="text-xs text-gray-400">{label}</p>
-				<p className="leading-tight font-semibold text-white">{player?.preferredName ?? "Unknown"}</p>
-				<p className="text-sm text-gray-300">{value}</p>
-			</div>
-		</div>
-	);
-};
