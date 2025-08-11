@@ -2,7 +2,7 @@ import { useEffect, useState, type PropsWithChildren } from "react";
 import { db } from "firebase";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import type { IPlayer } from "features/players/types";
-import { createPlayer, updatePlayer, removePlayer } from "features/players/api";
+import { createPlayer, updatePlayer, removePlayer, uploadPlayerImage } from "features/players/api";
 import { PlayersContext } from "features/players/context/PlayersContext";
 
 export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
@@ -31,8 +31,13 @@ export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
 		await removePlayer(id);
 	}
 
+	async function uploadImage(file: File) {
+		const imageUrl = await uploadPlayerImage(file);
+		return imageUrl;
+	}
+
 	return (
-		<PlayersContext.Provider value={{ players, loading, addPlayer, editPlayer, deletePlayer }}>
+		<PlayersContext.Provider value={{ players, loading, addPlayer, editPlayer, deletePlayer, uploadImage }}>
 			{children}
 		</PlayersContext.Provider>
 	);
