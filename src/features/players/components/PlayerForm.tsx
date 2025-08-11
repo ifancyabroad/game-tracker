@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import type { IPlayer } from "features/players/types";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "firebase";
 import { User } from "lucide-react";
+import { usePlayers } from "features/players/context/PlayersContext";
 
 interface IPlayerFormProps {
 	onSubmit: (player: Omit<IPlayer, "id">) => Promise<void> | void;
@@ -16,6 +15,7 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData }
 	const [pictureUrl, setPictureUrl] = useState(initialData?.pictureUrl || "");
 	const [previewUrl, setPreviewUrl] = useState<string | null>(initialData?.pictureUrl || null);
 	const [errors, setErrors] = useState<{ firstName?: string; lastName?: string } | null>(null);
+	const { uploadImage } = usePlayers();
 
 	useEffect(() => {
 		if (pictureUrl) setPreviewUrl(pictureUrl);
@@ -25,9 +25,7 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData }
 		"w-full rounded-lg border border-gray-700 bg-black/20 px-3 py-2 text-sm text-[var(--color-text)] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent";
 
 	const handleImageUpload = async (file: File) => {
-		const fileRef = ref(storage, `players/${Date.now()}-${file.name}`);
-		await uploadBytes(fileRef, file);
-		const url = await getDownloadURL(fileRef);
+		const url = await uploadImage(file);
 		setPictureUrl(url);
 		setPreviewUrl(url);
 	};

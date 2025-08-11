@@ -24,6 +24,8 @@ export async function removePlayer(id: string) {
 
 export async function uploadPlayerImage(file: File) {
 	const imageRef = ref(storage, `players/${file.name}-${Date.now()}`);
-	await uploadBytes(imageRef, file);
+	await uploadBytes(imageRef, file, {
+		cacheControl: "public,max-age=31536000",
+	});
 	return getDownloadURL(imageRef);
 }
