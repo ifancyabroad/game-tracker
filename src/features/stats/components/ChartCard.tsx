@@ -5,9 +5,9 @@ interface ChartCardProps {
 
 export const ChartCard: React.FC<ChartCardProps> = ({ title, children }) => {
 	return (
-		<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)] p-4 shadow-sm">
-			<h3 className="text-md mb-4 font-semibold text-[var(--color-primary)]">{title}</h3>
-			<div className="h-[300px] w-full">{children}</div>
+		<div className="group rounded-xl border border-gray-700 bg-[var(--color-surface)] p-4 shadow-sm transition-transform hover:-translate-y-0.5">
+			<h3 className="mb-4 text-sm font-semibold text-white">{title}</h3>
+			<div className="h-[320px] w-full">{children}</div>
 		</div>
 	);
 };

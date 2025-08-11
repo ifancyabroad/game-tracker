@@ -5,6 +5,7 @@ import { PlayerForm } from "features/players/components/PlayerForm";
 import type { IPlayer } from "features/players/types";
 import { ConfirmDelete } from "common/components/ConfirmDelete";
 import { useAuth } from "common/context/AuthContext";
+import { Users, Plus } from "lucide-react";
 
 const PlayersList: React.FC = () => {
 	const { players, addPlayer, editPlayer, deletePlayer } = usePlayers();
@@ -14,8 +15,8 @@ const PlayersList: React.FC = () => {
 	const handleAdd = () => {
 		openModal(
 			<PlayerForm
-				onSubmit={(data) => {
-					addPlayer(data);
+				onSubmit={async (player: Omit<IPlayer, "id">) => {
+					await addPlayer(player);
 					closeModal();
 				}}
 			/>,
@@ -26,11 +27,9 @@ const PlayersList: React.FC = () => {
 		openModal(
 			<PlayerForm
 				initialData={player}
-				onSubmit={(data) => {
-					if (player.id) {
-						editPlayer(player.id, data);
-						closeModal();
-					}
+				onSubmit={async (changes: Omit<IPlayer, "id">) => {
+					await editPlayer(player.id, changes);
+					closeModal();
 				}}
 			/>,
 		);
@@ -39,10 +38,10 @@ const PlayersList: React.FC = () => {
 	const handleDelete = (player: IPlayer) => {
 		openModal(
 			<ConfirmDelete
-				title="Delete Player"
-				message={`Are you sure you want to delete ${player.preferredName || player.firstName}?`}
-				onConfirm={() => {
-					deletePlayer(player.id);
+				title="Delete player?"
+				message={`This will remove ${player.preferredName ?? player.firstName}.`}
+				onConfirm={async () => {
+					await deletePlayer(player.id);
 					closeModal();
 				}}
 				onCancel={closeModal}
@@ -51,25 +50,33 @@ const PlayersList: React.FC = () => {
 	};
 
 	return (
-		<div>
-			<div className="mb-6 flex items-center justify-between">
-				<h2 className="text-2xl font-bold">Players</h2>
+		<div className="mx-auto max-w-6xl px-4 py-6">
+			<div className="mb-4 flex items-center justify-between gap-4">
+				<div className="flex items-center gap-2 text-white">
+					<Users className="h-5 w-5" />
+					<h1 className="text-base font-semibold">Players</h1>
+					<span className="rounded-full border border-gray-700 px-2 py-0.5 text-xs text-gray-300">
+						{players.length}
+					</span>
+				</div>
 				{user && (
 					<button
 						onClick={handleAdd}
-						className="rounded-lg bg-[var(--color-primary)] px-4 py-2 text-[var(--color-primary-contrast)] transition-opacity hover:opacity-90"
+						className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-white/5"
 					>
-						+ Add Player
+						<Plus className="h-4 w-4" /> Add Player
 					</button>
 				)}
 			</div>
 
 			{players.length === 0 ? (
-				<p className="text-gray-500">No players found. Add a player to get started.</p>
+				<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)] p-8 text-center text-sm text-gray-400">
+					No players yet. {user ? "Add your first player to get started." : "Sign in to add players."}
+				</div>
 			) : (
-				<ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+				<ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 					{players.map((player) => (
-						<li key={player.id}>
+						<li key={player.id} className="transition-transform hover:-translate-y-0.5">
 							<PlayerCard
 								player={player}
 								canEdit={!!user}

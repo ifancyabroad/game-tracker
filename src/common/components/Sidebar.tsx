@@ -24,34 +24,29 @@ export const Sidebar: React.FC = () => {
 		openModal(<LoginForm onSuccess={closeModal} />);
 	};
 
-	const handleLogoutClick = () => {
-		signOut(auth);
+	const handleLogoutClick = async () => {
+		await signOut(auth);
 	};
 
 	return (
 		<>
-			{/* Overlay for mobile */}
-			{isSidebarOpen && <div className="fixed inset-0 z-30 bg-black/60 sm:hidden" onClick={closeSidebar} />}
+			{isSidebarOpen && <div className="fixed inset-0 z-40 bg-black/50 sm:hidden" onClick={closeSidebar} />}
 
 			<aside
-				className={`fixed z-40 flex h-full w-64 flex-col border-r border-gray-800 bg-[var(--color-surface)] p-4 transition-transform sm:static sm:translate-x-0 ${
-					isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+				className={`fixed z-50 flex h-full w-56 flex-col border-r border-gray-700 bg-[var(--color-surface)] px-4 py-6 transition-transform sm:static sm:translate-x-0 ${
+					isSidebarOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"
 				}`}
 			>
-				{/* Logo and Close (mobile only) */}
-				<div className="mb-6 flex items-center justify-between sm:justify-start sm:gap-3">
+				<div className="mb-6 flex items-center justify-between">
 					<div className="flex items-center gap-3">
-						<div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-primary)] text-lg font-bold text-[var(--color-primary-contrast)]">
+						<div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--color-primary)] text-lg font-bold text-[var(--color-primary-contrast)]">
 							🎲
 						</div>
 						<div>
-							<h1 className="text-base leading-tight font-medium text-[var(--color-primary)]">
-								Game Tracker
-							</h1>
+							<h1 className="text-base leading-tight font-semibold text-white">Game Tracker</h1>
 							<p className="text-[10px] text-gray-500">v1.0</p>
 						</div>
 					</div>
-
 					<button
 						onClick={closeSidebar}
 						className="text-gray-400 hover:text-white sm:hidden"
@@ -61,43 +56,41 @@ export const Sidebar: React.FC = () => {
 					</button>
 				</div>
 
-				<hr className="mb-4 border-gray-700" />
-
-				<nav className="flex flex-1 flex-col gap-2">
+				<nav className="flex flex-col gap-1">
 					{navItems.map(({ to, label, icon: Icon }) => (
 						<NavLink
 							key={to}
 							to={to}
 							className={({ isActive }) =>
-								`nav-link ${
+								`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
 									isActive
-										? "bg-[var(--color-primary)] font-semibold text-[var(--color-primary-contrast)]"
-										: "hover:bg-opacity-20 hover:bg-[var(--color-primary)]"
+										? "bg-white/10 text-white"
+										: "text-gray-300 hover:bg-white/5 hover:text-white"
 								}`
 							}
 							onClick={closeSidebar}
 						>
-							<Icon size={18} />
+							<Icon size={16} />
 							{label}
 						</NavLink>
 					))}
 				</nav>
 
-				<div className="mt-4 border-t border-gray-700 pt-4">
+				<div className="mt-auto flex flex-col gap-2 pt-6">
 					{user ? (
 						<button
 							onClick={handleLogoutClick}
-							className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-gray-300 hover:bg-[var(--color-primary)] hover:text-[var(--color-primary-contrast)]"
+							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-black/20 px-3 py-2 text-sm text-gray-200 hover:bg-white/10 focus:ring-2 focus:ring-white/20 focus:outline-none"
 						>
-							<LogOut size={18} />
+							<LogOut size={16} />
 							Logout
 						</button>
 					) : (
 						<button
 							onClick={handleLoginClick}
-							className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-gray-300 hover:bg-[var(--color-primary)] hover:text-[var(--color-primary-contrast)]"
+							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-black/20 px-3 py-2 text-sm text-gray-200 hover:bg-white/10 focus:ring-2 focus:ring-white/20 focus:outline-none"
 						>
-							<LogIn size={18} />
+							<LogIn size={16} />
 							Login
 						</button>
 					)}
@@ -106,3 +99,5 @@ export const Sidebar: React.FC = () => {
 		</>
 	);
 };
+
+export default Sidebar;

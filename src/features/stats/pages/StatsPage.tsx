@@ -1,7 +1,7 @@
 import { useEvents } from "features/events/context/EventsContext";
 import { useResults } from "features/events/context/ResultsContext";
 import { StatCard } from "features/stats/components/StatCard";
-import { Calendar, Gamepad2, Users } from "lucide-react";
+import { Calendar, Gamepad2, Users, BarChart3 } from "lucide-react";
 import { PlayerParticipationChart } from "features/stats/components/PlayerParticipationChart";
 import { PlayerWinsOverTimeChart } from "features/stats/components/PlayerWinsOverTimeChart";
 import { MostPlayedGamesChart } from "features/stats/components/MostPlayedGamesChart";
@@ -16,8 +16,13 @@ export const StatsPage: React.FC = () => {
 	const totalEvents = events.length;
 
 	return (
-		<div className="space-y-6">
-			<div className="grid gap-4 sm:grid-cols-3">
+		<div className="mx-auto max-w-6xl px-4 py-6">
+			<div className="mb-4 flex items-center gap-2 text-white">
+				<BarChart3 className="h-5 w-5" />
+				<h1 className="text-base font-semibold">Stats</h1>
+			</div>
+
+			<div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 				<StatCard title="Games Played" value={totalGamesPlayed.toString()} icon={<Gamepad2 size={20} />} />
 				<StatCard title="Players Involved" value={totalPlayersInvolved.toString()} icon={<Users size={20} />} />
 				<StatCard title="Total Events" value={totalEvents.toString()} icon={<Calendar size={20} />} />
@@ -32,3 +37,5 @@ export const StatsPage: React.FC = () => {
 		</div>
 	);
 };
+
+export default StatsPage;

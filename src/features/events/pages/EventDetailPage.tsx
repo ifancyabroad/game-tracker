@@ -3,54 +3,70 @@ import { useEvents } from "features/events/context/EventsContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useGames } from "features/games/context/GamesContext";
 import { useResults } from "features/events/context/ResultsContext";
-import { ArrowLeft, CalendarDays, MapPin, Users, Gamepad2 } from "lucide-react";
+import { ArrowLeft, CalendarDays, MapPin, Users, Gamepad2, Plus, Edit, Trash2 } from "lucide-react";
 import { useModal } from "common/context/ModalContext";
 import { EventForm } from "features/events/components/EventForm";
 import { ResultForm } from "features/events/components/ResultForm";
 import { ResultDisplay } from "features/events/components/ResultDisplay";
-import type { IResult } from "features/events/types";
+import type { IEvent, IResult } from "features/events/types";
 import { ConfirmDelete } from "common/components/ConfirmDelete";
 import { useAuth } from "common/context/AuthContext";
 
 export const EventDetailPage: React.FC = () => {
 	const { eventId } = useParams();
 	const navigate = useNavigate();
-	const { events, editEvent } = useEvents();
+
+	const { events, editEvent, deleteEvent } = useEvents();
 	const { players } = usePlayers();
 	const { games } = useGames();
-	const { openModal, closeModal } = useModal();
 	const { results, deleteResult } = useResults();
-	const event = events.find((e) => e.id === eventId);
+	const { openModal, closeModal } = useModal();
 	const user = useAuth();
 
-	if (!event) {
-		return <div className="text-red-500">Event not found.</div>;
-	}
-
-	const eventResults = results.filter((r) => r.eventId === event.id);
+	const event = events.find((e) => e.id === eventId);
+	const eventResults = results.filter((r) => r.eventId === eventId);
 
 	const getPlayerName = (id: string) => {
-		const p = players.find((p) => p.id === id);
-		return p?.preferredName || `${p?.firstName} ${p?.lastName}` || "Unknown";
+		const p = players.find((pl) => pl.id === id);
+		if (!p) return "Unknown";
+		const full = `${p.firstName} ${p.lastName}`;
+		return p.preferredName ?? full;
 	};
+	const getGameName = (id: string) => games.find((g) => g.id === id)?.name ?? "Unknown";
 
-	const getGameName = (id: string) => games.find((g) => g.id === id)?.name || "Unknown";
+	const handleBack = () => navigate(-1);
 
-	const handleEdit = () => {
+	const handleEditEvent = (ev: IEvent) => {
 		openModal(
 			<EventForm
-				initialData={event}
-				onSubmit={async (data) => {
-					await editEvent(event.id, data);
-					closeModal();
-				}}
+				initialData={ev}
 				players={players}
 				games={games}
+				onSubmit={async (data) => {
+					await editEvent(ev.id, data);
+					closeModal();
+				}}
+			/>,
+		);
+	};
+
+	const handleDeleteEvent = (ev: IEvent) => {
+		openModal(
+			<ConfirmDelete
+				title="Delete event?"
+				message={`This will remove the event at ${ev.location}.`}
+				onConfirm={async () => {
+					await deleteEvent(ev.id);
+					closeModal();
+					navigate("/events");
+				}}
+				onCancel={closeModal}
 			/>,
 		);
 	};
 
 	const handleAddResult = () => {
+		if (!event) return;
 		openModal(
 			<ResultForm
 				eventId={event.id}
@@ -63,6 +79,7 @@ export const EventDetailPage: React.FC = () => {
 	};
 
 	const handleEditResult = (result: IResult) => {
+		if (!event) return;
 		openModal(
 			<ResultForm
 				initialData={result}
@@ -75,11 +92,11 @@ export const EventDetailPage: React.FC = () => {
 		);
 	};
 
-	const handleDeleteResult = async (resultId: string) => {
+	const handleDeleteResult = (resultId: string) => {
 		openModal(
 			<ConfirmDelete
-				title="Delete Result"
-				message="Are you sure you want to delete this result?"
+				title="Delete result?"
+				message="This will remove the selected result."
 				onConfirm={async () => {
 					await deleteResult(resultId);
 					closeModal();
@@ -89,82 +106,136 @@ export const EventDetailPage: React.FC = () => {
 		);
 	};
 
-	return (
-		<div>
-			<button
-				onClick={() => navigate(-1)}
-				className="mb-6 flex items-center gap-2 text-sm text-[var(--color-primary)] hover:underline"
-			>
-				<ArrowLeft size={16} />
-				Back to Events
-			</button>
+	if (!event) {
+		return (
+			<div className="mx-auto max-w-6xl px-4 py-6">
+				<button
+					onClick={handleBack}
+					className="mb-4 inline-flex items-center gap-2 text-sm text-gray-300 hover:text-white"
+				>
+					<ArrowLeft size={18} /> Back
+				</button>
+				<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)] p-6 text-sm text-gray-400">
+					Event not found.
+				</div>
+			</div>
+		);
+	}
 
-			<div className="rounded-xl border border-gray-800 bg-[var(--color-surface)] p-6 shadow-lg">
-				<div className="mb-6 flex items-center justify-between">
-					<h2 className="text-2xl font-bold text-white">Event Details</h2>
-					{user && (
-						<button
-							onClick={handleEdit}
-							className="rounded bg-[var(--color-primary)] px-4 py-1.5 text-sm font-semibold text-[var(--color-primary-contrast)] transition hover:opacity-90"
-						>
-							Edit Event
-						</button>
-					)}
+	const date = new Date(event.date);
+	const dateLabel = isNaN(date.getTime())
+		? event.date
+		: date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+
+	return (
+		<div className="mx-auto max-w-6xl px-4 py-6">
+			<div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+				<div className="flex items-center gap-3">
+					<button
+						onClick={handleBack}
+						className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm text-gray-200 hover:bg-white/5"
+					>
+						<ArrowLeft size={16} /> Back
+					</button>
+					<h1 className="text-base font-semibold text-white">Event Details</h1>
 				</div>
 
-				<div className="mb-4 flex flex-col gap-2 text-sm text-gray-300">
+				{user && (
 					<div className="flex items-center gap-2">
-						<CalendarDays size={16} />
-						<span>{new Date(event.date).toLocaleDateString()}</span>
+						<button
+							onClick={() => handleEditEvent(event)}
+							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm text-gray-200 hover:bg-white/5"
+						>
+							<Edit size={16} /> Edit
+						</button>
+						<button
+							onClick={() => handleDeleteEvent(event)}
+							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm text-red-300 hover:bg-red-500/20"
+						>
+							<Trash2 size={16} /> Delete
+						</button>
+						<button
+							onClick={handleAddResult}
+							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm text-white hover:bg-white/5"
+						>
+							<Plus size={16} /> Add Result
+						</button>
 					</div>
-					<div className="flex items-center gap-2">
+				)}
+			</div>
+
+			<div className="mb-6 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-4">
+				<div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-200">
+					<div className="inline-flex items-center gap-2">
+						<CalendarDays size={16} />
+						<span>{dateLabel}</span>
+					</div>
+					<div className="inline-flex items-center gap-2">
 						<MapPin size={16} />
 						<span>{event.location}</span>
 					</div>
+					<span className="inline-flex items-center gap-2 rounded-full border border-gray-700 bg-black/20 px-2 py-1 text-xs text-gray-300">
+						<Users size={14} /> {event.playerIds.length}{" "}
+						{event.playerIds.length === 1 ? "player" : "players"}
+					</span>
+					<span className="inline-flex items-center gap-2 rounded-full border border-gray-700 bg-black/20 px-2 py-1 text-xs text-gray-300">
+						<Gamepad2 size={14} /> {event.gameIds.length} {event.gameIds.length === 1 ? "game" : "games"}
+					</span>
 				</div>
 
-				<hr className="my-4 border-gray-700" />
-
-				<div className="mb-4">
-					<h3 className="mb-2 flex items-center gap-2 text-lg font-semibold text-gray-100">
-						<Users size={18} />
-						Players
-					</h3>
-					<ul className="list-inside list-disc text-sm text-gray-300">
-						{event.playerIds.map((id) => (
-							<li key={id}>{getPlayerName(id)}</li>
-						))}
-					</ul>
+				<div className="mt-4 grid gap-4">
+					<div>
+						<h3 className="mb-2 flex items-center gap-2 text-sm font-semibold text-white">
+							<Users size={16} /> Players
+						</h3>
+						<div className="flex flex-wrap gap-2">
+							{event.playerIds.map((id) => (
+								<span
+									key={id}
+									className="inline-flex items-center rounded-full border border-gray-700 bg-black/20 px-2 py-1 text-xs text-gray-300"
+								>
+									{getPlayerName(id)}
+								</span>
+							))}
+						</div>
+					</div>
+					<div>
+						<h3 className="mb-2 flex items-center gap-2 text-sm font-semibold text-white">
+							<Gamepad2 size={16} /> Games
+						</h3>
+						<div className="flex flex-wrap gap-2">
+							{event.gameIds.map((id) => (
+								<span
+									key={id}
+									className="inline-flex items-center rounded-full border border-gray-700 bg-black/20 px-2 py-1 text-xs text-gray-300"
+								>
+									{getGameName(id)}
+								</span>
+							))}
+						</div>
+					</div>
 				</div>
+			</div>
 
-				<div>
-					<h3 className="mb-2 flex items-center gap-2 text-lg font-semibold text-gray-100">
-						<Gamepad2 size={18} />
-						Games
-					</h3>
-					<ul className="list-inside list-disc text-sm text-gray-300">
-						{event.gameIds.map((id) => (
-							<li key={id}>{getGameName(id)}</li>
-						))}
-					</ul>
-				</div>
-
-				<hr className="my-6 border-gray-700" />
-				<div className="mb-2 flex items-center justify-between">
-					<h3 className="text-lg font-semibold text-gray-100">Game Results</h3>
+			<div>
+				<div className="mb-3 flex items-center justify-between">
+					<h2 className="text-base font-semibold text-white">Results</h2>
 					{user && (
 						<button
 							onClick={handleAddResult}
-							className="rounded bg-[var(--color-primary)] px-4 py-1.5 text-sm font-semibold text-[var(--color-primary-contrast)] transition hover:opacity-90"
+							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm text-white hover:bg-white/5"
 						>
-							+ Add Result
+							<Plus size={16} /> Add Result
 						</button>
 					)}
 				</div>
+
 				{eventResults.length === 0 ? (
-					<p className="text-sm text-gray-400">No results recorded for this event.</p>
+					<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)] p-6 text-sm text-gray-400">
+						No results added yet.
+					</div>
 				) : (
-					<div className="space-y-6">
+					<div className="grid gap-4">
 						{eventResults.map((result) => (
 							<ResultDisplay
 								key={result.id}
@@ -182,3 +253,5 @@ export const EventDetailPage: React.FC = () => {
 		</div>
 	);
 };
+
+export default EventDetailPage;
