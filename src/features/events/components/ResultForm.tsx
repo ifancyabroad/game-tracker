@@ -42,10 +42,8 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 		}
 	}, [eventPlayerIds, initialData]);
 
-	// Inputs: consistent across the app
 	const inputCls =
 		"w-full rounded-lg border border-gray-700 bg-black/20 px-3 py-2 text-sm text-[var(--color-text)] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent";
-	// Compact variant specifically for the small rank field
 	const inputRankCls =
 		"w-12 rounded-lg border border-gray-700 bg-black/20 px-2 py-1 text-sm text-[var(--color-text)] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent text-center tabular-nums";
 
@@ -66,7 +64,6 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 		onSuccess?.();
 	};
 
-	// Use a function declaration (TSX-safe) to avoid JSX parse issues with generics
 	function update<K extends keyof IPlayerResult>(playerId: string, key: K, value: IPlayerResult[K]) {
 		setPlayerResults((rows) => rows.map((r) => (r.playerId === playerId ? { ...r, [key]: value } : r)));
 	}
@@ -75,13 +72,11 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 
 	return (
 		<form onSubmit={handleSubmit} className="m-0 flex flex-col gap-4 p-0">
-			{/* Header */}
 			<div className="flex items-center gap-2 text-gray-300">
 				<Target className="h-4 w-4 text-[var(--color-primary)]" />
 				<h3 className="text-sm font-semibold text-white">{initialData ? "Edit Result" : "Add Result"}</h3>
 			</div>
 
-			{/* Game selector — darker background for readability */}
 			<div>
 				<label className="mb-1 block text-xs text-gray-400">Game</label>
 				<div className="relative">
@@ -100,7 +95,6 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 				</div>
 			</div>
 
-			{/* Players — relaxed layout so name + rank stay visible */}
 			<div className="rounded-lg border border-gray-700 p-3">
 				<p className="mb-2 text-xs font-medium text-gray-400">Players</p>
 				<div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -113,7 +107,6 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 								key={pr.playerId}
 								className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-md border border-gray-700 bg-black/20 p-3"
 							>
-								{/* Name block */}
 								<div className="min-w-0 flex-1 basis-full sm:basis-auto">
 									<p className="truncate text-sm text-white">{name}</p>
 									{player?.preferredName && player.preferredName !== full && (
@@ -121,7 +114,6 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 									)}
 								</div>
 
-								{/* Controls */}
 								<div className="flex shrink-0 items-center gap-2">
 									<input
 										type="number"
