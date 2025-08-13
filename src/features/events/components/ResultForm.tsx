@@ -101,13 +101,11 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 
 	return (
 		<form onSubmit={handleSubmit} className="m-0 flex flex-col gap-4 p-0">
-			{/* Header */}
 			<div className="flex items-center gap-2 text-gray-300">
 				<Target className="h-4 w-4 text-[var(--color-primary)]" />
 				<h3 className="text-sm font-semibold text-white">{initialData ? "Edit Result" : "Add Result"}</h3>
 			</div>
 
-			{/* Game selector */}
 			<div>
 				<label className="mb-1 block text-xs text-gray-400">Game</label>
 				<div className="relative">
