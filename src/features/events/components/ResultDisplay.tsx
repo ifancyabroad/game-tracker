@@ -118,11 +118,9 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({ result, games, pl
 								</td>
 								<td className="px-2 py-2 text-center sm:px-4">
 									<div className="inline-flex items-center justify-center gap-1">
-										{/* fixed-width number for alignment */}
 										<span className="inline-block w-6 text-right font-mono tabular-nums">
 											{r.rank ?? "—"}
 										</span>
-										{/* fixed-width medal slot so column never shifts */}
 										<span className="inline-block w-4">
 											{r.rank === 1 ? (
 												<Award className="h-4 w-4 align-middle text-yellow-500" />

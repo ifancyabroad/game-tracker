@@ -73,6 +73,7 @@ export const EventDetailPage: React.FC = () => {
 				players={players}
 				games={games}
 				eventPlayerIds={event.playerIds}
+				allowedGameIds={event.gameIds}
 				onSuccess={closeModal}
 			/>,
 		);
@@ -87,6 +88,7 @@ export const EventDetailPage: React.FC = () => {
 				players={players}
 				games={games}
 				eventPlayerIds={event.playerIds}
+				allowedGameIds={event.gameIds}
 				onSuccess={closeModal}
 			/>,
 		);
