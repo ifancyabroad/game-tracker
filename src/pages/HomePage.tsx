@@ -121,8 +121,8 @@ export const HomePage: React.FC = () => {
 							<tr>
 								<th className="w-16 px-4 py-3 font-medium">Rank</th>
 								<th className="px-4 py-3 font-medium">Player</th>
-								<th className="px-4 py-3 text-center font-medium">Win %</th>
-								<th className="px-4 py-3 text-center font-medium">Games</th>
+								<th className="hidden px-4 py-3 text-center font-medium sm:table-cell">Win %</th>
+								<th className="hidden px-4 py-3 text-center font-medium sm:table-cell">Games</th>
 								<th className="px-4 py-3 text-center font-medium">Wins</th>
 							</tr>
 						</thead>
@@ -155,10 +155,10 @@ export const HomePage: React.FC = () => {
 												</div>
 											</div>
 										</td>
-										<td className="px-4 py-3 text-center text-gray-200 tabular-nums">
+										<td className="hidden px-4 py-3 text-center text-gray-200 tabular-nums sm:table-cell">
 											{formatPct(row.winRate)}
 										</td>
-										<td className="px-4 py-3 text-center text-gray-200 tabular-nums">
+										<td className="hidden px-4 py-3 text-center text-gray-200 tabular-nums sm:table-cell">
 											{row.games}
 										</td>
 										<td className="px-4 py-3 text-center font-semibold text-white tabular-nums">
