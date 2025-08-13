@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type FormEvent, useEffect } from "react";
+import { useState, type ChangeEvent, type FormEvent, useEffect, useMemo } from "react";
 import { useResults } from "features/events/context/ResultsContext";
 import type { IPlayer } from "features/players/types";
 import type { IPlayerResult, IResult } from "features/events/types";
@@ -12,6 +12,7 @@ interface ResultFormProps {
 	onSuccess?: () => void;
 	initialData?: IResult;
 	eventPlayerIds: string[];
+	allowedGameIds?: string[];
 }
 
 export const ResultForm: React.FC<ResultFormProps> = ({
@@ -21,10 +22,32 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 	onSuccess,
 	initialData,
 	eventPlayerIds,
+	allowedGameIds,
 }) => {
 	const { addResult, editResult } = useResults();
 
-	const [gameId, setGameId] = useState<string>(initialData?.gameId || (games[0]?.id ?? ""));
+	const [gameId, setGameId] = useState<string>(initialData?.gameId ?? "");
+
+	const filteredGames = useMemo(() => {
+		if (!Array.isArray(allowedGameIds) || allowedGameIds.length === 0) return [] as IGame[];
+		const set = new Set(allowedGameIds);
+		return games.filter((g) => set.has(g.id));
+	}, [games, allowedGameIds]);
+
+	useEffect(() => {
+		if (!filteredGames.length) {
+			setGameId("");
+			return;
+		}
+		if (!filteredGames.some((g) => g.id === gameId)) {
+			setGameId(
+				initialData?.gameId && filteredGames.some((g) => g.id === initialData.gameId)
+					? initialData.gameId
+					: filteredGames[0].id,
+			);
+		}
+	}, [filteredGames, gameId, initialData?.gameId]);
+
 	const [playerResults, setPlayerResults] = useState<IPlayerResult[]>(
 		initialData?.playerResults ||
 			eventPlayerIds.map((id) => ({ playerId: id, rank: null, isWinner: false, isLoser: false })),
@@ -112,16 +135,27 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 					<select
 						value={gameId}
 						onChange={(e) => setGameId(e.target.value)}
-						className={`${inputCls} appearance-none bg-gray-800 pr-8`}
+						disabled={!filteredGames.length}
+						className={`${inputCls} appearance-none bg-gray-800 pr-8 disabled:opacity-60`}
 					>
-						{games.map((g) => (
-							<option key={g.id} value={g.id}>
-								{g.name}
-							</option>
-						))}
+						{!filteredGames.length ? (
+							<option value="">No games added to this event</option>
+						) : (
+							filteredGames.map((g) => (
+								<option key={g.id} value={g.id}>
+									{g.name}
+								</option>
+							))
+						)}
 					</select>
 					<Gamepad2 className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-[var(--color-primary)]" />
 				</div>
+
+				{!filteredGames.length && (
+					<p className="mt-2 text-xs text-amber-300">
+						This event doesn’t have any games yet. Add a game to the event to create a result.
+					</p>
+				)}
 			</div>
 
 			<div>
@@ -203,7 +237,8 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 
 			<button
 				type="submit"
-				className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-[var(--color-primary-contrast)] transition-opacity hover:opacity-90"
+				disabled={!filteredGames.length || !gameId}
+				className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-[var(--color-primary-contrast)] transition-opacity hover:opacity-90 disabled:opacity-50"
 			>
 				{initialData ? "Update Result" : "Submit Result"}
 			</button>
