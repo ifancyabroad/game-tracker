@@ -40,7 +40,7 @@ export const HomePage: React.FC = () => {
 				const id = pr.playerId;
 				if (!stats[id]) stats[id] = { wins: 0, games: 0 };
 				stats[id].games += 1;
-				if (pr.isWinner) stats[id].wins += 1;
+				if (pr.isWinner || pr.rank === 1) stats[id].wins += 1;
 			});
 		});
 
