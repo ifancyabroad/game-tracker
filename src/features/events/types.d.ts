@@ -17,5 +17,6 @@ export interface IResult {
 	id: string;
 	eventId: string;
 	gameId: string;
+	order: number;
 	playerResults: IPlayerResult[];
 }

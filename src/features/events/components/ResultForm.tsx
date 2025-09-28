@@ -13,6 +13,7 @@ interface ResultFormProps {
 	initialData?: IResult;
 	eventPlayerIds: string[];
 	allowedGameIds?: string[];
+	numOfResults: number;
 }
 
 export const ResultForm: React.FC<ResultFormProps> = ({
@@ -23,10 +24,11 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 	initialData,
 	eventPlayerIds,
 	allowedGameIds,
+	numOfResults,
 }) => {
 	const { addResult, editResult } = useResults();
-
 	const [gameId, setGameId] = useState<string>(initialData?.gameId ?? "");
+	const [order, setOrder] = useState<number>(initialData?.order ?? numOfResults + 1);
 
 	const filteredGames = useMemo(() => {
 		if (!Array.isArray(allowedGameIds) || allowedGameIds.length === 0) return [] as IGame[];
@@ -88,7 +90,7 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 
 	// Inputs
 	const inputCls =
-		"w-full rounded-lg border border-gray-700 bg-black/20 px-3 py-2 text-sm text-[var(--color-text)] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent";
+		"rounded-lg border border-gray-700 bg-black/20 px-3 py-2 text-sm text-[var(--color-text)] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent";
 	const inputRankCls =
 		"rounded-lg border border-gray-700 bg-black/20 px-2 py-1 text-sm text-[var(--color-text)] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent text-center tabular-nums";
 
@@ -98,6 +100,7 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 		const resultData: Omit<IResult, "id"> = {
 			eventId,
 			gameId,
+			order,
 			playerResults: filtered,
 		};
 
@@ -130,25 +133,45 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 			</div>
 
 			<div>
-				<label className="mb-1 block text-xs text-gray-400">Game</label>
-				<div className="relative">
-					<select
-						value={gameId}
-						onChange={(e) => setGameId(e.target.value)}
-						disabled={!filteredGames.length}
-						className={`${inputCls} appearance-none bg-gray-800 pr-8 disabled:opacity-60`}
-					>
-						{!filteredGames.length ? (
-							<option value="">No games added to this event</option>
-						) : (
-							filteredGames.map((g) => (
-								<option key={g.id} value={g.id}>
-									{g.name}
-								</option>
-							))
-						)}
-					</select>
-					<Gamepad2 className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-[var(--color-primary)]" />
+				<div className="flex items-center justify-between gap-4">
+					<div className="min-w-0 flex-1">
+						<label className="mb-1 block text-xs text-gray-400">Game</label>
+						<div className="relative">
+							<select
+								value={gameId}
+								onChange={(e) => setGameId(e.target.value)}
+								disabled={!filteredGames.length}
+								className={`${inputCls} w-full appearance-none bg-gray-800 pr-8 disabled:opacity-60`}
+							>
+								{!filteredGames.length ? (
+									<option value="">No games added to this event</option>
+								) : (
+									filteredGames.map((g) => (
+										<option key={g.id} value={g.id}>
+											{g.name}
+										</option>
+									))
+								)}
+							</select>
+							<Gamepad2 className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-[var(--color-primary)]" />
+						</div>
+					</div>
+
+					<div>
+						<label className="mb-1 block text-xs text-gray-400">Order</label>
+						<div className="relative">
+							<input
+								type="number"
+								value={order}
+								onChange={(e: ChangeEvent<HTMLInputElement>) =>
+									setOrder(e.target.value ? Number(e.target.value) : 1)
+								}
+								className={`${inputCls} w-16`}
+								min={1}
+								placeholder="#"
+							/>
+						</div>
+					</div>
 				</div>
 
 				{!filteredGames.length && (
