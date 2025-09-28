@@ -1,5 +1,6 @@
 import { Edit, Trash2, Gamepad2 } from "lucide-react";
 import type { IGame } from "features/games/types";
+import { useResults } from "features/events/context/ResultsContext";
 
 interface IGameCardProps {
 	game: IGame;
@@ -9,6 +10,9 @@ interface IGameCardProps {
 }
 
 export const GameCard: React.FC<IGameCardProps> = ({ game, canEdit, onEdit, onDelete }) => {
+	const { results } = useResults();
+	const numOfPlays = results.filter((r) => r.gameId === game.id).length;
+
 	const handleDeleteClick = () => {
 		if (game.id) onDelete?.(game.id);
 	};
@@ -21,6 +25,9 @@ export const GameCard: React.FC<IGameCardProps> = ({ game, canEdit, onEdit, onDe
 
 			<div className="min-w-0">
 				<p className="truncate text-sm font-semibold text-white">{game.name}</p>
+				<p className="truncate text-xs text-gray-400">
+					{numOfPlays} {numOfPlays === 1 ? "play" : "plays"}
+				</p>
 			</div>
 
 			{canEdit && (

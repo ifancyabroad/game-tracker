@@ -10,6 +10,7 @@ export const GamesProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	useEffect(() => {
 		const unsubscribe = onSnapshot(collection(db, "games"), (snapshot) => {
 			const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as IGame[];
+			data.sort((a, b) => a.name.localeCompare(b.name));
 			setGames(data);
 		});
 		return () => unsubscribe();
