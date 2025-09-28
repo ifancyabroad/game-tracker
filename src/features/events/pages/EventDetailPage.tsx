@@ -24,7 +24,7 @@ export const EventDetailPage: React.FC = () => {
 	const user = useAuth();
 
 	const event = events.find((e) => e.id === eventId);
-	const eventResults = results.filter((r) => r.eventId === eventId);
+	const eventResults = results.filter((r) => r.eventId === eventId).sort((a, b) => a.order - b.order);
 
 	const getPlayerName = (id: string) => {
 		const p = players.find((pl) => pl.id === id);
@@ -74,6 +74,7 @@ export const EventDetailPage: React.FC = () => {
 				games={games}
 				eventPlayerIds={event.playerIds}
 				allowedGameIds={event.gameIds}
+				numOfResults={eventResults.length}
 				onSuccess={closeModal}
 			/>,
 		);
@@ -89,6 +90,7 @@ export const EventDetailPage: React.FC = () => {
 				games={games}
 				eventPlayerIds={event.playerIds}
 				allowedGameIds={event.gameIds}
+				numOfResults={eventResults.length}
 				onSuccess={closeModal}
 			/>,
 		);
