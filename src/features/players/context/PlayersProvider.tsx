@@ -13,6 +13,11 @@ export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
 		const q = query(collection(db, "players"));
 		const unsubscribe = onSnapshot(q, (snapshot) => {
 			const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as IPlayer[];
+			data.sort((a, b) => {
+				const nameA = a.preferredName || `${a.firstName} ${a.lastName}`;
+				const nameB = b.preferredName || `${b.firstName} ${b.lastName}`;
+				return nameA.localeCompare(nameB);
+			});
 			setPlayers(data);
 			setLoading(false);
 		});
