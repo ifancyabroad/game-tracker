@@ -36,6 +36,11 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, canEdit, onEdit,
 					{showFullBelow && <p className="truncate text-xs text-gray-400">{fullName}</p>}
 				</div>
 
+				<div
+					className="h-4 w-4 rounded-full border border-gray-700"
+					style={{ backgroundColor: player.color }}
+				/>
+
 				{canEdit && (
 					<div className="ml-auto flex items-center gap-1 opacity-70 transition-opacity group-hover:opacity-100">
 						<button
