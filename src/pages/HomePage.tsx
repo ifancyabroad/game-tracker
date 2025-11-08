@@ -5,7 +5,8 @@ import type { IPlayer } from "features/players/types";
 import { Avatar } from "common/components/Avatar";
 import { Trophy, Target, Award } from "lucide-react";
 import { useGames } from "features/games/context/GamesContext";
-import { sortLeaderboard, usePlayerStatsMap } from "features/events/utils";
+import { sortLeaderboard, usePlayerStatsMap } from "features/events/utils/helpers";
+import { useNavigate } from "react-router";
 
 const formatPct = (n: number) => `${Math.round(n * 100)}%`;
 
@@ -35,6 +36,7 @@ export const HomePage: React.FC = () => {
 	const { results } = useResults();
 	const { games } = useGames();
 	const statsMap = usePlayerStatsMap(players, results, games);
+	const navigate = useNavigate();
 
 	const leaderboard = useMemo(() => {
 		const rows = players
@@ -113,11 +115,17 @@ export const HomePage: React.FC = () => {
 								{leaderboard.map((row, idx) => {
 									const rank = idx + 1;
 									const trophy = rankTrophy(rank);
+
+									const handleNavigate = () => {
+										navigate(`/players/${row.playerId}`);
+									};
+
 									return (
 										<tr
 											key={row.playerId}
-											className={`${rowBg(rank)} group border-b border-gray-700 transition-colors last:border-b-0 hover:bg-white/5`}
+											className={`${rowBg(rank)} group cursor-pointer border-b border-gray-700 transition-colors last:border-b-0 hover:bg-white/5`}
 											title={`${row.player?.preferredName ?? "Unknown"} · ${formatPct(row.winRate)} over ${row.games} games`}
+											onClick={handleNavigate}
 										>
 											<td className="px-4 py-3 align-middle">
 												{trophy ? trophy : <span className="text-gray-300">{rank}</span>}

@@ -1,0 +1,22 @@
+export const HighlightCard: React.FC<{
+	title: string;
+	icon: React.ReactNode;
+	lines: { k: string; v: string }[];
+}> = ({ title, icon, lines }) => {
+	return (
+		<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)] p-4 shadow-sm transition-transform hover:-translate-y-0.5">
+			<div className="mb-2 flex items-center gap-2">
+				<div className="flex h-8 w-8 items-center justify-center rounded-md bg-black/20">{icon}</div>
+				<h3 className="text-sm font-semibold text-white">{title}</h3>
+			</div>
+			<dl className="grid grid-cols-3 gap-x-4 gap-y-1 text-sm sm:grid-cols-2">
+				{lines.map((row, i) => (
+					<div key={i} className="col-span-3 flex justify-between gap-3 sm:col-span-2">
+						<dt className="truncate text-gray-400">{row.k}</dt>
+						<dd className="truncate text-white">{row.v}</dd>
+					</div>
+				))}
+			</dl>
+		</div>
+	);
+};
