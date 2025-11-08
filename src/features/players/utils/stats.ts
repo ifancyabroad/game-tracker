@@ -49,7 +49,7 @@ export function aggregatePlayerStatsForPage(
 	playerId: string,
 	opts: { bestGameMinSamples?: number; recentWindow?: number } = {},
 ): PlayerAggregates {
-	const bestGameMinSamples = opts.bestGameMinSamples ?? 2;
+	const bestGameMinSamples = opts.bestGameMinSamples ?? 3;
 	const recentWindow = opts.recentWindow ?? 20;
 
 	const byGame: Record<string, { games: number; wins: number }> = {};

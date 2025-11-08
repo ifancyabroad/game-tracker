@@ -1,10 +1,10 @@
 import { useResults } from "features/events/context/ResultsContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useMemo } from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { ChartCard } from "features/stats/components/ChartCard";
 import { ChartTooltip } from "features/stats/components/ChartTooltip";
-import { getDisplayName } from "features/players/utils/helpers";
+import { getColorForPlayer, getDisplayName } from "features/players/utils/helpers";
 
 export const TopWinningPlayersChart: React.FC = () => {
 	const { results } = useResults();
@@ -25,7 +25,8 @@ export const TopWinningPlayersChart: React.FC = () => {
 			.map(([playerId, winCount]) => {
 				const player = players.find((p) => p.id === playerId);
 				const name = getDisplayName(player);
-				return { name, winCount };
+				const color = getColorForPlayer(player);
+				return { name, winCount, color };
 			})
 			.filter((p) => !!p.name)
 			.sort((a, b) => b.winCount - a.winCount)
@@ -43,7 +44,11 @@ export const TopWinningPlayersChart: React.FC = () => {
 					<XAxis type="number" allowDecimals={false} tick={{ fontSize: 12, fill: "#ccc" }} />
 					<YAxis type="category" dataKey="name" tick={{ fontSize: 12, fill: "#ccc" }} />
 					<Tooltip cursor={{ fill: "rgba(255,255,255,0.05)" }} content={<ChartTooltip suffix="wins" />} />
-					<Bar dataKey="winCount" fill="#F59E0B" radius={[0, 4, 4, 0]} />
+					<Bar dataKey="winCount" radius={[0, 4, 4, 0]}>
+						{topWinningPlayers.map((entry, index) => (
+							<Cell key={`cell-${index}`} fill={entry.color} />
+						))}
+					</Bar>
 				</BarChart>
 			</ResponsiveContainer>
 		</ChartCard>

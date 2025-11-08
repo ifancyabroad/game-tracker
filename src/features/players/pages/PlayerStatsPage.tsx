@@ -87,7 +87,7 @@ export const PlayerStatsPage: React.FC = () => {
 
 			<div className="grid gap-4 sm:grid-cols-2">
 				<HighlightCard
-					title="Best Game (min 2 plays)"
+					title="Best Game (min 3 plays)"
 					icon={<TrendingUp className="h-4 w-4 text-[var(--color-primary)]" />}
 					lines={
 						bestGame
@@ -130,13 +130,7 @@ export const PlayerStatsPage: React.FC = () => {
 								labelFormatter={(v) => `Game ${v}`}
 								formatter={(v) => [`${v}%`, "Win Rate"]}
 							/>
-							<Line
-								type="monotone"
-								dataKey="wr"
-								stroke="var(--color-primary)"
-								strokeWidth={2}
-								dot={false}
-							/>
+							<Line type="monotone" dataKey="wr" stroke={player.color} strokeWidth={2} dot={false} />
 						</LineChart>
 					</ResponsiveContainer>
 				</ChartCard>
@@ -155,7 +149,7 @@ export const PlayerStatsPage: React.FC = () => {
 								}}
 								formatter={(v) => [String(v), "Count"]}
 							/>
-							<Bar dataKey="count" fill="var(--color-primary)" />
+							<Bar dataKey="count" fill={player.color} />
 						</BarChart>
 					</ResponsiveContainer>
 				</ChartCard>

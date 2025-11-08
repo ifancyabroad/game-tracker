@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useResults } from "features/events/context/ResultsContext";
 import { ChartCard } from "features/stats/components/ChartCard";
@@ -30,7 +30,8 @@ export const PlayerWinRateChart: React.FC = () => {
 				const stats = winMap[player.id];
 				const percentage = stats && stats.total > 0 ? Math.round((stats.wins / stats.total) * 100) : 0;
 				const name = getDisplayName(player);
-				return { name, winRate: percentage };
+				const color = player.color || "var(--color-primary)";
+				return { name, winRate: percentage, color };
 			})
 			.sort((a, b) => b.winRate - a.winRate);
 	}, [players, results]);
@@ -42,7 +43,11 @@ export const PlayerWinRateChart: React.FC = () => {
 					<XAxis type="number" domain={[0, 100]} tick={{ fontSize: 12, fill: "#ccc" }} unit="%" />
 					<YAxis type="category" dataKey="name" tick={{ fontSize: 12, fill: "#ccc" }} />
 					<Tooltip content={<ChartTooltip suffix="%" />} />
-					<Bar dataKey="winRate" fill="#3B82F6" radius={[0, 4, 4, 0]} />
+					<Bar dataKey="winRate" radius={[0, 4, 4, 0]}>
+						{data.map((entry, index) => (
+							<Cell key={`cell-${index}`} fill={entry.color} />
+						))}
+					</Bar>
 				</BarChart>
 			</ResponsiveContainer>
 		</ChartCard>

@@ -4,4 +4,5 @@ export interface IPlayer {
 	lastName: string;
 	preferredName: string | null;
 	pictureUrl: string | null;
+	color: string;
 }

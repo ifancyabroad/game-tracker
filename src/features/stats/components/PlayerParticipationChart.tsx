@@ -4,7 +4,7 @@ import { usePlayers } from "features/players/context/PlayersContext";
 import { ChartCard } from "features/stats/components/ChartCard";
 import { useResults } from "features/events/context/ResultsContext";
 import { ChartTooltip } from "./ChartTooltip";
-import { getDisplayName } from "features/players/utils/helpers";
+import { getColorForPlayer, getDisplayName } from "features/players/utils/helpers";
 
 export const PlayerParticipationChart: React.FC = () => {
 	const { results } = useResults();
@@ -22,25 +22,14 @@ export const PlayerParticipationChart: React.FC = () => {
 		return Object.entries(counts).map(([playerId, count]) => {
 			const player = players.find((p) => p.id === playerId);
 			const name = getDisplayName(player);
+			const color = getColorForPlayer(player);
 			return {
 				name,
 				value: count,
+				color,
 			};
 		});
 	}, [results, players]);
-
-	const COLORS = [
-		"#6366F1",
-		"#10B981",
-		"#F59E0B",
-		"#EF4444",
-		"#8B5CF6",
-		"#EC4899",
-		"#F43F5E",
-		"#14B8A6",
-		"#A855F7",
-		"#EAB308",
-	];
 
 	return (
 		<ChartCard title="Player Participation">
@@ -56,8 +45,8 @@ export const PlayerParticipationChart: React.FC = () => {
 						fill="#8884d8"
 						label={({ name }) => name}
 					>
-						{playerParticipationData.map((_, index) => (
-							<Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+						{playerParticipationData.map((player, index) => (
+							<Cell key={`cell-${index}`} fill={player.color} />
 						))}
 					</Pie>
 					<RechartsTooltip content={<ChartTooltip suffix="games" />} />

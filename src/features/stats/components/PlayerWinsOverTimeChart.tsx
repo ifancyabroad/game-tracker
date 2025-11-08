@@ -6,7 +6,7 @@ import { usePlayers } from "features/players/context/PlayersContext";
 import { ChartCard } from "features/stats/components/ChartCard";
 import { ChartTooltip } from "features/stats/components/ChartTooltip";
 import { format, parseISO } from "date-fns";
-import { getDisplayName } from "features/players/utils/helpers";
+import { getColorForPlayer, getDisplayName } from "features/players/utils/helpers";
 
 export const PlayerWinsOverTimeChart: React.FC = () => {
 	const { results } = useResults();
@@ -49,12 +49,15 @@ export const PlayerWinsOverTimeChart: React.FC = () => {
 			.sort((a, b) => parseISO(a.date).getTime() - parseISO(b.date).getTime());
 	}, [results, events, players]);
 
-	const playerNames = useMemo(() => {
+	const playerData = useMemo(() => {
 		const ids = new Set(results.flatMap((r) => r.playerResults.map((pr) => pr.playerId)));
 		return Array.from(ids)
 			.map((id) => players.find((p) => p.id === id))
-			.filter(Boolean)
-			.map(getDisplayName);
+			.filter((player): player is NonNullable<typeof player> => Boolean(player))
+			.map((player) => ({
+				name: getDisplayName(player),
+				color: getColorForPlayer(player),
+			}));
 	}, [results, players]);
 
 	return (
@@ -65,12 +68,12 @@ export const PlayerWinsOverTimeChart: React.FC = () => {
 					<YAxis allowDecimals={false} tick={{ fontSize: 12, fill: "#ccc" }} />
 					<Tooltip content={<ChartTooltip suffix="wins" />} />
 					<Legend wrapperStyle={{ fontSize: "12px", color: "#ccc" }} />
-					{playerNames.map((name, index) => (
+					{playerData.map((player) => (
 						<Line
-							key={name}
+							key={player.name}
 							type="monotone"
-							dataKey={name}
-							stroke={`hsl(${(index * 67) % 360}, 70%, 60%)`}
+							dataKey={player.name}
+							stroke={player.color}
 							strokeWidth={2}
 							dot={false}
 						/>

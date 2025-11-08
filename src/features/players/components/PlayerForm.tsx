@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { IPlayer } from "features/players/types";
 import { User } from "lucide-react";
 import { usePlayers } from "features/players/context/PlayersContext";
+import ColorPicker from "common/components/ColorPicker";
 
 interface IPlayerFormProps {
 	onSubmit: (player: Omit<IPlayer, "id">) => Promise<void> | void;
@@ -14,6 +15,7 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData }
 	const [preferredName, setPreferredName] = useState(initialData?.preferredName || "");
 	const [pictureUrl, setPictureUrl] = useState(initialData?.pictureUrl || "");
 	const [previewUrl, setPreviewUrl] = useState<string | null>(initialData?.pictureUrl || null);
+	const [color, setColor] = useState<string>(initialData?.color || "#6366f1");
 	const [errors, setErrors] = useState<{ firstName?: string; lastName?: string } | null>(null);
 	const { uploadImage } = usePlayers();
 
@@ -46,6 +48,7 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData }
 			lastName: lastName.trim(),
 			preferredName: preferredName.trim() || null,
 			pictureUrl: pictureUrl || null,
+			color,
 		});
 	};
 
@@ -88,6 +91,8 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData }
 					className={inputCls}
 				/>
 			</div>
+
+			<ColorPicker label="Favourite colour" value={color} onChange={setColor} showInput />
 
 			<div>
 				<label className="mb-1 block text-xs text-gray-400">Picture</label>

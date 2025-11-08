@@ -16,3 +16,7 @@ export function getInitials(p?: IPlayer) {
 	const b = (p.lastName || "").trim()[0] ?? "";
 	return (a + b).toUpperCase() || "?";
 }
+
+export const getColorForPlayer = (player: IPlayer | undefined) => {
+	return player?.color || "var(--color-primary)";
+};
