@@ -10,7 +10,7 @@ import { ResultsProvider } from "features/events/context/ResultsProvider";
 import { BrowserRouter, Route, Routes } from "react-router";
 import { AppLayout } from "common/components/AppLayout";
 import { Modal } from "common/components/Modal";
-import HomePage from "pages/HomePage";
+import HomePage from "features/leaderboard/pages/HomePage";
 import PlayersList from "features/players/pages/PlayersList";
 import PlayerStatsPage from "features/players/pages/PlayerStatsPage";
 import GamesPage from "features/games/pages/GamesPage";

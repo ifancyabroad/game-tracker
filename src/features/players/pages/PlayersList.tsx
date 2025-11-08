@@ -6,6 +6,7 @@ import type { IPlayer } from "features/players/types";
 import { ConfirmDelete } from "common/components/ConfirmDelete";
 import { useAuth } from "common/context/AuthContext";
 import { Users, Plus } from "lucide-react";
+import { getDisplayName } from "features/players/utils/helpers";
 
 const PlayersList: React.FC = () => {
 	const { players, addPlayer, editPlayer, deletePlayer } = usePlayers();
@@ -39,7 +40,7 @@ const PlayersList: React.FC = () => {
 		openModal(
 			<ConfirmDelete
 				title="Delete player?"
-				message={`This will remove ${player.preferredName ?? player.firstName}.`}
+				message={`This will remove ${getDisplayName(player)}.`}
 				onConfirm={async () => {
 					await deletePlayer(player.id);
 					closeModal();

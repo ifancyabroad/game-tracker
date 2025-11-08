@@ -3,6 +3,7 @@ import type { IEvent } from "features/events/types";
 import type { IPlayer } from "features/players/types";
 import type { IGame } from "features/games/types";
 import { CalendarDays, MapPin, Users, Gamepad2 } from "lucide-react";
+import { getDisplayName, getFullName } from "features/players/utils/helpers";
 
 interface IEventFormProps {
 	initialData?: IEvent;
@@ -66,10 +67,10 @@ export const EventForm: React.FC<IEventFormProps> = ({ initialData, players, gam
 								key={id}
 								onClick={() => setSelectedPlayers((prev) => toggle(prev, id))}
 								className={`${chipBase} ${active ? "border-[var(--color-primary)]/50 bg-[var(--color-primary)]/10 text-[var(--color-primary)]" : "border-gray-700 bg-black/20 text-gray-300 hover:border-[var(--color-primary)]/40 hover:bg-white/5"}`}
-								title={p.preferredName ?? `${p.firstName} ${p.lastName}`}
+								title={getFullName(p)}
 							>
 								<Users className="h-3.5 w-3.5" />
-								<span className="max-w-[10rem] truncate">{p.preferredName ?? p.firstName}</span>
+								<span className="max-w-[10rem] truncate">{getDisplayName(p)}</span>
 							</button>
 						);
 					})}

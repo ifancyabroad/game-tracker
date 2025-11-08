@@ -1,7 +1,7 @@
-import { useMemo } from "react";
 import type { IResult } from "features/events/types";
 import type { IPlayer } from "features/players/types";
 import type { IGame } from "features/games/types";
+import { getDisplayName } from "features/players/utils/helpers";
 
 export interface PlayerStats {
 	points: number;
@@ -118,12 +118,8 @@ export function sortLeaderboard<
 		if (b.wins !== a.wins) return b.wins - a.wins;
 		if (b.winRate !== a.winRate) return b.winRate - a.winRate;
 		if (b.games !== a.games) return b.games - a.games;
-		const an = (a.player?.preferredName || a.player?.firstName || "").toLowerCase();
-		const bn = (b.player?.preferredName || b.player?.firstName || "").toLowerCase();
+		const an = getDisplayName(a.player).toLowerCase();
+		const bn = getDisplayName(b.player).toLowerCase();
 		return an.localeCompare(bn);
 	});
-}
-
-export function usePlayerStatsMap(players: IPlayer[], results: IResult[], games: IGame[]): Map<string, PlayerStats> {
-	return useMemo(() => computePlayerStats(players, results, games), [players, results, games]);
 }

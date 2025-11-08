@@ -4,6 +4,7 @@ import { collection, onSnapshot, query } from "firebase/firestore";
 import type { IPlayer } from "features/players/types";
 import { createPlayer, updatePlayer, removePlayer, uploadPlayerImage } from "features/players/api";
 import { PlayersContext } from "features/players/context/PlayersContext";
+import { getDisplayName } from "features/players/utils/helpers";
 
 export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	const [players, setPlayers] = useState<IPlayer[]>([]);
@@ -14,8 +15,8 @@ export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
 		const unsubscribe = onSnapshot(q, (snapshot) => {
 			const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as IPlayer[];
 			data.sort((a, b) => {
-				const nameA = a.preferredName || `${a.firstName} ${a.lastName}`;
-				const nameB = b.preferredName || `${b.firstName} ${b.lastName}`;
+				const nameA = getDisplayName(a);
+				const nameB = getDisplayName(b);
 				return nameA.localeCompare(nameB);
 			});
 			setPlayers(data);

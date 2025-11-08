@@ -4,6 +4,7 @@ import { usePlayers } from "features/players/context/PlayersContext";
 import { ChartCard } from "features/stats/components/ChartCard";
 import { useResults } from "features/events/context/ResultsContext";
 import { ChartTooltip } from "./ChartTooltip";
+import { getDisplayName } from "features/players/utils/helpers";
 
 export const PlayerParticipationChart: React.FC = () => {
 	const { results } = useResults();
@@ -20,7 +21,7 @@ export const PlayerParticipationChart: React.FC = () => {
 
 		return Object.entries(counts).map(([playerId, count]) => {
 			const player = players.find((p) => p.id === playerId);
-			const name = player?.preferredName || `${player?.firstName} ${player?.lastName}`;
+			const name = getDisplayName(player);
 			return {
 				name,
 				value: count,

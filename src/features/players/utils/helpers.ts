@@ -7,8 +7,7 @@ export function getFullName(p?: IPlayer) {
 
 export function getDisplayName(p?: IPlayer) {
 	if (!p) return "Unknown";
-	const full = getFullName(p);
-	return p.preferredName?.trim() || full;
+	return p.preferredName?.trim() || p.firstName?.trim();
 }
 
 export function getInitials(p?: IPlayer) {
