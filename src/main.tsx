@@ -12,6 +12,7 @@ import { AppLayout } from "common/components/AppLayout";
 import { Modal } from "common/components/Modal";
 import HomePage from "pages/HomePage";
 import PlayersList from "features/players/pages/PlayersList";
+import PlayerStatsPage from "features/players/pages/PlayerStatsPage";
 import GamesPage from "features/games/pages/GamesPage";
 import { EventsPage } from "features/events/pages/EventsPage";
 import { EventDetailPage } from "features/events/pages/EventDetailPage";
@@ -32,6 +33,7 @@ createRoot(document.getElementById("root")!).render(
 											<Route element={<AppLayout />}>
 												<Route path="/" element={<HomePage />} />
 												<Route path="/players" element={<PlayersList />} />
+												<Route path="/players/:id" element={<PlayerStatsPage />} />
 												<Route path="/games" element={<GamesPage />} />
 												<Route path="/events" element={<EventsPage />} />
 												<Route path="/events/:eventId" element={<EventDetailPage />} />
