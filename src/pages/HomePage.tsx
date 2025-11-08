@@ -87,7 +87,7 @@ export const HomePage: React.FC = () => {
 			<div className="overflow-hidden rounded-xl border border-gray-700 bg-[var(--color-surface)]">
 				<div className="border-b border-gray-700 px-4 py-3">
 					<h2 className="text-base font-semibold text-white">Leaderboard</h2>
-					<p className="text-xs text-gray-400">Sorted by total wins</p>
+					<p className="text-xs text-gray-400">Sorted by total points</p>
 				</div>
 
 				{!hasData ? (
