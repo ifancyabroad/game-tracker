@@ -3,6 +3,7 @@ import type { IGame } from "features/games/types";
 import type { IPlayer } from "features/players/types";
 import type { IResult, IPlayerResult } from "features/events/types";
 import { Avatar } from "common/components/Avatar";
+import { getDisplayName, getFullName } from "features/players/utils/helpers";
 
 interface IResultDisplayProps {
 	result: IResult;
@@ -18,8 +19,8 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({ result, games, pl
 
 	const withPlayer = (pr: IPlayerResult) => {
 		const p = players.find((pl) => pl.id === pr.playerId);
-		const full = p ? `${p.firstName} ${p.lastName}` : "Unknown";
-		const name = p?.preferredName ?? full;
+		const full = getFullName(p);
+		const name = getDisplayName(p);
 		return { ...pr, player: p, displayName: name, fullName: full };
 	};
 

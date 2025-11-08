@@ -4,6 +4,7 @@ import { usePlayers } from "features/players/context/PlayersContext";
 import { useResults } from "features/events/context/ResultsContext";
 import { ChartCard } from "features/stats/components/ChartCard";
 import { ChartTooltip } from "features/stats/components/ChartTooltip";
+import { getDisplayName } from "features/players/utils/helpers";
 
 export const PlayerWinRateChart: React.FC = () => {
 	const { players } = usePlayers();
@@ -28,7 +29,7 @@ export const PlayerWinRateChart: React.FC = () => {
 			.map((player) => {
 				const stats = winMap[player.id];
 				const percentage = stats && stats.total > 0 ? Math.round((stats.wins / stats.total) * 100) : 0;
-				const name = player.preferredName || `${player.firstName} ${player.lastName}`;
+				const name = getDisplayName(player);
 				return { name, winRate: percentage };
 			})
 			.sort((a, b) => b.winRate - a.winRate);

@@ -2,6 +2,7 @@ import { Edit, Trash2 } from "lucide-react";
 import type { IPlayer } from "features/players/types";
 import { Avatar } from "common/components/Avatar";
 import { Link } from "react-router";
+import { getDisplayName, getFullName } from "features/players/utils/helpers";
 
 interface PlayerCardProps {
 	player: IPlayer;
@@ -11,8 +12,8 @@ interface PlayerCardProps {
 }
 
 export const PlayerCard: React.FC<PlayerCardProps> = ({ player, canEdit, onEdit, onDelete }) => {
-	const fullName = `${player.firstName} ${player.lastName}`;
-	const preferred = player.preferredName ?? fullName;
+	const fullName = getFullName(player);
+	const preferred = getDisplayName(player);
 	const showFullBelow = !!player.preferredName && player.preferredName !== fullName;
 
 	const handleEdit = (e: React.MouseEvent) => {

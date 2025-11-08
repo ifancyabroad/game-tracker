@@ -11,6 +11,7 @@ import { ResultDisplay } from "features/events/components/ResultDisplay";
 import type { IEvent, IResult } from "features/events/types";
 import { ConfirmDelete } from "common/components/ConfirmDelete";
 import { useAuth } from "common/context/AuthContext";
+import { getDisplayName } from "features/players/utils/helpers";
 
 export const EventDetailPage: React.FC = () => {
 	const { eventId } = useParams();
@@ -28,9 +29,7 @@ export const EventDetailPage: React.FC = () => {
 
 	const getPlayerName = (id: string) => {
 		const p = players.find((pl) => pl.id === id);
-		if (!p) return "Unknown";
-		const full = `${p.firstName} ${p.lastName}`;
-		return p.preferredName ?? full;
+		return getDisplayName(p);
 	};
 	const getGameName = (id: string) => games.find((g) => g.id === id)?.name ?? "Unknown";
 

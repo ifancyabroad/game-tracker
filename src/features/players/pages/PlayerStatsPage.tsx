@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { useParams, Link } from "react-router";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useResults } from "features/events/context/ResultsContext";
@@ -11,7 +11,8 @@ import { ChartCard } from "features/stats/components/ChartCard";
 import { KpiCard } from "features/players/components/KpiCard";
 import { HighlightCard } from "features/players/components/HighlightCard";
 import { formatPct } from "common/utils/helpers";
-import { usePlayerStatsMap } from "features/events/utils/helpers";
+import { usePlayerStatsMap } from "features/events/utils/hooks";
+import { usePlayerPageStats } from "features/players/utils/hooks";
 
 export const PlayerStatsPage: React.FC = () => {
 	const { id: playerIdParam } = useParams<{ id: string }>();
@@ -21,95 +22,13 @@ export const PlayerStatsPage: React.FC = () => {
 	const { games } = useGames();
 	const statsMap = usePlayerStatsMap(players, results, games);
 	const playerStats = statsMap.get(playerId);
+	const { bestGame, mostPlayed, rankCounts, gameWinRates, lastGamesSeries } = usePlayerPageStats(
+		playerId,
+		results,
+		games,
+	);
 
 	const player = players.find((p) => p.id === playerId);
-
-	const gameNameById = useMemo(() => {
-		const m = new Map<string, string>();
-		for (const g of games) m.set(g.id, g.name);
-		return m;
-	}, [games]);
-
-	const playerEntries = useMemo(() => {
-		const entries: {
-			resultId: string;
-			gameId: string;
-			isWinner: boolean;
-			isLoser?: boolean;
-			rank?: number | null;
-		}[] = [];
-		for (const r of results) {
-			for (const pr of r.playerResults) {
-				if (pr.playerId === playerId) {
-					entries.push({
-						resultId: r.id,
-						gameId: r.gameId,
-						isWinner: !!pr.isWinner,
-						isLoser: !!pr.isLoser,
-						rank: pr.rank ?? null,
-					});
-				}
-			}
-		}
-		return entries;
-	}, [results, playerId]);
-
-	const { bestGame, mostPlayed, rankCounts, gameWinRates, lastGamesSeries } = useMemo(() => {
-		const byGame: Record<string, { games: number; wins: number }> = {};
-		const ranks: Record<number, number> = {};
-
-		const lastN = 20;
-		const lastSeries: { idx: number; cumWins: number; cumGames: number; wr: number }[] = [];
-		let cumWins = 0;
-		let cumGames = 0;
-
-		playerEntries.forEach((e, i) => {
-			cumGames++;
-			if (e.isWinner || e.rank === 1) {
-				cumWins++;
-			}
-			const rnk = Number.isFinite(e.rank as number) ? (e.rank as number) : -1;
-			if (rnk > 0) ranks[rnk] = (ranks[rnk] ?? 0) + 1;
-
-			byGame[e.gameId] = byGame[e.gameId] || { games: 0, wins: 0 };
-			byGame[e.gameId].games++;
-			if (e.isWinner || e.rank === 1) byGame[e.gameId].wins++;
-
-			lastSeries.push({
-				idx: i + 1,
-				cumWins,
-				cumGames,
-				wr: cumGames ? Math.round((cumWins / cumGames) * 100) : 0,
-			});
-		});
-
-		const gameWinRates = Object.entries(byGame).map(([gameId, g]) => ({
-			gameId,
-			name: gameNameById.get(gameId) ?? "Unknown",
-			games: g.games,
-			wins: g.wins,
-			wr: g.games ? g.wins / g.games : 0,
-		}));
-
-		const bestGame = gameWinRates.filter((g) => g.games >= 3).sort((a, b) => b.wr - a.wr || b.games - a.games)[0];
-
-		const mostPlayed = gameWinRates.sort((a, b) => b.games - a.games || b.wr - a.wr)[0];
-
-		const rankCounts = Object.entries(ranks)
-			.sort((a, b) => Number(a[0]) - Number(b[0]))
-			.map(([rank, count]) => ({ rank: Number(rank), count }));
-
-		const lastGamesSeries = lastSeries.slice(-lastN).map((p, i) => ({ x: i + 1, wr: p.wr }));
-
-		return {
-			bestGame,
-			mostPlayed,
-			rankCounts,
-			gameWinRates,
-			lastGamesSeries,
-		};
-	}, [playerEntries, gameNameById]);
-
 	const name = getDisplayName(player);
 	const fullName = getFullName(player);
 
@@ -168,7 +87,7 @@ export const PlayerStatsPage: React.FC = () => {
 
 			<div className="grid gap-4 sm:grid-cols-2">
 				<HighlightCard
-					title="Best Game"
+					title="Best Game (min 2 plays)"
 					icon={<TrendingUp className="h-4 w-4 text-[var(--color-primary)]" />}
 					lines={
 						bestGame
@@ -196,7 +115,7 @@ export const PlayerStatsPage: React.FC = () => {
 			</div>
 
 			<div className="grid gap-4 lg:grid-cols-2">
-				<ChartCard title="Recent Form (last 20)">
+				<ChartCard title="Recent Form (last 20 games)">
 					<ResponsiveContainer width="100%" height="100%">
 						<LineChart data={lastGamesSeries}>
 							<CartesianGrid stroke="rgba(148,163,184,0.2)" vertical={false} />

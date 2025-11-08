@@ -6,6 +6,7 @@ import { usePlayers } from "features/players/context/PlayersContext";
 import { ChartCard } from "features/stats/components/ChartCard";
 import { ChartTooltip } from "features/stats/components/ChartTooltip";
 import { format, parseISO } from "date-fns";
+import { getDisplayName } from "features/players/utils/helpers";
 
 export const PlayerWinsOverTimeChart: React.FC = () => {
 	const { results } = useResults();
@@ -38,7 +39,7 @@ export const PlayerWinsOverTimeChart: React.FC = () => {
 			for (const playerId in cumulativeWins) {
 				const player = players.find((p) => p.id === playerId);
 				if (!player) continue;
-				const name = player.preferredName || `${player.firstName} ${player.lastName}`;
+				const name = getDisplayName(player);
 				dateMap[date][name] = cumulativeWins[playerId];
 			}
 		});
@@ -53,7 +54,7 @@ export const PlayerWinsOverTimeChart: React.FC = () => {
 		return Array.from(ids)
 			.map((id) => players.find((p) => p.id === id))
 			.filter(Boolean)
-			.map((player) => player!.preferredName || `${player!.firstName} ${player!.lastName}`);
+			.map(getDisplayName);
 	}, [results, players]);
 
 	return (

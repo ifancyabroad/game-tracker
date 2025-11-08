@@ -1,14 +1,15 @@
 import React, { useMemo } from "react";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useResults } from "features/events/context/ResultsContext";
-import type { IPlayer } from "features/players/types";
 import { Avatar } from "common/components/Avatar";
 import { Trophy, Target, Award } from "lucide-react";
 import { useGames } from "features/games/context/GamesContext";
-import { sortLeaderboard, usePlayerStatsMap } from "features/events/utils/helpers";
+import { sortLeaderboard } from "features/events/utils/stats";
+import { usePlayerStatsMap } from "features/events/utils/hooks";
 import { useNavigate } from "react-router";
-
-const formatPct = (n: number) => `${Math.round(n * 100)}%`;
+import { formatPct } from "common/utils/helpers";
+import { getDisplayName } from "features/players/utils/helpers";
+import { FeaturedCard } from "features/leaderboard/components/FeaturedCard";
 
 const rankTrophy = (rank: number) => {
 	if (rank === 1) return <Trophy aria-label="1st" className="h-5 w-5 text-yellow-400" />;
@@ -124,7 +125,7 @@ export const HomePage: React.FC = () => {
 										<tr
 											key={row.playerId}
 											className={`${rowBg(rank)} group cursor-pointer border-b border-gray-700 transition-colors last:border-b-0 hover:bg-white/5`}
-											title={`${row.player?.preferredName ?? "Unknown"} · ${formatPct(row.winRate)} over ${row.games} games`}
+											title={`${getDisplayName(row.player)} · ${formatPct(row.winRate)} over ${row.games} games`}
 											onClick={handleNavigate}
 										>
 											<td className="px-4 py-3 align-middle">
@@ -134,14 +135,12 @@ export const HomePage: React.FC = () => {
 												<div className="flex items-center gap-3">
 													<Avatar
 														src={row.player?.pictureUrl || undefined}
-														name={row.player?.preferredName ?? row.player?.firstName ?? "?"}
+														name={getDisplayName(row.player)}
 														size={40}
 													/>
 													<div className="leading-tight">
 														<div className="font-medium text-white">
-															{row.player?.preferredName ??
-																row.player?.firstName ??
-																"Unknown"}
+															{getDisplayName(row.player)}
 														</div>
 													</div>
 												</div>
@@ -168,30 +167,6 @@ export const HomePage: React.FC = () => {
 						</table>
 					</div>
 				)}
-			</div>
-		</div>
-	);
-};
-
-const FeaturedCard: React.FC<{
-	label: string;
-	player?: IPlayer;
-	value: string;
-	icon: React.ReactNode;
-}> = ({ label, player, value, icon }) => {
-	const name = player?.preferredName ?? player?.firstName ?? "Unknown";
-	return (
-		<div className="group relative flex items-center gap-4 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-4 shadow-sm transition-transform hover:-translate-y-0.5">
-			<div className="relative">
-				<Avatar src={player?.pictureUrl || undefined} name={name} size={48} />
-			</div>
-			<div className="min-w-0">
-				<p className="text-[11px] tracking-wide text-gray-400 uppercase">{label}</p>
-				<p className="truncate text-sm font-semibold text-white">{name}</p>
-				<p className="flex items-center gap-1 text-xs text-gray-300">
-					{icon}
-					{value}
-				</p>
 			</div>
 		</div>
 	);

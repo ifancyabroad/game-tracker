@@ -4,6 +4,7 @@ import type { IPlayer } from "features/players/types";
 import type { IPlayerResult, IResult } from "features/events/types";
 import type { IGame } from "features/games/types";
 import { Gamepad2, Target } from "lucide-react";
+import { getDisplayName } from "features/players/utils/helpers";
 
 interface ResultFormProps {
 	eventId: string;
@@ -119,12 +120,6 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 
 	const getPlayer = (id: string) => players.find((p) => p.id === id);
 
-	const displayName = (p?: IPlayer) => {
-		if (!p) return "Unknown";
-		const full = `${p.firstName} ${p.lastName}`;
-		return p.preferredName || full;
-	};
-
 	return (
 		<form onSubmit={handleSubmit} className="m-0 flex flex-col gap-4 p-0">
 			<div className="flex items-center gap-2 text-gray-300">
@@ -186,7 +181,7 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 				<div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
 					{playerResults.map((pr) => {
 						const p = getPlayer(pr.playerId);
-						const name = displayName(p);
+						const name = getDisplayName(p);
 						const isIncluded = !!included[pr.playerId];
 						return (
 							<div
