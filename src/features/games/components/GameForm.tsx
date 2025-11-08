@@ -9,12 +9,16 @@ interface IGameFormProps {
 
 export const GameForm: React.FC<IGameFormProps> = ({ initialData, onSubmit }) => {
 	const [name, setName] = useState(initialData?.name || "");
+	const [points, setPoints] = useState(initialData?.points || 1);
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (!name.trim()) return;
-		onSubmit({ name: name.trim() });
-		if (!initialData) setName("");
+		onSubmit({ name: name.trim(), points });
+		if (!initialData) {
+			setName("");
+			setPoints(1);
+		}
 	};
 
 	const inputCls =
@@ -27,14 +31,31 @@ export const GameForm: React.FC<IGameFormProps> = ({ initialData, onSubmit }) =>
 				<h3 className="text-sm font-semibold text-white">{initialData ? "Edit Game" : "Add Game"}</h3>
 			</div>
 
-			<input
-				type="text"
-				value={name}
-				onChange={(e) => setName(e.target.value)}
-				placeholder="Game Name"
-				className={inputCls}
-				required
-			/>
+			<div>
+				<label className="mb-1 block text-xs text-gray-400">Name</label>
+				<input
+					type="text"
+					value={name}
+					onChange={(e) => setName(e.target.value)}
+					placeholder="Game Name"
+					className={inputCls}
+					required
+				/>
+			</div>
+
+			<div>
+				<label className="mb-1 block text-xs text-gray-400">Points</label>
+				<input
+					type="number"
+					value={points}
+					onChange={(e) => setPoints(Number(e.target.value))}
+					placeholder="Game Points"
+					className={inputCls}
+					min={1}
+					max={3}
+					required
+				/>
+			</div>
 
 			<button
 				type="submit"

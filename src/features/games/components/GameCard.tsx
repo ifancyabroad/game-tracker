@@ -26,7 +26,8 @@ export const GameCard: React.FC<IGameCardProps> = ({ game, canEdit, onEdit, onDe
 			<div className="min-w-0">
 				<p className="truncate text-sm font-semibold text-white">{game.name}</p>
 				<p className="truncate text-xs text-gray-400">
-					{numOfPlays} {numOfPlays === 1 ? "play" : "plays"}
+					{game.points} {game.points === 1 ? "point" : "points"} | {numOfPlays}{" "}
+					{numOfPlays === 1 ? "play" : "plays"}
 				</p>
 			</div>
 
