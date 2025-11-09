@@ -105,32 +105,32 @@ export const PlayerStatsPage: React.FC = () => {
 				{playerStats && (
 					<div className="grid grid-cols-2 gap-3 sm:ml-auto sm:grid-cols-3 sm:gap-4">
 						<KpiCard
-							icon={<ListOrdered className="h-4 w-4 text-[var(--color-primary)]" />}
+							icon={<ListOrdered className="h-4 w-4" style={{ color: player.color }} />}
 							label="Games"
 							value={playerStats.games}
 						/>
 						<KpiCard
-							icon={<Award className="h-4 w-4 text-[var(--color-primary)]" />}
+							icon={<Award className="h-4 w-4" style={{ color: player.color }} />}
 							label="Wins"
 							value={playerStats.wins}
 						/>
 						<KpiCard
-							icon={<Percent className="h-4 w-4 text-[var(--color-primary)]" />}
+							icon={<Percent className="h-4 w-4" style={{ color: player.color }} />}
 							label="Win Rate"
 							value={formatPct(playerStats.winRate)}
 						/>
 						<KpiCard
 							label="Current Streak"
 							value={`${currentWinStreak}`}
-							icon={<TrendingUp className="h-4 w-4 text-[var(--color-primary)]" />}
+							icon={<TrendingUp className="h-4 w-4" style={{ color: player.color }} />}
 						/>
 						<KpiCard
 							label="Best Streak"
 							value={`${longestWinStreak}`}
-							icon={<Award className="h-4 w-4 text-[var(--color-primary)]" />}
+							icon={<Award className="h-4 w-4" style={{ color: player.color }} />}
 						/>
 						<KpiCard
-							icon={<Star className="h-4 w-4 text-[var(--color-primary)]" />}
+							icon={<Star className="h-4 w-4" style={{ color: player.color }} />}
 							label="Points"
 							value={playerStats.points}
 						/>
@@ -141,17 +141,17 @@ export const PlayerStatsPage: React.FC = () => {
 			<div className="grid gap-6 sm:grid-cols-3">
 				<HighlightCard
 					title="Best Game (min 3 plays)"
-					icon={<TrendingUp className="h-4 w-4 text-[var(--color-primary)]" />}
+					icon={<TrendingUp className="h-4 w-4" style={{ color: player.color }} />}
 					lines={bestGameLines}
 				/>
 				<HighlightCard
 					title="Most Played"
-					icon={<Gamepad2 className="h-4 w-4 text-[var(--color-primary)]" />}
+					icon={<Gamepad2 className="h-4 w-4" style={{ color: player.color }} />}
 					lines={mostPlayedLines}
 				/>
 				<HighlightCard
 					title="Most Points"
-					icon={<Star className="h-4 w-4 text-[var(--color-primary)]" />}
+					icon={<Star className="h-4 w-4" style={{ color: player.color }} />}
 					lines={mostPointsLines}
 				/>
 			</div>
