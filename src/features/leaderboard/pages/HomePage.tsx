@@ -1,9 +1,7 @@
 import React, { useMemo } from "react";
 import { usePlayers } from "features/players/context/PlayersContext";
-import { useResults } from "features/events/context/ResultsContext";
 import { Avatar } from "common/components/Avatar";
 import { Trophy, Target, Award, Star } from "lucide-react";
-import { useGames } from "features/games/context/GamesContext";
 import { sortLeaderboard } from "features/events/utils/stats";
 import { usePlayerStatsMap } from "features/events/utils/hooks";
 import { useNavigate } from "react-router";
@@ -34,9 +32,7 @@ const pointsTint = (rank: number) => {
 
 export const HomePage: React.FC = () => {
 	const { players } = usePlayers();
-	const { results } = useResults();
-	const { games } = useGames();
-	const statsMap = usePlayerStatsMap(players, results, games);
+	const statsMap = usePlayerStatsMap();
 	const navigate = useNavigate();
 
 	const leaderboard = useMemo(() => {
@@ -64,7 +60,7 @@ export const HomePage: React.FC = () => {
 
 	return (
 		<div className="mx-auto grid max-w-6xl gap-8">
-			<div className="hidden gap-4 sm:grid-cols-2 lg:grid lg:grid-cols-3">
+			<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 				<FeaturedCard
 					label="Current Leader"
 					player={mostPoints?.player}

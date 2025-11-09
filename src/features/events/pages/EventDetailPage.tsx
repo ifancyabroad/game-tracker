@@ -19,7 +19,7 @@ export const EventDetailPage: React.FC = () => {
 
 	const { events, editEvent, deleteEvent } = useEvents();
 	const { players } = usePlayers();
-	const { games } = useGames();
+	const { games, gameById } = useGames();
 	const { results, deleteResult } = useResults();
 	const { openModal, closeModal } = useModal();
 	const user = useAuth();
@@ -31,7 +31,7 @@ export const EventDetailPage: React.FC = () => {
 		const p = players.find((pl) => pl.id === id);
 		return getDisplayName(p);
 	};
-	const getGameName = (id: string) => games.find((g) => g.id === id)?.name ?? "Unknown";
+	const getGameName = (id: string) => gameById.get(id)?.name ?? "Unknown";
 
 	const handleBack = () => navigate(-1);
 

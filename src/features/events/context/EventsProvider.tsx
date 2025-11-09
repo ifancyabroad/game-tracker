@@ -1,4 +1,4 @@
-import { useEffect, useState, type PropsWithChildren } from "react";
+import { useEffect, useMemo, useState, type PropsWithChildren } from "react";
 import { collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import { db } from "firebase";
 import { EventsContext } from "./EventsContext";
@@ -15,6 +15,12 @@ export const EventsProvider: React.FC<PropsWithChildren> = ({ children }) => {
 		return () => unsubscribe();
 	}, []);
 
+	const eventById = useMemo(() => {
+		const m = new Map<string, IEvent>();
+		for (const e of events) m.set(e.id, e);
+		return m;
+	}, [events]);
+
 	const addEvent = async (event: Omit<IEvent, "id">) => {
 		await addDoc(collection(db, "events"), event);
 	};
@@ -28,6 +34,8 @@ export const EventsProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	};
 
 	return (
-		<EventsContext.Provider value={{ events, addEvent, editEvent, deleteEvent }}>{children}</EventsContext.Provider>
+		<EventsContext.Provider value={{ events, eventById, addEvent, editEvent, deleteEvent }}>
+			{children}
+		</EventsContext.Provider>
 	);
 };

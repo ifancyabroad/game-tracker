@@ -3,6 +3,7 @@ import type { IPlayer } from "features/players/types";
 
 interface PlayersContextValue {
 	players: IPlayer[];
+	playerById: Map<string, IPlayer>;
 	loading: boolean;
 	addPlayer: (player: Omit<IPlayer, "id">) => Promise<void>;
 	editPlayer: (id: string, player: Partial<IPlayer>) => Promise<void>;

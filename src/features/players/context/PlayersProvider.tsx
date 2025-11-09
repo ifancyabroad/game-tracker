@@ -1,10 +1,10 @@
-import { useEffect, useState, type PropsWithChildren } from "react";
-import { db } from "firebase";
-import { collection, onSnapshot, query } from "firebase/firestore";
+import { useEffect, useMemo, useState, type PropsWithChildren } from "react";
+import { db, storage } from "firebase";
+import { addDoc, collection, deleteDoc, doc, onSnapshot, query, updateDoc } from "firebase/firestore";
 import type { IPlayer } from "features/players/types";
-import { createPlayer, updatePlayer, removePlayer, uploadPlayerImage } from "features/players/api";
 import { PlayersContext } from "features/players/context/PlayersContext";
 import { getDisplayName } from "features/players/utils/helpers";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	const [players, setPlayers] = useState<IPlayer[]>([]);
@@ -25,25 +25,36 @@ export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
 		return () => unsubscribe();
 	}, []);
 
+	const playerById = useMemo(() => {
+		const m = new Map<string, IPlayer>();
+		for (const p of players) m.set(p.id, p);
+		return m;
+	}, [players]);
+
 	async function addPlayer(player: Omit<IPlayer, "id">) {
-		await createPlayer(player);
+		await addDoc(collection(db, "players"), player);
 	}
 
 	async function editPlayer(id: string, player: Partial<IPlayer>) {
-		await updatePlayer(id, player);
+		await updateDoc(doc(db, "players", id), player);
 	}
 
 	async function deletePlayer(id: string) {
-		await removePlayer(id);
+		await deleteDoc(doc(db, "players", id));
 	}
 
 	async function uploadImage(file: File) {
-		const imageUrl = await uploadPlayerImage(file);
-		return imageUrl;
+		const imageRef = ref(storage, `players/${file.name}-${Date.now()}`);
+		await uploadBytes(imageRef, file, {
+			cacheControl: "public,max-age=31536000",
+		});
+		return getDownloadURL(imageRef);
 	}
 
 	return (
-		<PlayersContext.Provider value={{ players, loading, addPlayer, editPlayer, deletePlayer, uploadImage }}>
+		<PlayersContext.Provider
+			value={{ players, playerById, loading, addPlayer, editPlayer, deletePlayer, uploadImage }}
+		>
 			{children}
 		</PlayersContext.Provider>
 	);

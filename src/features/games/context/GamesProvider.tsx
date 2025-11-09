@@ -1,4 +1,4 @@
-import { useEffect, useState, type PropsWithChildren } from "react";
+import { useEffect, useMemo, useState, type PropsWithChildren } from "react";
 import { collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import { db } from "firebase";
 import { GamesContext } from "./GamesContext";
@@ -16,6 +16,12 @@ export const GamesProvider: React.FC<PropsWithChildren> = ({ children }) => {
 		return () => unsubscribe();
 	}, []);
 
+	const gameById = useMemo(() => {
+		const m = new Map<string, IGame>();
+		for (const g of games) m.set(g.id, g);
+		return m;
+	}, [games]);
+
 	const addGame = async (game: Omit<IGame, "id">) => {
 		await addDoc(collection(db, "games"), game);
 	};
@@ -28,5 +34,9 @@ export const GamesProvider: React.FC<PropsWithChildren> = ({ children }) => {
 		await deleteDoc(doc(db, "games", id));
 	};
 
-	return <GamesContext.Provider value={{ games, addGame, editGame, deleteGame }}>{children}</GamesContext.Provider>;
+	return (
+		<GamesContext.Provider value={{ games, gameById, addGame, editGame, deleteGame }}>
+			{children}
+		</GamesContext.Provider>
+	);
 };
