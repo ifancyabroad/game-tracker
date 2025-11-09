@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useResults } from "features/events/context/ResultsContext";
 import { Avatar } from "common/components/Avatar";
-import { Trophy, Target, Award } from "lucide-react";
+import { Trophy, Target, Award, Star } from "lucide-react";
 import { useGames } from "features/games/context/GamesContext";
 import { sortLeaderboard } from "features/events/utils/stats";
 import { usePlayerStatsMap } from "features/events/utils/hooks";
@@ -69,7 +69,7 @@ export const HomePage: React.FC = () => {
 					label="Current Leader"
 					player={mostPoints?.player}
 					value={mostPoints ? `${mostPoints.points} points` : "—"}
-					icon={<Trophy className="h-4 w-4 text-[var(--color-primary)]" />}
+					icon={<Star className="h-4 w-4 text-[var(--color-primary)]" />}
 				/>
 				<FeaturedCard
 					label="Best Win Rate (min 5)"

@@ -4,7 +4,7 @@ import { usePlayers } from "features/players/context/PlayersContext";
 import { useResults } from "features/events/context/ResultsContext";
 import { useGames } from "features/games/context/GamesContext";
 import { Avatar } from "common/components/Avatar";
-import { ArrowLeft, Award, Gamepad2, ListOrdered, Percent, TrendingUp } from "lucide-react";
+import { ArrowLeft, Award, Gamepad2, ListOrdered, Percent, Star, TrendingUp } from "lucide-react";
 import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, BarChart, Bar } from "recharts";
 import { getDisplayName, getFullName } from "features/players/utils/helpers";
 import { ChartCard } from "features/stats/components/ChartCard";
@@ -65,7 +65,7 @@ export const PlayerStatsPage: React.FC = () => {
 					</div>
 				</div>
 				{playerStats && (
-					<div className="grid grid-cols-3 gap-3 sm:ml-auto sm:gap-4">
+					<div className="grid grid-cols-2 gap-3 sm:ml-auto sm:grid-cols-4 sm:gap-4">
 						<KpiCard
 							icon={<ListOrdered className="h-4 w-4 text-[var(--color-primary)]" />}
 							label="Games"
@@ -80,6 +80,11 @@ export const PlayerStatsPage: React.FC = () => {
 							icon={<Percent className="h-4 w-4 text-[var(--color-primary)]" />}
 							label="Win Rate"
 							value={formatPct(playerStats.winRate)}
+						/>
+						<KpiCard
+							icon={<Star className="h-4 w-4 text-[var(--color-primary)]" />}
+							label="Points"
+							value={playerStats.points}
 						/>
 					</div>
 				)}
@@ -119,8 +124,28 @@ export const PlayerStatsPage: React.FC = () => {
 					<ResponsiveContainer width="100%" height="100%">
 						<LineChart data={lastGamesSeries}>
 							<CartesianGrid stroke="rgba(148,163,184,0.2)" vertical={false} />
-							<XAxis dataKey="x" tick={{ fill: "#9CA3AF", fontSize: 12 }} />
-							<YAxis domain={[0, 100]} tick={{ fill: "#9CA3AF", fontSize: 12 }} />
+							<XAxis
+								dataKey="x"
+								tick={{ fill: "#9CA3AF", fontSize: 12 }}
+								label={{
+									value: "Game",
+									position: "insideBottom",
+									offset: -5,
+									fill: "#9CA3AF",
+									fontSize: 12,
+								}}
+							/>
+							<YAxis
+								domain={[0, 100]}
+								tick={{ fill: "#9CA3AF", fontSize: 12 }}
+								label={{
+									value: "Win Rate",
+									angle: -90,
+									position: "insideLeft",
+									fill: "#9CA3AF",
+									fontSize: 12,
+								}}
+							/>
 							<Tooltip
 								contentStyle={{
 									background: "var(--color-surface)",
@@ -139,8 +164,28 @@ export const PlayerStatsPage: React.FC = () => {
 					<ResponsiveContainer width="100%" height="100%">
 						<BarChart data={rankCounts}>
 							<CartesianGrid stroke="rgba(148,163,184,0.2)" vertical={false} />
-							<XAxis dataKey="rank" tick={{ fill: "#9CA3AF", fontSize: 12 }} />
-							<YAxis allowDecimals={false} tick={{ fill: "#9CA3AF", fontSize: 12 }} />
+							<XAxis
+								dataKey="rank"
+								tick={{ fill: "#9CA3AF", fontSize: 12 }}
+								label={{
+									value: "Rank",
+									position: "insideBottom",
+									offset: -5,
+									fill: "#9CA3AF",
+									fontSize: 12,
+								}}
+							/>
+							<YAxis
+								allowDecimals={false}
+								tick={{ fill: "#9CA3AF", fontSize: 12 }}
+								label={{
+									value: "Count",
+									angle: -90,
+									position: "insideLeft",
+									fill: "#9CA3AF",
+									fontSize: 12,
+								}}
+							/>
 							<Tooltip
 								contentStyle={{
 									background: "var(--color-surface)",
