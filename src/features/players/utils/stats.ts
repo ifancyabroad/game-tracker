@@ -35,12 +35,12 @@ export interface TopOpponent {
 	name: string;
 	games: number;
 	wins: number;
-	wr: number;
+	losses: number;
 }
 
 export interface PlayerStreaks {
-	currentWinStreak: number;
 	longestWinStreak: number;
+	longestLossStreak: number;
 }
 
 export function getPlayerEntries(results: IResult[], playerId: string): PlayerEntry[] {
@@ -129,12 +129,19 @@ function checkHeadToHeadWin(me: IPlayerResult, opponent: IPlayerResult): boolean
 	return false;
 }
 
+function checkHeadToHeadLoss(me: IPlayerResult, opponent: IPlayerResult): boolean {
+	if (!me.isWinner && opponent.isWinner) return true;
+	if (me.isLoser && !opponent.isLoser) return true;
+	if (me.rank !== null && opponent.rank !== null && me.rank > opponent.rank) return true;
+	return false;
+}
+
 export function computeOpponentStats(
 	results: IResult[],
 	playerById: Map<string, IPlayer>,
 	playerId: string,
 ): TopOpponent[] {
-	const tally: Record<string, { games: number; wins: number }> = {};
+	const tally: Record<string, { games: number; wins: number; losses: number }> = {};
 
 	for (const r of results) {
 		const me = r.playerResults.find((pr) => pr.playerId === playerId);
@@ -143,9 +150,10 @@ export function computeOpponentStats(
 		for (const pr of r.playerResults) {
 			if (pr.playerId === playerId) continue;
 			const id = pr.playerId;
-			tally[id] = tally[id] || { games: 0, wins: 0 };
+			tally[id] = tally[id] || { games: 0, wins: 0, losses: 0 };
 			tally[id].games++;
 			if (checkHeadToHeadWin(me, pr)) tally[id].wins++;
+			if (checkHeadToHeadLoss(me, pr)) tally[id].losses++;
 		}
 	}
 
@@ -154,24 +162,29 @@ export function computeOpponentStats(
 		name: getDisplayName(playerById.get(oppId)) ?? "Unknown",
 		games: t.games,
 		wins: t.wins,
-		wr: t.games ? t.wins / t.games : 0,
+		losses: t.losses,
 	}));
 
-	rows.sort((a, b) => b.games - a.games || b.wr - a.wr);
+	rows.sort((a, b) => b.games - a.games || b.wins - a.wins);
 	return rows.slice(0, 5);
 }
 
 export function computeStreaks(entries: PlayerEntry[]): PlayerStreaks {
-	let current = 0,
-		longest = 0;
+	let currentWin = 0,
+		currentLoss = 0,
+		win = 0,
+		loss = 0;
 	for (const e of entries) {
 		const won = !!e.isWinner || e.rank === 1;
 		if (won) {
-			current += 1;
-			longest = Math.max(longest, current);
+			currentWin += 1;
+			currentLoss = 0;
+			win = Math.max(win, currentWin);
 		} else {
-			current = 0;
+			currentWin = 0;
+			currentLoss += 1;
+			loss = Math.max(loss, currentLoss);
 		}
 	}
-	return { currentWinStreak: current, longestWinStreak: longest };
+	return { longestWinStreak: win, longestLossStreak: loss };
 }

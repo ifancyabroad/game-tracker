@@ -2,7 +2,7 @@ import React from "react";
 import { useParams, Link } from "react-router";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { Avatar } from "common/components/Avatar";
-import { ArrowLeft, Award, Gamepad2, ListOrdered, Percent, Star, TrendingUp } from "lucide-react";
+import { ArrowLeft, Award, Gamepad2, ListOrdered, Percent, Star, TrendingDown, TrendingUp } from "lucide-react";
 import { getDisplayName, getFullName } from "features/players/utils/helpers";
 import { KpiCard } from "features/players/components/KpiCard";
 import { HighlightCard } from "features/players/components/HighlightCard";
@@ -60,7 +60,7 @@ export const PlayerStatsPage: React.FC = () => {
 	const playerStats = statsMap.get(playerId);
 	const { bestGame, mostPlayed, mostPoints, rankCounts, gameWinRates, lastGamesSeries } =
 		usePlayerPageStats(playerId);
-	const { currentWinStreak, longestWinStreak } = usePlayerStreaks(playerId);
+	const { longestWinStreak, longestLossStreak } = usePlayerStreaks(playerId);
 	const topOpponents = useTopOpponents(playerId);
 
 	const player = players.find((p) => p.id === playerId);
@@ -120,19 +120,19 @@ export const PlayerStatsPage: React.FC = () => {
 							value={formatPct(playerStats.winRate)}
 						/>
 						<KpiCard
-							label="Current Streak"
-							value={`${currentWinStreak}`}
-							icon={<TrendingUp className="h-4 w-4" style={{ color: player.color }} />}
+							icon={<Star className="h-4 w-4" style={{ color: player.color }} />}
+							label="Points"
+							value={playerStats.points}
 						/>
 						<KpiCard
 							label="Best Streak"
 							value={`${longestWinStreak}`}
-							icon={<Award className="h-4 w-4" style={{ color: player.color }} />}
+							icon={<TrendingUp className="h-4 w-4" style={{ color: player.color }} />}
 						/>
 						<KpiCard
-							icon={<Star className="h-4 w-4" style={{ color: player.color }} />}
-							label="Points"
-							value={playerStats.points}
+							icon={<TrendingDown className="h-4 w-4" style={{ color: player.color }} />}
+							label="Worst Streak"
+							value={`${longestLossStreak}`}
 						/>
 					</div>
 				)}
