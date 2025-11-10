@@ -3,6 +3,7 @@ import type { IResult } from "features/events/types";
 
 interface IResultsContext {
 	results: IResult[];
+	loading: boolean;
 	addResult: (result: Omit<IResult, "id">) => Promise<void>;
 	editResult: (id: string, result: Omit<IResult, "id">) => Promise<void>;
 	deleteResult: (id: string) => Promise<void>;

@@ -6,11 +6,13 @@ import type { IResult } from "features/events/types";
 
 export const ResultsProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	const [results, setResults] = useState<IResult[]>([]);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const unsubscribe = onSnapshot(collection(db, "results"), (snapshot) => {
 			const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as IResult[];
 			setResults(data);
+			setLoading(false);
 		});
 		return () => unsubscribe();
 	}, []);
@@ -28,7 +30,7 @@ export const ResultsProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	};
 
 	return (
-		<ResultsContext.Provider value={{ results, addResult, editResult, deleteResult }}>
+		<ResultsContext.Provider value={{ results, loading, addResult, editResult, deleteResult }}>
 			{children}
 		</ResultsContext.Provider>
 	);

@@ -4,6 +4,7 @@ import type { IGame } from "features/games/types";
 interface IGamesContext {
 	games: IGame[];
 	gameById: Map<string, IGame>;
+	loading: boolean;
 	addGame: (game: Omit<IGame, "id">) => Promise<void>;
 	editGame: (id: string, game: Omit<IGame, "id">) => Promise<void>;
 	deleteGame: (id: string) => Promise<void>;

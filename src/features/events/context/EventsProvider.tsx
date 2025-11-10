@@ -6,11 +6,13 @@ import type { IEvent } from "features/events/types";
 
 export const EventsProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	const [events, setEvents] = useState<IEvent[]>([]);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const unsubscribe = onSnapshot(collection(db, "events"), (snapshot) => {
 			const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as IEvent[];
 			setEvents(data);
+			setLoading(false);
 		});
 		return () => unsubscribe();
 	}, []);
@@ -34,7 +36,7 @@ export const EventsProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	};
 
 	return (
-		<EventsContext.Provider value={{ events, eventById, addEvent, editEvent, deleteEvent }}>
+		<EventsContext.Provider value={{ events, eventById, loading, addEvent, editEvent, deleteEvent }}>
 			{children}
 		</EventsContext.Provider>
 	);
