@@ -12,6 +12,7 @@ import { usePlayerPageStats, usePlayerStreaks, useTopOpponents } from "features/
 import { RecentFormChart } from "features/players/components/RecentFormChart";
 import { RankDistributionChart } from "features/players/components/RankDistributionChart";
 import { WinRateByGameChart } from "features/players/components/WinRateByGameChart";
+import { PointsByGameChart } from "features/players/components/PointsByGameChart";
 import { PerformanceByGameTable } from "features/players/components/PerformanceByGameTable";
 import { HeadToHeadTable } from "features/players/components/HeadToHeadTable";
 import type { GameWinRateRow } from "features/players/utils/stats";
@@ -166,6 +167,8 @@ export const PlayerStatsPage: React.FC = () => {
 
 			<div className="grid gap-6 lg:grid-cols-2">
 				<WinRateByGameChart player={player} gameWinRates={gameWinRates} />
+
+				<PointsByGameChart player={player} gameWinRates={gameWinRates} />
 			</div>
 
 			<HeadToHeadTable topOpponents={topOpponents} />
