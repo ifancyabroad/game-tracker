@@ -6,12 +6,14 @@ import type { IGame } from "features/games/types";
 
 export const GamesProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	const [games, setGames] = useState<IGame[]>([]);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const unsubscribe = onSnapshot(collection(db, "games"), (snapshot) => {
 			const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as IGame[];
 			data.sort((a, b) => a.name.localeCompare(b.name));
 			setGames(data);
+			setLoading(false);
 		});
 		return () => unsubscribe();
 	}, []);
@@ -35,7 +37,7 @@ export const GamesProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	};
 
 	return (
-		<GamesContext.Provider value={{ games, gameById, addGame, editGame, deleteGame }}>
+		<GamesContext.Provider value={{ games, gameById, loading, addGame, editGame, deleteGame }}>
 			{children}
 		</GamesContext.Provider>
 	);

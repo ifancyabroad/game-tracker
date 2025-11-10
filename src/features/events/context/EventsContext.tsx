@@ -4,6 +4,7 @@ import type { IEvent } from "features/events/types";
 interface IEventsContext {
 	events: IEvent[];
 	eventById: Map<string, IEvent>;
+	loading: boolean;
 	addEvent: (event: Omit<IEvent, "id">) => Promise<void>;
 	editEvent: (id: string, event: Omit<IEvent, "id">) => Promise<void>;
 	deleteEvent: (id: string) => Promise<void>;
