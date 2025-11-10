@@ -61,26 +61,30 @@ export const HomePage: React.FC = () => {
 	return (
 		<div className="mx-auto grid max-w-6xl gap-8">
 			<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-				<FeaturedCard
-					label="Current Leader"
-					player={mostPoints?.player}
-					value={mostPoints ? `${mostPoints.points} points` : "—"}
-					icon={<Star className="h-4 w-4 text-[var(--color-primary)]" />}
-				/>
-				<FeaturedCard
-					label="Best Win Rate (min 5)"
-					player={bestWinRateMin5?.player}
-					value={
-						bestWinRateMin5 ? `${formatPct(bestWinRateMin5.winRate)} · ${bestWinRateMin5.games} games` : "—"
-					}
-					icon={<Target className="h-4 w-4 text-[var(--color-primary)]" />}
-				/>
-				<FeaturedCard
-					label="Most Wins"
-					player={mostWins?.player}
-					value={mostWins ? `${mostWins.wins} wins` : "—"}
-					icon={<Award className="h-4 w-4 text-[var(--color-primary)]" />}
-				/>
+				{mostPoints && (
+					<FeaturedCard
+						label="Current Leader"
+						player={mostPoints.player}
+						value={`${mostPoints.points} points`}
+						icon={<Star className="h-4 w-4 text-[var(--color-primary)]" />}
+					/>
+				)}
+				{bestWinRateMin5 && (
+					<FeaturedCard
+						label="Best Win Rate (min 5)"
+						player={bestWinRateMin5.player}
+						value={`${formatPct(bestWinRateMin5.winRate)} · ${bestWinRateMin5.games} games`}
+						icon={<Target className="h-4 w-4 text-[var(--color-primary)]" />}
+					/>
+				)}
+				{mostWins && (
+					<FeaturedCard
+						label="Most Wins"
+						player={mostWins.player}
+						value={`${mostWins.wins} wins`}
+						icon={<Award className="h-4 w-4 text-[var(--color-primary)]" />}
+					/>
+				)}
 			</div>
 
 			<div className="overflow-hidden rounded-xl border border-gray-700 bg-[var(--color-surface)]">

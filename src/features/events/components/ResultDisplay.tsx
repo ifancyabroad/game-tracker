@@ -4,6 +4,7 @@ import type { IPlayer } from "features/players/types";
 import type { IResult, IPlayerResult } from "features/events/types";
 import { Avatar } from "common/components/Avatar";
 import { getDisplayName, getFullName } from "features/players/utils/helpers";
+import { useNavigate } from "react-router";
 
 interface IResultDisplayProps {
 	result: IResult;
@@ -15,6 +16,8 @@ interface IResultDisplayProps {
 }
 
 export const ResultDisplay: React.FC<IResultDisplayProps> = ({ result, games, players, canEdit, onEdit, onDelete }) => {
+	const navigate = useNavigate();
+
 	const game = games.find((g) => g.id === result.gameId);
 
 	const withPlayer = (pr: IPlayerResult) => {
@@ -33,6 +36,10 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({ result, games, pl
 		if (ar !== br) return ar - br;
 		return a.displayName.localeCompare(b.displayName);
 	});
+
+	const handleNavigateToPlayer = (playerId: string) => {
+		navigate(`/players/${playerId}`);
+	};
 
 	return (
 		<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)] p-4 shadow-sm">
@@ -97,8 +104,12 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({ result, games, pl
 
 					<tbody>
 						{rows.map((r) => (
-							<tr key={r.playerId} className="border-b border-gray-700 last:border-b-0">
-								<td className="py-2 pr-2 sm:pr-4">
+							<tr
+								key={r.playerId}
+								className="cursor-pointer border-b border-gray-700 last:border-b-0 hover:bg-white/5"
+								onClick={() => handleNavigateToPlayer(r.playerId)}
+							>
+								<td className="p-2 sm:pr-4">
 									<div className="flex items-center gap-3">
 										<Avatar
 											src={r.player?.pictureUrl || undefined}

@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router";
+import { useParams, useNavigate, Link } from "react-router";
 import { useEvents } from "features/events/context/EventsContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useGames } from "features/games/context/GamesContext";
@@ -194,12 +194,13 @@ export const EventDetailPage: React.FC = () => {
 						</h3>
 						<div className="flex flex-wrap gap-2">
 							{event.playerIds.map((id) => (
-								<span
+								<Link
 									key={id}
-									className="inline-flex items-center rounded-full border border-gray-700 bg-black/20 px-2 py-1 text-xs text-gray-300"
+									to={`/players/${id}`}
+									className="inline-flex items-center rounded-full border border-gray-700 bg-black/20 px-2 py-1 text-xs text-gray-300 transition-transform hover:-translate-y-0.5"
 								>
 									{getPlayerName(id)}
-								</span>
+								</Link>
 							))}
 						</div>
 					</div>
