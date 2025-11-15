@@ -43,6 +43,13 @@ export interface PlayerStreaks {
 	longestLossStreak: number;
 }
 
+export interface PlayerStats {
+	points: number;
+	wins: number;
+	games: number;
+	winRate: number;
+}
+
 export function getPlayerEntries(results: IResult[], playerId: string): PlayerEntry[] {
 	const entries: PlayerEntry[] = [];
 	for (const r of results) {
@@ -187,4 +194,62 @@ export function computeStreaks(entries: PlayerEntry[]): PlayerStreaks {
 		}
 	}
 	return { longestWinStreak: win, longestLossStreak: loss };
+}
+
+export function buildWinsMap(results: IResult[]): Map<string, number> {
+	const wins = new Map<string, number>();
+	for (const r of results) {
+		for (const pr of r.playerResults) {
+			if (pr.isWinner || pr.rank === 1) {
+				const current = wins.get(pr.playerId) ?? 0;
+				wins.set(pr.playerId, current + 1);
+			}
+		}
+	}
+	return wins;
+}
+
+export function buildGamesMap(results: IResult[]): Map<string, number> {
+	const games = new Map<string, number>();
+	for (const r of results) {
+		for (const pr of r.playerResults) {
+			const current = games.get(pr.playerId) ?? 0;
+			games.set(pr.playerId, current + 1);
+		}
+	}
+	return games;
+}
+
+export const buildPointsMap = (results: IResult[], games: IGame[]): Map<string, number> => {
+	const points = new Map<string, number>();
+	for (const r of results) {
+		for (const pr of r.playerResults) {
+			if (pr.isWinner || pr.rank === 1) {
+				const current = points.get(pr.playerId) ?? 0;
+				const game = games.find((g) => g.id === r.gameId);
+				if (game) points.set(pr.playerId, current + game.points);
+			}
+			if (pr.isLoser) {
+				const current = points.get(pr.playerId) ?? 0;
+				const game = games.find((g) => g.id === r.gameId);
+				if (game) points.set(pr.playerId, current - game.points);
+			}
+		}
+	}
+	return points;
+};
+
+export function computePlayerStats(players: IPlayer[], results: IResult[], games: IGame[]): Map<string, PlayerStats> {
+	const wins = buildWinsMap(results);
+	const numGames = buildGamesMap(results);
+	const points = buildPointsMap(results, games);
+	const stats = new Map<string, PlayerStats>();
+	for (const pl of players) {
+		const w = wins.get(pl.id) ?? 0;
+		const g = numGames.get(pl.id) ?? 0;
+		const p = points.get(pl.id) ?? 0;
+		const winRate = g > 0 ? w / g : 0;
+		stats.set(pl.id, { wins: w, games: g, winRate, points: p });
+	}
+	return stats;
 }

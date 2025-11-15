@@ -1,50 +1,25 @@
-import { useMemo } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
-import { usePlayers } from "features/players/context/PlayersContext";
-import { useResults } from "features/events/context/ResultsContext";
 import { ChartCard } from "features/stats/components/ChartCard";
 import { ChartTooltip } from "features/stats/components/ChartTooltip";
-import { getDisplayName } from "features/players/utils/helpers";
+import type { PlayerStat } from "features/stats/utils/stats";
 
-export const PlayerWinRateChart: React.FC = () => {
-	const { players } = usePlayers();
-	const { results } = useResults();
+interface PlayerWinRateChartProps {
+	overallStats: PlayerStat[];
+}
 
-	const data = useMemo(() => {
-		const winMap: Record<string, { wins: number; total: number }> = {};
-
-		results.forEach((result) => {
-			result.playerResults.forEach((pr) => {
-				if (!winMap[pr.playerId]) {
-					winMap[pr.playerId] = { wins: 0, total: 0 };
-				}
-				winMap[pr.playerId].total += 1;
-				if (pr.isWinner || pr.rank === 1) {
-					winMap[pr.playerId].wins += 1;
-				}
-			});
-		});
-
-		return players
-			.map((player) => {
-				const stats = winMap[player.id];
-				const percentage = stats && stats.total > 0 ? Math.round((stats.wins / stats.total) * 100) : 0;
-				const name = getDisplayName(player);
-				const color = player.color || "var(--color-primary)";
-				return { name, winRate: percentage, color };
-			})
-			.sort((a, b) => b.winRate - a.winRate);
-	}, [players, results]);
+export const PlayerWinRateChart: React.FC<PlayerWinRateChartProps> = ({ overallStats }) => {
+	// Transform and sort by win rate
+	const chartData = overallStats.sort((a, b) => b.winRate - a.winRate);
 
 	return (
 		<ChartCard title="Player Win Rates">
 			<ResponsiveContainer width="100%" height="100%">
-				<BarChart data={data} layout="vertical" margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
+				<BarChart data={chartData} layout="vertical" margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
 					<XAxis type="number" domain={[0, 100]} tick={{ fontSize: 12, fill: "#ccc" }} unit="%" />
 					<YAxis type="category" dataKey="name" tick={{ fontSize: 12, fill: "#ccc" }} />
 					<Tooltip content={<ChartTooltip suffix="%" />} />
 					<Bar dataKey="winRate" radius={[0, 4, 4, 0]}>
-						{data.map((entry, index) => (
+						{chartData.map((entry, index) => (
 							<Cell key={`cell-${index}`} fill={entry.color} />
 						))}
 					</Bar>

@@ -1,4 +1,4 @@
-import type { PlayerStats } from "features/events/utils/stats";
+import type { PlayerStats } from "features/players/utils/stats";
 import type { IPlayer } from "features/players/types";
 import { getDisplayName } from "features/players/utils/helpers";
 

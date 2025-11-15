@@ -7,7 +7,7 @@ import { getDisplayName, getFullName } from "features/players/utils/helpers";
 import { KpiCard } from "features/players/components/KpiCard";
 import { HighlightCard } from "features/players/components/HighlightCard";
 import { formatPct } from "common/utils/helpers";
-import { usePlayerStatsMap } from "features/events/utils/hooks";
+import { usePlayerStatsMap } from "features/players/utils/hooks";
 import { usePlayerPageStats, usePlayerStreaks, useTopOpponents } from "features/players/utils/hooks";
 import { RecentFormChart } from "features/players/components/RecentFormChart";
 import { RankDistributionChart } from "features/players/components/RankDistributionChart";

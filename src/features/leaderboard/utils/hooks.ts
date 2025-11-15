@@ -1,7 +1,7 @@
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useMemo } from "react";
 import { getFeaturedStats, getLeaderboard } from "./stats";
-import { usePlayerStatsMap } from "features/events/utils/hooks";
+import { usePlayerStatsMap } from "features/players/utils/hooks";
 
 export function usePlayerLeaderboard() {
 	const { players } = usePlayers();

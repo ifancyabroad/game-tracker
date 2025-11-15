@@ -6,10 +6,14 @@ import { PlayerParticipationChart } from "features/stats/components/PlayerPartic
 import { PlayerWinsOverTimeChart } from "features/stats/components/PlayerWinsOverTimeChart";
 import { MostPlayedGamesChart } from "features/stats/components/MostPlayedGamesChart";
 import { PlayerWinRateChart } from "features/stats/components/PlayerWinRateChart";
+import { useMostPlayedGames, useOverallPageStats, usePlayerWinsOverTime } from "features/stats/utils/hooks";
 
 export const StatsPage: React.FC = () => {
 	const { events } = useEvents();
 	const { results } = useResults();
+	const stats = useOverallPageStats();
+	const mostPlayedGames = useMostPlayedGames();
+	const playerWinsOverTime = usePlayerWinsOverTime();
 
 	const totalGamesPlayed = results.length;
 	const totalPlayersInvolved = new Set(results.flatMap((r) => r.playerResults.map((pr) => pr.playerId))).size;
@@ -41,10 +45,10 @@ export const StatsPage: React.FC = () => {
 			</div>
 
 			<div className="grid gap-6 md:grid-cols-2">
-				<PlayerWinsOverTimeChart />
-				<PlayerWinRateChart />
-				<MostPlayedGamesChart />
-				<PlayerParticipationChart />
+				<PlayerWinsOverTimeChart playerTrends={playerWinsOverTime} />
+				<PlayerWinRateChart overallStats={stats} />
+				<MostPlayedGamesChart mostPlayedGames={mostPlayedGames} />
+				<PlayerParticipationChart overallStats={stats} />
 			</div>
 		</div>
 	);
