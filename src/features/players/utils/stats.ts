@@ -1,18 +1,22 @@
 import type { IPlayerResult, IResult } from "features/events/types";
 import type { IPlayer } from "features/players/types";
 import type { IGame } from "features/games/types";
-import { getColorForPlayer, getDisplayName } from "./helpers";
+import { getColorForPlayer, getDisplayName, getFullName } from "./helpers";
 
-export interface PlayerStats {
+export interface PlayerData {
 	playerId: string;
 	name: string;
+	fullName: string;
 	color: string;
-	pictureUrl: string | null;
 	points: number;
 	wins: number;
 	games: number;
 	winRate: number; // Decimal (0-1)
 	winRatePercent: number; // Percentage (0-100)
+}
+
+export interface PlayerWithData extends IPlayer {
+	data: PlayerData;
 }
 
 export interface PlayerEntry {
@@ -201,7 +205,7 @@ export function computeStreaks(entries: PlayerEntry[]): PlayerStreaks {
 	return { longestWinStreak: win, longestLossStreak: loss };
 }
 
-export function computePlayerStats(players: IPlayer[], results: IResult[], games: IGame[]): PlayerStats[] {
+export function computePlayerData(players: IPlayer[], results: IResult[], games: IGame[]): PlayerWithData[] {
 	const statsMap: Record<
 		string,
 		{
@@ -240,15 +244,18 @@ export function computePlayerStats(players: IPlayer[], results: IResult[], games
 		const winRatePercent = Math.round(winRate * 100);
 
 		return {
-			playerId: player.id,
-			name: getDisplayName(player),
-			color: getColorForPlayer(player),
-			pictureUrl: player.pictureUrl || null,
-			points: stats.points,
-			wins: stats.wins,
-			games: stats.games,
-			winRate,
-			winRatePercent,
+			...player,
+			data: {
+				playerId: player.id,
+				name: getDisplayName(player),
+				fullName: getFullName(player),
+				color: getColorForPlayer(player),
+				points: stats.points,
+				wins: stats.wins,
+				games: stats.games,
+				winRate,
+				winRatePercent,
+			},
 		};
 	});
 }

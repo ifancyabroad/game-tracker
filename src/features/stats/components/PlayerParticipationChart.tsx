@@ -1,10 +1,10 @@
 import { PieChart, Pie, Cell, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from "recharts";
 import { ChartCard } from "features/stats/components/ChartCard";
 import { ChartTooltip } from "./ChartTooltip";
-import type { PlayerStats } from "features/players/utils/stats";
+import type { PlayerWithData } from "features/players/utils/stats";
 
 interface PlayerParticipationChartProps {
-	overallStats: PlayerStats[];
+	overallStats: PlayerWithData[];
 }
 
 export const PlayerParticipationChart: React.FC<PlayerParticipationChartProps> = ({ overallStats }) => (
@@ -13,8 +13,8 @@ export const PlayerParticipationChart: React.FC<PlayerParticipationChartProps> =
 			<PieChart>
 				<Pie
 					data={overallStats}
-					dataKey="games"
-					nameKey="name"
+					dataKey="data.games"
+					nameKey="data.name"
 					cx="50%"
 					cy="50%"
 					outerRadius={100}
@@ -22,7 +22,7 @@ export const PlayerParticipationChart: React.FC<PlayerParticipationChartProps> =
 					label={({ name }) => name}
 				>
 					{overallStats.map((player, index) => (
-						<Cell key={`cell-${index}`} fill={player.color} />
+						<Cell key={`cell-${index}`} fill={player.data.color} />
 					))}
 				</Pie>
 				<RechartsTooltip content={<ChartTooltip suffix="games" />} />

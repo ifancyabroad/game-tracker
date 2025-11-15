@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import { getFeaturedStats, getLeaderboard } from "./stats";
-import { usePlayerStats } from "features/players/utils/hooks";
+import { usePlayerData } from "features/players/utils/hooks";
 
 export function usePlayerLeaderboard() {
-	const playerStats = usePlayerStats();
-	return useMemo(() => getLeaderboard(playerStats), [playerStats]);
+	const playerData = usePlayerData();
+	return useMemo(() => getLeaderboard(playerData), [playerData]);
 }
 
 export function usePlayerFeaturedStats() {

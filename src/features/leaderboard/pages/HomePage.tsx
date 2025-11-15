@@ -6,7 +6,7 @@ import { PlayerCard } from "features/leaderboard/components/PlayerCard";
 export const HomePage: React.FC = () => {
 	const leaderboard = usePlayerLeaderboard();
 	const hasData = leaderboard.length > 0;
-	const maxPoints = hasData ? leaderboard[0].points : 0;
+	const maxPoints = hasData ? leaderboard[0].data.points : 0;
 
 	return (
 		<div className="mx-auto max-w-6xl">
@@ -22,7 +22,7 @@ export const HomePage: React.FC = () => {
 					</div>
 				) : (
 					leaderboard.map((row, idx) => (
-						<PlayerCard key={row.playerId} row={row} rank={idx + 1} maxPoints={maxPoints} />
+						<PlayerCard key={row.id} row={row} rank={idx + 1} maxPoints={maxPoints} />
 					))
 				)}
 			</div>

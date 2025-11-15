@@ -1,37 +1,37 @@
-import type { PlayerStats } from "features/players/utils/stats";
+import type { PlayerWithData } from "features/players/utils/stats";
 
-export function sortLeaderboard(rows: PlayerStats[]) {
+export function sortLeaderboard(rows: PlayerWithData[]) {
 	return rows.sort((a, b) => {
-		if (b.points !== a.points) return b.points - a.points;
-		if (b.wins !== a.wins) return b.wins - a.wins;
-		if (b.winRate !== a.winRate) return b.winRate - a.winRate;
-		if (b.games !== a.games) return b.games - a.games;
-		return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+		if (b.data.points !== a.data.points) return b.data.points - a.data.points;
+		if (b.data.wins !== a.data.wins) return b.data.wins - a.data.wins;
+		if (b.data.winRate !== a.data.winRate) return b.data.winRate - a.data.winRate;
+		if (b.data.games !== a.data.games) return b.data.games - a.data.games;
+		return a.data.name.toLowerCase().localeCompare(b.data.name.toLowerCase());
 	});
 }
 
-export function getLeaderboard(playerStats: PlayerStats[]) {
-	const playersWithGames = playerStats.filter((stats) => stats.games > 0);
+export function getLeaderboard(players: PlayerWithData[]) {
+	const playersWithGames = players.filter((player) => player.data.games > 0);
 	return sortLeaderboard(playersWithGames);
 }
 
-export function getMostPointsPlayer(leaderboard: PlayerStats[]) {
+export function getMostPointsPlayer(leaderboard: PlayerWithData[]) {
 	if (leaderboard.length === 0) return undefined;
-	return leaderboard.slice().sort((a, b) => b.points - a.points)[0];
+	return leaderboard.slice().sort((a, b) => b.data.points - a.data.points)[0];
 }
 
-export function getMostWinsPlayer(leaderboard: PlayerStats[]) {
+export function getMostWinsPlayer(leaderboard: PlayerWithData[]) {
 	if (leaderboard.length === 0) return undefined;
-	return leaderboard.slice().sort((a, b) => b.wins - a.wins)[0];
+	return leaderboard.slice().sort((a, b) => b.data.wins - a.data.wins)[0];
 }
 
-export function getBestWinRateMinGames(leaderboard: PlayerStats[], minGames: number) {
-	const eligible = leaderboard.filter((r) => r.games >= minGames);
+export function getBestWinRateMinGames(leaderboard: PlayerWithData[], minGames: number) {
+	const eligible = leaderboard.filter((r) => r.data.games >= minGames);
 	if (eligible.length === 0) return undefined;
-	return eligible.sort((a, b) => b.winRate - a.winRate || b.games - a.games)[0];
+	return eligible.sort((a, b) => b.data.winRate - a.data.winRate || b.data.games - a.data.games)[0];
 }
 
-export function getFeaturedStats(leaderboard: PlayerStats[]) {
+export function getFeaturedStats(leaderboard: PlayerWithData[]) {
 	const mostPoints = getMostPointsPlayer(leaderboard);
 	const mostWins = getMostWinsPlayer(leaderboard);
 	const bestWinRate = getBestWinRateMinGames(leaderboard, 5);
