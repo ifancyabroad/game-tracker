@@ -1,9 +1,23 @@
 import { useMemo } from "react";
-import { getPlayerEntries, aggregatePlayerStatsForPage, computeOpponentStats, computeStreaks } from "./stats";
+import {
+	getPlayerEntries,
+	aggregatePlayerStatsForPage,
+	computeOpponentStats,
+	computeStreaks,
+	type PlayerStats,
+	computePlayerStats,
+} from "./stats";
 import { useResults } from "features/events/context/ResultsContext";
 import { useGames } from "features/games/context/GamesContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useSortedResults } from "features/events/utils/hooks";
+
+export function usePlayerStatsMap(): Map<string, PlayerStats> {
+	const { players } = usePlayers();
+	const { results } = useResults();
+	const { games } = useGames();
+	return useMemo(() => computePlayerStats(players, results, games), [players, results, games]);
+}
 
 export function usePlayerEntries(playerId: string) {
 	const results = useSortedResults();
