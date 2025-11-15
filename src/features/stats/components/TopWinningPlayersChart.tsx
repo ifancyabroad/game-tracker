@@ -1,10 +1,10 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { ChartCard } from "features/stats/components/ChartCard";
 import { ChartTooltip } from "features/stats/components/ChartTooltip";
-import type { PlayerStats } from "features/players/utils/stats";
+import type { PlayerWithData } from "features/players/utils/stats";
 
 interface TopWinningPlayersChartProps {
-	overallStats: PlayerStats[];
+	overallStats: PlayerWithData[];
 }
 
 export const TopWinningPlayersChart: React.FC<TopWinningPlayersChartProps> = ({ overallStats }) => (
@@ -14,7 +14,7 @@ export const TopWinningPlayersChart: React.FC<TopWinningPlayersChartProps> = ({ 
 				<XAxis type="number" allowDecimals={false} tick={{ fontSize: 12, fill: "#ccc" }} />
 				<YAxis type="category" dataKey="name" tick={{ fontSize: 12, fill: "#ccc" }} />
 				<Tooltip cursor={{ fill: "rgba(255,255,255,0.05)" }} content={<ChartTooltip suffix="wins" />} />
-				<Bar dataKey="winCount" radius={[0, 4, 4, 0]}>
+				<Bar dataKey="data.winCount" radius={[0, 4, 4, 0]}>
 					{overallStats.map((entry, index) => (
 						<Cell key={`cell-${index}`} fill={entry.color} />
 					))}

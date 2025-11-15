@@ -1,13 +1,11 @@
 import React from "react";
 import { useParams, Link } from "react-router";
-import { usePlayers } from "features/players/context/PlayersContext";
 import { Avatar } from "common/components/Avatar";
 import { ArrowLeft, Award, Gamepad2, ListOrdered, Percent, Star, TrendingDown, TrendingUp } from "lucide-react";
-import { getDisplayName, getFullName } from "features/players/utils/helpers";
 import { KpiCard } from "features/players/components/KpiCard";
 import { HighlightCard } from "features/players/components/HighlightCard";
 import { formatPct } from "common/utils/helpers";
-import { usePlayerStats } from "features/players/utils/hooks";
+import { usePlayerDataById } from "features/players/utils/hooks";
 import { usePlayerPageStats, usePlayerStreaks, useTopOpponents } from "features/players/utils/hooks";
 import { RecentFormChart } from "features/players/components/RecentFormChart";
 import { RankDistributionChart } from "features/players/components/RankDistributionChart";
@@ -56,17 +54,11 @@ const getMostPointsLines = (mostPoints?: GameWinRateRow) => {
 export const PlayerStatsPage: React.FC = () => {
 	const { id: playerIdParam } = useParams<{ id: string }>();
 	const playerId = String(playerIdParam || "");
-	const { players } = usePlayers();
-	const allPlayerStats = usePlayerStats();
-	const playerStats = allPlayerStats.find((stat) => stat.playerId === playerId);
+	const player = usePlayerDataById(playerId);
 	const { bestGame, mostPlayed, mostPoints, rankCounts, gameWinRates, lastGamesSeries } =
 		usePlayerPageStats(playerId);
 	const { longestWinStreak, longestLossStreak } = usePlayerStreaks(playerId);
 	const topOpponents = useTopOpponents(playerId);
-
-	const player = players.find((p) => p.id === playerId);
-	const name = getDisplayName(player);
-	const fullName = getFullName(player);
 	const bestGameLines = getBestGameLines(bestGame);
 	const mostPlayedLines = getMostPlayedLines(mostPlayed);
 	const mostPointsLines = getMostPointsLines(mostPoints);
@@ -97,46 +89,46 @@ export const PlayerStatsPage: React.FC = () => {
 
 			<div className="flex flex-col gap-4 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-4 sm:flex-row sm:items-center">
 				<div className="flex items-center gap-4">
-					<Avatar src={player.pictureUrl || undefined} name={name} size={56} />
+					<Avatar src={player.pictureUrl || undefined} name={player.data.name} size={56} />
 					<div className="min-w-0">
-						<h1 className="truncate text-lg font-semibold text-white">{name}</h1>
-						{fullName !== name && <p className="truncate text-sm text-gray-400">{fullName}</p>}
+						<h1 className="truncate text-lg font-semibold text-white">{player.data.name}</h1>
+						{player.data.fullName !== player.data.name && (
+							<p className="truncate text-sm text-gray-400">{player.data.fullName}</p>
+						)}
 					</div>
 				</div>
-				{playerStats && (
-					<div className="grid grid-cols-2 gap-3 sm:ml-auto sm:grid-cols-3 sm:gap-4">
-						<KpiCard
-							icon={<ListOrdered className="h-4 w-4" style={{ color: player.color }} />}
-							label="Games"
-							value={playerStats.games}
-						/>
-						<KpiCard
-							icon={<Award className="h-4 w-4" style={{ color: player.color }} />}
-							label="Wins"
-							value={playerStats.wins}
-						/>
-						<KpiCard
-							icon={<Percent className="h-4 w-4" style={{ color: player.color }} />}
-							label="Win Rate"
-							value={formatPct(playerStats.winRate)}
-						/>
-						<KpiCard
-							icon={<Star className="h-4 w-4" style={{ color: player.color }} />}
-							label="Points"
-							value={playerStats.points}
-						/>
-						<KpiCard
-							label="Best Streak"
-							value={`${longestWinStreak}`}
-							icon={<TrendingUp className="h-4 w-4" style={{ color: player.color }} />}
-						/>
-						<KpiCard
-							icon={<TrendingDown className="h-4 w-4" style={{ color: player.color }} />}
-							label="Worst Streak"
-							value={`${longestLossStreak}`}
-						/>
-					</div>
-				)}
+				<div className="grid grid-cols-2 gap-3 sm:ml-auto sm:grid-cols-3 sm:gap-4">
+					<KpiCard
+						icon={<ListOrdered className="h-4 w-4" style={{ color: player.color }} />}
+						label="Games"
+						value={player.data.games}
+					/>
+					<KpiCard
+						icon={<Award className="h-4 w-4" style={{ color: player.color }} />}
+						label="Wins"
+						value={player.data.wins}
+					/>
+					<KpiCard
+						icon={<Percent className="h-4 w-4" style={{ color: player.color }} />}
+						label="Win Rate"
+						value={`${player.data.winRatePercent}%`}
+					/>
+					<KpiCard
+						icon={<Star className="h-4 w-4" style={{ color: player.color }} />}
+						label="Points"
+						value={player.data.points}
+					/>
+					<KpiCard
+						label="Best Streak"
+						value={`${longestWinStreak}`}
+						icon={<TrendingUp className="h-4 w-4" style={{ color: player.color }} />}
+					/>
+					<KpiCard
+						icon={<TrendingDown className="h-4 w-4" style={{ color: player.color }} />}
+						label="Worst Streak"
+						value={`${longestLossStreak}`}
+					/>
+				</div>
 			</div>
 
 			<div className="grid gap-6 sm:grid-cols-3">

@@ -4,24 +4,24 @@ import {
 	aggregatePlayerStatsForPage,
 	computeOpponentStats,
 	computeStreaks,
-	type PlayerStats,
-	computePlayerStats,
+	type PlayerWithData,
+	computePlayerData,
 } from "./stats";
 import { useResults } from "features/events/context/ResultsContext";
 import { useGames } from "features/games/context/GamesContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useSortedResults } from "features/events/utils/hooks";
 
-export function usePlayerStats(): PlayerStats[] {
+export function usePlayerData(): PlayerWithData[] {
 	const { players } = usePlayers();
 	const { results } = useResults();
 	const { games } = useGames();
-	return useMemo(() => computePlayerStats(players, results, games), [players, results, games]);
+	return useMemo(() => computePlayerData(players, results, games), [players, results, games]);
 }
 
-export function usePlayerStatsById(playerId: string): PlayerStats | undefined {
-	const allStats = usePlayerStats();
-	return useMemo(() => allStats.find((stat) => stat.playerId === playerId), [allStats, playerId]);
+export function usePlayerDataById(playerId: string): PlayerWithData | undefined {
+	const allData = usePlayerData();
+	return useMemo(() => allData.find((data) => data.id === playerId), [allData, playerId]);
 }
 
 export function usePlayerEntries(playerId: string) {
