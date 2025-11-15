@@ -9,16 +9,16 @@ interface IEventCardProps {
 	onEdit?: (event: IEvent) => void;
 	onDelete?: (id: string) => void;
 	players: IPlayer[];
-	games: IGame[];
+	gameById: Map<string, IGame>;
 }
 
-export const EventCard: React.FC<IEventCardProps> = ({ event, canEdit, onEdit, onDelete, games }) => {
+export const EventCard: React.FC<IEventCardProps> = ({ event, canEdit, onEdit, onDelete, gameById }) => {
 	const date = new Date(event.date);
 	const dateLabel = isNaN(date.getTime())
 		? event.date
 		: date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
 
-	const gameNames = event.gameIds.map((id) => games.find((g) => g.id === id)?.name).filter(Boolean) as string[];
+	const gameNames = event.gameIds.map((id) => gameById.get(id)?.name).filter(Boolean) as string[];
 
 	const playerCount = event.playerIds?.length ?? 0;
 	const gameCount = event.gameIds?.length ?? 0;

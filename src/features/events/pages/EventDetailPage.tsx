@@ -18,7 +18,7 @@ export const EventDetailPage: React.FC = () => {
 	const navigate = useNavigate();
 
 	const { events, editEvent, deleteEvent } = useEvents();
-	const { players } = usePlayers();
+	const { players, playerById } = usePlayers();
 	const { games, gameById } = useGames();
 	const { results, deleteResult } = useResults();
 	const { openModal, closeModal } = useModal();
@@ -28,7 +28,7 @@ export const EventDetailPage: React.FC = () => {
 	const eventResults = results.filter((r) => r.eventId === eventId).sort((a, b) => a.order - b.order);
 
 	const getPlayerName = (id: string) => {
-		const p = players.find((pl) => pl.id === id);
+		const p = playerById.get(id);
 		return getDisplayName(p);
 	};
 	const getGameName = (id: string) => gameById.get(id)?.name ?? "Unknown";
@@ -69,8 +69,8 @@ export const EventDetailPage: React.FC = () => {
 		openModal(
 			<ResultForm
 				eventId={event.id}
-				players={players}
 				games={games}
+				playerById={playerById}
 				eventPlayerIds={event.playerIds}
 				allowedGameIds={event.gameIds}
 				numOfResults={eventResults.length}
@@ -85,8 +85,8 @@ export const EventDetailPage: React.FC = () => {
 			<ResultForm
 				initialData={result}
 				eventId={event.id}
-				players={players}
 				games={games}
+				playerById={playerById}
 				eventPlayerIds={event.playerIds}
 				allowedGameIds={event.gameIds}
 				numOfResults={eventResults.length}
@@ -245,8 +245,8 @@ export const EventDetailPage: React.FC = () => {
 							<ResultDisplay
 								key={result.id}
 								result={result}
-								games={games}
-								players={players}
+								gameById={gameById}
+								playerById={playerById}
 								canEdit={!!user}
 								onEdit={handleEditResult}
 								onDelete={handleDeleteResult}

@@ -13,18 +13,18 @@ interface PlayerWinsOverTimeChartProps {
 
 export const PlayerWinsOverTimeChart: React.FC<PlayerWinsOverTimeChartProps> = ({ playerTrends }) => {
 	const { results } = useResults();
-	const { players } = usePlayers();
+	const { playerById } = usePlayers();
 
 	const playerData = useMemo(() => {
 		const ids = new Set(results.flatMap((r) => r.playerResults.map((pr) => pr.playerId)));
 		return Array.from(ids)
-			.map((id) => players.find((p) => p.id === id))
+			.map((id) => playerById.get(id))
 			.filter((player): player is NonNullable<typeof player> => Boolean(player))
 			.map((player) => ({
 				name: getDisplayName(player),
 				color: getColorForPlayer(player),
 			}));
-	}, [results, players]);
+	}, [results, playerById]);
 
 	return (
 		<ChartCard title="Player Wins Over Time">

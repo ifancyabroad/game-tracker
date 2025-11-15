@@ -2,6 +2,7 @@ import type { IPlayerResult, IResult } from "features/events/types";
 import type { IPlayer } from "features/players/types";
 import type { IGame } from "features/games/types";
 import { getColorForPlayer, getDisplayName, getFullName } from "./helpers";
+import { isPlayerWinner } from "common/utils/gameHelpers";
 
 export interface PlayerData {
 	playerId: string;
@@ -95,14 +96,14 @@ export function aggregatePlayerStatsForPage(
 
 	entries.forEach((e, i) => {
 		cumGames++;
-		if (e.isWinner || e.rank === 1) cumWins++;
+		if (isPlayerWinner(e)) cumWins++;
 
 		const rnk = Number.isFinite(e.rank as number) ? (e.rank as number) : -1;
 		if (rnk > 0) ranks[rnk] = (ranks[rnk] ?? 0) + 1;
 
 		byGame[e.gameId] = byGame[e.gameId] || { games: 0, wins: 0 };
 		byGame[e.gameId].games++;
-		if (e.isWinner || e.rank === 1) byGame[e.gameId].wins++;
+		if (isPlayerWinner(e)) byGame[e.gameId].wins++;
 
 		lastSeries.push({
 			idx: i + 1,
@@ -191,7 +192,7 @@ export function computeStreaks(entries: PlayerEntry[]): PlayerStreaks {
 		win = 0,
 		loss = 0;
 	for (const e of entries) {
-		const won = !!e.isWinner || e.rank === 1;
+		const won = isPlayerWinner(e);
 		if (won) {
 			currentWin += 1;
 			currentLoss = 0;
@@ -205,7 +206,11 @@ export function computeStreaks(entries: PlayerEntry[]): PlayerStreaks {
 	return { longestWinStreak: win, longestLossStreak: loss };
 }
 
-export function computePlayerData(players: IPlayer[], results: IResult[], games: IGame[]): PlayerWithData[] {
+export function computePlayerData(
+	players: IPlayer[],
+	results: IResult[],
+	gameById: Map<string, IGame>,
+): PlayerWithData[] {
 	const statsMap: Record<
 		string,
 		{
@@ -216,7 +221,7 @@ export function computePlayerData(players: IPlayer[], results: IResult[], games:
 	> = {};
 
 	results.forEach((result) => {
-		const game = games.find((g) => g.id === result.gameId);
+		const game = gameById.get(result.gameId);
 
 		result.playerResults.forEach((pr) => {
 			if (!statsMap[pr.playerId]) {
@@ -225,7 +230,7 @@ export function computePlayerData(players: IPlayer[], results: IResult[], games:
 
 			statsMap[pr.playerId].games += 1;
 
-			if (pr.isWinner || pr.rank === 1) {
+			if (isPlayerWinner(pr)) {
 				statsMap[pr.playerId].wins += 1;
 				if (game) {
 					statsMap[pr.playerId].points += game.points;

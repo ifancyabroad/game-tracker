@@ -3,6 +3,7 @@ import { collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "fireb
 import { db } from "firebase";
 import { GamesContext } from "./GamesContext";
 import type { IGame } from "features/games/types";
+import { createMapById } from "common/utils/helpers";
 
 export const GamesProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	const [games, setGames] = useState<IGame[]>([]);
@@ -18,11 +19,7 @@ export const GamesProvider: React.FC<PropsWithChildren> = ({ children }) => {
 		return () => unsubscribe();
 	}, []);
 
-	const gameById = useMemo(() => {
-		const m = new Map<string, IGame>();
-		for (const g of games) m.set(g.id, g);
-		return m;
-	}, [games]);
+	const gameById = useMemo(() => createMapById(games), [games]);
 
 	const addGame = async (game: Omit<IGame, "id">) => {
 		await addDoc(collection(db, "games"), game);

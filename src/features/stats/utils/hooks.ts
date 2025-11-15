@@ -7,15 +7,15 @@ import { useEvents } from "features/events/context/EventsContext";
 
 export function useMostPlayedGames() {
 	const { results } = useResults();
-	const { games } = useGames();
-	return useMemo(() => computeMostPlayedGames(results, games), [results, games]);
+	const { gameById } = useGames();
+	return useMemo(() => computeMostPlayedGames(results, gameById), [results, gameById]);
 }
 
 export function usePlayerWinsOverTime() {
 	const { results } = useResults();
-	const { players } = usePlayers();
+	const { playerById } = usePlayers();
 	const { events } = useEvents();
-	return useMemo(() => computePlayerWinsOverTime(results, players, events), [results, players, events]);
+	return useMemo(() => computePlayerWinsOverTime(results, playerById, events), [results, playerById, events]);
 }
 
 export function useFeaturedStats() {

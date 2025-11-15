@@ -3,6 +3,7 @@ import type { IGame } from "features/games/types";
 import type { IPlayer } from "features/players/types";
 import { getDisplayName } from "features/players/utils/helpers";
 import { format, parseISO } from "date-fns";
+import { isPlayerWinner } from "common/utils/gameHelpers";
 
 export interface MostPlayedGames {
 	name: string;
@@ -19,14 +20,15 @@ export interface FeaturedStats {
 	totalPlayersInvolved: number;
 }
 
-export function computeMostPlayedGames(results: IResult[], games: IGame[]): MostPlayedGames[] {
+export function computeMostPlayedGames(results: IResult[], gameById: Map<string, IGame>): MostPlayedGames[] {
 	const gameCount: Record<string, number> = {};
+
 	results.forEach((r) => {
 		gameCount[r.gameId] = (gameCount[r.gameId] || 0) + 1;
 	});
 	return Object.entries(gameCount)
 		.map(([gameId, count]) => ({
-			name: games.find((g) => g.id === gameId)?.name || "Unknown",
+			name: gameById.get(gameId)?.name || "Unknown",
 			count,
 		}))
 		.sort((a, b) => b.count - a.count)
@@ -40,14 +42,18 @@ function formatEventDate(event: IEvent): string {
 	return format(parseISO(event.date), "MMM d");
 }
 
-export function computeGameTrendsOverTime(results: IResult[], games: IGame[], events: IEvent[]): TimeSeriesData[] {
+export function computeGameTrendsOverTime(
+	results: IResult[],
+	gameById: Map<string, IGame>,
+	eventById: Map<string, IEvent>,
+): TimeSeriesData[] {
 	const dateMap: Record<string, Record<string, number>> = {};
 
 	results.forEach((result) => {
-		const event = events.find((e) => e.id === result.eventId);
+		const event = eventById.get(result.eventId);
 		if (!event) return;
 
-		const game = games.find((g) => g.id === result.gameId);
+		const game = gameById.get(result.gameId);
 		if (!game) return;
 
 		const formattedDate = formatEventDate(event);
@@ -63,7 +69,11 @@ export function computeGameTrendsOverTime(results: IResult[], games: IGame[], ev
 		.sort((a, b) => parseISO(a.date).getTime() - parseISO(b.date).getTime());
 }
 
-export function computePlayerWinsOverTime(results: IResult[], players: IPlayer[], events: IEvent[]): TimeSeriesData[] {
+export function computePlayerWinsOverTime(
+	results: IResult[],
+	playerById: Map<string, IPlayer>,
+	events: IEvent[],
+): TimeSeriesData[] {
 	const dateMap: Record<string, Record<string, number>> = {};
 	const cumulativeWins: Record<string, number> = {};
 
@@ -81,7 +91,7 @@ export function computePlayerWinsOverTime(results: IResult[], players: IPlayer[]
 			.filter((r) => r.eventId === event.id)
 			.forEach((result) => {
 				result.playerResults.forEach((pr) => {
-					if (pr.isWinner || pr.rank === 1) {
+					if (isPlayerWinner(pr)) {
 						cumulativeWins[pr.playerId] = (cumulativeWins[pr.playerId] || 0) + 1;
 					}
 				});
@@ -89,7 +99,7 @@ export function computePlayerWinsOverTime(results: IResult[], players: IPlayer[]
 
 		// Snapshot cumulative wins for all players at this date
 		for (const playerId in cumulativeWins) {
-			const player = players.find((p) => p.id === playerId);
+			const player = playerById.get(playerId);
 			if (!player) continue;
 			const name = getDisplayName(player);
 			dateMap[date][name] = cumulativeWins[playerId];

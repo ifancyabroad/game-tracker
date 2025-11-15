@@ -8,20 +8,27 @@ import { useNavigate } from "react-router";
 
 interface IResultDisplayProps {
 	result: IResult;
-	games: IGame[];
-	players: IPlayer[];
+	gameById: Map<string, IGame>;
+	playerById: Map<string, IPlayer>;
 	canEdit?: boolean;
 	onEdit: (result: IResult) => void;
 	onDelete: (resultId: string) => void;
 }
 
-export const ResultDisplay: React.FC<IResultDisplayProps> = ({ result, games, players, canEdit, onEdit, onDelete }) => {
+export const ResultDisplay: React.FC<IResultDisplayProps> = ({
+	result,
+	gameById,
+	playerById,
+	canEdit,
+	onEdit,
+	onDelete,
+}) => {
 	const navigate = useNavigate();
 
-	const game = games.find((g) => g.id === result.gameId);
+	const game = gameById.get(result.gameId);
 
 	const withPlayer = (pr: IPlayerResult) => {
-		const p = players.find((pl) => pl.id === pr.playerId);
+		const p = playerById.get(pr.playerId);
 		const full = getFullName(p);
 		const name = getDisplayName(p);
 		return { ...pr, player: p, displayName: name, fullName: full };
