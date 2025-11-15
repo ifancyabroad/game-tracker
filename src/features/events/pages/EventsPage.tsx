@@ -13,7 +13,7 @@ import { CalendarPlus, CalendarDays } from "lucide-react";
 export const EventsPage: React.FC = () => {
 	const { events, addEvent, editEvent, deleteEvent } = useEvents();
 	const { players } = usePlayers();
-	const { games } = useGames();
+	const { games, gameById } = useGames();
 	const user = useAuth();
 	const { openModal, closeModal } = useModal();
 
@@ -94,7 +94,7 @@ export const EventsPage: React.FC = () => {
 									onEdit={() => handleEdit(event)}
 									onDelete={() => handleDelete(event)}
 									players={players}
-									games={games}
+									gameById={gameById}
 								/>
 							</NavLink>
 						</li>

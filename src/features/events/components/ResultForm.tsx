@@ -8,8 +8,8 @@ import { getDisplayName } from "features/players/utils/helpers";
 
 interface ResultFormProps {
 	eventId: string;
-	players: IPlayer[];
 	games: IGame[];
+	playerById: Map<string, IPlayer>;
 	onSuccess?: () => void;
 	initialData?: IResult;
 	eventPlayerIds: string[];
@@ -19,8 +19,8 @@ interface ResultFormProps {
 
 export const ResultForm: React.FC<ResultFormProps> = ({
 	eventId,
-	players,
 	games,
+	playerById,
 	onSuccess,
 	initialData,
 	eventPlayerIds,
@@ -118,7 +118,7 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 		setPlayerResults((rows) => rows.map((r) => (r.playerId === playerId ? { ...r, [key]: value } : r)));
 	}
 
-	const getPlayer = (id: string) => players.find((p) => p.id === id);
+	const getPlayer = (id: string) => playerById.get(id);
 
 	return (
 		<form onSubmit={handleSubmit} className="m-0 flex flex-col gap-4 p-0">

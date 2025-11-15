@@ -15,8 +15,8 @@ import { useSortedResults } from "features/events/utils/hooks";
 export function usePlayerData(): PlayerWithData[] {
 	const { players } = usePlayers();
 	const { results } = useResults();
-	const { games } = useGames();
-	return useMemo(() => computePlayerData(players, results, games), [players, results, games]);
+	const { gameById } = useGames();
+	return useMemo(() => computePlayerData(players, results, gameById), [players, results, gameById]);
 }
 
 export function usePlayerDataById(playerId: string): PlayerWithData | undefined {

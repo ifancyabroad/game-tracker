@@ -12,12 +12,12 @@ interface GameTrendsChartProps {
 
 export const GameTrendsChart: React.FC<GameTrendsChartProps> = ({ gameTrends }) => {
 	const { results } = useResults();
-	const { games } = useGames();
+	const { gameById } = useGames();
 
 	const gameNames = useMemo(() => {
-		const uniqueNames = new Set(results.map((r) => games.find((g) => g.id === r.gameId)?.name).filter(Boolean));
+		const uniqueNames = new Set(results.map((r) => gameById.get(r.gameId)?.name).filter(Boolean));
 		return Array.from(uniqueNames) as string[];
-	}, [results, games]);
+	}, [results, gameById]);
 
 	return (
 		<ChartCard title="Game Trends Over Time">
