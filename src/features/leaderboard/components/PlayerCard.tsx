@@ -1,6 +1,5 @@
-import { getDisplayName } from "features/players/utils/helpers";
 import { Link } from "react-router";
-import type { PlayerLeaderboardRow } from "features/leaderboard/utils/stats";
+import type { PlayerStats } from "features/players/utils/stats";
 import { Avatar } from "common/components/Avatar";
 import { formatPct } from "common/utils/helpers";
 
@@ -19,28 +18,27 @@ const getTintBar = (rank: number) => {
 };
 
 export const PlayerCard: React.FC<{
-	row: PlayerLeaderboardRow;
+	row: PlayerStats;
 	rank: number;
 	maxPoints: number;
 }> = ({ row, rank, maxPoints }) => {
-	const { player, points, wins, games, winRate } = row;
-	const name = getDisplayName(player);
+	const { playerId, name, pictureUrl, points, wins, games, winRate } = row;
 	const tintBg = getTintBg(rank);
 	const tintBar = getTintBar(rank);
 	const pct = maxPoints ? Math.round((row.points / maxPoints) * 100) : 0;
 
 	return (
-		<div key={player.id} className="relative">
+		<div key={playerId} className="relative">
 			<div className="pointer-events-none absolute -top-1 -left-1 z-10 rounded-full border border-gray-700 bg-[var(--color-bg)] px-2 py-0.5 text-[11px] font-semibold text-gray-200 shadow select-none">
 				{rank}
 			</div>
 
 			<Link
-				to={`/players/${row.player.id}`}
+				to={`/players/${playerId}`}
 				className={`group block w-full rounded-xl border border-gray-700 ${tintBg} p-3 text-left transition hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg)]`}
 			>
 				<div className="flex items-center gap-3">
-					<Avatar src={player.pictureUrl || undefined} name={name} size={56} />
+					<Avatar src={pictureUrl || undefined} name={name} size={56} />
 
 					<div className="min-w-0 flex-1">
 						<div className="flex items-center justify-between gap-2">

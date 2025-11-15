@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { Trophy } from "lucide-react";
 import { usePlayerLeaderboard } from "features/leaderboard/utils/hooks";
 import { PlayerCard } from "features/leaderboard/components/PlayerCard";
@@ -6,10 +6,7 @@ import { PlayerCard } from "features/leaderboard/components/PlayerCard";
 export const HomePage: React.FC = () => {
 	const leaderboard = usePlayerLeaderboard();
 	const hasData = leaderboard.length > 0;
-	const maxPoints = useMemo(
-		() => (hasData ? Math.max(...leaderboard.map((r) => r.points)) : 0),
-		[hasData, leaderboard],
-	);
+	const maxPoints = hasData ? leaderboard[0].points : 0;
 
 	return (
 		<div className="mx-auto max-w-6xl">
@@ -25,7 +22,7 @@ export const HomePage: React.FC = () => {
 					</div>
 				) : (
 					leaderboard.map((row, idx) => (
-						<PlayerCard key={row.player.id} row={row} rank={idx + 1} maxPoints={maxPoints} />
+						<PlayerCard key={row.playerId} row={row} rank={idx + 1} maxPoints={maxPoints} />
 					))
 				)}
 			</div>

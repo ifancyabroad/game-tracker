@@ -1,23 +1,17 @@
-import { useEvents } from "features/events/context/EventsContext";
-import { useResults } from "features/events/context/ResultsContext";
 import { StatCard } from "features/stats/components/StatCard";
 import { Calendar, Gamepad2, Users, BarChart3 } from "lucide-react";
 import { PlayerParticipationChart } from "features/stats/components/PlayerParticipationChart";
 import { PlayerWinsOverTimeChart } from "features/stats/components/PlayerWinsOverTimeChart";
 import { MostPlayedGamesChart } from "features/stats/components/MostPlayedGamesChart";
 import { PlayerWinRateChart } from "features/stats/components/PlayerWinRateChart";
-import { useMostPlayedGames, useOverallPageStats, usePlayerWinsOverTime } from "features/stats/utils/hooks";
+import { useFeaturedStats, useMostPlayedGames, usePlayerWinsOverTime } from "features/stats/utils/hooks";
+import { usePlayerStats } from "features/players/utils/hooks";
 
 export const StatsPage: React.FC = () => {
-	const { events } = useEvents();
-	const { results } = useResults();
-	const stats = useOverallPageStats();
+	const stats = usePlayerStats();
 	const mostPlayedGames = useMostPlayedGames();
 	const playerWinsOverTime = usePlayerWinsOverTime();
-
-	const totalGamesPlayed = results.length;
-	const totalPlayersInvolved = new Set(results.flatMap((r) => r.playerResults.map((pr) => pr.playerId))).size;
-	const totalEvents = events.length;
+	const { totalGamesPlayed, totalPlayersInvolved, totalEvents } = useFeaturedStats();
 
 	return (
 		<div className="mx-auto max-w-6xl">

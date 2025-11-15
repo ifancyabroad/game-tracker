@@ -7,7 +7,7 @@ import { getDisplayName, getFullName } from "features/players/utils/helpers";
 import { KpiCard } from "features/players/components/KpiCard";
 import { HighlightCard } from "features/players/components/HighlightCard";
 import { formatPct } from "common/utils/helpers";
-import { usePlayerStatsMap } from "features/players/utils/hooks";
+import { usePlayerStats } from "features/players/utils/hooks";
 import { usePlayerPageStats, usePlayerStreaks, useTopOpponents } from "features/players/utils/hooks";
 import { RecentFormChart } from "features/players/components/RecentFormChart";
 import { RankDistributionChart } from "features/players/components/RankDistributionChart";
@@ -57,8 +57,8 @@ export const PlayerStatsPage: React.FC = () => {
 	const { id: playerIdParam } = useParams<{ id: string }>();
 	const playerId = String(playerIdParam || "");
 	const { players } = usePlayers();
-	const statsMap = usePlayerStatsMap();
-	const playerStats = statsMap.get(playerId);
+	const allPlayerStats = usePlayerStats();
+	const playerStats = allPlayerStats.find((stat) => stat.playerId === playerId);
 	const { bestGame, mostPlayed, mostPoints, rankCounts, gameWinRates, lastGamesSeries } =
 		usePlayerPageStats(playerId);
 	const { longestWinStreak, longestLossStreak } = usePlayerStreaks(playerId);

@@ -1,30 +1,22 @@
 import type { IEvent, IResult } from "features/events/types";
 import type { IGame } from "features/games/types";
 import type { IPlayer } from "features/players/types";
-import { getColorForPlayer, getDisplayName } from "features/players/utils/helpers";
+import { getDisplayName } from "features/players/utils/helpers";
 import { format, parseISO } from "date-fns";
 
-// Unified interface for game statistics
 export interface MostPlayedGames {
 	name: string;
 	count: number;
 }
-
-// Comprehensive player statistics interface
-export interface PlayerStat {
-	playerId: string;
-	name: string;
-	color: string;
-	participationCount: number;
-	totalGames: number;
-	wins: number;
-	winRate: number; // Percentage (0-100)
-}
-
-// Unified interface for time-series data
 export interface TimeSeriesData {
 	date: string;
-	[key: string]: number | string; // Dynamic keys for player names or game names
+	[key: string]: number | string;
+}
+
+export interface FeaturedStats {
+	totalGamesPlayed: number;
+	totalEvents: number;
+	totalPlayersInvolved: number;
 }
 
 export function computeMostPlayedGames(results: IResult[], games: IGame[]): MostPlayedGames[] {
@@ -39,53 +31,6 @@ export function computeMostPlayedGames(results: IResult[], games: IGame[]): Most
 		}))
 		.sort((a, b) => b.count - a.count)
 		.slice(0, 8);
-}
-
-/**
- * Compute comprehensive player statistics from results
- * Returns all player stats in a single pass - charts can extract what they need
- */
-export function computePlayerStats(results: IResult[], players: IPlayer[]): PlayerStat[] {
-	const statsMap: Record<
-		string,
-		{
-			participationCount: number;
-			wins: number;
-			totalGames: number;
-		}
-	> = {};
-
-	// Single pass through all results
-	results.forEach((result) => {
-		result.playerResults.forEach((pr) => {
-			if (!statsMap[pr.playerId]) {
-				statsMap[pr.playerId] = { participationCount: 0, wins: 0, totalGames: 0 };
-			}
-			statsMap[pr.playerId].participationCount += 1;
-			statsMap[pr.playerId].totalGames += 1;
-			if (pr.isWinner || pr.rank === 1) {
-				statsMap[pr.playerId].wins += 1;
-			}
-		});
-	});
-
-	// Map to comprehensive player stats
-	return players
-		.map((player) => {
-			const stats = statsMap[player.id] || { participationCount: 0, wins: 0, totalGames: 0 };
-			const winRate = stats.totalGames > 0 ? Math.round((stats.wins / stats.totalGames) * 100) : 0;
-
-			return {
-				playerId: player.id,
-				name: getDisplayName(player),
-				color: getColorForPlayer(player),
-				participationCount: stats.participationCount,
-				totalGames: stats.totalGames,
-				wins: stats.wins,
-				winRate,
-			};
-		})
-		.filter((stat) => stat.participationCount > 0); // Only include players who have participated
 }
 
 /**
@@ -155,3 +100,10 @@ export function computePlayerWinsOverTime(results: IResult[], players: IPlayer[]
 		.map(([date, values]) => ({ date, ...values }))
 		.sort((a, b) => parseISO(a.date).getTime() - parseISO(b.date).getTime());
 }
+
+export const getFeaturedStats = (results: IResult[], events: IEvent[]): FeaturedStats => {
+	const totalGamesPlayed = results.length;
+	const totalEvents = events.length;
+	const totalPlayersInvolved = new Set(results.flatMap((r) => r.playerResults.map((pr) => pr.playerId))).size;
+	return { totalGamesPlayed, totalEvents, totalPlayersInvolved };
+};

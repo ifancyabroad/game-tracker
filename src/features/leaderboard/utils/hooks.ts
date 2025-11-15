@@ -1,12 +1,10 @@
-import { usePlayers } from "features/players/context/PlayersContext";
 import { useMemo } from "react";
 import { getFeaturedStats, getLeaderboard } from "./stats";
-import { usePlayerStatsMap } from "features/players/utils/hooks";
+import { usePlayerStats } from "features/players/utils/hooks";
 
 export function usePlayerLeaderboard() {
-	const { players } = usePlayers();
-	const statsMap = usePlayerStatsMap();
-	return useMemo(() => getLeaderboard(players, statsMap), [players, statsMap]);
+	const playerStats = usePlayerStats();
+	return useMemo(() => getLeaderboard(playerStats), [playerStats]);
 }
 
 export function usePlayerFeaturedStats() {

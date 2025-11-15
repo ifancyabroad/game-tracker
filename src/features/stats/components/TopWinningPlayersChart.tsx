@@ -1,10 +1,10 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { ChartCard } from "features/stats/components/ChartCard";
 import { ChartTooltip } from "features/stats/components/ChartTooltip";
-import type { PlayerStat } from "features/stats/utils/stats";
+import type { PlayerStats } from "features/players/utils/stats";
 
 interface TopWinningPlayersChartProps {
-	overallStats: PlayerStat[];
+	overallStats: PlayerStats[];
 }
 
 export const TopWinningPlayersChart: React.FC<TopWinningPlayersChartProps> = ({ overallStats }) => (
