@@ -12,11 +12,16 @@ import { useGames } from "features/games/context/GamesContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useSortedResults } from "features/events/utils/hooks";
 
-export function usePlayerStatsMap(): Map<string, PlayerStats> {
+export function usePlayerStats(): PlayerStats[] {
 	const { players } = usePlayers();
 	const { results } = useResults();
 	const { games } = useGames();
 	return useMemo(() => computePlayerStats(players, results, games), [players, results, games]);
+}
+
+export function usePlayerStatsById(playerId: string): PlayerStats | undefined {
+	const allStats = usePlayerStats();
+	return useMemo(() => allStats.find((stat) => stat.playerId === playerId), [allStats, playerId]);
 }
 
 export function usePlayerEntries(playerId: string) {

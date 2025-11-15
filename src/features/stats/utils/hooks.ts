@@ -1,15 +1,9 @@
 import { useMemo } from "react";
-import { computeMostPlayedGames, computePlayerStats, computePlayerWinsOverTime } from "./stats";
+import { computeMostPlayedGames, computePlayerWinsOverTime, getFeaturedStats } from "./stats";
 import { useResults } from "features/events/context/ResultsContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useGames } from "features/games/context/GamesContext";
 import { useEvents } from "features/events/context/EventsContext";
-
-export function useOverallPageStats() {
-	const { results } = useResults();
-	const { players } = usePlayers();
-	return useMemo(() => computePlayerStats(results, players), [results, players]);
-}
 
 export function useMostPlayedGames() {
 	const { results } = useResults();
@@ -22,4 +16,10 @@ export function usePlayerWinsOverTime() {
 	const { players } = usePlayers();
 	const { events } = useEvents();
 	return useMemo(() => computePlayerWinsOverTime(results, players, events), [results, players, events]);
+}
+
+export function useFeaturedStats() {
+	const { results } = useResults();
+	const { events } = useEvents();
+	return useMemo(() => getFeaturedStats(results, events), [results, events]);
 }

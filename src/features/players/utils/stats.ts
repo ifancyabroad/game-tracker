@@ -1,7 +1,19 @@
 import type { IPlayerResult, IResult } from "features/events/types";
 import type { IPlayer } from "features/players/types";
 import type { IGame } from "features/games/types";
-import { getDisplayName } from "./helpers";
+import { getColorForPlayer, getDisplayName } from "./helpers";
+
+export interface PlayerStats {
+	playerId: string;
+	name: string;
+	color: string;
+	pictureUrl: string | null;
+	points: number;
+	wins: number;
+	games: number;
+	winRate: number; // Decimal (0-1)
+	winRatePercent: number; // Percentage (0-100)
+}
 
 export interface PlayerEntry {
 	resultId: string;
@@ -25,8 +37,8 @@ export interface PlayerAggregates {
 	bestGame?: GameWinRateRow | undefined;
 	mostPlayed?: GameWinRateRow | undefined;
 	mostPoints?: GameWinRateRow | undefined;
-	rankCounts: Array<{ rank: number; count: number }>;
 	gameWinRates: GameWinRateRow[];
+	rankCounts: Array<{ rank: number; count: number }>;
 	lastGamesSeries: Array<{ x: number; wr: number }>;
 }
 
@@ -41,13 +53,6 @@ export interface TopOpponent {
 export interface PlayerStreaks {
 	longestWinStreak: number;
 	longestLossStreak: number;
-}
-
-export interface PlayerStats {
-	points: number;
-	wins: number;
-	games: number;
-	winRate: number;
 }
 
 export function getPlayerEntries(results: IResult[], playerId: string): PlayerEntry[] {
@@ -166,7 +171,7 @@ export function computeOpponentStats(
 
 	const rows = Object.entries(tally).map(([oppId, t]) => ({
 		opponentId: oppId,
-		name: getDisplayName(playerById.get(oppId)) ?? "Unknown",
+		name: getDisplayName(playerById.get(oppId)),
 		games: t.games,
 		wins: t.wins,
 		losses: t.losses,
@@ -196,60 +201,54 @@ export function computeStreaks(entries: PlayerEntry[]): PlayerStreaks {
 	return { longestWinStreak: win, longestLossStreak: loss };
 }
 
-export function buildWinsMap(results: IResult[]): Map<string, number> {
-	const wins = new Map<string, number>();
-	for (const r of results) {
-		for (const pr of r.playerResults) {
+export function computePlayerStats(players: IPlayer[], results: IResult[], games: IGame[]): PlayerStats[] {
+	const statsMap: Record<
+		string,
+		{
+			wins: number;
+			games: number;
+			points: number;
+		}
+	> = {};
+
+	results.forEach((result) => {
+		const game = games.find((g) => g.id === result.gameId);
+
+		result.playerResults.forEach((pr) => {
+			if (!statsMap[pr.playerId]) {
+				statsMap[pr.playerId] = { wins: 0, games: 0, points: 0 };
+			}
+
+			statsMap[pr.playerId].games += 1;
+
 			if (pr.isWinner || pr.rank === 1) {
-				const current = wins.get(pr.playerId) ?? 0;
-				wins.set(pr.playerId, current + 1);
+				statsMap[pr.playerId].wins += 1;
+				if (game) {
+					statsMap[pr.playerId].points += game.points;
+				}
 			}
-		}
-	}
-	return wins;
-}
 
-export function buildGamesMap(results: IResult[]): Map<string, number> {
-	const games = new Map<string, number>();
-	for (const r of results) {
-		for (const pr of r.playerResults) {
-			const current = games.get(pr.playerId) ?? 0;
-			games.set(pr.playerId, current + 1);
-		}
-	}
-	return games;
-}
-
-export const buildPointsMap = (results: IResult[], games: IGame[]): Map<string, number> => {
-	const points = new Map<string, number>();
-	for (const r of results) {
-		for (const pr of r.playerResults) {
-			if (pr.isWinner || pr.rank === 1) {
-				const current = points.get(pr.playerId) ?? 0;
-				const game = games.find((g) => g.id === r.gameId);
-				if (game) points.set(pr.playerId, current + game.points);
+			if (pr.isLoser && game) {
+				statsMap[pr.playerId].points -= game.points;
 			}
-			if (pr.isLoser) {
-				const current = points.get(pr.playerId) ?? 0;
-				const game = games.find((g) => g.id === r.gameId);
-				if (game) points.set(pr.playerId, current - game.points);
-			}
-		}
-	}
-	return points;
-};
+		});
+	});
 
-export function computePlayerStats(players: IPlayer[], results: IResult[], games: IGame[]): Map<string, PlayerStats> {
-	const wins = buildWinsMap(results);
-	const numGames = buildGamesMap(results);
-	const points = buildPointsMap(results, games);
-	const stats = new Map<string, PlayerStats>();
-	for (const pl of players) {
-		const w = wins.get(pl.id) ?? 0;
-		const g = numGames.get(pl.id) ?? 0;
-		const p = points.get(pl.id) ?? 0;
-		const winRate = g > 0 ? w / g : 0;
-		stats.set(pl.id, { wins: w, games: g, winRate, points: p });
-	}
-	return stats;
+	return players.map((player) => {
+		const stats = statsMap[player.id] || { wins: 0, games: 0, points: 0 };
+		const winRate = stats.games > 0 ? stats.wins / stats.games : 0;
+		const winRatePercent = Math.round(winRate * 100);
+
+		return {
+			playerId: player.id,
+			name: getDisplayName(player),
+			color: getColorForPlayer(player),
+			pictureUrl: player.pictureUrl || null,
+			points: stats.points,
+			wins: stats.wins,
+			games: stats.games,
+			winRate,
+			winRatePercent,
+		};
+	});
 }
