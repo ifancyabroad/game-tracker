@@ -14,6 +14,7 @@ import HomePage from "features/leaderboard/pages/HomePage";
 import PlayersList from "features/players/pages/PlayersList";
 import PlayerStatsPage from "features/players/pages/PlayerStatsPage";
 import GamesPage from "features/games/pages/GamesPage";
+import GameStatsPage from "features/games/pages/GameStatsPage";
 import { EventsPage } from "features/events/pages/EventsPage";
 import { EventDetailPage } from "features/events/pages/EventDetailPage";
 import { UIProvider } from "common/context/UIProvider";
@@ -37,6 +38,7 @@ createRoot(document.getElementById("root")!).render(
 													<Route path="/players" element={<PlayersList />} />
 													<Route path="/players/:id" element={<PlayerStatsPage />} />
 													<Route path="/games" element={<GamesPage />} />
+													<Route path="/games/:id" element={<GameStatsPage />} />
 													<Route path="/events" element={<EventsPage />} />
 													<Route path="/events/:eventId" element={<EventDetailPage />} />
 													<Route path="/stats" element={<StatsPage />} />

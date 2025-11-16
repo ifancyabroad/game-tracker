@@ -1,6 +1,7 @@
 import { Edit, Trash2, Gamepad2 } from "lucide-react";
 import type { IGame } from "features/games/types";
 import { useResults } from "features/events/context/ResultsContext";
+import { Link } from "react-router";
 
 interface IGameCardProps {
 	game: IGame;
@@ -13,12 +14,24 @@ export const GameCard: React.FC<IGameCardProps> = ({ game, canEdit, onEdit, onDe
 	const { results } = useResults();
 	const numOfPlays = results.filter((r) => r.gameId === game.id).length;
 
-	const handleDeleteClick = () => {
+	const handleDeleteClick = (e: React.MouseEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
 		if (game.id) onDelete?.(game.id);
 	};
 
+	const handleEditClick = (e: React.MouseEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+		onEdit?.(game);
+	};
+
 	return (
-		<div className="group relative flex items-center gap-4 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-4 shadow-sm transition-transform hover:-translate-y-0.5">
+		<Link
+			to={`/games/${game.id}`}
+			className="group relative flex items-center gap-4 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-4 shadow-sm transition-transform hover:-translate-y-0.5"
+			aria-label={`View stats for ${game.name}`}
+		>
 			<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-black/30">
 				<Gamepad2 className="h-5 w-5 text-[var(--color-primary)]" />
 			</div>
@@ -34,7 +47,7 @@ export const GameCard: React.FC<IGameCardProps> = ({ game, canEdit, onEdit, onDe
 			{canEdit && (
 				<div className="ml-auto flex items-center gap-1 opacity-70 transition-opacity group-hover:opacity-100">
 					<button
-						onClick={() => onEdit?.(game)}
+						onClick={handleEditClick}
 						className="rounded-lg border border-gray-700 bg-black/20 p-2 text-gray-200 hover:bg-white/10"
 						title="Edit"
 					>
@@ -49,6 +62,6 @@ export const GameCard: React.FC<IGameCardProps> = ({ game, canEdit, onEdit, onDe
 					</button>
 				</div>
 			)}
-		</div>
+		</Link>
 	);
 };
