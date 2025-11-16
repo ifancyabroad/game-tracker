@@ -1,5 +1,6 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
-import { ChartCard } from "features/stats/components/ChartCard";
+import { ChartCard } from "common/components/ChartCard";
+import { ChartTooltip } from "common/components/ChartTooltip";
 import type { PlayerGameStats } from "features/games/utils/stats";
 
 interface PlayerPointsChartProps {
@@ -49,14 +50,7 @@ export const PlayerPointsChart: React.FC<PlayerPointsChartProps> = ({ playerStat
 							<Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
 						))}
 					</Pie>
-					<Tooltip
-						contentStyle={{
-							background: "var(--color-surface)",
-							border: "1px solid #334155",
-							color: "#E5E7EB",
-						}}
-						formatter={(value: number) => [value, "Points"]}
-					/>
+					<Tooltip content={<ChartTooltip formatter={(v) => `${v} points`} />} />
 				</PieChart>
 			</ResponsiveContainer>
 		</ChartCard>
