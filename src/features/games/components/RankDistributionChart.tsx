@@ -1,5 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
-import { ChartCard } from "features/stats/components/ChartCard";
+import { ChartCard } from "common/components/ChartCard";
+import { ChartTooltip } from "common/components/ChartTooltip";
 
 interface RankDistributionChartProps {
 	rankDistribution: Array<{ rank: number; count: number }>;
@@ -35,14 +36,7 @@ export const RankDistributionChart: React.FC<RankDistributionChartProps> = ({
 						fontSize: 12,
 					}}
 				/>
-				<Tooltip
-					contentStyle={{
-						background: "var(--color-surface)",
-						border: "1px solid #334155",
-						color: "#E5E7EB",
-					}}
-					formatter={(v) => [v, "Count"]}
-				/>
+				<Tooltip content={<ChartTooltip labelFormatter={(v) => `Rank ${v}`} />} />
 				<Bar dataKey="count" fill={gameColor} />
 			</BarChart>
 		</ResponsiveContainer>

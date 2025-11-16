@@ -1,5 +1,6 @@
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, BarChart, Bar } from "recharts";
-import { ChartCard } from "features/stats/components/ChartCard";
+import { ChartCard } from "common/components/ChartCard";
+import { ChartTooltip } from "common/components/ChartTooltip";
 import type { IPlayer } from "features/players/types";
 
 interface RecentFormChartProps {
@@ -34,14 +35,7 @@ export const RankDistributionChart: React.FC<RecentFormChartProps> = ({ player, 
 						fontSize: 12,
 					}}
 				/>
-				<Tooltip
-					contentStyle={{
-						background: "var(--color-surface)",
-						border: "1px solid #334155",
-						color: "#E5E7EB",
-					}}
-					formatter={(v) => [String(v), "Count"]}
-				/>
+				<Tooltip content={<ChartTooltip labelFormatter={(v) => `Rank ${v}`} />} />
 				<Bar dataKey="count" fill={player.color} />
 			</BarChart>
 		</ResponsiveContainer>

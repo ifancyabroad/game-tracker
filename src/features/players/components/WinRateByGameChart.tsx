@@ -1,5 +1,6 @@
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, BarChart, Bar } from "recharts";
-import { ChartCard } from "features/stats/components/ChartCard";
+import { ChartCard } from "common/components/ChartCard";
+import { ChartTooltip } from "common/components/ChartTooltip";
 import type { IPlayer } from "features/players/types";
 import type { GameWinRateRow } from "features/players/utils/stats";
 
@@ -24,14 +25,7 @@ export const WinRateByGameChart: React.FC<RecentFormChartProps> = ({ player, gam
 					tickFormatter={(v) => `${Math.round(v * 100)}%`}
 					tick={{ fill: "#9CA3AF", fontSize: 12 }}
 				/>
-				<Tooltip
-					contentStyle={{
-						background: "var(--color-surface)",
-						border: "1px solid #334155",
-						color: "#E5E7EB",
-					}}
-					formatter={(v) => [`${Math.round((v as number) * 100)}%`, "Win Rate"]}
-				/>
+				<Tooltip content={<ChartTooltip formatter={(v) => `${Math.round(v * 100)}%`} />} />
 				<Bar dataKey="wr" fill={player.color} />
 			</BarChart>
 		</ResponsiveContainer>

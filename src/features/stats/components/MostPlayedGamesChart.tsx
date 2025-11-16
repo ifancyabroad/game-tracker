@@ -1,6 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
-import { ChartCard } from "features/stats/components/ChartCard";
-import { ChartTooltip } from "features/stats/components/ChartTooltip";
+import { ChartCard } from "common/components/ChartCard";
+import { ChartTooltip } from "common/components/ChartTooltip";
 import type { MostPlayedGames } from "features/stats/utils/stats";
 
 interface MostPlayedGamesChartProps {
@@ -23,7 +23,7 @@ export const MostPlayedGamesChart: React.FC<MostPlayedGamesChartProps> = ({ most
 					)}
 				/>
 				<YAxis tick={{ fontSize: 12, fill: "#ccc" }} allowDecimals={false} />
-				<Tooltip content={<ChartTooltip suffix="plays" />} />
+				<Tooltip content={<ChartTooltip formatter={(v) => `${v} plays`} />} />
 				<Bar dataKey="count" radius={[4, 4, 0, 0]} fill="#4F46E5" />
 			</BarChart>
 		</ResponsiveContainer>

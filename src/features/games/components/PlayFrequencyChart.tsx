@@ -1,5 +1,6 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
-import { ChartCard } from "features/stats/components/ChartCard";
+import { ChartCard } from "common/components/ChartCard";
+import { ChartTooltip } from "common/components/ChartTooltip";
 
 interface PlayFrequencyChartProps {
 	playFrequencySeries: Array<{ date: string; plays: number }>;
@@ -25,15 +26,7 @@ export const PlayFrequencyChart: React.FC<PlayFrequencyChartProps> = ({
 						fontSize: 12,
 					}}
 				/>
-				<Tooltip
-					contentStyle={{
-						background: "var(--color-surface)",
-						border: "1px solid #334155",
-						color: "#E5E7EB",
-					}}
-					labelFormatter={(v) => v}
-					formatter={(v) => [v, "Plays"]}
-				/>
+				<Tooltip content={<ChartTooltip formatter={(v) => `${v} plays`} />} />
 				<Line type="monotone" dataKey="plays" stroke={gameColor} strokeWidth={2} dot={true} />
 			</LineChart>
 		</ResponsiveContainer>

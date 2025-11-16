@@ -1,5 +1,6 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
-import { ChartCard } from "features/stats/components/ChartCard";
+import { ChartCard } from "common/components/ChartCard";
+import { ChartTooltip } from "common/components/ChartTooltip";
 import type { IPlayer } from "features/players/types";
 
 interface RecentFormChartProps {
@@ -34,15 +35,7 @@ export const RecentFormChart: React.FC<RecentFormChartProps> = ({ player, lastGa
 						fontSize: 12,
 					}}
 				/>
-				<Tooltip
-					contentStyle={{
-						background: "var(--color-surface)",
-						border: "1px solid #334155",
-						color: "#E5E7EB",
-					}}
-					labelFormatter={(v) => `Game ${v}`}
-					formatter={(v) => [`${v}%`, "Win Rate"]}
-				/>
+				<Tooltip content={<ChartTooltip formatter={(v) => `${v}%`} labelFormatter={(v) => `Game ${v}`} />} />
 				<Line type="monotone" dataKey="wr" stroke={player.color} strokeWidth={2} dot={false} />
 			</LineChart>
 		</ResponsiveContainer>

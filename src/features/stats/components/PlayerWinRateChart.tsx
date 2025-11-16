@@ -1,6 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
-import { ChartCard } from "features/stats/components/ChartCard";
-import { ChartTooltip } from "features/stats/components/ChartTooltip";
+import { ChartCard } from "common/components/ChartCard";
+import { ChartTooltip } from "common/components/ChartTooltip";
 import type { PlayerWithData } from "features/players/utils/stats";
 
 interface PlayerWinRateChartProps {
@@ -16,7 +16,7 @@ export const PlayerWinRateChart: React.FC<PlayerWinRateChartProps> = ({ overallS
 				<BarChart data={chartData} layout="vertical" margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
 					<XAxis type="number" domain={[0, 100]} tick={{ fontSize: 12, fill: "#ccc" }} unit="%" />
 					<YAxis type="category" dataKey="data.name" tick={{ fontSize: 12, fill: "#ccc" }} />
-					<Tooltip content={<ChartTooltip suffix="%" />} />
+					<Tooltip content={<ChartTooltip formatter={(v) => `${v}%`} />} />
 					<Bar dataKey="data.winRatePercent" radius={[0, 4, 4, 0]}>
 						{chartData.map((entry, index) => (
 							<Cell key={`cell-${index}`} fill={entry.data.color} />
