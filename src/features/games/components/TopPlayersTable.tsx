@@ -26,7 +26,6 @@ export const TopPlayersTable: React.FC<TopPlayersTableProps> = ({ playerStats })
 							<th className="w-24 px-4 py-2 text-center">Games</th>
 							<th className="w-24 px-4 py-2 text-center">Wins</th>
 							<th className="w-24 px-4 py-2 text-center">Win %</th>
-							<th className="w-24 px-4 py-2 text-center">Avg Rank</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -46,9 +45,6 @@ export const TopPlayersTable: React.FC<TopPlayersTableProps> = ({ playerStats })
 										<td className="px-4 py-2 text-center text-gray-200 tabular-nums">{p.wins}</td>
 										<td className="px-4 py-2 text-center text-gray-200 tabular-nums">
 											{Math.round(p.winRate * 100)}%
-										</td>
-										<td className="px-4 py-2 text-center text-gray-200 tabular-nums">
-											{p.avgRank > 0 ? p.avgRank.toFixed(1) : "—"}
 										</td>
 									</tr>
 								))
