@@ -4,7 +4,7 @@ import type { IPlayer } from "features/players/types";
 import type { IResult, IPlayerResult } from "features/events/types";
 import { Avatar } from "common/components/Avatar";
 import { getDisplayName, getFullName } from "features/players/utils/helpers";
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 
 interface IResultDisplayProps {
 	result: IResult;
@@ -56,7 +56,16 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({
 						<Gamepad2 className="h-5 w-5 text-[var(--color-primary)]" />
 					</div>
 					<div className="min-w-0">
-						<p className="truncate text-sm font-semibold text-white">{game?.name ?? "Unknown Game"}</p>
+						{game ? (
+							<Link
+								to={`/games/${result.gameId}`}
+								className="block truncate text-sm font-semibold text-white hover:text-[var(--color-primary)]"
+							>
+								{game.name}
+							</Link>
+						) : (
+							<p className="truncate text-sm font-semibold text-white">Unknown Game</p>
+						)}
 						<p className="text-xs text-gray-400">
 							{rows.length} {rows.length === 1 ? "player" : "players"}
 						</p>
