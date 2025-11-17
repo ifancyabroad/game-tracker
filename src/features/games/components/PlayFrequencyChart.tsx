@@ -4,13 +4,9 @@ import { ChartTooltip } from "common/components/ChartTooltip";
 
 interface PlayFrequencyChartProps {
 	playFrequencySeries: Array<{ date: string; plays: number }>;
-	gameColor?: string;
 }
 
-export const PlayFrequencyChart: React.FC<PlayFrequencyChartProps> = ({
-	playFrequencySeries,
-	gameColor = "#3b82f6",
-}) => (
+export const PlayFrequencyChart: React.FC<PlayFrequencyChartProps> = ({ playFrequencySeries }) => (
 	<ChartCard title="Play Frequency Over Time">
 		<ResponsiveContainer width="100%" height="100%">
 			<LineChart data={playFrequencySeries}>
@@ -27,7 +23,7 @@ export const PlayFrequencyChart: React.FC<PlayFrequencyChartProps> = ({
 					}}
 				/>
 				<Tooltip content={<ChartTooltip formatter={(v) => `${v} plays`} />} />
-				<Line type="monotone" dataKey="plays" stroke={gameColor} strokeWidth={2} dot={true} />
+				<Line type="monotone" dataKey="plays" stroke="var(--color-primary)" strokeWidth={2} dot={true} />
 			</LineChart>
 		</ResponsiveContainer>
 	</ChartCard>

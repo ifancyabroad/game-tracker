@@ -24,7 +24,7 @@ export const MostPlayedGamesChart: React.FC<MostPlayedGamesChartProps> = ({ most
 				/>
 				<YAxis tick={{ fontSize: 12, fill: "#ccc" }} allowDecimals={false} />
 				<Tooltip content={<ChartTooltip formatter={(v) => `${v} plays`} />} />
-				<Bar dataKey="count" radius={[4, 4, 0, 0]} fill="#4F46E5" />
+				<Bar dataKey="count" radius={[4, 4, 0, 0]} fill="var(--color-primary)" />
 			</BarChart>
 		</ResponsiveContainer>
 	</ChartCard>

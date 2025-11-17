@@ -5,7 +5,6 @@ import type { PlayerGameStats } from "features/games/utils/stats";
 
 interface PlayerWinRateChartProps {
 	playerStats: PlayerGameStats[];
-	gameColor?: string;
 }
 
 export const PlayerWinRateChart: React.FC<PlayerWinRateChartProps> = ({ playerStats }) => {

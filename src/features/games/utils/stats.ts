@@ -33,7 +33,7 @@ export interface PlayerGameStats {
 
 export interface GameAggregates {
 	topPlayer?: PlayerGameStats;
-	mostFrequentPlayer?: PlayerGameStats;
+	bottomPlayer?: PlayerGameStats;
 	playerStats: PlayerGameStats[];
 	playFrequencySeries: Array<{ date: string; plays: number }>;
 	rankDistribution: Array<{ rank: number; count: number }>;
@@ -130,13 +130,15 @@ export function aggregateGameStatsForPage(
 		};
 	});
 
-	// Find top player by win rate (min 3 games)
-	const topPlayer = playerStats
+	const sortedByWinRate = playerStats
 		.filter((p) => p.games >= 3)
-		.sort((a, b) => b.winRate - a.winRate || b.games - a.games)[0];
+		.sort((a, b) => b.winRate - a.winRate || b.games - a.games);
 
-	// Find most frequent player
-	const mostFrequentPlayer = playerStats.slice().sort((a, b) => b.games - a.games || b.winRate - a.winRate)[0];
+	// Find top player by win rate (min 3 games)
+	const topPlayer = sortedByWinRate[0];
+
+	// Find bottom player by win rate (min 3 games)
+	const bottomPlayer = sortedByWinRate[sortedByWinRate.length - 1];
 
 	// Convert play frequency to series
 	const playFrequencySeries = Object.entries(datePlayCounts)
@@ -150,7 +152,7 @@ export function aggregateGameStatsForPage(
 
 	return {
 		topPlayer,
-		mostFrequentPlayer,
+		bottomPlayer,
 		playerStats,
 		playFrequencySeries,
 		rankDistribution,
