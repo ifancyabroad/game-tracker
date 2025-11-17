@@ -32,15 +32,17 @@ export const GameCard: React.FC<IGameCardProps> = ({ game, canEdit, onEdit, onDe
 			className="group relative flex items-center gap-4 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-4 shadow-sm transition-transform hover:-translate-y-0.5"
 			aria-label={`View stats for ${game.name}`}
 		>
-			<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-black/30">
+			<div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-black/30">
 				<Gamepad2 className="h-5 w-5 text-[var(--color-primary)]" />
+				<span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--color-secondary)] text-[10px] font-bold text-[var(--color-secondary-contrast)]">
+					{game.points}
+				</span>
 			</div>
 
 			<div className="min-w-0">
 				<p className="truncate text-sm font-semibold text-white">{game.name}</p>
 				<p className="truncate text-xs text-gray-400">
-					{game.points} {game.points === 1 ? "point" : "points"} | {numOfPlays}{" "}
-					{numOfPlays === 1 ? "play" : "plays"}
+					{numOfPlays} {numOfPlays === 1 ? "play" : "plays"}
 				</p>
 			</div>
 

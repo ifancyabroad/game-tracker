@@ -5,6 +5,8 @@
 	--color-surface: #1a1a1a;
 	--color-primary: #6366f1; /* Indigo */
 	--color-primary-contrast: #ffffff; /* White */
+	--color-secondary: #14b8a6; /* Emerald */
+	--color-secondary-contrast: #000000; /* Black */
 	--color-text: #f1f1f1;
 	--font-sans: "Inter", sans-serif;
 }
