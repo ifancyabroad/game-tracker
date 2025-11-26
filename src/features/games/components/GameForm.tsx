@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { IGame } from "features/games/types";
+import type { IGame, GameType } from "features/games/types";
 import { Gamepad2 } from "lucide-react";
 
 interface IGameFormProps {
@@ -10,14 +10,16 @@ interface IGameFormProps {
 export const GameForm: React.FC<IGameFormProps> = ({ initialData, onSubmit }) => {
 	const [name, setName] = useState(initialData?.name || "");
 	const [points, setPoints] = useState(initialData?.points || 1);
+	const [type, setType] = useState<GameType>(initialData?.type || "board");
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (!name.trim()) return;
-		onSubmit({ name: name.trim(), points });
+		onSubmit({ name: name.trim(), points, type });
 		if (!initialData) {
 			setName("");
 			setPoints(1);
+			setType("board");
 		}
 	};
 
@@ -55,6 +57,40 @@ export const GameForm: React.FC<IGameFormProps> = ({ initialData, onSubmit }) =>
 					max={3}
 					required
 				/>
+			</div>
+
+			<div>
+				<label className="mb-1 block text-xs text-gray-400">Type</label>
+				<div className="flex gap-4">
+					<label className="group flex cursor-pointer items-center gap-2 text-sm text-gray-300">
+						<div className="relative flex h-4 w-4 items-center justify-center">
+							<input
+								type="radio"
+								value="board"
+								checked={type === "board"}
+								onChange={(e) => setType(e.target.value as GameType)}
+								className="peer sr-only"
+							/>
+							<div className="h-4 w-4 rounded-full border-2 border-gray-600 bg-black/20 transition-all group-hover:border-gray-500 peer-checked:border-[var(--color-primary)] peer-checked:bg-[var(--color-primary)]/20"></div>
+							<div className="absolute h-2 w-2 rounded-full bg-[var(--color-primary)] opacity-0 transition-opacity peer-checked:opacity-100"></div>
+						</div>
+						Board Game
+					</label>
+					<label className="group flex cursor-pointer items-center gap-2 text-sm text-gray-300">
+						<div className="relative flex h-4 w-4 items-center justify-center">
+							<input
+								type="radio"
+								value="video"
+								checked={type === "video"}
+								onChange={(e) => setType(e.target.value as GameType)}
+								className="peer sr-only"
+							/>
+							<div className="h-4 w-4 rounded-full border-2 border-gray-600 bg-black/20 transition-all group-hover:border-gray-500 peer-checked:border-[var(--color-primary)] peer-checked:bg-[var(--color-primary)]/20"></div>
+							<div className="absolute h-2 w-2 rounded-full bg-[var(--color-primary)] opacity-0 transition-opacity peer-checked:opacity-100"></div>
+						</div>
+						Video Game
+					</label>
+				</div>
 			</div>
 
 			<button

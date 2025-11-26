@@ -1,7 +1,8 @@
-import { Edit, Trash2, Gamepad2 } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import type { IGame } from "features/games/types";
 import { useResults } from "features/events/context/ResultsContext";
 import { Link } from "react-router";
+import { GameTypeIcon } from "./GameTypeIcon";
 
 interface IGameCardProps {
 	game: IGame;
@@ -33,7 +34,7 @@ export const GameCard: React.FC<IGameCardProps> = ({ game, canEdit, onEdit, onDe
 			aria-label={`View stats for ${game.name}`}
 		>
 			<div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-black/30">
-				<Gamepad2 className="h-5 w-5 text-[var(--color-primary)]" />
+				<GameTypeIcon type={game.type} className="h-5 w-5 text-[var(--color-primary)]" />
 				<span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--color-secondary)] text-[10px] font-bold text-[var(--color-secondary-contrast)]">
 					{game.points}
 				</span>

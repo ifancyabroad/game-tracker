@@ -11,12 +11,16 @@ import { useResults } from "features/events/context/ResultsContext";
 import { useGames } from "features/games/context/GamesContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useSortedResults } from "features/events/utils/hooks";
+import type { GameType } from "features/games/types";
 
-export function usePlayerData(): PlayerWithData[] {
+export function usePlayerData(gameType?: GameType): PlayerWithData[] {
 	const { players } = usePlayers();
 	const { results } = useResults();
 	const { gameById } = useGames();
-	return useMemo(() => computePlayerData(players, results, gameById), [players, results, gameById]);
+	return useMemo(
+		() => computePlayerData(players, results, gameById, gameType),
+		[players, results, gameById, gameType],
+	);
 }
 
 export function usePlayerDataById(playerId: string): PlayerWithData | undefined {

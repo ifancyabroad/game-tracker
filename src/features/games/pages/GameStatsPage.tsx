@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams, Link } from "react-router";
-import { ArrowLeft, Award, Users, TrendingUp, Star, Gamepad2 } from "lucide-react";
+import { ArrowLeft, Award, Users, TrendingUp, Star } from "lucide-react";
 import { KpiCard } from "common/components/KpiCard";
 import { HighlightCard } from "common/components/HighlightCard";
 import { formatPct } from "common/utils/helpers";
@@ -8,6 +8,7 @@ import { useGameDataById, useGamePageStats } from "features/games/utils/hooks";
 import { PlayerWinRateChart } from "features/games/components/PlayerWinRateChart";
 import { PlayFrequencyChart } from "features/games/components/PlayFrequencyChart";
 import { TopPlayersTable } from "features/games/components/TopPlayersTable";
+import { GameTypeIcon } from "features/games/components/GameTypeIcon";
 
 const getPlayerLines = (player?: { name: string; winRate: number; games: number; wins: number }) => {
 	if (!player) {
@@ -57,7 +58,7 @@ export const GameStatsPage: React.FC = () => {
 			<div className="flex flex-col gap-4 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-4 lg:flex-row lg:items-center">
 				<div className="flex items-center gap-4">
 					<div className="flex h-14 w-14 items-center justify-center rounded-xl bg-black/30">
-						<Gamepad2 className="h-8 w-8 text-[var(--color-primary)]" />
+						<GameTypeIcon type={game.type} className="h-8 w-8 text-[var(--color-primary)]" />
 					</div>
 					<div className="min-w-0">
 						<h1 className="truncate text-lg font-semibold text-white">{game.data.name}</h1>
@@ -66,7 +67,7 @@ export const GameStatsPage: React.FC = () => {
 				</div>
 				<div className="grid grid-cols-2 gap-3 lg:ml-auto lg:grid-cols-4 lg:gap-4">
 					<KpiCard
-						icon={<Gamepad2 className="h-4 w-4 text-[var(--color-primary)]" />}
+						icon={<GameTypeIcon type={game.type} className="h-4 w-4 text-[var(--color-primary)]" />}
 						label="Times Played"
 						value={game.data.timesPlayed}
 					/>
