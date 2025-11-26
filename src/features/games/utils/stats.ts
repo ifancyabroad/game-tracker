@@ -11,7 +11,7 @@ export interface GameData {
 	name: string;
 	points: number;
 	timesPlayed: number;
-	totalWinners: number;
+	totalPointsAwarded: number;
 	uniquePlayers: number;
 	avgPlayersPerGame: number;
 }
@@ -167,7 +167,7 @@ export function computeGameData(games: IGame[], results: IResult[]): GameWithDat
 		string,
 		{
 			timesPlayed: number;
-			totalWinners: number;
+			totalPointsAwarded: number;
 			playerSet: Set<string>;
 			totalPlayerCount: number;
 		}
@@ -177,7 +177,7 @@ export function computeGameData(games: IGame[], results: IResult[]): GameWithDat
 	games.forEach((game) => {
 		gameStatsMap[game.id] = {
 			timesPlayed: 0,
-			totalWinners: 0,
+			totalPointsAwarded: 0,
 			playerSet: new Set(),
 			totalPlayerCount: 0,
 		};
@@ -188,7 +188,7 @@ export function computeGameData(games: IGame[], results: IResult[]): GameWithDat
 		if (!gameStatsMap[result.gameId]) {
 			gameStatsMap[result.gameId] = {
 				timesPlayed: 0,
-				totalWinners: 0,
+				totalPointsAwarded: 0,
 				playerSet: new Set(),
 				totalPlayerCount: 0,
 			};
@@ -198,10 +198,14 @@ export function computeGameData(games: IGame[], results: IResult[]): GameWithDat
 		stats.timesPlayed++;
 		stats.totalPlayerCount += result.playerResults.length;
 
+		// Get game points for this result
+		const game = games.find((g) => g.id === result.gameId);
+		const gamePoints = game?.points ?? 0;
+
 		result.playerResults.forEach((pr) => {
 			stats.playerSet.add(pr.playerId);
 			if (isPlayerWinner(pr)) {
-				stats.totalWinners++;
+				stats.totalPointsAwarded += gamePoints;
 			}
 		});
 	});
@@ -209,7 +213,7 @@ export function computeGameData(games: IGame[], results: IResult[]): GameWithDat
 	return games.map((game) => {
 		const stats = gameStatsMap[game.id] || {
 			timesPlayed: 0,
-			totalWinners: 0,
+			totalPointsAwarded: 0,
 			playerSet: new Set(),
 			totalPlayerCount: 0,
 		};
@@ -223,7 +227,7 @@ export function computeGameData(games: IGame[], results: IResult[]): GameWithDat
 				name: game.name,
 				points: game.points,
 				timesPlayed: stats.timesPlayed,
-				totalWinners: stats.totalWinners,
+				totalPointsAwarded: stats.totalPointsAwarded,
 				uniquePlayers: stats.playerSet.size,
 				avgPlayersPerGame: Math.round(avgPlayersPerGame * 10) / 10,
 			},
