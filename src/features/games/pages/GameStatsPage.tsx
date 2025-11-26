@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams, Link } from "react-router";
-import { ArrowLeft, Award, Users, TrendingUp, Star } from "lucide-react";
+import { ArrowLeft, Award, Users, TrendingUp, TrendingDown, Star } from "lucide-react";
 import { KpiCard } from "common/components/KpiCard";
 import { HighlightCard } from "common/components/HighlightCard";
 import { formatPct } from "common/utils/helpers";
@@ -77,14 +77,14 @@ export const GameStatsPage: React.FC = () => {
 						value={game.data.uniquePlayers}
 					/>
 					<KpiCard
-						icon={<Award className="h-4 w-4 text-[var(--color-primary)]" />}
-						label="Total Wins"
-						value={game.data.totalWinners}
-					/>
-					<KpiCard
 						icon={<Star className="h-4 w-4 text-[var(--color-primary)]" />}
 						label="Avg Players"
 						value={game.data.avgPlayersPerGame}
+					/>
+					<KpiCard
+						icon={<Award className="h-4 w-4 text-[var(--color-primary)]" />}
+						label="Points Awarded"
+						value={game.data.totalPointsAwarded}
 					/>
 				</div>
 			</div>
@@ -97,7 +97,7 @@ export const GameStatsPage: React.FC = () => {
 				/>
 				<HighlightCard
 					title="Bottom Player (min 3 plays)"
-					icon={<Users className="h-4 w-4 text-[var(--color-primary)]" />}
+					icon={<TrendingDown className="h-4 w-4 text-[var(--color-primary)]" />}
 					lines={bottomPlayerLines}
 				/>
 			</div>
