@@ -1,6 +1,6 @@
 import type { IPlayerResult, IResult } from "features/events/types";
 import type { IPlayer } from "features/players/types";
-import type { IGame } from "features/games/types";
+import type { GameType, IGame } from "features/games/types";
 import { getColorForPlayer, getDisplayName, getFullName } from "./helpers";
 import { isPlayerWinner } from "common/utils/gameHelpers";
 
@@ -210,6 +210,7 @@ export function computePlayerData(
 	players: IPlayer[],
 	results: IResult[],
 	gameById: Map<string, IGame>,
+	gameType?: GameType,
 ): PlayerWithData[] {
 	const statsMap: Record<
 		string,
@@ -222,6 +223,11 @@ export function computePlayerData(
 
 	results.forEach((result) => {
 		const game = gameById.get(result.gameId);
+
+		// Filter by game type if specified
+		if (gameType && game && game.type !== gameType) {
+			return;
+		}
 
 		result.playerResults.forEach((pr) => {
 			if (!statsMap[pr.playerId]) {
