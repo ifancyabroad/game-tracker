@@ -1,10 +1,11 @@
-import { Award, Edit, Frown, Gamepad2, Hash, Trash2 } from "lucide-react";
+import { Award, Edit, Frown, Hash, Trash2 } from "lucide-react";
 import type { IGame } from "features/games/types";
 import type { IPlayer } from "features/players/types";
 import type { IResult, IPlayerResult } from "features/events/types";
 import { Avatar } from "common/components/Avatar";
 import { getDisplayName, getFullName } from "features/players/utils/helpers";
 import { useNavigate, Link } from "react-router";
+import { GameTypeIcon } from "features/games/components/GameTypeIcon";
 
 interface IResultDisplayProps {
 	result: IResult;
@@ -53,7 +54,7 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({
 			<div className="mb-3 flex items-start justify-between gap-2">
 				<div className="flex min-w-0 items-center gap-2">
 					<div className="flex h-9 w-9 items-center justify-center rounded-xl bg-black/30">
-						<Gamepad2 className="h-5 w-5 text-[var(--color-primary)]" />
+						{game && <GameTypeIcon type={game.type} className="h-5 w-5 text-[var(--color-primary)]" />}
 					</div>
 					<div className="min-w-0">
 						{game ? (
