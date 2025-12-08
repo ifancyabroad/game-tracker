@@ -1,45 +1,34 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from "recharts";
-import { useMemo } from "react";
-import { useResults } from "features/events/context/ResultsContext";
-import { usePlayers } from "features/players/context/PlayersContext";
 import { ChartCard } from "common/components/ChartCard";
 import { ChartTooltip } from "common/components/ChartTooltip";
-import { getColorForPlayer, getDisplayName } from "features/players/utils/helpers";
 import type { TimeSeriesData } from "features/stats/utils/stats";
+import type { PlayerWithData } from "features/players/utils/stats";
 
 interface PlayerWinsOverTimeChartProps {
-	playerTrends: TimeSeriesData[];
+	overallStats: PlayerWithData[];
+	playerWinsOverTime: TimeSeriesData[];
 }
 
-export const PlayerWinsOverTimeChart: React.FC<PlayerWinsOverTimeChartProps> = ({ playerTrends }) => {
-	const { results } = useResults();
-	const { playerById } = usePlayers();
-
-	const playerData = useMemo(() => {
-		const ids = new Set(results.flatMap((r) => r.playerResults.map((pr) => pr.playerId)));
-		return Array.from(ids)
-			.map((id) => playerById.get(id))
-			.filter((player): player is NonNullable<typeof player> => Boolean(player))
-			.map((player) => ({
-				name: getDisplayName(player),
-				color: getColorForPlayer(player),
-			}));
-	}, [results, playerById]);
+export const PlayerWinsOverTimeChart: React.FC<PlayerWinsOverTimeChartProps> = ({
+	playerWinsOverTime,
+	overallStats,
+}) => {
+	const playerData = overallStats.filter((p) => p.data.wins > 0);
 
 	return (
 		<ChartCard title="Player Wins Over Time">
 			<ResponsiveContainer width="100%" height="100%">
-				<LineChart data={playerTrends} margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
+				<LineChart data={playerWinsOverTime} margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
 					<XAxis dataKey="date" tick={{ fontSize: 12, fill: "#ccc" }} />
 					<YAxis allowDecimals={false} tick={{ fontSize: 12, fill: "#ccc" }} />
 					<Tooltip content={<ChartTooltip formatter={(v) => `${v} wins`} />} />
 					<Legend wrapperStyle={{ fontSize: "12px", color: "#ccc" }} />
 					{playerData.map((player) => (
 						<Line
-							key={player.name}
+							key={player.id}
 							type="monotone"
-							dataKey={player.name}
-							stroke={player.color}
+							dataKey={player.data.name}
+							stroke={player.data.color}
 							strokeWidth={2}
 							dot={false}
 						/>

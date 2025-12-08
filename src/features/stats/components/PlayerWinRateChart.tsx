@@ -8,7 +8,9 @@ interface PlayerWinRateChartProps {
 }
 
 export const PlayerWinRateChart: React.FC<PlayerWinRateChartProps> = ({ overallStats }) => {
-	const chartData = overallStats.sort((a, b) => b.data.winRatePercent - a.data.winRatePercent);
+	const chartData = overallStats
+		.filter((p) => p.data.wins > 0)
+		.sort((a, b) => b.data.winRatePercent - a.data.winRatePercent);
 
 	return (
 		<ChartCard title="Player Win Rates">

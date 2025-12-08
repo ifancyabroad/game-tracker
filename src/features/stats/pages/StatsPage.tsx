@@ -39,7 +39,7 @@ export const StatsPage: React.FC = () => {
 			</div>
 
 			<div className="grid gap-4 sm:gap-6 md:grid-cols-2">
-				<PlayerWinsOverTimeChart playerTrends={playerWinsOverTime} />
+				<PlayerWinsOverTimeChart overallStats={data} playerWinsOverTime={playerWinsOverTime} />
 				<PlayerWinRateChart overallStats={data} />
 				<MostPlayedGamesChart mostPlayedGames={mostPlayedGames} />
 				<PlayerParticipationChart overallStats={data} />
