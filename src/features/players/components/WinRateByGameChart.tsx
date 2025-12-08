@@ -25,7 +25,10 @@ export const WinRateByGameChart: React.FC<RecentFormChartProps> = ({ player, gam
 					tickFormatter={(v) => `${Math.round(v * 100)}%`}
 					tick={{ fill: "#9CA3AF", fontSize: 12 }}
 				/>
-				<Tooltip content={<ChartTooltip formatter={(v) => `${Math.round(v * 100)}%`} />} />
+				<Tooltip
+					cursor={{ fill: "rgba(255,255,255,0.05)" }}
+					content={<ChartTooltip formatter={(v) => `${Math.round(v * 100)}%`} />}
+				/>
 				<Bar dataKey="wr" fill={player.color} />
 			</BarChart>
 		</ResponsiveContainer>

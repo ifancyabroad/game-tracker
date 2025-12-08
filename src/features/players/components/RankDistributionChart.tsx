@@ -35,7 +35,10 @@ export const RankDistributionChart: React.FC<RecentFormChartProps> = ({ player, 
 						fontSize: 12,
 					}}
 				/>
-				<Tooltip content={<ChartTooltip labelFormatter={(v) => `Rank ${v}`} />} />
+				<Tooltip
+					cursor={{ fill: "rgba(255,255,255,0.05)" }}
+					content={<ChartTooltip labelFormatter={(v) => `Rank ${v}`} />}
+				/>
 				<Bar dataKey="count" fill={player.color} />
 			</BarChart>
 		</ResponsiveContainer>
