@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { IGame, GameType } from "features/games/types";
 import { Gamepad2 } from "lucide-react";
+import ColorPicker from "common/components/ColorPicker";
 
 interface IGameFormProps {
 	initialData?: IGame;
@@ -11,15 +12,17 @@ export const GameForm: React.FC<IGameFormProps> = ({ initialData, onSubmit }) =>
 	const [name, setName] = useState(initialData?.name || "");
 	const [points, setPoints] = useState(initialData?.points || 1);
 	const [type, setType] = useState<GameType>(initialData?.type || "board");
+	const [color, setColor] = useState<string>(initialData?.color || "#6366f1");
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (!name.trim()) return;
-		onSubmit({ name: name.trim(), points, type });
+		onSubmit({ name: name.trim(), points, type, color });
 		if (!initialData) {
 			setName("");
 			setPoints(1);
 			setType("board");
+			setColor("#6366f1");
 		}
 	};
 
@@ -92,6 +95,8 @@ export const GameForm: React.FC<IGameFormProps> = ({ initialData, onSubmit }) =>
 					</label>
 				</div>
 			</div>
+
+			<ColorPicker label="Game colour" value={color} onChange={setColor} showInput />
 
 			<button
 				type="submit"

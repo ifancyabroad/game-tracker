@@ -14,9 +14,15 @@ export const GameTrendsChart: React.FC<GameTrendsChartProps> = ({ gameTrends }) 
 	const { results } = useResults();
 	const { gameById } = useGames();
 
-	const gameNames = useMemo(() => {
-		const uniqueNames = new Set(results.map((r) => gameById.get(r.gameId)?.name).filter(Boolean));
-		return Array.from(uniqueNames) as string[];
+	const gameData = useMemo(() => {
+		const uniqueGames = new Map<string, { name: string; color: string }>();
+		results.forEach((r) => {
+			const game = gameById.get(r.gameId);
+			if (game && !uniqueGames.has(game.name)) {
+				uniqueGames.set(game.name, { name: game.name, color: game.color });
+			}
+		});
+		return Array.from(uniqueGames.values());
 	}, [results, gameById]);
 
 	return (
@@ -27,12 +33,12 @@ export const GameTrendsChart: React.FC<GameTrendsChartProps> = ({ gameTrends }) 
 					<YAxis allowDecimals={false} tick={{ fontSize: 12, fill: "#ccc" }} />
 					<Tooltip content={<ChartTooltip formatter={(v) => `${v} plays`} />} />
 					<Legend wrapperStyle={{ fontSize: "12px", color: "#ccc" }} />
-					{gameNames.map((name, index) => (
+					{gameData.map((game) => (
 						<Line
-							key={name}
+							key={game.name}
 							type="monotone"
-							dataKey={name}
-							stroke={`hsl(${(index * 67) % 360}, 70%, 60%)`}
+							dataKey={game.name}
+							stroke={game.color}
 							strokeWidth={2}
 							dot={false}
 						/>

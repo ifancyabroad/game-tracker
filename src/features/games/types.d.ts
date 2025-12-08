@@ -5,4 +5,5 @@ export interface IGame {
 	name: string;
 	points: number;
 	type: GameType;
+	color: string;
 }

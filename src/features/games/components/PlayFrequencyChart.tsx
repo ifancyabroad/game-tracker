@@ -1,12 +1,14 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { ChartCard } from "common/components/ChartCard";
 import { ChartTooltip } from "common/components/ChartTooltip";
+import type { GameWithData } from "features/games/utils/stats";
 
 interface PlayFrequencyChartProps {
+	game: GameWithData;
 	playFrequencySeries: Array<{ date: string; plays: number }>;
 }
 
-export const PlayFrequencyChart: React.FC<PlayFrequencyChartProps> = ({ playFrequencySeries }) => (
+export const PlayFrequencyChart: React.FC<PlayFrequencyChartProps> = ({ game, playFrequencySeries }) => (
 	<ChartCard title="Play Frequency Over Time">
 		<ResponsiveContainer width="100%" height="100%">
 			<LineChart data={playFrequencySeries}>
@@ -23,7 +25,7 @@ export const PlayFrequencyChart: React.FC<PlayFrequencyChartProps> = ({ playFreq
 					}}
 				/>
 				<Tooltip content={<ChartTooltip formatter={(v) => `${v} plays`} />} />
-				<Line type="monotone" dataKey="plays" stroke="var(--color-primary)" strokeWidth={2} dot={true} />
+				<Line type="monotone" dataKey="plays" stroke={game.color} strokeWidth={2} dot={true} />
 			</LineChart>
 		</ResponsiveContainer>
 	</ChartCard>

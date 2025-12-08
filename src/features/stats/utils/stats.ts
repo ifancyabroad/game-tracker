@@ -8,6 +8,7 @@ import { isPlayerWinner } from "common/utils/gameHelpers";
 export interface MostPlayedGames {
 	name: string;
 	count: number;
+	color: string;
 }
 export interface TimeSeriesData {
 	date: string;
@@ -27,10 +28,14 @@ export function computeMostPlayedGames(results: IResult[], gameById: Map<string,
 		gameCount[r.gameId] = (gameCount[r.gameId] || 0) + 1;
 	});
 	return Object.entries(gameCount)
-		.map(([gameId, count]) => ({
-			name: gameById.get(gameId)?.name || "Unknown",
-			count,
-		}))
+		.map(([gameId, count]) => {
+			const game = gameById.get(gameId);
+			return {
+				name: game?.name || "Unknown",
+				count,
+				color: game?.color || "#6366f1",
+			};
+		})
 		.sort((a, b) => b.count - a.count)
 		.slice(0, 8);
 }
