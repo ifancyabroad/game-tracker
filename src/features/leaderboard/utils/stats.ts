@@ -11,7 +11,7 @@ export function sortLeaderboard(rows: PlayerWithData[]) {
 }
 
 export function getLeaderboard(players: PlayerWithData[]) {
-	const playersWithGames = players.filter((player) => player.data.games > 0);
+	const playersWithGames = players.filter((player) => player.data.games >= 10);
 	return sortLeaderboard(playersWithGames);
 }
 
