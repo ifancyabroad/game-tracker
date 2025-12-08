@@ -1,6 +1,7 @@
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 import { ChartCard } from "common/components/ChartCard";
 import { ChartTooltip } from "common/components/ChartTooltip";
+import { useIsMobile } from "common/utils/hooks";
 import type { IPlayer } from "features/players/types";
 import type { GameWinRateRow } from "features/players/utils/stats";
 
@@ -24,6 +25,7 @@ const generateColors = (baseColor: string, count: number) => {
 };
 
 export const PointsByGameChart: React.FC<PointsByGameChartProps> = ({ player, gameWinRates }) => {
+	const isMobile = useIsMobile();
 	const chartData = gameWinRates
 		.filter((g) => g.points > 0)
 		.sort((a, b) => b.points - a.points)
@@ -40,8 +42,11 @@ export const PointsByGameChart: React.FC<PointsByGameChartProps> = ({ player, ga
 						cx="50%"
 						cy="50%"
 						labelLine={false}
-						label={({ name, percent }) =>
-							percent && percent > 0.05 ? `${name} ${(percent * 100).toFixed(0)}%` : ""
+						label={
+							isMobile
+								? false
+								: ({ name, percent }) =>
+										percent && percent > 0.05 ? `${name} ${(percent * 100).toFixed(0)}%` : ""
 						}
 						outerRadius={100}
 						fill="#8884d8"
@@ -52,6 +57,7 @@ export const PointsByGameChart: React.FC<PointsByGameChartProps> = ({ player, ga
 						))}
 					</Pie>
 					<Tooltip content={<ChartTooltip formatter={(v) => `${v} points`} />} />
+					{isMobile && <Legend wrapperStyle={{ fontSize: "12px", color: "#ccc" }} iconType="circle" />}
 				</PieChart>
 			</ResponsiveContainer>
 		</ChartCard>
