@@ -79,7 +79,7 @@ export const PlayerStatsPage: React.FC = () => {
 	}
 
 	return (
-		<div className="mx-auto grid max-w-6xl gap-6">
+		<div className="mx-auto grid max-w-6xl gap-4 sm:gap-6">
 			<div className="flex items-center justify-between gap-3">
 				<Link to="/" className="inline-flex items-center gap-2 text-gray-300 hover:text-white">
 					<ArrowLeft className="h-4 w-4" />
@@ -87,7 +87,7 @@ export const PlayerStatsPage: React.FC = () => {
 				</Link>
 			</div>
 
-			<div className="flex flex-col gap-4 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-4 sm:flex-row sm:items-center">
+			<div className="flex flex-col gap-3 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-3 sm:flex-row sm:items-center sm:gap-4 sm:p-4">
 				<div className="flex items-center gap-4">
 					<Avatar src={player.pictureUrl || undefined} name={player.data.name} size={56} />
 					<div className="min-w-0">
@@ -131,7 +131,7 @@ export const PlayerStatsPage: React.FC = () => {
 				</div>
 			</div>
 
-			<div className="grid gap-6 sm:grid-cols-3">
+			<div className="grid gap-4 sm:grid-cols-3 sm:gap-6">
 				<HighlightCard
 					title="Best Game (min 3 plays)"
 					icon={<TrendingUp className="h-4 w-4" style={{ color: player.color }} />}
@@ -149,7 +149,7 @@ export const PlayerStatsPage: React.FC = () => {
 				/>
 			</div>
 
-			<div className="grid gap-6 lg:grid-cols-2">
+			<div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
 				<RecentFormChart player={player} lastGamesSeries={lastGamesSeries} />
 
 				<RankDistributionChart player={player} rankCounts={rankCounts} />
@@ -157,7 +157,7 @@ export const PlayerStatsPage: React.FC = () => {
 
 			<PerformanceByGameTable gameWinRates={gameWinRates} />
 
-			<div className="grid gap-6 lg:grid-cols-2">
+			<div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
 				<WinRateByGameChart player={player} gameWinRates={gameWinRates} />
 
 				<PointsByGameChart player={player} gameWinRates={gameWinRates} />

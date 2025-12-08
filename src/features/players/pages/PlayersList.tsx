@@ -52,7 +52,7 @@ const PlayersList: React.FC = () => {
 
 	return (
 		<div className="mx-auto max-w-6xl">
-			<div className="mb-4 flex items-center justify-between gap-4">
+			<div className="mb-3 flex items-center justify-between gap-4 sm:mb-4">
 				<div className="flex items-center gap-2 text-white">
 					<Users className="h-5 w-5 text-[var(--color-primary)]" />
 					<h1 className="text-base font-semibold">Players</h1>
@@ -71,11 +71,11 @@ const PlayersList: React.FC = () => {
 			</div>
 
 			{players.length === 0 ? (
-				<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)] p-8 text-center text-sm text-gray-400">
+				<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)] p-6 text-center text-sm text-gray-400 sm:p-8">
 					No players yet. {user ? "Add your first player to get started." : "Sign in to add players."}
 				</div>
 			) : (
-				<ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+				<ul className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
 					{players.map((player) => (
 						<li key={player.id} className="transition-transform hover:-translate-y-0.5">
 							<PlayerCard

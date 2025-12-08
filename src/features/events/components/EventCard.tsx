@@ -24,7 +24,7 @@ export const EventCard: React.FC<IEventCardProps> = ({ event, canEdit, onEdit, o
 	const gameCount = event.gameIds?.length ?? 0;
 
 	return (
-		<div className="group relative rounded-xl border border-gray-700 bg-[var(--color-surface)] p-4 shadow-sm transition-transform hover:-translate-y-0.5">
+		<div className="group relative rounded-xl border border-gray-700 bg-[var(--color-surface)] p-3 shadow-sm transition-transform hover:-translate-y-0.5 sm:p-4">
 			<div className="flex items-start gap-3">
 				<div className="mt-0.5 flex h-10 w-10 items-center justify-center rounded-xl bg-black/30">
 					<CalendarDays className="h-5 w-5 text-gray-200" />
