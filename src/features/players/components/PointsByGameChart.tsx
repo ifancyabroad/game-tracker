@@ -2,36 +2,18 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recha
 import { ChartCard } from "common/components/ChartCard";
 import { ChartTooltip } from "common/components/ChartTooltip";
 import { useIsMobile } from "common/utils/hooks";
-import type { IPlayer } from "features/players/types";
 import type { GameWinRateRow } from "features/players/utils/stats";
 
 interface PointsByGameChartProps {
-	player: IPlayer;
 	gameWinRates: GameWinRateRow[];
 }
 
-const generateColors = (baseColor: string, count: number) => {
-	const opacities = [1, 0.8, 0.65, 0.5, 0.4, 0.3, 0.25, 0.2];
-
-	return Array.from({ length: count }, (_, i) => {
-		const opacity = opacities[i % opacities.length];
-		return (
-			baseColor +
-			Math.round(opacity * 255)
-				.toString(16)
-				.padStart(2, "0")
-		);
-	});
-};
-
-export const PointsByGameChart: React.FC<PointsByGameChartProps> = ({ player, gameWinRates }) => {
+export const PointsByGameChart: React.FC<PointsByGameChartProps> = ({ gameWinRates }) => {
 	const isMobile = useIsMobile();
 	const chartData = gameWinRates
 		.filter((g) => g.points > 0)
 		.sort((a, b) => b.points - a.points)
 		.slice(0, 8);
-
-	const colors = generateColors(player.color, chartData.length);
 
 	return (
 		<ChartCard title="Points by Game">
@@ -52,8 +34,8 @@ export const PointsByGameChart: React.FC<PointsByGameChartProps> = ({ player, ga
 						fill="#8884d8"
 						dataKey="points"
 					>
-						{chartData.map((_, index) => (
-							<Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+						{chartData.map((entry, index) => (
+							<Cell key={`cell-${index}`} fill={entry.color} />
 						))}
 					</Pie>
 					<Tooltip content={<ChartTooltip formatter={(v) => `${v} points`} />} />

@@ -36,6 +36,7 @@ export interface GameWinRateRow {
 	wins: number;
 	wr: number;
 	points: number;
+	color: string;
 }
 
 export interface PlayerAggregates {
@@ -113,14 +114,18 @@ export function aggregatePlayerStatsForPage(
 		});
 	});
 
-	const gameWinRates: GameWinRateRow[] = Object.entries(byGame).map(([gameId, g]) => ({
-		gameId,
-		name: gameById.get(gameId)?.name ?? "Unknown",
-		games: g.games,
-		wins: g.wins,
-		wr: g.games ? g.wins / g.games : 0,
-		points: (gameById.get(gameId)?.points ?? 0) * g.wins,
-	}));
+	const gameWinRates: GameWinRateRow[] = Object.entries(byGame).map(([gameId, g]) => {
+		const game = gameById.get(gameId);
+		return {
+			gameId,
+			name: game?.name ?? "Unknown",
+			games: g.games,
+			wins: g.wins,
+			wr: g.games ? g.wins / g.games : 0,
+			points: (game?.points ?? 0) * g.wins,
+			color: game?.color ?? "#6366f1",
+		};
+	});
 
 	const bestGame = gameWinRates
 		.filter((g) => g.games >= bestGameMinSamples)

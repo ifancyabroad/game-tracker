@@ -1,4 +1,4 @@
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { ChartCard } from "common/components/ChartCard";
 import { ChartTooltip } from "common/components/ChartTooltip";
 import type { MostPlayedGames } from "features/stats/utils/stats";
@@ -27,7 +27,11 @@ export const MostPlayedGamesChart: React.FC<MostPlayedGamesChartProps> = ({ most
 					cursor={{ fill: "rgba(255,255,255,0.05)" }}
 					content={<ChartTooltip formatter={(v) => `${v} plays`} />}
 				/>
-				<Bar dataKey="count" radius={[4, 4, 0, 0]} fill="var(--color-primary)" />
+				<Bar dataKey="count" radius={[4, 4, 0, 0]}>
+					{mostPlayedGames.map((entry, index) => (
+						<Cell key={`cell-${index}`} fill={entry.color} />
+					))}
+				</Bar>
 			</BarChart>
 		</ResponsiveContainer>
 	</ChartCard>
