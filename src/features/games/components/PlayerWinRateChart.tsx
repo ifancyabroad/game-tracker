@@ -24,7 +24,10 @@ export const PlayerWinRateChart: React.FC<PlayerWinRateChartProps> = ({ playerSt
 						tickFormatter={(v) => `${Math.round(v * 100)}%`}
 						tick={{ fill: "#9CA3AF", fontSize: 12 }}
 					/>
-					<Tooltip content={<ChartTooltip formatter={(v) => `${Math.round(v * 100)}%`} />} />
+					<Tooltip
+						cursor={{ fill: "rgba(255,255,255,0.05)" }}
+						content={<ChartTooltip formatter={(v) => `${Math.round(v * 100)}%`} />}
+					/>
 					<Bar dataKey="winRate">
 						{chartData.map((entry, index) => (
 							<Cell key={`cell-${index}`} fill={entry.color} />
