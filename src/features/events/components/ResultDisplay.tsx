@@ -50,8 +50,8 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({
 	};
 
 	return (
-		<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)] p-4 shadow-sm">
-			<div className="mb-3 flex items-start justify-between gap-2">
+		<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)] p-3 shadow-sm sm:p-4">
+			<div className="mb-2.5 flex items-start justify-between gap-2 sm:mb-3">
 				<div className="flex min-w-0 items-center gap-2">
 					<div className="flex h-9 w-9 items-center justify-center rounded-xl bg-black/30">
 						{game && <GameTypeIcon type={game.type} className="h-5 w-5 text-[var(--color-primary)]" />}

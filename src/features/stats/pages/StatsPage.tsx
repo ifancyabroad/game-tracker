@@ -15,12 +15,12 @@ export const StatsPage: React.FC = () => {
 
 	return (
 		<div className="mx-auto max-w-6xl">
-			<div className="mb-4 flex items-center gap-2 text-white">
+			<div className="mb-3 flex items-center gap-2 text-white sm:mb-4">
 				<BarChart3 className="h-5 w-5 text-[var(--color-primary)]" />
 				<h1 className="text-base font-semibold">Stats</h1>
 			</div>
 
-			<div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+			<div className="mb-4 grid gap-3 sm:mb-6 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
 				<StatCard
 					title="Games Played"
 					value={totalGamesPlayed.toString()}
@@ -38,7 +38,7 @@ export const StatsPage: React.FC = () => {
 				/>
 			</div>
 
-			<div className="grid gap-6 md:grid-cols-2">
+			<div className="grid gap-4 sm:gap-6 md:grid-cols-2">
 				<PlayerWinsOverTimeChart playerTrends={playerWinsOverTime} />
 				<PlayerWinRateChart overallStats={data} />
 				<MostPlayedGamesChart mostPlayedGames={mostPlayedGames} />

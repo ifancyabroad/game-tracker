@@ -30,7 +30,7 @@ export const GameCard: React.FC<IGameCardProps> = ({ game, canEdit, onEdit, onDe
 	return (
 		<Link
 			to={`/games/${game.id}`}
-			className="group relative flex items-center gap-4 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-4 shadow-sm transition-transform hover:-translate-y-0.5"
+			className="group relative flex items-center gap-3 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-3 shadow-sm transition-transform hover:-translate-y-0.5 sm:gap-4 sm:p-4"
 			aria-label={`View stats for ${game.name}`}
 		>
 			<div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-black/30">

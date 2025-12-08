@@ -33,11 +33,11 @@ export const Sidebar: React.FC = () => {
 			{isSidebarOpen && <div className="fixed inset-0 z-40 bg-black/50 sm:hidden" onClick={closeSidebar} />}
 
 			<aside
-				className={`fixed z-50 flex h-full w-56 flex-col border-r border-gray-700 bg-[var(--color-surface)] px-4 py-6 transition-transform sm:static sm:translate-x-0 ${
+				className={`fixed z-50 flex h-full w-56 flex-col border-r border-gray-700 bg-[var(--color-surface)] px-4 py-4 transition-transform sm:static sm:translate-x-0 sm:py-6 ${
 					isSidebarOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"
 				}`}
 			>
-				<div className="mb-6 flex items-center justify-between">
+				<div className="mb-4 flex items-center justify-between sm:mb-6">
 					<div className="flex items-center gap-3">
 						<div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--color-primary)] text-lg font-bold text-[var(--color-primary-contrast)]">
 							🎲

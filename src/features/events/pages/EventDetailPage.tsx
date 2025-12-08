@@ -132,7 +132,7 @@ export const EventDetailPage: React.FC = () => {
 
 	return (
 		<div className="mx-auto max-w-6xl">
-			<div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+			<div className="mb-3 flex flex-wrap items-center justify-between gap-3 sm:mb-4">
 				<div className="flex items-center gap-3">
 					<button
 						onClick={handleBack}
@@ -167,7 +167,7 @@ export const EventDetailPage: React.FC = () => {
 				)}
 			</div>
 
-			<div className="mb-6 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-4">
+			<div className="mb-4 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-3 sm:mb-6 sm:p-4">
 				<div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-200">
 					<div className="inline-flex items-center gap-2">
 						<CalendarDays size={16} />
@@ -223,7 +223,7 @@ export const EventDetailPage: React.FC = () => {
 			</div>
 
 			<div>
-				<div className="mb-3 flex items-center justify-between">
+				<div className="mb-2.5 flex items-center justify-between sm:mb-3">
 					<h2 className="text-base font-semibold text-white">Results</h2>
 					{user && (
 						<button
@@ -240,7 +240,7 @@ export const EventDetailPage: React.FC = () => {
 						No results added yet.
 					</div>
 				) : (
-					<div className="grid gap-4">
+					<div className="grid gap-3 sm:gap-4">
 						{eventResults.map((result) => (
 							<ResultDisplay
 								key={result.id}

@@ -28,7 +28,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, canEdit, onEdit,
 
 	return (
 		<Link to={`/players/${player.id}`} aria-label={`View stats for ${preferred}`}>
-			<div className="group relative flex items-center gap-4 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-4 shadow-sm transition-transform hover:-translate-y-0.5">
+			<div className="group relative flex items-center gap-3 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-3 shadow-sm transition-transform hover:-translate-y-0.5 sm:gap-4 sm:p-4">
 				<Avatar src={player.pictureUrl || undefined} name={preferred} size={48} />
 
 				<div className="min-w-0 flex-1">

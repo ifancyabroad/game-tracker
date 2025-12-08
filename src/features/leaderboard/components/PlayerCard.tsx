@@ -38,9 +38,9 @@ export const PlayerCard: React.FC<{
 
 			<Link
 				to={`/players/${id}`}
-				className={`group block w-full rounded-xl border border-gray-700 ${tintBg} p-3 text-left transition hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg)]`}
+				className={`group block w-full rounded-xl border border-gray-700 ${tintBg} p-2.5 text-left transition hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg)] sm:p-3`}
 			>
-				<div className="flex items-center gap-3">
+				<div className="flex items-center gap-2.5 sm:gap-3">
 					<Avatar src={pictureUrl || undefined} name={name} size={56} />
 
 					<div className="min-w-0 flex-1">

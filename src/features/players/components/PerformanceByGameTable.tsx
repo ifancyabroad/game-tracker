@@ -14,7 +14,7 @@ export const PerformanceByGameTable: React.FC<PerformanceByGameTableProps> = ({ 
 
 	return (
 		<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)]">
-			<div className="border-b border-gray-700 px-4 py-3">
+			<div className="border-b border-gray-700 px-3 py-2.5 sm:px-4 sm:py-3">
 				<h2 className="text-base font-semibold text-white">Performance by Game</h2>
 				<p className="text-xs text-gray-400">Top games by play count</p>
 			</div>
@@ -22,10 +22,10 @@ export const PerformanceByGameTable: React.FC<PerformanceByGameTableProps> = ({ 
 				<table className="w-full text-sm">
 					<thead className="bg-black/20 text-left text-gray-300">
 						<tr>
-							<th className="px-4 py-2">Game</th>
-							<th className="w-24 px-4 py-2 text-center">Games</th>
-							<th className="w-24 px-4 py-2 text-center">Wins</th>
-							<th className="w-24 px-4 py-2 text-center">Win %</th>
+							<th className="px-3 py-2 sm:px-4">Game</th>
+							<th className="w-20 px-2 py-2 text-center sm:w-24 sm:px-4">Games</th>
+							<th className="w-20 px-2 py-2 text-center sm:w-24 sm:px-4">Wins</th>
+							<th className="w-20 px-2 py-2 text-center sm:w-24 sm:px-4">Win %</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -39,10 +39,14 @@ export const PerformanceByGameTable: React.FC<PerformanceByGameTableProps> = ({ 
 									className="cursor-pointer border-b border-gray-700 last:border-b-0 hover:bg-white/5"
 									onClick={() => handleNavigateToGame(g.gameId)}
 								>
-									<td className="px-4 py-2 text-white">{g.name}</td>
-									<td className="px-4 py-2 text-center text-gray-200 tabular-nums">{g.games}</td>
-									<td className="px-4 py-2 text-center text-gray-200 tabular-nums">{g.wins}</td>
-									<td className="px-4 py-2 text-center text-gray-200 tabular-nums">
+									<td className="px-3 py-2 text-white sm:px-4">{g.name}</td>
+									<td className="px-2 py-2 text-center text-gray-200 tabular-nums sm:px-4">
+										{g.games}
+									</td>
+									<td className="px-2 py-2 text-center text-gray-200 tabular-nums sm:px-4">
+										{g.wins}
+									</td>
+									<td className="px-2 py-2 text-center text-gray-200 tabular-nums sm:px-4">
 										{Math.round(g.wr * 100)}%
 									</td>
 								</tr>

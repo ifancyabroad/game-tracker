@@ -60,7 +60,7 @@ export const EventsPage: React.FC = () => {
 
 	return (
 		<div className="mx-auto max-w-6xl">
-			<div className="mb-4 flex items-center justify-between gap-4">
+			<div className="mb-3 flex items-center justify-between gap-4 sm:mb-4">
 				<div className="flex items-center gap-2 text-white">
 					<CalendarDays className="h-5 w-5 text-[var(--color-primary)]" />
 					<h1 className="text-base font-semibold">Events</h1>
@@ -79,12 +79,12 @@ export const EventsPage: React.FC = () => {
 			</div>
 
 			{events.length === 0 ? (
-				<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)] p-8 text-center text-sm text-gray-400">
+				<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)] p-6 text-center text-sm text-gray-400 sm:p-8">
 					No events yet.{" "}
 					{user ? "Create your first event to start tracking results." : "Sign in to add events."}
 				</div>
 			) : (
-				<ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+				<ul className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
 					{events.map((event) => (
 						<li key={event.id} className="transition-transform hover:-translate-y-0.5">
 							<NavLink to={`/events/${event.id}`} className="block">
