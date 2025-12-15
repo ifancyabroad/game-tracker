@@ -34,17 +34,18 @@ export const GameCard: React.FC<IGameCardProps> = ({ game, canEdit, onEdit, onDe
 			aria-label={`View stats for ${game.name}`}
 		>
 			<div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-black/30">
-				<GameTypeIcon type={game.type} className="h-5 w-5" style={{ color: game.color }} />
+				<GameTypeIcon type={game.type} className="text-primary h-5 w-5" />
 				<span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--color-secondary)] text-[10px] font-bold text-[var(--color-secondary-contrast)]">
 					{game.points}
 				</span>
 			</div>{" "}
-			<div className="min-w-0">
+			<div className="min-w-0 flex-1">
 				<p className="truncate text-sm font-semibold text-white">{game.name}</p>
 				<p className="truncate text-xs text-gray-400">
 					{numOfPlays} {numOfPlays === 1 ? "play" : "plays"}
 				</p>
 			</div>
+			<div className="h-4 w-4 rounded-full border border-gray-700" style={{ backgroundColor: game.color }} />
 			{canEdit && (
 				<div className="ml-auto flex items-center gap-1 opacity-70 transition-opacity group-hover:opacity-100">
 					<button
