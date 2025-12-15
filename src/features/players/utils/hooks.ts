@@ -7,15 +7,15 @@ import {
 	type PlayerWithData,
 	computePlayerData,
 } from "./stats";
-import { useResults } from "features/events/context/ResultsContext";
 import { useGames } from "features/games/context/GamesContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useSortedResults } from "features/events/utils/hooks";
+import { useFilteredData } from "common/utils/hooks";
 import type { GameType } from "features/games/types";
 
 export function usePlayerData(gameType?: GameType): PlayerWithData[] {
 	const { players } = usePlayers();
-	const { results } = useResults();
+	const { results } = useFilteredData();
 	const { gameById } = useGames();
 	return useMemo(
 		() => computePlayerData(players, results, gameById, gameType),
@@ -45,7 +45,7 @@ export function usePlayerStreaks(playerId: string) {
 }
 
 export function useTopOpponents(playerId: string) {
-	const { results } = useResults();
+	const { results } = useFilteredData();
 	const { playerById } = usePlayers();
 	return useMemo(() => computeOpponentStats(results, playerById, playerId), [results, playerById, playerId]);
 }

@@ -5,6 +5,7 @@ import type { IPlayerResult, IResult } from "features/events/types";
 import type { IGame } from "features/games/types";
 import { Gamepad2, Target } from "lucide-react";
 import { getDisplayName } from "features/players/utils/helpers";
+import { Select } from "common/components/Select";
 
 interface ResultFormProps {
 	eventId: string;
@@ -130,26 +131,23 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 			<div>
 				<div className="flex items-center justify-between gap-4">
 					<div className="min-w-0 flex-1">
-						<label className="mb-1 block text-xs text-gray-400">Game</label>
-						<div className="relative">
-							<select
-								value={gameId}
-								onChange={(e) => setGameId(e.target.value)}
-								disabled={!filteredGames.length}
-								className={`${inputCls} w-full appearance-none bg-gray-800 pr-8 disabled:opacity-60`}
-							>
-								{!filteredGames.length ? (
-									<option value="">No games added to this event</option>
-								) : (
-									filteredGames.map((g) => (
-										<option key={g.id} value={g.id}>
-											{g.name}
-										</option>
-									))
-								)}
-							</select>
-							<Gamepad2 className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-[var(--color-primary)]" />
-						</div>
+						<Select
+							label="Game"
+							icon={Gamepad2}
+							value={gameId}
+							onChange={(e) => setGameId(e.target.value)}
+							disabled={!filteredGames.length}
+						>
+							{!filteredGames.length ? (
+								<option value="">No games added to this event</option>
+							) : (
+								filteredGames.map((g) => (
+									<option key={g.id} value={g.id}>
+										{g.name}
+									</option>
+								))
+							)}
+						</Select>
 					</div>
 
 					<div>

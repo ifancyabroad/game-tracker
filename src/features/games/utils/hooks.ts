@@ -1,17 +1,17 @@
 import { useMemo } from "react";
 import { getGameResults, aggregateGameStatsForPage, computeGameData, type GameWithData } from "./stats";
-import { useResults } from "features/events/context/ResultsContext";
 import { useGames } from "features/games/context/GamesContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useEvents } from "features/events/context/EventsContext";
 import { useSortedResults } from "features/events/utils/hooks";
+import { useFilteredData } from "common/utils/hooks";
 
 /**
  * Get all games with computed data
  */
 export function useGameData(): GameWithData[] {
 	const { games } = useGames();
-	const { results } = useResults();
+	const { results } = useFilteredData();
 	return useMemo(() => computeGameData(games, results), [games, results]);
 }
 
