@@ -5,6 +5,9 @@ interface IUIContext {
 	toggleSidebar: () => void;
 	openSidebar: () => void;
 	closeSidebar: () => void;
+	selectedYear: number | null;
+	setSelectedYear: (year: number | null) => void;
+	availableYears: number[];
 }
 
 export const UIContext = createContext<IUIContext | null>(null);

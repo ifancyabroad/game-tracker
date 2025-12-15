@@ -2,6 +2,7 @@ import { useModal } from "common/context/ModalContext";
 import { useEvents } from "features/events/context/EventsContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useGames } from "features/games/context/GamesContext";
+import { useFilteredData } from "common/utils/hooks";
 import { EventForm } from "features/events/components/EventForm";
 import { ConfirmDelete } from "common/components/ConfirmDelete";
 import type { IEvent } from "features/events/types";
@@ -11,7 +12,8 @@ import { useAuth } from "common/context/AuthContext";
 import { CalendarPlus, CalendarDays } from "lucide-react";
 
 export const EventsPage: React.FC = () => {
-	const { events, addEvent, editEvent, deleteEvent } = useEvents();
+	const { addEvent, editEvent, deleteEvent } = useEvents();
+	const { events } = useFilteredData();
 	const { players } = usePlayers();
 	const { games, gameById } = useGames();
 	const user = useAuth();

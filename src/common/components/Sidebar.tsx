@@ -1,8 +1,9 @@
 import { NavLink } from "react-router";
-import { Home, Users, Calendar, Gamepad2, BarChart, X, LogIn, LogOut } from "lucide-react";
+import { Home, Users, Calendar, Gamepad2, BarChart, X, LogIn, LogOut, CalendarRange } from "lucide-react";
 import { useUI } from "common/context/UIContext";
 import { useModal } from "common/context/ModalContext";
 import { LoginForm } from "common/components/LoginForm";
+import { Select } from "common/components/Select";
 import { useAuth } from "common/context/AuthContext";
 import { signOut } from "firebase/auth";
 import { auth } from "firebase";
@@ -16,7 +17,7 @@ const navItems = [
 ];
 
 export const Sidebar: React.FC = () => {
-	const { isSidebarOpen, closeSidebar } = useUI();
+	const { isSidebarOpen, closeSidebar, selectedYear, setSelectedYear, availableYears } = useUI();
 	const { openModal, closeModal } = useModal();
 	const user = useAuth();
 
@@ -55,6 +56,23 @@ export const Sidebar: React.FC = () => {
 						<X size={20} />
 					</button>
 				</div>
+
+				{availableYears.length > 0 && (
+					<div className="mb-4">
+						<Select
+							icon={CalendarRange}
+							value={selectedYear ?? "all"}
+							onChange={(e) => setSelectedYear(e.target.value === "all" ? null : Number(e.target.value))}
+						>
+							<option value="all">All Years</option>
+							{availableYears.map((year) => (
+								<option key={year} value={year}>
+									{year}
+								</option>
+							))}
+						</Select>
+					</div>
+				)}
 
 				<nav className="flex flex-col gap-1">
 					{navItems.map(({ to, label, icon: Icon }) => (
