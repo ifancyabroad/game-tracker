@@ -16,3 +16,9 @@ export function sortResults(results: IResult[], eventById: Map<string, IEvent>):
 		return 0;
 	});
 }
+
+export function sortEvents(events: IEvent[]): IEvent[] {
+	return events.slice().sort((a, b) => {
+		return new Date(b.date).getTime() - new Date(a.date).getTime();
+	});
+}
