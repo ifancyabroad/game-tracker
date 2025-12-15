@@ -15,6 +15,7 @@ export const PlayFrequencyChart: React.FC<PlayFrequencyChartProps> = ({ game, pl
 				<CartesianGrid stroke="rgba(148,163,184,0.2)" vertical={false} />
 				<XAxis dataKey="date" tick={{ fill: "#9CA3AF", fontSize: 12 }} angle={-15} dy={10} />
 				<YAxis
+					allowDecimals={false}
 					tick={{ fill: "#9CA3AF", fontSize: 12 }}
 					label={{
 						value: "Plays",

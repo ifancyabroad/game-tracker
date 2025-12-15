@@ -69,16 +69,12 @@ export function aggregateGameStatsForPage(
 	// Track rank distribution
 	const rankCounts: Record<number, number> = {};
 
-	// Track play frequency by date
-	const datePlayCounts: Record<string, number> = {};
+	// Track play frequency by date - store counts by event ID to avoid duplicate dates
+	const eventPlayCounts: Record<string, number> = {};
 
 	gameResults.forEach((result) => {
-		// Get event date for frequency chart
-		const event = eventById.get(result.eventId);
-		if (event) {
-			const dateKey = format(parseISO(event.date), "MMM d");
-			datePlayCounts[dateKey] = (datePlayCounts[dateKey] || 0) + 1;
-		}
+		// Track by event ID (each result represents one play of the game in that event)
+		eventPlayCounts[result.eventId] = (eventPlayCounts[result.eventId] || 0) + 1;
 
 		result.playerResults.forEach((pr) => {
 			// Initialize player stats
@@ -140,10 +136,27 @@ export function aggregateGameStatsForPage(
 	// Find bottom player by win rate (min 3 games)
 	const bottomPlayer = sortedByWinRate[sortedByWinRate.length - 1];
 
-	// Convert play frequency to series
-	const playFrequencySeries = Object.entries(datePlayCounts)
-		.map(([date, plays]) => ({ date, plays }))
-		.slice(-20); // Last 20 dates
+	// Get all events with this game, sorted by date
+	const eventsWithGame = Array.from(eventById.values())
+		.filter((event) => event.gameIds?.includes(gameResults[0]?.gameId))
+		.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+	// If we have events with this game, create a complete series from first to last event
+	let playFrequencySeries: Array<{ date: string; plays: number }> = [];
+	if (eventsWithGame.length > 0) {
+		// Get all unique events from the database that fall within or after the first play
+		const firstGameEventDate = new Date(eventsWithGame[0].date);
+		const allEventsFromFirstPlay = Array.from(eventById.values())
+			.filter((event) => new Date(event.date) >= firstGameEventDate)
+			.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+		// Build series with zeros for events where game wasn't played
+		playFrequencySeries = allEventsFromFirstPlay.map((event) => {
+			const dateKey = format(parseISO(event.date), "MMM d");
+			const plays = eventPlayCounts[event.id] || 0;
+			return { date: dateKey, plays };
+		});
+	}
 
 	// Convert rank distribution to array
 	const rankDistribution = Object.entries(rankCounts)
