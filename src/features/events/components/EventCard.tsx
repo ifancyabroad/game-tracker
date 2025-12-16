@@ -1,7 +1,9 @@
-import { CalendarDays, MapPin, Edit, Trash2, Users, Gamepad2 } from "lucide-react";
+import { CalendarDays, MapPin, Edit, Trash2, Gamepad2 } from "lucide-react";
 import type { IEvent } from "features/events/types";
 import type { IPlayer } from "features/players/types";
 import type { IGame } from "features/games/types";
+import { Avatar } from "common/components/Avatar";
+import { getDisplayName } from "features/players/utils/helpers";
 
 interface IEventCardProps {
 	event: IEvent;
@@ -12,48 +14,36 @@ interface IEventCardProps {
 	gameById: Map<string, IGame>;
 }
 
-export const EventCard: React.FC<IEventCardProps> = ({ event, canEdit, onEdit, onDelete, gameById }) => {
+export const EventCard: React.FC<IEventCardProps> = ({ event, canEdit, onEdit, onDelete, players, gameById }) => {
 	const date = new Date(event.date);
 	const dateLabel = isNaN(date.getTime())
 		? event.date
 		: date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
 
-	const gameNames = event.gameIds.map((id) => gameById.get(id)?.name).filter(Boolean) as string[];
+	const eventPlayers = event.playerIds?.map((id) => players.find((p) => p.id === id)).filter(Boolean) as IPlayer[];
 
-	const playerCount = event.playerIds?.length ?? 0;
-	const gameCount = event.gameIds?.length ?? 0;
+	const games = event.gameIds.map((id) => gameById.get(id)).filter(Boolean) as IGame[];
+
+	const playerCount = eventPlayers.length;
 
 	return (
-		<div className="group relative rounded-xl border border-gray-700 bg-[var(--color-surface)] p-3 shadow-sm transition-transform hover:-translate-y-0.5 sm:p-4">
-			<div className="flex items-start gap-3">
-				<div className="mt-0.5 flex h-10 w-10 items-center justify-center rounded-xl bg-black/30">
-					<CalendarDays className="h-5 w-5 text-gray-200" />
-				</div>
+		<div className="group relative cursor-pointer rounded-xl border border-gray-700 bg-[var(--color-surface)] p-3 shadow-sm transition-all hover:-translate-y-0.5 hover:border-gray-600 hover:shadow-md sm:p-4">
+			{/* Header: Location & Date */}
+			<div className="mb-2 flex items-start justify-between gap-2 sm:mb-3">
 				<div className="min-w-0 flex-1">
-					<div className="flex flex-wrap items-center gap-2">
-						<div className="inline-flex items-center gap-1 text-sm font-semibold text-white">
-							<MapPin className="h-4 w-4 text-gray-300" />
-							<span className="truncate">{event.location}</span>
-						</div>
-						<span className="text-xs text-gray-400">• {dateLabel}</span>
+					<div className="mb-0.5 flex items-center gap-1.5 sm:mb-1">
+						<MapPin className="h-3.5 w-3.5 flex-shrink-0 text-[var(--color-primary)] sm:h-4 sm:w-4" />
+						<h3 className="truncate text-sm font-semibold text-white sm:text-base">{event.location}</h3>
 					</div>
-
-					{gameNames.length > 0 && (
-						<p className="mt-1 line-clamp-1 text-xs text-gray-300">{gameNames.join(", ")}</p>
-					)}
-
-					<div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
-						<span className="inline-flex items-center gap-1 rounded-full border border-gray-700 bg-black/20 px-2 py-1 text-gray-300">
-							<Gamepad2 className="h-3.5 w-3.5" /> {gameCount} {gameCount === 1 ? "game" : "games"}
-						</span>
-						<span className="inline-flex items-center gap-1 rounded-full border border-gray-700 bg-black/20 px-2 py-1 text-gray-300">
-							<Users className="h-3.5 w-3.5" /> {playerCount} {playerCount === 1 ? "player" : "players"}
-						</span>
+					<div className="flex items-center gap-1.5 text-xs text-gray-400 sm:text-sm">
+						<CalendarDays className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+						<time>{dateLabel}</time>
 					</div>
 				</div>
 
+				{/* Action Buttons */}
 				{canEdit && (
-					<div className="ml-2 flex items-center gap-1 opacity-70 transition-opacity group-hover:opacity-100">
+					<div className="flex items-center gap-1 opacity-70 transition-opacity group-hover:opacity-100">
 						<button
 							onClick={(e) => {
 								e.preventDefault();
@@ -79,6 +69,46 @@ export const EventCard: React.FC<IEventCardProps> = ({ event, canEdit, onEdit, o
 					</div>
 				)}
 			</div>
+
+			{/* Games Section */}
+			{games.length > 0 ? (
+				<div className="mb-2 flex flex-wrap items-center gap-1 sm:mb-3 sm:gap-1.5">
+					{games.map((game) => (
+						<span
+							key={game.id}
+							className="inline-flex items-center gap-1 rounded-md border border-gray-700 bg-black/30 px-1.5 py-0.5 text-xs font-medium text-gray-200 sm:px-2 sm:py-1"
+						>
+							<Gamepad2 className="h-3 w-3" />
+							{game.name}
+						</span>
+					))}
+				</div>
+			) : (
+				<div className="mb-2 text-xs text-gray-500 sm:mb-3">No games added</div>
+			)}
+
+			{/* Players Section */}
+			{eventPlayers.length > 0 ? (
+				<div className="flex items-center gap-1.5 sm:gap-2">
+					<div className="flex -space-x-1.5 sm:-space-x-2">
+						{eventPlayers.map((player) => (
+							<div
+								key={player.id}
+								className="ring-2 ring-[var(--color-surface)]"
+								style={{ borderRadius: "50%" }}
+								title={getDisplayName(player)}
+							>
+								<Avatar src={player.pictureUrl ?? undefined} name={getDisplayName(player)} size={24} />
+							</div>
+						))}
+					</div>
+					<span className="text-xs text-gray-400">
+						{playerCount} {playerCount === 1 ? "player" : "players"}
+					</span>
+				</div>
+			) : (
+				<div className="text-xs text-gray-500">No players added</div>
+			)}
 		</div>
 	);
 };
