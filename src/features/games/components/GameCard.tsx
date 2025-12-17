@@ -30,22 +30,25 @@ export const GameCard: React.FC<IGameCardProps> = ({ game, canEdit, onEdit, onDe
 	return (
 		<Link
 			to={`/games/${game.id}`}
-			className="group relative flex items-center gap-3 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-3 shadow-sm transition-transform hover:-translate-y-0.5 sm:gap-4 sm:p-4"
+			className="group relative flex items-center gap-3 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-3 shadow-sm transition-transform hover:-translate-y-0.5 sm:p-4"
 			aria-label={`View stats for ${game.name}`}
 		>
-			<div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-black/30">
-				<GameTypeIcon type={game.type} className="text-primary h-5 w-5" />
+			<div className="relative flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-black/30">
+				<GameTypeIcon type={game.type} className="h-5 w-5 text-[var(--color-primary)]" />
 				<span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--color-secondary)] text-[10px] font-bold text-[var(--color-secondary-contrast)]">
 					{game.points}
 				</span>
-			</div>{" "}
+			</div>
 			<div className="min-w-0 flex-1">
 				<p className="truncate text-sm font-semibold text-white">{game.name}</p>
 				<p className="truncate text-xs text-gray-400">
 					{numOfPlays} {numOfPlays === 1 ? "play" : "plays"}
 				</p>
 			</div>
-			<div className="h-4 w-4 rounded-full border border-gray-700" style={{ backgroundColor: game.color }} />
+			<div
+				className="h-4 w-4 flex-shrink-0 rounded-full border border-gray-700"
+				style={{ backgroundColor: game.color }}
+			/>
 			{canEdit && (
 				<div className="ml-auto flex items-center gap-1 opacity-70 transition-opacity group-hover:opacity-100">
 					<button
