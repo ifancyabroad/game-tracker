@@ -27,16 +27,16 @@ export const EventCard: React.FC<IEventCardProps> = ({ event, canEdit, onEdit, o
 	const playerCount = eventPlayers.length;
 
 	return (
-		<div className="group relative cursor-pointer rounded-xl border border-gray-700 bg-[var(--color-surface)] p-3 shadow-sm transition-all hover:-translate-y-0.5 hover:border-gray-600 hover:shadow-md sm:p-4">
+		<div className="group relative cursor-pointer rounded-xl border border-gray-700 bg-[var(--color-surface)] p-3 shadow-sm transition-transform hover:-translate-y-0.5 sm:p-4">
 			{/* Header: Location & Date */}
 			<div className="mb-2 flex items-start justify-between gap-2 sm:mb-3">
 				<div className="min-w-0 flex-1">
 					<div className="mb-0.5 flex items-center gap-1.5 sm:mb-1">
-						<MapPin className="h-3.5 w-3.5 flex-shrink-0 text-[var(--color-primary)] sm:h-4 sm:w-4" />
-						<h3 className="truncate text-sm font-semibold text-white sm:text-base">{event.location}</h3>
+						<MapPin className="h-4 w-4 flex-shrink-0 text-[var(--color-primary)]" />
+						<h3 className="truncate text-sm font-semibold text-white">{event.location}</h3>
 					</div>
-					<div className="flex items-center gap-1.5 text-xs text-gray-400 sm:text-sm">
-						<CalendarDays className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+					<div className="flex items-center gap-1.5 text-xs text-gray-400">
+						<CalendarDays className="h-3.5 w-3.5" />
 						<time>{dateLabel}</time>
 					</div>
 				</div>
@@ -72,11 +72,11 @@ export const EventCard: React.FC<IEventCardProps> = ({ event, canEdit, onEdit, o
 
 			{/* Games Section */}
 			{games.length > 0 ? (
-				<div className="mb-2 flex flex-wrap items-center gap-1 sm:mb-3 sm:gap-1.5">
+				<div className="mb-2 flex flex-wrap items-center gap-1.5 sm:mb-3">
 					{games.map((game) => (
 						<span
 							key={game.id}
-							className="inline-flex items-center gap-1 rounded-md border border-gray-700 bg-black/30 px-1.5 py-0.5 text-xs font-medium text-gray-200 sm:px-2 sm:py-1"
+							className="inline-flex items-center gap-1 rounded-md border border-gray-700 bg-black/30 px-2 py-1 text-xs font-medium text-gray-200"
 						>
 							<Gamepad2 className="h-3 w-3" />
 							{game.name}
@@ -89,8 +89,8 @@ export const EventCard: React.FC<IEventCardProps> = ({ event, canEdit, onEdit, o
 
 			{/* Players Section */}
 			{eventPlayers.length > 0 ? (
-				<div className="flex items-center gap-1.5 sm:gap-2">
-					<div className="flex -space-x-1.5 sm:-space-x-2">
+				<div className="flex items-center gap-2">
+					<div className="flex -space-x-2">
 						{eventPlayers.map((player) => (
 							<div
 								key={player.id}
