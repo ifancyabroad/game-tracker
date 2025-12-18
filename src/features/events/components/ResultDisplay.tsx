@@ -2,7 +2,7 @@ import { Award, Edit, Frown, Hash, Trash2 } from "lucide-react";
 import type { IGame } from "features/games/types";
 import type { IPlayer } from "features/players/types";
 import type { IResult, IPlayerResult } from "features/events/types";
-import { Avatar } from "common/components/Avatar";
+import { Avatar, IconButton, Card } from "common/components";
 import { getDisplayName, getFullName } from "features/players/utils/helpers";
 import { useNavigate, Link } from "react-router";
 import { GameTypeIcon } from "features/games/components/GameTypeIcon";
@@ -50,7 +50,7 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({
 	};
 
 	return (
-		<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)] p-3 shadow-sm sm:p-4">
+		<Card className="p-3 sm:p-4">
 			<div className="mb-2.5 flex items-start justify-between gap-2 sm:mb-3">
 				<div className="flex min-w-0 items-center gap-2">
 					<div className="flex h-9 w-9 items-center justify-center rounded-xl bg-black/30">
@@ -75,20 +75,13 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({
 
 				{canEdit && (
 					<div className="flex items-center gap-1">
-						<button
-							onClick={() => onEdit(result)}
-							className="rounded-lg border border-gray-700 bg-black/20 p-2 text-gray-200 hover:bg-[var(--color-primary)]/10"
-							title="Edit Result"
-						>
-							<Edit size={16} />
-						</button>
-						<button
+						<IconButton onClick={() => onEdit(result)} icon={<Edit />} title="Edit Result" />
+						<IconButton
 							onClick={() => onDelete(result.id)}
-							className="rounded-lg border border-gray-700 bg-black/20 p-2 text-red-300 hover:bg-red-500/20"
+							icon={<Trash2 />}
+							variant="danger"
 							title="Delete Result"
-						>
-							<Trash2 size={16} />
-						</button>
+						/>
 					</div>
 				)}
 			</div>
@@ -177,6 +170,6 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({
 					</tbody>
 				</table>
 			</div>
-		</div>
+		</Card>
 	);
 };

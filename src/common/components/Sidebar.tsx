@@ -2,8 +2,7 @@ import { NavLink } from "react-router";
 import { Home, Users, Calendar, Gamepad2, BarChart, X, LogIn, LogOut, CalendarRange } from "lucide-react";
 import { useUI } from "common/context/UIContext";
 import { useModal } from "common/context/ModalContext";
-import { LoginForm } from "common/components/LoginForm";
-import { Select } from "common/components/Select";
+import { LoginForm, Select, Button } from "common/components";
 import { useAuth } from "common/context/AuthContext";
 import { signOut } from "firebase/auth";
 import { auth } from "firebase";
@@ -96,21 +95,15 @@ export const Sidebar: React.FC = () => {
 
 				<div className="mt-auto flex flex-col gap-2 pt-6">
 					{user ? (
-						<button
-							onClick={handleLogoutClick}
-							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-black/20 px-3 py-2 text-sm text-gray-200 hover:bg-[var(--color-primary)]/10 focus:ring-2 focus:ring-white/20 focus:outline-none"
-						>
+						<Button onClick={handleLogoutClick} variant="secondary" size="md">
 							<LogOut size={16} />
 							Logout
-						</button>
+						</Button>
 					) : (
-						<button
-							onClick={handleLoginClick}
-							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-black/20 px-3 py-2 text-sm text-gray-200 hover:bg-[var(--color-primary)]/10 focus:ring-2 focus:ring-white/20 focus:outline-none"
-						>
+						<Button onClick={handleLoginClick} variant="secondary" size="md">
 							<LogIn size={16} />
 							Login
-						</button>
+						</Button>
 					)}
 				</div>
 			</aside>

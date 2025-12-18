@@ -1,6 +1,6 @@
 import type { TopOpponent } from "features/players/utils/stats";
 import { useNavigate } from "react-router";
-
+import { Card } from "common/components";
 interface HeadToHeadTableProps {
 	topOpponents: TopOpponent[];
 }
@@ -13,7 +13,7 @@ export const HeadToHeadTable: React.FC<HeadToHeadTableProps> = ({ topOpponents }
 	};
 
 	return (
-		<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)]">
+		<Card className="p-0">
 			<div className="border-b border-gray-700 px-3 py-2.5 sm:px-4 sm:py-3">
 				<h2 className="text-base font-semibold text-white">Head-to-Head (Top 5)</h2>
 				<p className="text-xs text-gray-400">Most common opponents</p>
@@ -58,6 +58,6 @@ export const HeadToHeadTable: React.FC<HeadToHeadTableProps> = ({ topOpponents }
 					</tbody>
 				</table>
 			</div>
-		</div>
+		</Card>
 	);
 };

@@ -4,6 +4,7 @@ import type { IPlayer } from "features/players/types";
 import type { IGame } from "features/games/types";
 import { CalendarDays, MapPin, Users, Gamepad2 } from "lucide-react";
 import { getDisplayName, getFullName } from "features/players/utils/helpers";
+import { Input, Label, Button, FormHeader, Chip } from "common/components";
 
 interface IEventFormProps {
 	initialData?: IEvent;
@@ -26,85 +27,53 @@ export const EventForm: React.FC<IEventFormProps> = ({ initialData, players, gam
 		onSubmit({ location: location.trim(), date, playerIds: selectedPlayers, gameIds: selectedGames });
 	};
 
-	const inputCls =
-		"w-full rounded-lg border border-gray-700 bg-black/20 px-3 py-2 text-sm text-[var(--color-text)] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent";
-	const chipBase = "inline-flex items-center gap-2 rounded-full border px-2 py-1 text-xs transition-colors";
-
 	return (
 		<form onSubmit={handleSubmit} className="m-0 flex flex-col gap-4 p-0">
-			<div className="flex items-center gap-2 text-gray-300">
-				<MapPin className="h-4 w-4 text-[var(--color-primary)]" />
-				<h3 className="text-sm font-semibold text-white">{initialData ? "Edit Event" : "Add Event"}</h3>
+			<FormHeader icon={<MapPin />} title={initialData ? "Edit Event" : "Add Event"} />
+
+			<div>
+				<Label>Location</Label>
+				<Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Location" />
 			</div>
 
 			<div>
-				<label className="mb-1 block text-xs text-gray-400">Location</label>
-				<input
-					value={location}
-					onChange={(e) => setLocation(e.target.value)}
-					placeholder="Location"
-					className={inputCls}
-				/>
+				<Label>Date</Label>
+				<Input type="date" value={date} onChange={(e) => setDate(e.target.value)} icon={<CalendarDays />} />
 			</div>
 
 			<div>
-				<label className="mb-1 block text-xs text-gray-400">Date</label>
-				<div className="relative">
-					<input type="date" value={date} onChange={(e) => setDate(e.target.value)} className={inputCls} />
-					<CalendarDays className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-[var(--color-primary)]" />
-				</div>
-			</div>
-
-			<div>
-				<label className="mb-1 block text-xs text-gray-400">Players</label>
+				<Label>Players</Label>
 				<div className="flex flex-wrap gap-2">
-					{players.map((p) => {
-						const id = p.id;
-						const active = selectedPlayers.includes(id);
-						return (
-							<button
-								type="button"
-								key={id}
-								onClick={() => setSelectedPlayers((prev) => toggle(prev, id))}
-								className={`${chipBase} ${active ? "border-[var(--color-primary)]/50 bg-[var(--color-primary)]/10 text-[var(--color-primary)]" : "border-gray-700 bg-black/20 text-gray-300 hover:border-[var(--color-primary)]/40 hover:bg-white/5"}`}
-								title={getFullName(p)}
-							>
-								<Users className="h-3.5 w-3.5" />
-								<span className="max-w-[10rem] truncate">{getDisplayName(p)}</span>
-							</button>
-						);
-					})}
+					{players.map((p) => (
+						<Chip
+							key={p.id}
+							active={selectedPlayers.includes(p.id)}
+							onClick={() => setSelectedPlayers((prev) => toggle(prev, p.id))}
+							icon={<Users />}
+							label={getDisplayName(p)}
+							title={getFullName(p)}
+						/>
+					))}
 				</div>
 			</div>
 
 			<div>
-				<label className="mb-1 block text-xs text-gray-400">Games</label>
+				<Label>Games</Label>
 				<div className="flex flex-wrap gap-2">
-					{games.map((g) => {
-						const id = g.id;
-						const active = selectedGames.includes(id);
-						return (
-							<button
-								type="button"
-								key={id}
-								onClick={() => setSelectedGames((prev) => toggle(prev, id))}
-								className={`${chipBase} ${active ? "border-[var(--color-primary)]/50 bg-[var(--color-primary)]/10 text-[var(--color-primary)]" : "border-gray-700 bg-black/20 text-gray-300 hover:border-[var(--color-primary)]/40 hover:bg-white/5"}`}
-								title={g.name}
-							>
-								<Gamepad2 className="h-3.5 w-3.5" />
-								<span className="max-w-[10rem] truncate">{g.name}</span>
-							</button>
-						);
-					})}
+					{games.map((g) => (
+						<Chip
+							key={g.id}
+							active={selectedGames.includes(g.id)}
+							onClick={() => setSelectedGames((prev) => toggle(prev, g.id))}
+							icon={<Gamepad2 />}
+							label={g.name}
+							title={g.name}
+						/>
+					))}
 				</div>
 			</div>
 
-			<button
-				type="submit"
-				className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-[var(--color-primary-contrast)] transition-opacity hover:opacity-90"
-			>
-				{initialData ? "Save Changes" : "Add Event"}
-			</button>
+			<Button type="submit">{initialData ? "Save Changes" : "Add Event"}</Button>
 		</form>
 	);
 };

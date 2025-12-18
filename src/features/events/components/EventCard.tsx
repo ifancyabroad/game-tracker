@@ -2,7 +2,7 @@ import { CalendarDays, MapPin, Edit, Trash2, Gamepad2 } from "lucide-react";
 import type { IEvent } from "features/events/types";
 import type { IPlayer } from "features/players/types";
 import type { IGame } from "features/games/types";
-import { Avatar } from "common/components/Avatar";
+import { Avatar, IconButton, Card } from "common/components";
 import { getDisplayName } from "features/players/utils/helpers";
 
 interface IEventCardProps {
@@ -27,7 +27,7 @@ export const EventCard: React.FC<IEventCardProps> = ({ event, canEdit, onEdit, o
 	const playerCount = eventPlayers.length;
 
 	return (
-		<div className="group relative cursor-pointer rounded-xl border border-gray-700 bg-[var(--color-surface)] p-3 shadow-sm transition-transform hover:-translate-y-0.5 sm:p-4">
+		<Card variant="interactive" className="group relative cursor-pointer p-3 sm:p-4">
 			{/* Header: Location & Date */}
 			<div className="mb-2 flex items-start justify-between gap-2 sm:mb-3">
 				<div className="min-w-0 flex-1">
@@ -44,28 +44,25 @@ export const EventCard: React.FC<IEventCardProps> = ({ event, canEdit, onEdit, o
 				{/* Action Buttons */}
 				{canEdit && (
 					<div className="flex items-center gap-1 opacity-70 transition-opacity group-hover:opacity-100">
-						<button
+						<IconButton
 							onClick={(e) => {
 								e.preventDefault();
 								e.stopPropagation();
 								onEdit?.(event);
 							}}
+							icon={<Edit />}
 							title="Edit"
-							className="rounded-lg border border-gray-700 bg-black/20 p-2 text-gray-200 hover:bg-white/10"
-						>
-							<Edit size={16} />
-						</button>
-						<button
+						/>
+						<IconButton
 							onClick={(e) => {
 								e.preventDefault();
 								e.stopPropagation();
 								onDelete?.(event.id);
 							}}
+							icon={<Trash2 />}
+							variant="danger"
 							title="Delete"
-							className="rounded-lg border border-gray-700 bg-black/20 p-2 text-red-300 hover:bg-red-500/20"
-						>
-							<Trash2 size={16} />
-						</button>
+						/>
 					</div>
 				)}
 			</div>
@@ -109,6 +106,6 @@ export const EventCard: React.FC<IEventCardProps> = ({ event, canEdit, onEdit, o
 			) : (
 				<div className="text-xs text-gray-500">No players added</div>
 			)}
-		</div>
+		</Card>
 	);
 };

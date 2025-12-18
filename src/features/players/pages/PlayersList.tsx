@@ -3,7 +3,7 @@ import { usePlayers } from "features/players/context/PlayersContext";
 import { PlayerCard } from "features/players/components/PlayerCard";
 import { PlayerForm } from "features/players/components/PlayerForm";
 import type { IPlayer } from "features/players/types";
-import { ConfirmDelete } from "common/components/ConfirmDelete";
+import { ConfirmDelete, Button, PageHeader, EmptyState } from "common/components";
 import { useAuth } from "common/context/AuthContext";
 import { Users, Plus } from "lucide-react";
 import { getDisplayName } from "features/players/utils/helpers";
@@ -52,28 +52,23 @@ const PlayersList: React.FC = () => {
 
 	return (
 		<div className="mx-auto max-w-6xl">
-			<div className="mb-3 flex items-center justify-between gap-4 sm:mb-4">
-				<div className="flex items-center gap-2 text-white">
-					<Users className="h-5 w-5 text-[var(--color-primary)]" />
-					<h1 className="text-base font-semibold">Players</h1>
-					<span className="rounded-full border border-gray-700 px-2 py-0.5 text-xs text-gray-300">
-						{players.length}
-					</span>
-				</div>
-				{user && (
-					<button
-						onClick={handleAdd}
-						className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-[var(--color-primary)]/10"
-					>
-						<Plus className="h-4 w-4" /> Add Player
-					</button>
-				)}
-			</div>
+			<PageHeader
+				icon={<Users />}
+				title="Players"
+				count={players.length}
+				action={
+					user ? (
+						<Button onClick={handleAdd} variant="secondary" size="md">
+							<Plus className="h-4 w-4" /> Add Player
+						</Button>
+					) : undefined
+				}
+			/>
 
 			{players.length === 0 ? (
-				<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)] p-6 text-center text-sm text-gray-400 sm:p-8">
+				<EmptyState>
 					No players yet. {user ? "Add your first player to get started." : "Sign in to add players."}
-				</div>
+				</EmptyState>
 			) : (
 				<ul className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
 					{players.map((player) => (

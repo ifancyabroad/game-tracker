@@ -8,8 +8,7 @@ import { GamesProvider } from "features/games/context/GamesProvider";
 import { EventsProvider } from "features/events/context/EventsProvider";
 import { ResultsProvider } from "features/events/context/ResultsProvider";
 import { BrowserRouter, Route, Routes } from "react-router";
-import { AppLayout } from "common/components/AppLayout";
-import { Modal } from "common/components/Modal";
+import { AppLayout, Modal, ReadyGate } from "common/components";
 import HomePage from "features/leaderboard/pages/HomePage";
 import PlayersList from "features/players/pages/PlayersList";
 import PlayerStatsPage from "features/players/pages/PlayerStatsPage";
@@ -19,7 +18,6 @@ import { EventsPage } from "features/events/pages/EventsPage";
 import { EventDetailPage } from "features/events/pages/EventDetailPage";
 import { UIProvider } from "common/context/UIProvider";
 import { StatsPage } from "features/stats/pages/StatsPage";
-import { ReadyGate } from "common/components/ReadyGate";
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>

@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import type { PlayerWithData } from "features/players/utils/stats";
-import { Avatar } from "common/components/Avatar";
+import { Avatar } from "common/components";
 
 const getTintBg = (rank: number) => {
 	if (rank === 1) return "bg-yellow-500/10";

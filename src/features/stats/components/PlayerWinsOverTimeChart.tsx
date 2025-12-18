@@ -1,6 +1,5 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from "recharts";
-import { ChartCard } from "common/components/ChartCard";
-import { ChartTooltip } from "common/components/ChartTooltip";
+import { ChartCard, ChartTooltip } from "common/components";
 import type { TimeSeriesData } from "features/stats/utils/stats";
 import type { PlayerWithData } from "features/players/utils/stats";
 

@@ -1,6 +1,6 @@
 import type { PlayerGameStats } from "features/games/utils/stats";
 import { useNavigate } from "react-router";
-
+import { Card } from "common/components";
 interface TopPlayersTableProps {
 	playerStats: PlayerGameStats[];
 }
@@ -13,7 +13,7 @@ export const TopPlayersTable: React.FC<TopPlayersTableProps> = ({ playerStats })
 	};
 
 	return (
-		<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)]">
+		<Card className="p-0">
 			<div className="border-b border-gray-700 px-3 py-2.5 sm:px-4 sm:py-3">
 				<h2 className="text-base font-semibold text-white">Top Players</h2>
 				<p className="text-xs text-gray-400">Top 10 players by number of games played</p>
@@ -62,6 +62,6 @@ export const TopPlayersTable: React.FC<TopPlayersTableProps> = ({ playerStats })
 					</tbody>
 				</table>
 			</div>
-		</div>
+		</Card>
 	);
 };

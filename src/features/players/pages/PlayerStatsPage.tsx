@@ -1,9 +1,7 @@
 import React from "react";
 import { useParams, Link } from "react-router";
-import { Avatar } from "common/components/Avatar";
+import { Avatar, Card, KpiCard, HighlightCard } from "common/components";
 import { ArrowLeft, Award, Gamepad2, ListOrdered, Percent, Star, TrendingDown, TrendingUp } from "lucide-react";
-import { KpiCard } from "common/components/KpiCard";
-import { HighlightCard } from "common/components/HighlightCard";
 import { formatPct } from "common/utils/helpers";
 import { usePlayerDataById } from "features/players/utils/hooks";
 import { usePlayerPageStats, usePlayerStreaks, useTopOpponents } from "features/players/utils/hooks";
@@ -87,7 +85,7 @@ export const PlayerStatsPage: React.FC = () => {
 				</Link>
 			</div>
 
-			<div className="flex flex-col gap-3 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-3 sm:flex-row sm:items-center sm:gap-4 sm:p-4">
+			<Card className="flex flex-col gap-3 p-3 sm:flex-row sm:items-center sm:gap-4 sm:p-4">
 				<div className="flex items-center gap-4">
 					<Avatar src={player.pictureUrl || undefined} name={player.data.name} size={56} />
 					<div className="min-w-0">
@@ -129,7 +127,7 @@ export const PlayerStatsPage: React.FC = () => {
 						value={`${longestLossStreak}`}
 					/>
 				</div>
-			</div>
+			</Card>
 
 			<div className="grid gap-4 sm:grid-cols-3 sm:gap-6">
 				<HighlightCard
