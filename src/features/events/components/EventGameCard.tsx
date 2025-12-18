@@ -26,7 +26,7 @@ export const EventGameCard: React.FC<IEventGameCardProps> = ({ stat }) => {
 							{stat.winners.slice(0, 6).map((winner, idx) => (
 								<div
 									key={`${stat.gameId}-win-${winner?.id}-${idx}`}
-									className="rounded-full ring-2 ring-yellow-500"
+									className="rounded-full"
 									title={`Winner: ${getDisplayName(winner)}`}
 								>
 									<Avatar
