@@ -1,4 +1,8 @@
 import type { IEvent, IResult } from "features/events/types";
+import type { IPlayer } from "features/players/types";
+import type { IGame } from "features/games/types";
+import { isPlayerWinner } from "common/utils/gameHelpers";
+import { getDisplayName } from "features/players/utils/helpers";
 
 export function sortResults(results: IResult[], eventById: Map<string, IEvent>): IResult[] {
 	return results.slice().sort((a, b) => {
@@ -20,5 +24,115 @@ export function sortResults(results: IResult[], eventById: Map<string, IEvent>):
 export function sortEvents(events: IEvent[]): IEvent[] {
 	return events.slice().sort((a, b) => {
 		return new Date(b.date).getTime() - new Date(a.date).getTime();
+	});
+}
+
+export interface IEventPlayerStat {
+	playerId: string;
+	player: IPlayer | undefined;
+	name: string;
+	wins: number;
+	losses: number;
+	gamesPlayed: number;
+}
+
+export interface IEventGameStat {
+	gameId: string;
+	game: IGame | undefined;
+	name: string;
+	timesPlayed: number;
+	winners: (IPlayer | undefined)[];
+	losers: (IPlayer | undefined)[];
+}
+
+export function getEventPlayerStats(
+	event: IEvent,
+	eventResults: IResult[],
+	playerById: Map<string, IPlayer>,
+): IEventPlayerStat[] {
+	return event.playerIds.map((playerId) => {
+		const player = playerById.get(playerId);
+		let wins = 0;
+		let losses = 0;
+		let gamesPlayed = 0;
+
+		eventResults.forEach((result) => {
+			const playerResult = result.playerResults.find((pr) => pr.playerId === playerId);
+			if (playerResult) {
+				gamesPlayed++;
+				if (isPlayerWinner(playerResult)) {
+					wins++;
+				}
+				if (playerResult.isLoser) {
+					losses++;
+				}
+			}
+		});
+
+		return {
+			playerId,
+			player,
+			name: getDisplayName(player),
+			wins,
+			losses,
+			gamesPlayed,
+		};
+	});
+}
+
+export function sortEventPlayerStats(stats: IEventPlayerStat[]): IEventPlayerStat[] {
+	return stats.slice().sort((a, b) => {
+		// Sort by wins (descending), then by losses (ascending), then by name
+		if (b.wins !== a.wins) return b.wins - a.wins;
+		if (a.losses !== b.losses) return a.losses - b.losses;
+		return a.name.localeCompare(b.name);
+	});
+}
+
+export function sortEventGameStats(stats: IEventGameStat[]): IEventGameStat[] {
+	return stats.slice().sort((a, b) => {
+		// Sort by times played (descending), then by name
+		if (b.timesPlayed !== a.timesPlayed) return b.timesPlayed - a.timesPlayed;
+		return a.name.localeCompare(b.name);
+	});
+}
+
+export function getEventGameStats(
+	event: IEvent,
+	eventResults: IResult[],
+	gameById: Map<string, IGame>,
+	playerById: Map<string, IPlayer>,
+): IEventGameStat[] {
+	return event.gameIds.map((gameId) => {
+		const game = gameById.get(gameId);
+		const gameResults = eventResults.filter((r) => r.gameId === gameId);
+		const timesPlayed = gameResults.length;
+
+		// Get winners for each result
+		const winners = gameResults
+			.map((result) => {
+				const winningResults = result.playerResults.filter(isPlayerWinner);
+				return winningResults.map((pr) => playerById.get(pr.playerId));
+			})
+			.flat()
+			.filter(Boolean);
+
+		// Get losers for each result
+		const losers = gameResults
+			.map((result) => {
+				const losingResults = result.playerResults.filter((pr) => pr.isLoser);
+				return losingResults.map((pr) => playerById.get(pr.playerId));
+			})
+			.flat()
+			.filter(Boolean);
+
+		return {
+			gameId,
+			game,
+			name: game?.name || "Unknown",
+			timesPlayed,
+			winners,
+			losers,
+		};
 	});
 }
