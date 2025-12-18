@@ -9,6 +9,7 @@ export { PageLoader } from "./PageLoader";
 export { Input } from "./Input";
 export { Label } from "./Label";
 export { Button } from "./Button";
+export { BackButton } from "./BackButton";
 export { Radio } from "./Radio";
 export { Select } from "./Select";
 export { FormHeader } from "./FormHeader";
