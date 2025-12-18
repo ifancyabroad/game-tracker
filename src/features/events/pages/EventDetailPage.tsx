@@ -1,11 +1,11 @@
-import { useParams, useNavigate, Link } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { useEvents } from "features/events/context/EventsContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useGames } from "features/games/context/GamesContext";
 import { useResults } from "features/events/context/ResultsContext";
-import { ArrowLeft, CalendarDays, MapPin, Users, Gamepad2, Plus, Edit, Trash2, Trophy } from "lucide-react";
+import { CalendarDays, MapPin, Users, Gamepad2, Plus, Edit, Trash2, Trophy } from "lucide-react";
 import { useModal } from "common/context/ModalContext";
-import { Button, Card, ConfirmDelete, EmptyState, KpiCard } from "common/components";
+import { BackButton, Button, Card, ConfirmDelete, EmptyState, KpiCard } from "common/components";
 import { EventForm } from "features/events/components/EventForm";
 import { ResultForm } from "features/events/components/ResultForm";
 import { ResultDisplay } from "features/events/components/ResultDisplay";
@@ -110,10 +110,7 @@ export const EventDetailPage: React.FC = () => {
 		return (
 			<div className="mx-auto max-w-6xl">
 				<div className="mb-4">
-					<Link to="/events" className="inline-flex items-center gap-2 text-gray-300 hover:text-white">
-						<ArrowLeft className="h-4 w-4" />
-						<span className="text-sm">Back</span>
-					</Link>
+					<BackButton />
 				</div>
 				<EmptyState>Event not found.</EmptyState>
 			</div>
@@ -128,10 +125,7 @@ export const EventDetailPage: React.FC = () => {
 	return (
 		<div className="mx-auto grid max-w-6xl gap-4 sm:gap-6">
 			<div className="flex items-center justify-between gap-3">
-				<Link to="/events" className="inline-flex items-center gap-2 text-gray-300 hover:text-white">
-					<ArrowLeft className="h-4 w-4" />
-					<span className="text-sm">Back</span>
-				</Link>
+				<BackButton />
 
 				{user && (
 					<div className="flex flex-wrap items-center gap-2">
