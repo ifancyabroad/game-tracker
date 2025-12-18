@@ -1,6 +1,6 @@
 import { type PropsWithChildren, useEffect, useState } from "react";
 import { AuthContext } from "common/context/AuthContext";
-import { PageLoader } from "common/components/PageLoader";
+import { PageLoader } from "common/components";
 import { onAuthStateChanged, type User } from "firebase/auth";
 import { auth } from "firebase";
 

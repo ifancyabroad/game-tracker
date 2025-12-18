@@ -5,11 +5,11 @@ import { useGames } from "features/games/context/GamesContext";
 import { useResults } from "features/events/context/ResultsContext";
 import { ArrowLeft, CalendarDays, MapPin, Users, Gamepad2, Plus, Edit, Trash2 } from "lucide-react";
 import { useModal } from "common/context/ModalContext";
+import { Button, Card, ConfirmDelete } from "common/components";
 import { EventForm } from "features/events/components/EventForm";
 import { ResultForm } from "features/events/components/ResultForm";
 import { ResultDisplay } from "features/events/components/ResultDisplay";
 import type { IEvent, IResult } from "features/events/types";
-import { ConfirmDelete } from "common/components/ConfirmDelete";
 import { useAuth } from "common/context/AuthContext";
 import { getDisplayName } from "features/players/utils/helpers";
 
@@ -112,15 +112,10 @@ export const EventDetailPage: React.FC = () => {
 	if (!event) {
 		return (
 			<div className="mx-auto max-w-6xl">
-				<button
-					onClick={handleBack}
-					className="mb-4 inline-flex items-center gap-2 text-sm text-gray-300 hover:text-white"
-				>
+				<Button onClick={handleBack} variant="ghost" size="sm" className="mb-4">
 					<ArrowLeft size={18} /> Back
-				</button>
-				<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)] p-6 text-sm text-gray-400">
-					Event not found.
-				</div>
+				</Button>
+				<Card className="p-6 text-sm text-gray-400">Event not found.</Card>
 			</div>
 		);
 	}
@@ -134,40 +129,33 @@ export const EventDetailPage: React.FC = () => {
 		<div className="mx-auto max-w-6xl">
 			<div className="mb-3 flex flex-wrap items-center justify-between gap-3 sm:mb-4">
 				<div className="flex items-center gap-3">
-					<button
-						onClick={handleBack}
-						className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm text-gray-200 hover:bg-[var(--color-primary)]/10"
-					>
+					<Button onClick={handleBack} variant="secondary" size="md">
 						<ArrowLeft size={16} /> Back
-					</button>
+					</Button>
 					<h1 className="text-base font-semibold text-white">Event Details</h1>
 				</div>
 
 				{user && (
 					<div className="flex items-center gap-2">
-						<button
-							onClick={() => handleEditEvent(event)}
-							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm text-gray-200 hover:bg-[var(--color-primary)]/10"
-						>
+						<Button onClick={() => handleEditEvent(event)} variant="secondary" size="md">
 							<Edit size={16} /> Edit
-						</button>
-						<button
+						</Button>
+						<Button
 							onClick={() => handleDeleteEvent(event)}
-							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm text-red-300 hover:bg-red-500/20"
+							variant="secondary"
+							size="md"
+							className="text-red-300 hover:bg-red-500/20"
 						>
 							<Trash2 size={16} /> Delete
-						</button>
-						<button
-							onClick={handleAddResult}
-							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm text-white hover:bg-[var(--color-primary)]/10"
-						>
+						</Button>
+						<Button onClick={handleAddResult} variant="secondary" size="md">
 							<Plus size={16} /> Add Result
-						</button>
+						</Button>
 					</div>
 				)}
 			</div>
 
-			<div className="mb-4 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-3 sm:mb-6 sm:p-4">
+			<Card className="mb-4 p-3 sm:mb-6 sm:p-4">
 				<div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-200">
 					<div className="inline-flex items-center gap-2">
 						<CalendarDays size={16} />
@@ -220,25 +208,20 @@ export const EventDetailPage: React.FC = () => {
 						</div>
 					</div>
 				</div>
-			</div>
+			</Card>
 
 			<div>
 				<div className="mb-2.5 flex items-center justify-between sm:mb-3">
 					<h2 className="text-base font-semibold text-white">Results</h2>
 					{user && (
-						<button
-							onClick={handleAddResult}
-							className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 text-sm text-white hover:bg-[var(--color-primary)]/10"
-						>
+						<Button onClick={handleAddResult} variant="secondary" size="md">
 							<Plus size={16} /> Add Result
-						</button>
+						</Button>
 					)}
 				</div>
 
 				{eventResults.length === 0 ? (
-					<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)] p-6 text-sm text-gray-400">
-						No results added yet.
-					</div>
+					<Card className="p-6 text-sm text-gray-400">No results added yet.</Card>
 				) : (
 					<div className="grid gap-3 sm:gap-4">
 						{eventResults.map((result) => (

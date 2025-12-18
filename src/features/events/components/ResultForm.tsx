@@ -5,7 +5,7 @@ import type { IPlayerResult, IResult } from "features/events/types";
 import type { IGame } from "features/games/types";
 import { Gamepad2, Target } from "lucide-react";
 import { getDisplayName } from "features/players/utils/helpers";
-import { Select } from "common/components/Select";
+import { Select } from "common/components";
 
 interface ResultFormProps {
 	eventId: string;
@@ -251,13 +251,9 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 				</div>
 			</div>
 
-			<button
-				type="submit"
-				disabled={!filteredGames.length || !gameId}
-				className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-[var(--color-primary-contrast)] transition-opacity hover:opacity-90 disabled:opacity-50"
-			>
+			<Button type="submit" disabled={!filteredGames.length || !gameId} variant="primary" size="md">
 				{initialData ? "Update Result" : "Submit Result"}
-			</button>
+			</Button>
 		</form>
 	);
 };

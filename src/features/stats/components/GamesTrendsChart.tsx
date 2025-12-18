@@ -2,8 +2,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } f
 import { useMemo } from "react";
 import { useResults } from "features/events/context/ResultsContext";
 import { useGames } from "features/games/context/GamesContext";
-import { ChartCard } from "common/components/ChartCard";
-import { ChartTooltip } from "common/components/ChartTooltip";
+import { ChartCard, ChartTooltip } from "common/components";
 import type { TimeSeriesData } from "features/stats/utils/stats";
 
 interface GameTrendsChartProps {

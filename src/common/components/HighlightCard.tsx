@@ -1,10 +1,12 @@
+import { Card } from "./Card";
+
 export const HighlightCard: React.FC<{
 	title: string;
 	icon: React.ReactNode;
 	lines: { k: string; v: string }[];
 }> = ({ title, icon, lines }) => {
 	return (
-		<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)] p-3 shadow-sm transition-transform hover:-translate-y-0.5 sm:p-4">
+		<Card variant="interactive" className="p-3 sm:p-4">
 			<div className="mb-2 flex items-center gap-2">
 				<div className="flex h-8 w-8 items-center justify-center rounded-md bg-black/20">{icon}</div>
 				<h3 className="text-sm font-semibold text-white">{title}</h3>
@@ -17,6 +19,6 @@ export const HighlightCard: React.FC<{
 					</div>
 				))}
 			</dl>
-		</div>
+		</Card>
 	);
 };

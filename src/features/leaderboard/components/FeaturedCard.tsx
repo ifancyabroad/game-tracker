@@ -1,6 +1,7 @@
 import type { IPlayer } from "features/players/types";
 import { getDisplayName } from "features/players/utils/helpers";
 import { Link } from "react-router";
+import { Card } from "common/components";
 
 export const FeaturedCard: React.FC<{
 	label: string;
@@ -12,7 +13,10 @@ export const FeaturedCard: React.FC<{
 
 	return (
 		<Link to={`/players/${player.id}`}>
-			<div className="group relative overflow-hidden rounded-xl border border-gray-700 bg-[var(--color-surface)] p-3 shadow-sm transition-colors hover:bg-white/[0.03] sm:p-4">
+			<Card
+				variant="default"
+				className="group relative overflow-hidden p-3 transition-colors hover:bg-white/[0.03] sm:p-4"
+			>
 				<div className="pointer-events-none absolute inset-0 bg-[radial-gradient(800px_240px_at_100%_-60%,rgb(99_102_241/0.18),transparent_60%)]" />
 				<div className="flex items-center gap-2.5 sm:gap-3">
 					<div className="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-700 bg-white/5 text-white">
@@ -26,7 +30,7 @@ export const FeaturedCard: React.FC<{
 						{value}
 					</div>
 				</div>
-			</div>
+			</Card>
 		</Link>
 	);
 };

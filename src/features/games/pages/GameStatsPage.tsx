@@ -1,8 +1,7 @@
 import React from "react";
 import { useParams, Link } from "react-router";
+import { Card, KpiCard, HighlightCard } from "common/components";
 import { ArrowLeft, Award, Users, TrendingUp, TrendingDown, Star } from "lucide-react";
-import { KpiCard } from "common/components/KpiCard";
-import { HighlightCard } from "common/components/HighlightCard";
 import { formatPct } from "common/utils/helpers";
 import { useGameDataById, useGamePageStats } from "features/games/utils/hooks";
 import { PlayerWinRateChart } from "features/games/components/PlayerWinRateChart";
@@ -55,7 +54,7 @@ export const GameStatsPage: React.FC = () => {
 				</Link>
 			</div>
 
-			<div className="flex flex-col gap-3 rounded-xl border border-gray-700 bg-[var(--color-surface)] p-3 sm:gap-4 sm:p-4 lg:flex-row lg:items-center">
+			<Card className="flex flex-col gap-3 p-3 sm:gap-4 sm:p-4 lg:flex-row lg:items-center">
 				<div className="flex items-center gap-4">
 					<div className="flex h-14 w-14 items-center justify-center rounded-xl bg-black/30">
 						<GameTypeIcon type={game.type} className="h-8 w-8" style={{ color: game.color }} />
@@ -87,7 +86,7 @@ export const GameStatsPage: React.FC = () => {
 						value={game.data.totalPointsAwarded}
 					/>
 				</div>
-			</div>
+			</Card>
 
 			<div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
 				<HighlightCard
