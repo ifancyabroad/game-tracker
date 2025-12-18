@@ -5,7 +5,7 @@ import type { IPlayerResult, IResult } from "features/events/types";
 import type { IGame } from "features/games/types";
 import { Gamepad2, Target } from "lucide-react";
 import { getDisplayName } from "features/players/utils/helpers";
-import { Select } from "common/components";
+import { Button, Select } from "common/components";
 
 interface ResultFormProps {
 	eventId: string;
