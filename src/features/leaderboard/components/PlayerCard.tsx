@@ -1,19 +1,42 @@
 import { Link } from "react-router";
+import { Trophy, Medal, Award, Target, TrendingUp } from "lucide-react";
 import type { PlayerWithData } from "features/players/utils/stats";
-import { Avatar } from "common/components";
+import { Avatar, Card } from "common/components";
 
 const getTintBg = (rank: number) => {
-	if (rank === 1) return "bg-yellow-500/10";
-	if (rank === 2) return "bg-slate-500/10";
-	if (rank === 3) return "bg-amber-500/10";
-	return "bg-white/5";
+	if (rank === 1) return "bg-gradient-to-br from-yellow-500/15 via-yellow-500/5 to-transparent";
+	if (rank === 2) return "bg-gradient-to-br from-slate-400/15 via-slate-400/5 to-transparent";
+	if (rank === 3) return "bg-gradient-to-br from-amber-600/15 via-amber-600/5 to-transparent";
+	return "";
 };
 
 const getTintBar = (rank: number) => {
-	if (rank === 1) return "bg-yellow-400/60";
-	if (rank === 2) return "bg-slate-300/60";
-	if (rank === 3) return "bg-amber-500/60";
-	return "bg-white/25";
+	if (rank === 1) return "bg-gradient-to-r from-yellow-400 to-yellow-500 shadow-lg shadow-yellow-500/50";
+	if (rank === 2) return "bg-gradient-to-r from-slate-300 to-slate-400 shadow-lg shadow-slate-400/50";
+	if (rank === 3) return "bg-gradient-to-r from-amber-500 to-amber-600 shadow-lg shadow-amber-500/50";
+	return "bg-white/30";
+};
+
+const getRankStyles = (rank: number) => {
+	if (rank === 1)
+		return {
+			badge: "bg-gradient-to-br from-yellow-400 to-yellow-600 text-yellow-950 border-yellow-400/50",
+			icon: <Trophy className="h-3.5 w-3.5 sm:h-4 sm:w-4" />,
+		};
+	if (rank === 2)
+		return {
+			badge: "bg-gradient-to-br from-slate-300 to-slate-500 text-slate-950 border-slate-400/50",
+			icon: <Medal className="h-3.5 w-3.5 sm:h-4 sm:w-4" />,
+		};
+	if (rank === 3)
+		return {
+			badge: "bg-gradient-to-br from-amber-500 to-amber-700 text-amber-950 border-amber-500/50",
+			icon: <Award className="h-3.5 w-3.5 sm:h-4 sm:w-4" />,
+		};
+	return {
+		badge: "bg-gray-800 text-gray-300 border-gray-700",
+		icon: null,
+	};
 };
 
 export const PlayerCard: React.FC<{
@@ -28,46 +51,61 @@ export const PlayerCard: React.FC<{
 	} = row;
 	const tintBg = getTintBg(rank);
 	const tintBar = getTintBar(rank);
+	const rankStyles = getRankStyles(rank);
 	const pct = maxPoints ? Math.round((points / maxPoints) * 100) : 0;
 
 	return (
-		<div key={id} className="relative">
-			<div className="pointer-events-none absolute -top-1 -left-1 z-10 rounded-full border border-gray-700 bg-[var(--color-bg)] px-2 py-0.5 text-[11px] font-semibold text-gray-200 shadow select-none">
-				{rank}
-			</div>
+		<Link to={`/players/${id}`} className="relative block">
+			<Card variant="interactive" className={`relative overflow-hidden p-3 sm:p-4 ${tintBg}`}>
+				<div className="flex items-center gap-2 sm:gap-4">
+					{/* Rank Badge - Consistent size for alignment */}
+					<div
+						className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border-2 font-bold shadow-lg sm:h-11 sm:w-11 ${rankStyles.badge}`}
+					>
+						{rankStyles.icon || <span className="text-xs sm:text-sm">{rank}</span>}
+					</div>
 
-			<Link
-				to={`/players/${id}`}
-				className={`group block w-full rounded-xl border border-gray-700 ${tintBg} p-2.5 text-left transition hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg)] sm:p-3`}
-			>
-				<div className="flex items-center gap-2.5 sm:gap-3">
-					<Avatar src={pictureUrl || undefined} name={name} size={56} />
+					{/* Avatar - Smaller on mobile */}
+					<Avatar src={pictureUrl || undefined} name={name} size={48} className="sm:h-14 sm:w-14" />
 
+					{/* Player Info */}
 					<div className="min-w-0 flex-1">
-						<div className="flex items-center justify-between gap-2">
-							<p className="truncate font-medium text-white">{name}</p>
-							<p className="shrink-0 text-base font-semibold text-white tabular-nums sm:text-lg">
-								{points}
-								<span className="ml-1 text-[11px] font-normal text-gray-300">pts</span>
-							</p>
+						<div className="flex items-baseline justify-between gap-2">
+							<h3 className="truncate text-sm font-semibold text-white sm:text-lg">{name}</h3>
+							<div className="flex shrink-0 items-baseline gap-0.5 sm:gap-1">
+								<span className="text-lg font-bold text-white tabular-nums sm:text-2xl">{points}</span>
+								<span className="text-[10px] font-medium text-gray-400 sm:text-xs">pts</span>
+							</div>
 						</div>
 
-						<div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-gray-400">
-							<span className="rounded-full border border-gray-700 bg-[var(--color-bg)] px-2 py-0.5 text-gray-300">
-								{`${winRatePercent}%`}
-							</span>
-							<span className="text-gray-500">•</span>
-							<span>{wins} wins</span>
-							<span className="text-gray-500">•</span>
-							<span>{games} played</span>
+						{/* Stats Row - Compact on mobile */}
+						<div className="mt-1 flex flex-wrap items-center gap-1.5 text-[11px] sm:mt-1.5 sm:gap-3 sm:text-xs">
+							<div className="flex items-center gap-1 text-gray-300">
+								<Target className="h-3 w-3 text-[var(--color-primary)] sm:h-3.5 sm:w-3.5" />
+								<span className="font-semibold">{winRatePercent}%</span>
+								<span className="hidden text-gray-500 sm:inline">win rate</span>
+							</div>
+							<span className="text-gray-700">|</span>
+							<div className="flex items-center gap-1 text-gray-400">
+								<TrendingUp className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+								<span>{wins}w</span>
+							</div>
+							<span className="text-gray-700">|</span>
+							<div className="text-gray-400">
+								<span>{games}p</span>
+							</div>
 						</div>
 
-						<div className="mt-2 h-1.5 w-full overflow-hidden rounded bg-black/30">
-							<div className={`h-full ${tintBar}`} style={{ width: `${pct}%` }} />
+						{/* Progress Bar */}
+						<div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-black/40 shadow-inner sm:mt-2.5 sm:h-2">
+							<div
+								className={`h-full rounded-full transition-all duration-500 ${tintBar}`}
+								style={{ width: `${pct}%` }}
+							/>
 						</div>
 					</div>
 				</div>
-			</Link>
-		</div>
+			</Card>
+		</Link>
 	);
 };
