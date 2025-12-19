@@ -4,6 +4,7 @@ import type { IPlayer } from "features/players/types";
 import type { IGame } from "features/games/types";
 import { Avatar, IconButton, Card } from "common/components";
 import { getDisplayName } from "features/players/utils/helpers";
+import { pluralize } from "common/utils/helpers";
 
 interface IEventCardProps {
 	event: IEvent;
@@ -100,7 +101,7 @@ export const EventCard: React.FC<IEventCardProps> = ({ event, canEdit, onEdit, o
 						))}
 					</div>
 					<span className="text-xs text-gray-400">
-						{playerCount} {playerCount === 1 ? "player" : "players"}
+						{playerCount} {pluralize(playerCount, "player")}
 					</span>
 				</div>
 			) : (

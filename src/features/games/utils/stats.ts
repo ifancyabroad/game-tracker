@@ -4,6 +4,8 @@ import type { IPlayer } from "features/players/types";
 import type { IEvent } from "features/events/types";
 import { getDisplayName, getColorForPlayer } from "features/players/utils/helpers";
 import { isPlayerWinner } from "common/utils/gameHelpers";
+import { calculateWinRate, calculateAverage } from "common/utils/calculations";
+import { STATS_THRESHOLDS } from "common/utils/constants";
 import { format, parseISO } from "date-fns";
 
 export interface GameData {
@@ -110,8 +112,8 @@ export function aggregateGameStatsForPage(
 
 	// Convert player stats to array
 	const playerStats: PlayerGameStats[] = Object.entries(playerStatsMap).map(([playerId, stats]) => {
-		const winRate = stats.games > 0 ? stats.wins / stats.games : 0;
-		const avgRank = stats.rankCount > 0 ? stats.totalRank / stats.rankCount : 0;
+		const winRate = calculateWinRate(stats.wins, stats.games);
+		const avgRank = calculateAverage(stats.totalRank, stats.rankCount);
 		const points = stats.wins * gamePoints;
 
 		return {
@@ -127,7 +129,7 @@ export function aggregateGameStatsForPage(
 	});
 
 	const sortedByWinRate = playerStats
-		.filter((p) => p.games >= 3)
+		.filter((p) => p.games >= STATS_THRESHOLDS.MIN_GAMES_FOR_BEST_GAME)
 		.sort((a, b) => b.winRate - a.winRate || b.games - a.games);
 
 	// Find top player by win rate (min 3 games)

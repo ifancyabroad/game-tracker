@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { Award, Frown } from "lucide-react";
 import { Avatar } from "common/components";
 import type { IEventPlayerStat } from "features/events/utils/stats";
+import { pluralize } from "common/utils/helpers";
 
 interface IEventPlayerCardProps {
 	stat: IEventPlayerStat;
@@ -17,7 +18,7 @@ export const EventPlayerCard: React.FC<IEventPlayerCardProps> = ({ stat }) => {
 			<div className="min-w-0 flex-1">
 				<div className="truncate text-sm font-medium text-white">{stat.name}</div>
 				<div className="text-xs text-gray-400">
-					{stat.gamesPlayed} {stat.gamesPlayed === 1 ? "game" : "games"}
+					{stat.gamesPlayed} {pluralize(stat.gamesPlayed, "game")}
 				</div>
 			</div>
 			<div className="flex items-center gap-1.5">

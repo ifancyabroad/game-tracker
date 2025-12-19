@@ -3,6 +3,7 @@ import type { IPlayer } from "features/players/types";
 import type { GameType, IGame } from "features/games/types";
 import { getColorForPlayer, getDisplayName, getFullName } from "./helpers";
 import { isPlayerWinner } from "common/utils/gameHelpers";
+import { calculateWinRate, calculateWinRatePercent } from "common/utils/calculations";
 
 export interface PlayerData {
 	playerId: string;
@@ -110,7 +111,7 @@ export function aggregatePlayerStatsForPage(
 			idx: i + 1,
 			cumWins,
 			cumGames,
-			wr: cumGames ? Math.round((cumWins / cumGames) * 100) : 0,
+			wr: calculateWinRatePercent(cumWins, cumGames),
 		});
 	});
 
@@ -256,8 +257,8 @@ export function computePlayerData(
 
 	return players.map((player) => {
 		const stats = statsMap[player.id] || { wins: 0, games: 0, points: 0 };
-		const winRate = stats.games > 0 ? stats.wins / stats.games : 0;
-		const winRatePercent = Math.round(winRate * 100);
+		const winRate = calculateWinRate(stats.wins, stats.games);
+		const winRatePercent = calculateWinRatePercent(stats.wins, stats.games);
 
 		return {
 			...player,
