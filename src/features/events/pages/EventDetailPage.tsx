@@ -16,7 +16,8 @@ import { useAuth } from "common/context/AuthContext";
 import { useEventPlayerStats, useEventGameStats } from "features/events/utils/hooks";
 
 export const EventDetailPage: React.FC = () => {
-	const { eventId } = useParams();
+	const { eventId: eventIdParam } = useParams();
+	const eventId = String(eventIdParam || "");
 	const navigate = useNavigate();
 
 	const { events, editEvent, deleteEvent } = useEvents();
@@ -29,8 +30,8 @@ export const EventDetailPage: React.FC = () => {
 	const event = events.find((e) => e.id === eventId);
 	const eventResults = results.filter((r) => r.eventId === eventId).sort((a, b) => a.order - b.order);
 
-	const playerStats = useEventPlayerStats(event, eventResults);
-	const gameStats = useEventGameStats(event, eventResults);
+	const playerStats = useEventPlayerStats(eventId);
+	const gameStats = useEventGameStats(eventId);
 
 	const handleEditEvent = (ev: IEvent) => {
 		openModal(
