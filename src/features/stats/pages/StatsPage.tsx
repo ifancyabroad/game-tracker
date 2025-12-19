@@ -6,6 +6,7 @@ import { MostPlayedGamesChart } from "features/stats/components/MostPlayedGamesC
 import { PlayerWinRateChart } from "features/stats/components/PlayerWinRateChart";
 import { useFeaturedStats, useMostPlayedGames, usePlayerWinsOverTime } from "features/stats/utils/hooks";
 import { usePlayerData } from "features/players/utils/hooks";
+import { PageHeader } from "common/components";
 
 export const StatsPage: React.FC = () => {
 	const data = usePlayerData();
@@ -15,10 +16,7 @@ export const StatsPage: React.FC = () => {
 
 	return (
 		<div className="mx-auto max-w-6xl">
-			<div className="mb-3 flex items-center gap-2 text-white sm:mb-4">
-				<BarChart3 className="h-5 w-5 text-[var(--color-primary)]" />
-				<h1 className="text-base font-semibold">Stats</h1>
-			</div>
+			<PageHeader icon={<BarChart3 />} title="Stats" />
 
 			<div className="mb-4 grid gap-3 sm:mb-6 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
 				<StatCard
