@@ -5,7 +5,7 @@ import type { IPlayer } from "features/players/types";
 import { PlayersContext } from "features/players/context/PlayersContext";
 import { getDisplayName } from "features/players/utils/helpers";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { createMapById } from "common/utils/helpers";
+import { createMapBy } from "common/utils/helpers";
 
 export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	const [players, setPlayers] = useState<IPlayer[]>([]);
@@ -26,7 +26,7 @@ export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
 		return () => unsubscribe();
 	}, []);
 
-	const playerById = useMemo(() => createMapById(players), [players]);
+	const playerById = useMemo(() => createMapBy(players, "id"), [players]);
 
 	async function addPlayer(player: Omit<IPlayer, "id">) {
 		await addDoc(collection(db, "players"), player);

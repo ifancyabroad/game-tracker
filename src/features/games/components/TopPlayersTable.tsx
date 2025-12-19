@@ -1,6 +1,8 @@
 import type { PlayerGameStats } from "features/games/utils/stats";
 import { useNavigate } from "react-router";
 import { Card } from "common/components";
+import { formatPct } from "common/utils/helpers";
+
 interface TopPlayersTableProps {
 	playerStats: PlayerGameStats[];
 }
@@ -48,7 +50,7 @@ export const TopPlayersTable: React.FC<TopPlayersTableProps> = ({ playerStats })
 											{p.wins}
 										</td>
 										<td className="px-2 py-2 text-center text-gray-200 tabular-nums sm:px-4">
-											{Math.round(p.winRate * 100)}%
+											{formatPct(p.winRate)}
 										</td>
 									</tr>
 								))

@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { Trophy, Medal, Award, Target, TrendingUp } from "lucide-react";
 import type { PlayerWithData } from "features/players/utils/stats";
 import { Avatar, Card } from "common/components";
+import { calculateWinRatePercent } from "common/utils/calculations";
 
 const getTintBg = (rank: number) => {
 	if (rank === 1) return "bg-gradient-to-br from-yellow-500/15 via-yellow-500/5 to-transparent";
@@ -52,7 +53,7 @@ export const PlayerCard: React.FC<{
 	const tintBg = getTintBg(rank);
 	const tintBar = getTintBar(rank);
 	const rankStyles = getRankStyles(rank);
-	const pct = maxPoints ? Math.round((points / maxPoints) * 100) : 0;
+	const pct = calculateWinRatePercent(points, maxPoints);
 
 	return (
 		<Link to={`/players/${id}`} className="relative block">
@@ -66,7 +67,7 @@ export const PlayerCard: React.FC<{
 					</div>
 
 					{/* Avatar - Smaller on mobile */}
-					<Avatar src={pictureUrl || undefined} name={name} size={48} className="sm:h-14 sm:w-14" />
+					<Avatar src={pictureUrl || undefined} name={name} size={48} />
 
 					{/* Player Info */}
 					<div className="min-w-0 flex-1">

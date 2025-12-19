@@ -6,6 +6,7 @@ import { Avatar, IconButton, Card } from "common/components";
 import { getDisplayName, getFullName } from "features/players/utils/helpers";
 import { useNavigate, Link } from "react-router";
 import { GameTypeIcon } from "features/games/components/GameTypeIcon";
+import { pluralize } from "common/utils/helpers";
 
 interface IResultDisplayProps {
 	result: IResult;
@@ -68,11 +69,10 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({
 							<p className="truncate text-sm font-semibold text-white">Unknown Game</p>
 						)}
 						<p className="text-xs text-gray-400">
-							{rows.length} {rows.length === 1 ? "player" : "players"}
+							{rows.length} {pluralize(rows.length, "player")}
 						</p>
 					</div>
 				</div>
-
 				{canEdit && (
 					<div className="flex items-center gap-1">
 						<IconButton onClick={() => onEdit(result)} icon={<Edit />} title="Edit Result" />

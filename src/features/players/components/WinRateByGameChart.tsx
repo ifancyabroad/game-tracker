@@ -1,6 +1,8 @@
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, BarChart, Bar, Cell } from "recharts";
 import { ChartCard, ChartTooltip } from "common/components";
 import type { GameWinRateRow } from "features/players/utils/stats";
+import { formatPct } from "common/utils/helpers";
+import { STATS_THRESHOLDS } from "common/utils/constants";
 
 interface RecentFormChartProps {
 	gameWinRates: GameWinRateRow[];
@@ -8,9 +10,9 @@ interface RecentFormChartProps {
 
 export const WinRateByGameChart: React.FC<RecentFormChartProps> = ({ gameWinRates }) => {
 	const chartData = gameWinRates
-		.filter((g) => g.games >= 3)
+		.filter((g) => g.games >= STATS_THRESHOLDS.MIN_GAMES_FOR_BEST_GAME)
 		.sort((a, b) => b.wr - a.wr)
-		.slice(0, 8);
+		.slice(0, STATS_THRESHOLDS.MOST_PLAYED_GAMES_LIMIT);
 
 	return (
 		<ChartCard title="Win Rate by Game (min 3 plays)">
@@ -20,12 +22,12 @@ export const WinRateByGameChart: React.FC<RecentFormChartProps> = ({ gameWinRate
 					<XAxis dataKey="name" tick={{ fill: "#9CA3AF", fontSize: 12 }} interval={0} angle={-15} dy={10} />
 					<YAxis
 						domain={[0, 1]}
-						tickFormatter={(v) => `${Math.round(v * 100)}%`}
+						tickFormatter={(v) => formatPct(v)}
 						tick={{ fill: "#9CA3AF", fontSize: 12 }}
 					/>
 					<Tooltip
 						cursor={{ fill: "rgba(255,255,255,0.05)" }}
-						content={<ChartTooltip formatter={(v) => `${Math.round(v * 100)}%`} />}
+						content={<ChartTooltip formatter={(v) => formatPct(v)} />}
 					/>
 					<Bar dataKey="wr">
 						{chartData.map((entry, index) => (

@@ -1,4 +1,5 @@
 import type { PlayerWithData } from "features/players/utils/stats";
+import { STATS_THRESHOLDS } from "common/utils/constants";
 
 export function sortLeaderboard(rows: PlayerWithData[]) {
 	return rows.sort((a, b) => {
@@ -11,7 +12,9 @@ export function sortLeaderboard(rows: PlayerWithData[]) {
 }
 
 export function getLeaderboard(players: PlayerWithData[]) {
-	const playersWithGames = players.filter((player) => player.data.games >= 10);
+	const playersWithGames = players.filter(
+		(player) => player.data.games >= STATS_THRESHOLDS.MIN_GAMES_FOR_LEADERBOARD,
+	);
 	return sortLeaderboard(playersWithGames);
 }
 

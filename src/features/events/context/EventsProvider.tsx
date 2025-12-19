@@ -3,7 +3,7 @@ import { collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "fireb
 import { db } from "firebase";
 import { EventsContext } from "./EventsContext";
 import type { IEvent } from "features/events/types";
-import { createMapById } from "common/utils/helpers";
+import { createMapBy } from "common/utils/helpers";
 
 export const EventsProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	const [events, setEvents] = useState<IEvent[]>([]);
@@ -18,7 +18,7 @@ export const EventsProvider: React.FC<PropsWithChildren> = ({ children }) => {
 		return () => unsubscribe();
 	}, []);
 
-	const eventById = useMemo(() => createMapById(events), [events]);
+	const eventById = useMemo(() => createMapBy(events, "id"), [events]);
 
 	const addEvent = async (event: Omit<IEvent, "id">) => {
 		await addDoc(collection(db, "events"), event);
