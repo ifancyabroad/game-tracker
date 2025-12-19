@@ -29,6 +29,7 @@ export { Chip } from "./Chip";
 export { IconButton } from "./IconButton";
 export { EmptyState } from "./EmptyState";
 export { PageHeader } from "./PageHeader";
+export { GameTypeToggle } from "./GameTypeToggle";
 
 // Utility Components
 export { Modal } from "./Modal";
