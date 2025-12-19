@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router";
-import { BackButton, Card, KpiCard, HighlightCard } from "common/components";
+import { BackButton, Card, KpiCard, HighlightCard, PageHeader } from "common/components";
 import { Award, Users, TrendingUp, TrendingDown, Star } from "lucide-react";
 import { formatPct } from "common/utils/helpers";
 import { useGameDataById, useGamePageStats } from "features/games/utils/hooks";
@@ -45,9 +45,7 @@ export const GameStatsPage: React.FC = () => {
 
 	return (
 		<div className="mx-auto grid max-w-6xl gap-4 sm:gap-6">
-			<div className="flex items-center justify-between gap-3">
-				<BackButton />
-			</div>
+			<PageHeader icon={<BackButton />} title="" />
 
 			<Card className="flex flex-col gap-3 p-3 sm:gap-4 sm:p-4 lg:flex-row lg:items-center">
 				<div className="flex items-center gap-4">
