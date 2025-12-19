@@ -136,3 +136,36 @@ export function getEventGameStats(
 		};
 	});
 }
+
+/**
+ * Get and sort event player stats (combines getEventPlayerStats + sortEventPlayerStats)
+ */
+export function getSortedEventPlayerStats(
+	eventId: string,
+	eventById: Map<string, IEvent>,
+	results: IResult[],
+	playerById: Map<string, IPlayer>,
+): IEventPlayerStat[] {
+	const event = eventById.get(eventId);
+	if (!event) return [];
+	const eventResults = results.filter((r) => r.eventId === eventId);
+	const stats = getEventPlayerStats(event, eventResults, playerById);
+	return sortEventPlayerStats(stats);
+}
+
+/**
+ * Get and sort event game stats (combines getEventGameStats + sortEventGameStats)
+ */
+export function getSortedEventGameStats(
+	eventId: string,
+	eventById: Map<string, IEvent>,
+	results: IResult[],
+	gameById: Map<string, IGame>,
+	playerById: Map<string, IPlayer>,
+): IEventGameStat[] {
+	const event = eventById.get(eventId);
+	if (!event) return [];
+	const eventResults = results.filter((r) => r.eventId === eventId);
+	const stats = getEventGameStats(event, eventResults, gameById, playerById);
+	return sortEventGameStats(stats);
+}
