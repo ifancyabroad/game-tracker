@@ -20,14 +20,14 @@ export const EventDetailPage: React.FC = () => {
 	const eventId = String(eventIdParam || "");
 	const navigate = useNavigate();
 
-	const { events, editEvent, deleteEvent } = useEvents();
+	const { eventById, editEvent, deleteEvent } = useEvents();
 	const { players, playerById } = usePlayers();
 	const { games, gameById } = useGames();
 	const { results, deleteResult } = useResults();
 	const { openModal, closeModal } = useModal();
 	const user = useAuth();
 
-	const event = events.find((e) => e.id === eventId);
+	const event = eventById.get(eventId);
 	const eventResults = results.filter((r) => r.eventId === eventId).sort((a, b) => a.order - b.order);
 
 	const playerStats = useEventPlayerStats(eventId);

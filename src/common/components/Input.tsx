@@ -1,21 +1,33 @@
 import { forwardRef } from "react";
 import type { InputHTMLAttributes } from "react";
 
-interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface IInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
 	error?: boolean;
 	icon?: React.ReactNode;
+	inputSize?: "sm" | "md" | "lg";
+	fullWidth?: boolean;
 }
 
 export const Input = forwardRef<HTMLInputElement, IInputProps>(
-	({ className = "", error = false, icon, ...props }, ref) => {
-		const baseStyles =
-			"w-full rounded-lg border border-gray-700 bg-black/20 px-3 py-2 text-sm text-[var(--color-text)] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent";
+	({ className = "", error = false, icon, inputSize = "md", fullWidth = true, ...props }, ref) => {
+		const sizeStyles = {
+			sm: "px-2 py-1",
+			md: "px-3 py-2",
+			lg: "px-4 py-3",
+		};
+
+		const baseStyles = `rounded-lg border border-gray-700 bg-black/20 ${sizeStyles[inputSize]} text-sm text-[var(--color-text)] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent`;
+		const widthStyles = fullWidth ? "w-full" : "";
 		const errorStyles = error ? "ring-2 ring-red-500" : "";
 		const iconStyles = icon ? "pr-9 [&::-webkit-calendar-picker-indicator]:hidden" : "";
 
 		return (
-			<div className="relative w-full">
-				<input ref={ref} className={`${baseStyles} ${errorStyles} ${iconStyles} ${className}`} {...props} />
+			<div className="relative">
+				<input
+					ref={ref}
+					className={`${baseStyles} ${widthStyles} ${errorStyles} ${iconStyles} ${className}`}
+					{...props}
+				/>
 				{icon && (
 					<div className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-[var(--color-primary)] [&>svg]:h-full [&>svg]:w-full">
 						{icon}

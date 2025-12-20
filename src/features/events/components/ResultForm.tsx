@@ -5,7 +5,7 @@ import type { IPlayerResult, IResult } from "features/events/types";
 import type { IGame } from "features/games/types";
 import { Gamepad2, Target } from "lucide-react";
 import { getDisplayName } from "features/players/utils/helpers";
-import { Button, Select } from "common/components";
+import { Button, Select, Label, Input } from "common/components";
 
 interface ResultFormProps {
 	eventId: string;
@@ -90,12 +90,6 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 		});
 	}, [eventPlayerIds, initialData]);
 
-	// Inputs
-	const inputCls =
-		"rounded-lg border border-gray-700 bg-black/20 px-3 py-2 text-sm text-[var(--color-text)] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent";
-	const inputRankCls =
-		"rounded-lg border border-gray-700 bg-black/20 px-2 py-1 text-sm text-[var(--color-text)] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent text-center tabular-nums";
-
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		const filtered = playerResults.filter((pr) => included[pr.playerId]);
@@ -151,25 +145,24 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 					</div>
 
 					<div>
-						<label className="mb-1 block text-xs text-gray-400">Order</label>
-						<div className="relative">
-							<input
-								type="number"
-								value={order}
-								onChange={(e: ChangeEvent<HTMLInputElement>) =>
-									setOrder(e.target.value ? Number(e.target.value) : 1)
-								}
-								className={`${inputCls} w-16`}
-								min={1}
-								placeholder="#"
-							/>
-						</div>
+						<Label>Order</Label>
+						<Input
+							type="number"
+							value={order}
+							onChange={(e: ChangeEvent<HTMLInputElement>) =>
+								setOrder(e.target.value ? Number(e.target.value) : 1)
+							}
+							fullWidth={false}
+							className="w-16"
+							min={1}
+							placeholder="#"
+						/>
 					</div>
 				</div>
 
 				{!filteredGames.length && (
 					<p className="mt-2 text-xs text-amber-300">
-						This event doesn’t have any games yet. Add a game to the event to create a result.
+						This event doesn't have any games yet. Add a game to the event to create a result.
 					</p>
 				)}
 			</div>
@@ -203,7 +196,7 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 								<div className="mt-2 flex flex-wrap items-center gap-3">
 									<div className="flex items-center gap-2">
 										<span className="text-xs text-gray-400">Rank</span>
-										<input
+										<Input
 											type="number"
 											min={1}
 											value={pr.rank ?? ""}
@@ -214,7 +207,9 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 													e.target.value ? Number(e.target.value) : null,
 												)
 											}
-											className={`${inputRankCls} w-12`}
+											inputSize="sm"
+											fullWidth={false}
+											className="w-12 text-center tabular-nums"
 											placeholder="#"
 											disabled={!isIncluded}
 										/>
