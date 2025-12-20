@@ -78,7 +78,7 @@ export const PlayerStatsPage: React.FC = () => {
 		<div className="mx-auto grid max-w-6xl gap-4 sm:gap-6">
 			<PageHeader icon={<BackButton />} title="" />
 
-			<Card className="flex flex-col gap-3 p-3 sm:flex-row sm:items-center sm:gap-4 sm:p-4">
+			<Card className="flex flex-col gap-3 p-3 sm:gap-4 sm:p-4">
 				<div className="flex items-center gap-4">
 					<Avatar src={player.pictureUrl || undefined} name={player.data.name} size={56} />
 					<div className="min-w-0">
@@ -88,7 +88,7 @@ export const PlayerStatsPage: React.FC = () => {
 						)}
 					</div>
 				</div>
-				<div className="grid grid-cols-2 gap-3 sm:ml-auto sm:grid-cols-3 sm:gap-4">
+				<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6">
 					<KpiCard
 						icon={<ListOrdered className="h-4 w-4" style={{ color: player.color }} />}
 						label="Games"
