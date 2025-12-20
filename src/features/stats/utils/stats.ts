@@ -122,3 +122,136 @@ export const getFeaturedStats = (results: IResult[], events: IEvent[]): Featured
 	const totalPlayersInvolved = new Set(results.flatMap((r) => r.playerResults.map((pr) => pr.playerId))).size;
 	return { totalGamesPlayed, totalEvents, totalPlayersInvolved };
 };
+
+export interface StreakPlayer {
+	playerId: string;
+	playerName: string;
+	playerColor: string;
+	streak: number;
+}
+
+export function computeWinStreaks(
+	results: IResult[],
+	playerById: Map<string, IPlayer>,
+	eventById: Map<string, IEvent>,
+	topN: number = 5,
+): StreakPlayer[] {
+	// Sort results chronologically
+	const sortedResults = results.slice().sort((a, b) => {
+		const eventA = eventById.get(a.eventId);
+		const eventB = eventById.get(b.eventId);
+		if (eventA && eventB) {
+			const dateA = new Date(eventA.date).getTime();
+			const dateB = new Date(eventB.date).getTime();
+			return dateA === dateB ? a.order - b.order : dateA - dateB;
+		}
+		return 0;
+	});
+
+	// Track streaks per player
+	const playerStreaks: Record<string, { currentStreak: number; maxStreak: number }> = {};
+
+	// Initialize all players
+	sortedResults.forEach((result) => {
+		result.playerResults.forEach((pr) => {
+			if (!playerStreaks[pr.playerId]) {
+				playerStreaks[pr.playerId] = { currentStreak: 0, maxStreak: 0 };
+			}
+		});
+	});
+
+	// Calculate win streaks
+	sortedResults.forEach((result) => {
+		result.playerResults.forEach((pr) => {
+			const stats = playerStreaks[pr.playerId];
+			const isWin = isPlayerWinner(pr);
+
+			if (isWin) {
+				stats.currentStreak++;
+				stats.maxStreak = Math.max(stats.maxStreak, stats.currentStreak);
+			} else {
+				stats.currentStreak = 0;
+			}
+		});
+	});
+
+	// Convert to array and sort by streak
+	return Object.entries(playerStreaks)
+		.map(([playerId, stats]) => {
+			const player = playerById.get(playerId);
+			if (!player) return null;
+
+			return {
+				playerId,
+				playerName: getDisplayName(player),
+				playerColor: player.color || "#6366f1",
+				streak: stats.maxStreak,
+			};
+		})
+		.filter((p): p is StreakPlayer => p !== null && p.streak > 0)
+		.sort((a, b) => b.streak - a.streak)
+		.slice(0, topN);
+}
+
+export function computeLossStreaks(
+	results: IResult[],
+	playerById: Map<string, IPlayer>,
+	eventById: Map<string, IEvent>,
+	topN: number = 5,
+): StreakPlayer[] {
+	// Sort results chronologically
+	const sortedResults = results.slice().sort((a, b) => {
+		const eventA = eventById.get(a.eventId);
+		const eventB = eventById.get(b.eventId);
+		if (eventA && eventB) {
+			const dateA = new Date(eventA.date).getTime();
+			const dateB = new Date(eventB.date).getTime();
+			return dateA === dateB ? a.order - b.order : dateA - dateB;
+		}
+		return 0;
+	});
+
+	// Track streaks per player
+	const playerStreaks: Record<string, { currentStreak: number; maxStreak: number }> = {};
+
+	// Initialize all players
+	sortedResults.forEach((result) => {
+		result.playerResults.forEach((pr) => {
+			if (!playerStreaks[pr.playerId]) {
+				playerStreaks[pr.playerId] = { currentStreak: 0, maxStreak: 0 };
+			}
+		});
+	});
+
+	// Calculate loss streaks
+	sortedResults.forEach((result) => {
+		result.playerResults.forEach((pr) => {
+			const stats = playerStreaks[pr.playerId];
+			const isWin = isPlayerWinner(pr);
+
+			if (!isWin) {
+				stats.currentStreak++;
+				stats.maxStreak = Math.max(stats.maxStreak, stats.currentStreak);
+			} else {
+				stats.currentStreak = 0;
+			}
+		});
+	});
+
+	// Convert to array and sort by streak
+	return Object.entries(playerStreaks)
+		.map(([playerId, stats]) => {
+			const player = playerById.get(playerId);
+			if (!player) return null;
+
+			return {
+				playerId,
+				playerName: getDisplayName(player),
+				playerColor: player.color || "#6366f1",
+				streak: stats.maxStreak,
+			};
+		})
+		.filter((p): p is StreakPlayer => p !== null && p.streak > 0)
+		.sort((a, b) => b.streak - a.streak)
+		.slice(0, topN);
+}

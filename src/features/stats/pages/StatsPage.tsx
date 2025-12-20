@@ -4,7 +4,15 @@ import { PlayerParticipationChart } from "features/stats/components/PlayerPartic
 import { PlayerWinsOverTimeChart } from "features/stats/components/PlayerWinsOverTimeChart";
 import { MostPlayedGamesChart } from "features/stats/components/MostPlayedGamesChart";
 import { PlayerWinRateChart } from "features/stats/components/PlayerWinRateChart";
-import { useFeaturedStats, useMostPlayedGames, usePlayerWinsOverTime } from "features/stats/utils/hooks";
+import { WinStreaksCard } from "features/stats/components/WinStreaksCard";
+import { LossStreaksCard } from "features/stats/components/LossStreaksCard";
+import {
+	useFeaturedStats,
+	useMostPlayedGames,
+	usePlayerWinsOverTime,
+	useWinStreaks,
+	useLossStreaks,
+} from "features/stats/utils/hooks";
 import { usePlayerData } from "features/players/utils/hooks";
 import { PageHeader } from "common/components";
 
@@ -12,6 +20,8 @@ export const StatsPage: React.FC = () => {
 	const data = usePlayerData();
 	const mostPlayedGames = useMostPlayedGames();
 	const playerWinsOverTime = usePlayerWinsOverTime();
+	const winStreaks = useWinStreaks();
+	const lossStreaks = useLossStreaks();
 	const { totalGamesPlayed, totalPlayersInvolved, totalEvents } = useFeaturedStats();
 
 	return (
@@ -34,6 +44,11 @@ export const StatsPage: React.FC = () => {
 					value={totalEvents.toString()}
 					icon={<Calendar size={20} className="text-[var(--color-primary)]" />}
 				/>
+			</div>
+
+			<div className="mb-4 grid gap-4 sm:mb-6 sm:gap-6 md:grid-cols-2">
+				<WinStreaksCard streaks={winStreaks} />
+				<LossStreaksCard streaks={lossStreaks} />
 			</div>
 
 			<div className="grid gap-4 sm:gap-6 md:grid-cols-2">
