@@ -6,6 +6,7 @@ import { LoginForm, Select, Button } from "common/components";
 import { useAuth } from "common/context/AuthContext";
 import { signOut } from "firebase/auth";
 import { auth } from "firebase";
+import logo from "assets/logo.svg";
 
 const navItems = [
 	{ to: "/", label: "Home", icon: Home },
@@ -33,18 +34,17 @@ export const Sidebar: React.FC = () => {
 			{isSidebarOpen && <div className="fixed inset-0 z-40 bg-black/50 sm:hidden" onClick={closeSidebar} />}
 
 			<aside
-				className={`fixed z-50 flex h-full w-56 flex-col border-r border-gray-700 bg-[var(--color-surface)] px-4 py-4 transition-transform sm:static sm:translate-x-0 sm:py-6 ${
+				className={`fixed z-50 flex h-full w-72 flex-col border-r border-gray-700 bg-[var(--color-surface)] px-4 py-4 transition-transform sm:static sm:translate-x-0 sm:py-6 ${
 					isSidebarOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"
 				}`}
 			>
 				<div className="mb-4 flex items-center justify-between sm:mb-6">
 					<div className="flex items-center gap-3">
-						<div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--color-primary)] text-lg font-bold text-[var(--color-primary-contrast)]">
-							🎲
+						<div className="flex h-9 w-9 items-center justify-center">
+							<img src={logo} alt="Logo" />
 						</div>
 						<div>
-							<h1 className="text-base leading-tight font-semibold text-white">Game Tracker</h1>
-							<p className="text-[10px] text-gray-500">v1.0</p>
+							<h1 className="text-base leading-tight font-bold text-white">THE NIGHTINGAMES</h1>
 						</div>
 					</div>
 					<button
