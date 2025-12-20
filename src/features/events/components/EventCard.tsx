@@ -1,8 +1,9 @@
-import { CalendarDays, MapPin, Edit, Trash2, Gamepad2 } from "lucide-react";
+import { CalendarDays, MapPin, Edit, Trash2 } from "lucide-react";
 import type { IEvent } from "features/events/types";
 import type { IPlayer } from "features/players/types";
 import type { IGame } from "features/games/types";
 import { Avatar, IconButton, Card } from "common/components";
+import { GameTypeIcon } from "features/games/components/GameTypeIcon";
 import { getDisplayName } from "features/players/utils/helpers";
 import { pluralize } from "common/utils/helpers";
 
@@ -76,7 +77,7 @@ export const EventCard: React.FC<IEventCardProps> = ({ event, canEdit, onEdit, o
 							key={game.id}
 							className="inline-flex items-center gap-1 rounded-md border border-gray-700 bg-black/30 px-2 py-1 text-xs font-medium text-gray-200"
 						>
-							<Gamepad2 className="h-3 w-3" />
+							<GameTypeIcon type={game.type} className="h-3 w-3" />
 							{game.name}
 						</span>
 					))}
