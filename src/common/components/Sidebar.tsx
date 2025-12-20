@@ -6,6 +6,7 @@ import { LoginForm, Select, Button } from "common/components";
 import { useAuth } from "common/context/AuthContext";
 import { signOut } from "firebase/auth";
 import { auth } from "firebase";
+import { Link } from "react-router";
 import logo from "assets/logo.svg";
 
 const navItems = [
@@ -39,14 +40,14 @@ export const Sidebar: React.FC = () => {
 				}`}
 			>
 				<div className="mb-4 flex items-center justify-between sm:mb-6">
-					<div className="flex items-center gap-3">
+					<Link to="/" className="flex items-center gap-3" onClick={closeSidebar}>
 						<div className="flex h-9 w-9 items-center justify-center">
 							<img src={logo} alt="Logo" />
 						</div>
 						<div>
 							<h1 className="text-base leading-tight font-bold text-white">THE NIGHTINGAMES</h1>
 						</div>
-					</div>
+					</Link>
 					<button
 						onClick={closeSidebar}
 						className="text-gray-400 hover:text-white sm:hidden"
