@@ -11,11 +11,11 @@ export const EventGameCard: React.FC<IEventGameCardProps> = ({ stat }) => {
 	return (
 		<Link
 			to={`/games/${stat.gameId}`}
-			className="flex items-center gap-3 rounded-lg border border-gray-700 bg-black/20 p-2 transition-all hover:-translate-y-0.5 hover:border-[var(--color-primary)] hover:bg-black/40"
+			className="flex items-center gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-accent)] p-2 transition-all hover:-translate-y-0.5 hover:border-[var(--color-primary)] hover:hover:bg-[var(--color-hover)]"
 		>
 			<div className="min-w-0 flex-1">
-				<div className="truncate text-sm font-medium text-white">{stat.name}</div>
-				<div className="text-xs text-gray-400">
+				<div className="truncate text-sm font-medium text-[var(--color-text)]">{stat.name}</div>
+				<div className="text-xs text-[var(--color-text-secondary)]">
 					Played {stat.timesPlayed} {stat.timesPlayed === 1 ? "time" : "times"}
 				</div>
 			</div>

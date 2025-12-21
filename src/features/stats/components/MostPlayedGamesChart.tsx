@@ -15,13 +15,19 @@ export const MostPlayedGamesChart: React.FC<MostPlayedGamesChartProps> = ({ most
 					interval={0}
 					tick={({ x, y, payload }) => (
 						<g transform={`translate(${x},${y})`}>
-							<text transform="rotate(-30)" textAnchor="end" fill="#ccc" fontSize={12} dy={10}>
+							<text
+								transform="rotate(-30)"
+								textAnchor="end"
+								fill="var(--color-text-secondary)"
+								fontSize={12}
+								dy={10}
+							>
 								{payload.value}
 							</text>
 						</g>
 					)}
 				/>
-				<YAxis tick={{ fontSize: 12, fill: "#ccc" }} allowDecimals={false} />
+				<YAxis tick={{ fontSize: 12, fill: "var(--color-text-secondary)" }} allowDecimals={false} />
 				<Tooltip
 					cursor={{ fill: "rgba(255,255,255,0.05)" }}
 					content={<ChartTooltip formatter={(v) => `${v} plays`} />}

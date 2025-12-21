@@ -8,7 +8,7 @@ export const Badge: React.FC<IBadgeProps> = ({ children, variant = "default", cl
 	const baseStyles = "inline-flex items-center rounded-full px-2 py-0.5 text-xs";
 
 	const variantStyles = {
-		default: "border border-gray-700 text-gray-300",
+		default: "border border-[var(--color-border)] text-[var(--color-text-secondary)]",
 		primary: "bg-[var(--color-primary)]/10 text-[var(--color-primary)]",
 		success: "bg-green-500/10 text-green-400",
 		warning: "bg-yellow-500/10 text-yellow-400",

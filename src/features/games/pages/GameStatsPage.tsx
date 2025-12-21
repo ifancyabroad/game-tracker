@@ -36,7 +36,7 @@ export const GameStatsPage: React.FC = () => {
 				<div className="mb-4">
 					<BackButton />
 				</div>
-				<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)] p-6 text-gray-300">
+				<div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 text-[var(--color-text-secondary)]">
 					Game not found.
 				</div>
 			</div>
@@ -49,12 +49,14 @@ export const GameStatsPage: React.FC = () => {
 
 			<Card className="flex flex-col gap-3 p-3 sm:gap-4 sm:p-4 lg:flex-row lg:items-center">
 				<div className="flex items-center gap-4">
-					<div className="flex h-14 w-14 items-center justify-center rounded-xl bg-black/30">
+					<div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[var(--color-accent)]">
 						<GameTypeIcon type={game.type} className="h-8 w-8" style={{ color: game.color }} />
 					</div>
 					<div className="min-w-0">
-						<h1 className="truncate text-lg font-semibold text-white">{game.data.name}</h1>
-						<p className="truncate text-sm text-gray-400">{game.data.points} points per win</p>
+						<h1 className="truncate text-lg font-semibold text-[var(--color-text)]">{game.data.name}</h1>
+						<p className="truncate text-sm text-[var(--color-text-secondary)]">
+							{game.data.points} points per win
+						</p>
 					</div>
 				</div>
 				<div className="grid grid-cols-2 gap-3 lg:ml-auto lg:grid-cols-4 lg:gap-4">

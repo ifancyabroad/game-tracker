@@ -35,7 +35,7 @@ const getRankStyles = (rank: number) => {
 			icon: <Award className="h-3.5 w-3.5 sm:h-4 sm:w-4" />,
 		};
 	return {
-		badge: "bg-gray-800 text-gray-300 border-gray-700",
+		badge: "bg-[var(--color-accent)] text-[var(--color-text-secondary)] border-[var(--color-border)]",
 		icon: null,
 	};
 };
@@ -72,33 +72,39 @@ export const PlayerCard: React.FC<{
 					{/* Player Info */}
 					<div className="min-w-0 flex-1">
 						<div className="flex items-baseline justify-between gap-2">
-							<h3 className="truncate text-sm font-semibold text-white sm:text-lg">{name}</h3>
+							<h3 className="truncate text-sm font-semibold text-[var(--color-text)] sm:text-lg">
+								{name}
+							</h3>
 							<div className="flex shrink-0 items-baseline gap-0.5 sm:gap-1">
-								<span className="text-lg font-bold text-white tabular-nums sm:text-2xl">{points}</span>
-								<span className="text-[10px] font-medium text-gray-400 sm:text-xs">pts</span>
+								<span className="text-lg font-bold text-[var(--color-text)] tabular-nums sm:text-2xl">
+									{points}
+								</span>
+								<span className="text-[10px] font-medium text-[var(--color-text-secondary)] sm:text-xs">
+									pts
+								</span>
 							</div>
 						</div>
 
 						{/* Stats Row - Compact on mobile */}
 						<div className="mt-1 flex flex-wrap items-center gap-1.5 text-[11px] sm:mt-1.5 sm:gap-3 sm:text-xs">
-							<div className="flex items-center gap-1 text-gray-300">
+							<div className="flex items-center gap-1 text-[var(--color-text)]">
 								<Target className="h-3 w-3 text-[var(--color-primary)] sm:h-3.5 sm:w-3.5" />
 								<span className="font-semibold">{winRatePercent}%</span>
-								<span className="hidden text-gray-500 sm:inline">win rate</span>
+								<span className="hidden text-[var(--color-text-muted)] sm:inline">win rate</span>
 							</div>
-							<span className="text-gray-700">|</span>
-							<div className="flex items-center gap-1 text-gray-400">
+							<span className="text-[var(--color-text-muted)]">|</span>
+							<div className="flex items-center gap-1 text-[var(--color-text-muted)]">
 								<TrendingUp className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
 								<span>{wins}w</span>
 							</div>
-							<span className="text-gray-700">|</span>
-							<div className="text-gray-400">
+							<span className="text-[var(--color-text-muted)]">|</span>
+							<div className="text-[var(--color-text-muted)]">
 								<span>{games}p</span>
 							</div>
 						</div>
 
 						{/* Progress Bar */}
-						<div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-black/40 shadow-inner sm:mt-2.5 sm:h-2">
+						<div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[var(--color-border)] shadow-inner sm:mt-2.5 sm:h-2">
 							<div
 								className={`h-full rounded-full transition-all duration-500 ${tintBar}`}
 								style={{ width: `${pct}%` }}

@@ -67,7 +67,7 @@ export const PlayerStatsPage: React.FC = () => {
 				<div className="mb-4">
 					<BackButton />
 				</div>
-				<div className="rounded-xl border border-gray-700 bg-[var(--color-surface)] p-6 text-gray-300">
+				<div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 text-[var(--color-text-secondary)]">
 					Player not found.
 				</div>
 			</div>
@@ -82,9 +82,11 @@ export const PlayerStatsPage: React.FC = () => {
 				<div className="flex items-center gap-4">
 					<Avatar src={player.pictureUrl || undefined} name={player.data.name} size={56} />
 					<div className="min-w-0">
-						<h1 className="truncate text-lg font-semibold text-white">{player.data.name}</h1>
+						<h1 className="truncate text-lg font-semibold text-[var(--color-text)]">{player.data.name}</h1>
 						{player.data.fullName !== player.data.name && (
-							<p className="truncate text-sm text-gray-400">{player.data.fullName}</p>
+							<p className="truncate text-sm text-[var(--color-text-secondary)]">
+								{player.data.fullName}
+							</p>
 						)}
 					</div>
 				</div>

@@ -15,8 +15,17 @@ export const PlayerWinRateChart: React.FC<PlayerWinRateChartProps> = ({ overallS
 		<ChartCard title="Player Win Rates">
 			<ResponsiveContainer width="100%" height="100%">
 				<BarChart data={chartData} layout="vertical" margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
-					<XAxis type="number" domain={[0, 100]} tick={{ fontSize: 12, fill: "#ccc" }} unit="%" />
-					<YAxis type="category" dataKey="data.name" tick={{ fontSize: 12, fill: "#ccc" }} />
+					<XAxis
+						type="number"
+						domain={[0, 100]}
+						tick={{ fontSize: 12, fill: "var(--color-text-secondary)" }}
+						unit="%"
+					/>
+					<YAxis
+						type="category"
+						dataKey="data.name"
+						tick={{ fontSize: 12, fill: "var(--color-text-secondary)" }}
+					/>
 					<Tooltip
 						cursor={{ fill: "rgba(255,255,255,0.05)" }}
 						content={<ChartTooltip formatter={(v) => `${v}%`} />}

@@ -10,8 +10,12 @@ export const TopWinningPlayersChart: React.FC<TopWinningPlayersChartProps> = ({ 
 	<ChartCard title="Top Winning Players">
 		<ResponsiveContainer width="100%" height="100%">
 			<BarChart layout="vertical" data={overallStats} margin={{ top: 10, right: 20, left: 0, bottom: 10 }}>
-				<XAxis type="number" allowDecimals={false} tick={{ fontSize: 12, fill: "#ccc" }} />
-				<YAxis type="category" dataKey="name" tick={{ fontSize: 12, fill: "#ccc" }} />
+				<XAxis
+					type="number"
+					allowDecimals={false}
+					tick={{ fontSize: 12, fill: "var(--color-text-secondary)" }}
+				/>
+				<YAxis type="category" dataKey="name" tick={{ fontSize: 12, fill: "var(--color-text-secondary)" }} />
 				<Tooltip
 					cursor={{ fill: "rgba(255,255,255,0.05)" }}
 					content={<ChartTooltip formatter={(v) => `${v} wins`} />}

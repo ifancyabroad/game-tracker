@@ -20,7 +20,7 @@ export const ChartTooltip: React.FC<IChartTooltipProps> = ({ active, payload, la
 	const displayLabel = labelFormatter ? labelFormatter(String(rawLabel)) : rawLabel;
 
 	return (
-		<div className="rounded bg-gray-800 px-3 py-2 text-sm text-white shadow">
+		<div className="rounded border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-text)] shadow">
 			{displayLabel && <strong>{displayLabel}</strong>}
 			<div>{displayValue}</div>
 		</div>

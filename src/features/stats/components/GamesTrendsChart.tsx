@@ -28,10 +28,10 @@ export const GameTrendsChart: React.FC<GameTrendsChartProps> = ({ gameTrends }) 
 		<ChartCard title="Game Trends Over Time">
 			<ResponsiveContainer width="100%" height="100%">
 				<LineChart data={gameTrends} margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
-					<XAxis dataKey="date" tick={{ fontSize: 12, fill: "#ccc" }} />
-					<YAxis allowDecimals={false} tick={{ fontSize: 12, fill: "#ccc" }} />
+					<XAxis dataKey="date" tick={{ fontSize: 12, fill: "var(--color-text-secondary)" }} />
+					<YAxis allowDecimals={false} tick={{ fontSize: 12, fill: "var(--color-text-secondary)" }} />
 					<Tooltip content={<ChartTooltip formatter={(v) => `${v} plays`} />} />
-					<Legend wrapperStyle={{ fontSize: "12px", color: "#ccc" }} />
+					<Legend wrapperStyle={{ fontSize: "12px", color: "var(--color-text-secondary)" }} />
 					{gameData.map((game) => (
 						<Line
 							key={game.name}

@@ -19,11 +19,11 @@ export const Modal: React.FC = () => {
 							animate={{ opacity: 1, y: 0, scale: 1 }}
 							exit={{ opacity: 0, y: 40, scale: 0.95 }}
 							transition={{ duration: 0.2, ease: "easeInOut" }}
-							className="relative w-full max-w-lg rounded-xl border border-gray-700 bg-[var(--color-surface)] p-6 shadow-xl"
+							className="relative w-full max-w-lg rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-xl dark:shadow-2xl"
 						>
 							<button
 								onClick={closeModal}
-								className="absolute top-3 right-4 text-xl text-gray-400 hover:text-white"
+								className="absolute top-3 right-4 text-xl text-[var(--color-text-secondary)] hover:text-[var(--color-text)]"
 							>
 								✕
 							</button>

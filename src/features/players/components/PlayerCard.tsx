@@ -32,12 +32,12 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, canEdit, onEdit,
 				<Avatar src={player.pictureUrl || undefined} name={preferred} size={48} />
 
 				<div className="min-w-0 flex-1">
-					<p className="truncate text-sm font-semibold text-white">{preferred}</p>
-					{showFullBelow && <p className="truncate text-xs text-gray-400">{fullName}</p>}
+					<p className="truncate text-sm font-semibold text-[var(--color-text)]">{preferred}</p>
+					{showFullBelow && <p className="truncate text-xs text-[var(--color-text-secondary)]">{fullName}</p>}
 				</div>
 
 				<div
-					className="h-4 w-4 flex-shrink-0 rounded-full border border-gray-700"
+					className="h-4 w-4 flex-shrink-0 rounded-full border border-[var(--color-border)]"
 					style={{ backgroundColor: player.color }}
 				/>
 

@@ -21,7 +21,7 @@ export const HomePage: React.FC = () => {
 
 			<div className="mt-3 space-y-3 sm:mt-4 sm:space-y-4">
 				{!hasData ? (
-					<div className="rounded-xl border border-dashed border-gray-700 bg-[var(--color-surface)] p-6 text-center text-sm text-gray-400 sm:p-8">
+					<div className="rounded-xl border border-dashed border-[var(--color-border)] bg-[var(--color-surface)] p-6 text-center text-sm text-[var(--color-text-secondary)] sm:p-8">
 						No results yet. Play some games to populate the board!
 					</div>
 				) : (

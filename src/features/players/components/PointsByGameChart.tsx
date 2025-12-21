@@ -38,7 +38,12 @@ export const PointsByGameChart: React.FC<PointsByGameChartProps> = ({ gameWinRat
 						))}
 					</Pie>
 					<Tooltip content={<ChartTooltip formatter={(v) => `${v} points`} />} />
-					{isMobile && <Legend wrapperStyle={{ fontSize: "12px", color: "#ccc" }} iconType="circle" />}
+					{isMobile && (
+						<Legend
+							wrapperStyle={{ fontSize: "12px", color: "var(--color-text-secondary)" }}
+							iconType="circle"
+						/>
+					)}
 				</PieChart>
 			</ResponsiveContainer>
 		</ChartCard>

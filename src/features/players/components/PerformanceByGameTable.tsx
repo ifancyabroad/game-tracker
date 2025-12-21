@@ -16,13 +16,13 @@ export const PerformanceByGameTable: React.FC<PerformanceByGameTableProps> = ({ 
 
 	return (
 		<Card className="p-0">
-			<div className="border-b border-gray-700 px-3 py-2.5 sm:px-4 sm:py-3">
-				<h2 className="text-base font-semibold text-white">Performance by Game</h2>
-				<p className="text-xs text-gray-400">Top games by play count</p>
+			<div className="border-b border-[var(--color-border)] px-3 py-2.5 sm:px-4 sm:py-3">
+				<h2 className="text-base font-semibold text-[var(--color-text)]">Performance by Game</h2>
+				<p className="text-xs text-[var(--color-text-secondary)]">Top games by play count</p>
 			</div>
 			<div className="overflow-x-auto">
 				<table className="w-full text-sm">
-					<thead className="bg-black/20 text-left text-gray-300">
+					<thead className="bg-[var(--color-accent)] text-left text-[var(--color-text-secondary)]">
 						<tr>
 							<th className="px-3 py-2 sm:px-4">Game</th>
 							<th className="w-20 px-2 py-2 text-center sm:w-24 sm:px-4">Games</th>
@@ -38,24 +38,24 @@ export const PerformanceByGameTable: React.FC<PerformanceByGameTableProps> = ({ 
 							.map((g) => (
 								<tr
 									key={g.gameId}
-									className="cursor-pointer border-b border-gray-700 last:border-b-0 hover:bg-white/5"
+									className="cursor-pointer border-b border-[var(--color-border)] last:border-b-0 hover:hover:bg-[var(--color-hover)]"
 									onClick={() => handleNavigateToGame(g.gameId)}
 								>
-									<td className="px-3 py-2 text-white sm:px-4">{g.name}</td>
-									<td className="px-2 py-2 text-center text-gray-200 tabular-nums sm:px-4">
+									<td className="px-3 py-2 text-[var(--color-text)] sm:px-4">{g.name}</td>
+									<td className="px-2 py-2 text-center text-[var(--color-text)] tabular-nums sm:px-4">
 										{g.games}
 									</td>
-									<td className="px-2 py-2 text-center text-gray-200 tabular-nums sm:px-4">
+									<td className="px-2 py-2 text-center text-[var(--color-text)] tabular-nums sm:px-4">
 										{g.wins}
 									</td>
-									<td className="px-2 py-2 text-center text-gray-200 tabular-nums sm:px-4">
+									<td className="px-2 py-2 text-center text-[var(--color-text)] tabular-nums sm:px-4">
 										{formatPct(g.wr)}
 									</td>
 								</tr>
 							))}
 						{gameWinRates.length === 0 && (
 							<tr>
-								<td colSpan={4} className="px-4 py-6 text-center text-gray-400">
+								<td colSpan={4} className="px-4 py-6 text-center text-[var(--color-text-secondary)]">
 									No game stats yet.
 								</td>
 							</tr>
