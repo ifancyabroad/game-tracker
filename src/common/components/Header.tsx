@@ -13,7 +13,7 @@ export const Header: React.FC = () => {
 				<div className="flex h-9 w-9 items-center justify-center">
 					<img src={logo} alt="Logo" />
 				</div>
-				<h1 className="text-base font-bold text-[var(--color-text)]">THE NIGHTINGAMES</h1>
+				<h1 className="font-display text-base text-[var(--color-text)]">THE NIGHTINGAMES</h1>
 			</Link>
 			<div className="flex items-center gap-1">
 				<ThemeToggle />
