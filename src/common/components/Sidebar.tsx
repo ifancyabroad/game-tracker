@@ -2,7 +2,7 @@ import { NavLink } from "react-router";
 import { Home, Users, Calendar, Gamepad2, BarChart, X, LogIn, LogOut, CalendarRange } from "lucide-react";
 import { useUI } from "common/context/UIContext";
 import { useModal } from "common/context/ModalContext";
-import { LoginForm, Select, Button } from "common/components";
+import { LoginForm, Select, Button, ThemeToggle } from "common/components";
 import { useAuth } from "common/context/AuthContext";
 import { signOut } from "firebase/auth";
 import { auth } from "firebase";
@@ -35,7 +35,7 @@ export const Sidebar: React.FC = () => {
 			{isSidebarOpen && <div className="fixed inset-0 z-40 bg-black/50 sm:hidden" onClick={closeSidebar} />}
 
 			<aside
-				className={`fixed z-50 flex h-full w-72 flex-col border-r border-gray-700 bg-[var(--color-surface)] px-4 py-4 transition-transform sm:static sm:translate-x-0 sm:py-6 ${
+				className={`fixed z-50 flex h-full w-72 flex-col border-r border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-4 transition-transform sm:static sm:translate-x-0 sm:py-6 ${
 					isSidebarOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"
 				}`}
 			>
@@ -45,13 +45,14 @@ export const Sidebar: React.FC = () => {
 							<img src={logo} alt="Logo" />
 						</div>
 						<div>
-							<h1 className="text-base leading-tight font-bold text-white">THE NIGHTINGAMES</h1>
+							<h1 className="text-base leading-tight font-bold text-[var(--color-text)]">
+								THE NIGHTINGAMES
+							</h1>
 						</div>
 					</Link>
 					<button
 						onClick={closeSidebar}
-						className="text-gray-400 hover:text-white sm:hidden"
-						aria-label="Close menu"
+						className="text-[var(--color-text-secondary)] hover:text-[var(--color-text)] sm:hidden"
 					>
 						<X size={20} />
 					</button>
@@ -83,7 +84,7 @@ export const Sidebar: React.FC = () => {
 								`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
 									isActive
 										? "bg-[var(--color-primary)] text-[var(--color-primary-contrast)]"
-										: "text-gray-300 hover:bg-[var(--color-primary)]/10 hover:text-white"
+										: "text-[var(--color-text-secondary)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-text)]"
 								}`
 							}
 							onClick={closeSidebar}
@@ -95,6 +96,10 @@ export const Sidebar: React.FC = () => {
 				</nav>
 
 				<div className="mt-auto flex flex-col gap-2 pt-6">
+					<div className="flex items-center justify-between border-t border-[var(--color-border)] pt-4">
+						<span className="text-sm text-[var(--color-text-secondary)]">Theme</span>
+						<ThemeToggle />
+					</div>
 					{user ? (
 						<Button onClick={handleLogoutClick} variant="secondary" size="md">
 							<LogOut size={16} />

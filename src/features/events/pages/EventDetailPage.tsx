@@ -148,12 +148,12 @@ export const EventDetailPage: React.FC = () => {
 			<Card className="flex flex-col gap-3 p-3 sm:gap-4 sm:p-4">
 				<div className="flex items-start justify-between gap-4">
 					<div className="flex items-center gap-4">
-						<div className="flex h-14 w-14 items-center justify-center rounded-xl bg-black/30">
+						<div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[var(--color-accent)]">
 							<CalendarDays className="h-8 w-8 text-[var(--color-primary)]" />
 						</div>
 						<div className="min-w-0">
-							<h1 className="text-lg font-semibold text-white">{event.location}</h1>
-							<div className="flex items-center gap-2 text-sm text-gray-400">
+							<h1 className="text-lg font-semibold text-[var(--color-text)]">{event.location}</h1>
+							<div className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
 								<CalendarDays size={14} />
 								<span>{dateLabel}</span>
 							</div>
@@ -187,7 +187,7 @@ export const EventDetailPage: React.FC = () => {
 
 			<div className="grid gap-4 sm:gap-4 lg:grid-cols-2">
 				<Card className="p-3 sm:p-4">
-					<h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-white">
+					<h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-[var(--color-text)]">
 						<Users size={16} className="text-[var(--color-primary)]" /> Players
 					</h3>
 					<div className="space-y-2">
@@ -198,7 +198,7 @@ export const EventDetailPage: React.FC = () => {
 				</Card>
 
 				<Card className="p-3 sm:p-4">
-					<h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-white">
+					<h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-[var(--color-text)]">
 						<Gamepad2 size={16} className="text-[var(--color-primary)]" /> Games Played
 					</h3>
 					<div className="space-y-2">
@@ -211,7 +211,7 @@ export const EventDetailPage: React.FC = () => {
 
 			<div>
 				<div className="mb-3 flex items-center justify-between">
-					<h2 className="flex items-center gap-2 text-base font-semibold text-white">
+					<h2 className="flex items-center gap-2 text-base font-semibold text-[var(--color-text)]">
 						<Trophy size={18} className="text-[var(--color-primary)]" />
 						Results
 					</h2>

@@ -30,6 +30,7 @@ export { IconButton } from "./IconButton";
 export { EmptyState } from "./EmptyState";
 export { PageHeader } from "./PageHeader";
 export { GameTypeToggle } from "./GameTypeToggle";
+export { ThemeToggle } from "./ThemeToggle";
 
 // Utility Components
 export { Modal } from "./Modal";

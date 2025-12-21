@@ -19,8 +19,8 @@ export const Button: React.FC<IButtonProps> = ({
 	const variantStyles = {
 		primary: "bg-[var(--color-primary)] text-[var(--color-primary-contrast)] hover:opacity-90 disabled:opacity-50",
 		secondary:
-			"border border-gray-700 bg-[var(--color-surface)] text-white shadow-sm hover:bg-[var(--color-primary)]/10",
-		ghost: "text-gray-300 hover:bg-white/5",
+			"border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] shadow-sm hover:bg-[var(--color-primary)]/10",
+		ghost: "text-[var(--color-text-secondary)] hover:bg-[var(--color-hover)]",
 	};
 
 	const sizeStyles = {

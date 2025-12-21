@@ -18,7 +18,7 @@ export const Chip: React.FC<IChipProps> = ({
 	const baseStyles = "inline-flex items-center gap-2 rounded-full border px-2 py-1 text-xs transition-colors";
 	const activeStyles = active
 		? "border-[var(--color-primary)]/50 bg-[var(--color-primary)]/10 text-[var(--color-primary)]"
-		: "border-gray-700 bg-black/20 text-gray-300 hover:border-[var(--color-primary)]/40 hover:bg-white/5";
+		: "border-[var(--color-border)] bg-[var(--color-accent)] text-[var(--color-text)] hover:border-[var(--color-primary)]/40 hover:bg-[var(--color-hover)]";
 
 	return (
 		<button type="button" className={`${baseStyles} ${activeStyles} ${className}`} {...props}>

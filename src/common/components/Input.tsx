@@ -16,7 +16,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
 			lg: "px-4 py-3",
 		};
 
-		const baseStyles = `rounded-lg border border-gray-700 bg-black/20 ${sizeStyles[inputSize]} text-sm text-[var(--color-text)] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent`;
+		const baseStyles = `rounded-lg border border-[var(--color-border)] bg-[var(--color-accent)] ${sizeStyles[inputSize]} text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent`;
 		const widthStyles = fullWidth ? "w-full" : "";
 		const errorStyles = error ? "ring-2 ring-red-500" : "";
 		const iconStyles = icon ? "pr-9 [&::-webkit-calendar-picker-indicator]:hidden" : "";

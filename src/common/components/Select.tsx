@@ -10,11 +10,11 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 export const Select: React.FC<SelectProps> = ({ icon: Icon, label, children, className = "", ...props }) => {
 	return (
 		<div>
-			{label && <label className="mb-1 block text-xs text-gray-400">{label}</label>}
+			{label && <label className="mb-1 block text-xs text-[var(--color-text-secondary)]">{label}</label>}
 			<div className="relative">
 				<select
 					{...props}
-					className={`w-full appearance-none rounded-lg border border-gray-700 bg-[var(--color-surface)] px-3 py-2 ${Icon ? "pr-8" : ""} text-sm text-[var(--color-text)] focus:border-transparent focus:ring-2 focus:ring-[var(--color-primary)] focus:outline-none disabled:opacity-60 ${className}`}
+					className={`w-full appearance-none rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 ${Icon ? "pr-8" : ""} text-sm text-[var(--color-text)] focus:border-transparent focus:ring-2 focus:ring-[var(--color-primary)] focus:outline-none disabled:opacity-60 ${className}`}
 				>
 					{children}
 				</select>

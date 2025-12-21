@@ -5,7 +5,7 @@ interface ICardProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export const Card: React.FC<ICardProps> = ({ children, className = "", variant = "default", ...props }) => {
-	const baseStyles = "rounded-xl border border-gray-700 bg-[var(--color-surface)]";
+	const baseStyles = "rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]";
 
 	const variantStyles = {
 		default: "shadow-sm",

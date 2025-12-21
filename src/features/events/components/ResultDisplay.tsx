@@ -54,21 +54,21 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({
 		<Card className="p-3 sm:p-4">
 			<div className="mb-2.5 flex items-start justify-between gap-2 sm:mb-3">
 				<div className="flex min-w-0 items-center gap-2">
-					<div className="flex h-9 w-9 items-center justify-center rounded-xl bg-black/30">
+					<div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--color-accent)]">
 						{game && <GameTypeIcon type={game.type} className="h-5 w-5 text-[var(--color-primary)]" />}
 					</div>
 					<div className="min-w-0">
 						{game ? (
 							<Link
 								to={`/games/${result.gameId}`}
-								className="block truncate text-sm font-semibold text-white hover:text-[var(--color-primary)]"
+								className="block truncate text-sm font-semibold text-[var(--color-text)] hover:text-[var(--color-primary)]"
 							>
 								{game.name}
 							</Link>
 						) : (
-							<p className="truncate text-sm font-semibold text-white">Unknown Game</p>
+							<p className="truncate text-sm font-semibold text-[var(--color-text)]">Unknown Game</p>
 						)}
-						<p className="text-xs text-gray-400">
+						<p className="text-xs text-[var(--color-text-secondary)]">
 							{rows.length} {pluralize(rows.length, "player")}
 						</p>
 					</div>
@@ -87,8 +87,8 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({
 			</div>
 
 			<div className="w-full overflow-x-auto">
-				<table className="w-full text-left text-sm text-gray-300">
-					<thead className="border-b border-gray-700 bg-black/20 text-xs text-gray-400 uppercase">
+				<table className="w-full text-left text-sm text-[var(--color-text)]">
+					<thead className="border-b border-[var(--color-border)] bg-[var(--color-accent)] text-xs text-[var(--color-text-secondary)] uppercase">
 						<tr>
 							<th className="px-2 py-2 sm:px-4">Player</th>
 							<th className="px-2 py-2 text-center sm:w-24 sm:px-4">
@@ -116,7 +116,7 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({
 						{rows.map((r) => (
 							<tr
 								key={r.playerId}
-								className="cursor-pointer border-b border-gray-700 last:border-b-0 hover:bg-white/5"
+								className="cursor-pointer border-b border-[var(--color-border)] last:border-b-0 hover:hover:bg-[var(--color-hover)]"
 								onClick={() => handleNavigateToPlayer(r.playerId)}
 							>
 								<td className="p-2 sm:pr-4">
@@ -127,11 +127,11 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({
 											size={28}
 										/>
 										<div className="max-w-[50vw] min-w-0 leading-tight sm:max-w-none">
-											<div className="truncate text-white">{r.displayName}</div>
+											<div className="truncate text-[var(--color-text)]">{r.displayName}</div>
 											{r.player &&
 												r.player.preferredName &&
 												r.player.preferredName !== r.fullName && (
-													<div className="hidden truncate text-xs text-gray-400 sm:block">
+													<div className="hidden truncate text-xs text-[var(--color-text-secondary)] sm:block">
 														{r.fullName}
 													</div>
 												)}
@@ -155,14 +155,14 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({
 									{r.isWinner ? (
 										<Award className="mx-auto h-4 w-4 text-yellow-500" />
 									) : (
-										<span className="text-gray-500">—</span>
+										<span className="text-[var(--color-text-muted)]">—</span>
 									)}
 								</td>
 								<td className="px-2 py-2 text-center whitespace-nowrap sm:px-4">
 									{r.isLoser ? (
 										<Frown className="mx-auto h-4 w-4 text-red-500" />
 									) : (
-										<span className="text-gray-500">—</span>
+										<span className="text-[var(--color-text-muted)]">—</span>
 									)}
 								</td>
 							</tr>

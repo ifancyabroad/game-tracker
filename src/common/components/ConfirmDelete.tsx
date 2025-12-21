@@ -17,14 +17,14 @@ export const ConfirmDelete: React.FC<IConfirmDeleteProps> = ({
 		<div className="w-full max-w-md rounded-xl bg-[var(--color-surface)]">
 			<div className="mb-2 flex items-center gap-2">
 				<Trash2 className="h-4 w-4 text-red-400" />
-				<h3 className="text-sm font-semibold text-white">{title}</h3>
+				<h3 className="text-sm font-semibold text-[var(--color-text)]">{title}</h3>
 			</div>
-			<p className="mb-4 text-sm text-gray-300">{message}</p>
+			<p className="mb-4 text-sm text-[var(--color-text)]">{message}</p>
 			<div className="flex justify-end gap-2">
 				<button
 					type="button"
 					onClick={onCancel}
-					className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-black/20 px-3 py-2 text-sm text-gray-200 hover:bg-[var(--color-primary)]/10 focus:ring-2 focus:ring-white/20 focus:outline-none"
+					className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-accent)] px-3 py-2 text-sm text-[var(--color-text)] hover:bg-[var(--color-primary)]/10 focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:outline-none"
 				>
 					Cancel
 				</button>

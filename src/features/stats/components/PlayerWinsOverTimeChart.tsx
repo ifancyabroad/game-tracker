@@ -18,10 +18,10 @@ export const PlayerWinsOverTimeChart: React.FC<PlayerWinsOverTimeChartProps> = (
 		<ChartCard title="Player Wins Over Time">
 			<ResponsiveContainer width="100%" height="100%">
 				<LineChart data={playerWinsOverTime} margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
-					<XAxis dataKey="date" tick={{ fontSize: 12, fill: "#ccc" }} />
-					<YAxis allowDecimals={false} tick={{ fontSize: 12, fill: "#ccc" }} />
+					<XAxis dataKey="date" tick={{ fontSize: 12, fill: "var(--color-text-secondary)" }} />
+					<YAxis allowDecimals={false} tick={{ fontSize: 12, fill: "var(--color-text-secondary)" }} />
 					<Tooltip content={<ChartTooltip formatter={(v) => `${v} wins`} />} />
-					<Legend wrapperStyle={{ fontSize: "12px", color: "#ccc" }} />
+					<Legend wrapperStyle={{ fontSize: "12px", color: "var(--color-text-secondary)" }} />
 					{playerData.map((player) => (
 						<Line
 							key={player.id}

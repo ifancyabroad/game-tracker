@@ -29,7 +29,12 @@ export const PlayerParticipationChart: React.FC<PlayerParticipationChartProps> =
 						))}
 					</Pie>
 					<RechartsTooltip content={<ChartTooltip formatter={(v) => `${v} games`} />} />
-					{isMobile && <Legend wrapperStyle={{ fontSize: "12px", color: "#ccc" }} iconType="circle" />}
+					{isMobile && (
+						<Legend
+							wrapperStyle={{ fontSize: "12px", color: "var(--color-text-secondary)" }}
+							iconType="circle"
+						/>
+					)}
 				</PieChart>
 			</ResponsiveContainer>
 		</ChartCard>

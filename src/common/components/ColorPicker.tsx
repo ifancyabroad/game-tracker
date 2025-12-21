@@ -97,20 +97,20 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 	};
 
 	const inputCls =
-		"w-full rounded-lg border border-gray-700 bg-black/20 px-3 py-2 text-sm text-[var(--color-text)] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent";
+		"w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-accent)] px-3 py-2 text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent";
 
 	return (
 		<div ref={containerRef} className={className}>
-			{label && <label className="mb-1 block text-xs text-gray-400">{label}</label>}
+			{label && <label className="mb-1 block text-xs text-[var(--color-text-secondary)]">{label}</label>}
 
 			<div
-				className={`flex items-center gap-2 rounded-lg border border-gray-700 bg-black/20 p-2 ${disabled ? "opacity-60" : ""}`}
+				className={`flex items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-accent)] p-2 ${disabled ? "opacity-60" : ""}`}
 			>
 				<button
 					type="button"
 					disabled={disabled || inline}
 					onClick={() => setOpen((v) => !v)}
-					className="relative h-8 w-8 shrink-0 overflow-hidden rounded-md border border-gray-700"
+					className="relative h-8 w-8 shrink-0 overflow-hidden rounded-md border border-[var(--color-border-strong)]"
 					title={value}
 					aria-label="Open color picker"
 					style={{ backgroundColor: value }}
@@ -144,7 +144,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 							disabled={disabled}
 							onClick={() => onChange(c)}
 							title={c}
-							className="h-6 w-6 rounded-md border border-gray-700 ring-1 ring-black/20"
+							className="h-6 w-6 rounded-md border border-[var(--color-border-strong)] ring-1 ring-black/20"
 							style={{ backgroundColor: c }}
 						/>
 					))}
@@ -154,7 +154,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 			{open && !disabled && (
 				<div
 					ref={pickerRef}
-					className={`${inline ? "mt-2" : "absolute z-50 mt-2"} rounded-xl border border-gray-700 bg-[var(--color-surface)] p-2 shadow-xl`}
+					className={`${inline ? "mt-2" : "absolute z-50 mt-2"} rounded-xl border border-[var(--color-border-strong)] bg-[var(--color-surface)] p-2 shadow-xl`}
 					style={!inline ? { position: "absolute" as const } : undefined}
 				>
 					<ChromePicker
@@ -174,7 +174,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 								type="button"
 								onClick={() => onChange(c)}
 								title={c}
-								className="h-6 w-full rounded-md border border-gray-700 ring-1 ring-black/20"
+								className="h-6 w-full rounded-md border border-[var(--color-border-strong)] ring-1 ring-black/20"
 								style={{ backgroundColor: c }}
 							/>
 						))}

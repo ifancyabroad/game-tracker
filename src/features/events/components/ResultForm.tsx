@@ -117,9 +117,11 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 
 	return (
 		<form onSubmit={handleSubmit} className="m-0 flex flex-col gap-4 p-0">
-			<div className="flex items-center gap-2 text-gray-300">
+			<div className="flex items-center gap-2 text-[var(--color-text-secondary)]">
 				<Target className="h-4 w-4 text-[var(--color-primary)]" />
-				<h3 className="text-sm font-semibold text-white">{initialData ? "Edit Result" : "Add Result"}</h3>
+				<h3 className="text-sm font-semibold text-[var(--color-text)]">
+					{initialData ? "Edit Result" : "Add Result"}
+				</h3>
 			</div>
 
 			<div>
@@ -168,7 +170,7 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 			</div>
 
 			<div>
-				<p className="mb-2 text-xs font-medium text-gray-400">Players</p>
+				<p className="mb-2 text-xs font-medium text-[var(--color-text-secondary)]">Players</p>
 				<div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
 					{playerResults.map((pr) => {
 						const p = getPlayer(pr.playerId);
@@ -177,10 +179,10 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 						return (
 							<div
 								key={pr.playerId}
-								className={`rounded-md bg-black/20 p-3 ${isIncluded ? "" : "opacity-60"}`}
+								className={`rounded-md bg-[var(--color-accent)] p-3 ${isIncluded ? "" : "opacity-60"}`}
 							>
 								<div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
-									<label className="flex items-center gap-2 text-sm whitespace-nowrap text-white">
+									<label className="flex items-center gap-2 text-sm whitespace-nowrap text-[var(--color-text)]">
 										<input
 											type="checkbox"
 											checked={isIncluded}
@@ -195,7 +197,7 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 
 								<div className="mt-2 flex flex-wrap items-center gap-3">
 									<div className="flex items-center gap-2">
-										<span className="text-xs text-gray-400">Rank</span>
+										<span className="text-xs text-[var(--color-text-secondary)]">Rank</span>
 										<Input
 											type="number"
 											min={1}
@@ -215,7 +217,7 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 										/>
 									</div>
 
-									<label className="flex items-center gap-1 text-xs whitespace-nowrap text-gray-300">
+									<label className="flex items-center gap-1 text-xs whitespace-nowrap text-[var(--color-text-secondary)]">
 										<input
 											type="checkbox"
 											checked={!!pr.isWinner}
@@ -227,7 +229,7 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 										/>
 										Win
 									</label>
-									<label className="flex items-center gap-1 text-xs whitespace-nowrap text-gray-300">
+									<label className="flex items-center gap-1 text-xs whitespace-nowrap text-[var(--color-text-secondary)]">
 										<input
 											type="checkbox"
 											checked={!!pr.isLoser}

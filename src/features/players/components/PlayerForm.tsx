@@ -84,18 +84,18 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData }
 			<ColorPicker label="Favourite colour" value={color} onChange={setColor} showInput />
 
 			<div>
-				<label className="mb-1 block text-xs text-gray-400">Picture</label>
+				<label className="mb-1 block text-xs text-[var(--color-text-secondary)]">Picture</label>
 				<div className="flex items-center gap-3">
-					<div className="h-12 w-12 overflow-hidden rounded-full border border-gray-700 bg-black/20">
+					<div className="h-12 w-12 overflow-hidden rounded-full border border-[var(--color-border)] bg-[var(--color-accent)]">
 						{previewUrl ? (
 							<img src={previewUrl} className="h-full w-full object-cover" alt="Player preview" />
 						) : (
-							<div className="flex h-full w-full items-center justify-center text-xs text-gray-500">
+							<div className="flex h-full w-full items-center justify-center text-xs text-[var(--color-text-muted)]">
 								No image
 							</div>
 						)}
 					</div>
-					<label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-gray-700 bg-black/20 px-3 py-2 text-sm text-gray-200 hover:bg-[var(--color-primary)]/10">
+					<label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-accent)] px-3 py-2 text-sm text-[var(--color-text)] hover:bg-[var(--color-primary)]/10">
 						Upload
 						<input
 							type="file"
