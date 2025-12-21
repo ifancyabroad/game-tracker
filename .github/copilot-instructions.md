@@ -2,9 +2,11 @@
 
 ## Architecture Overview
 
-**React + TypeScript + Vite** SPA for tracking board game events, player stats, and leaderboards. Backend: **Firebase** (Firestore, Auth, Storage). Styling: **Tailwind CSS v4** via Vite plugin.
+**React + TypeScript + Vite** SPA for tracking board game events, player stats, and leaderboards. Backend: **Firebase** (Firestore, Auth, Storage). Styling: **Tailwind CSS v4** via Vite plugin (not PostCSS).
 
 **Feature-based structure**: Domain-driven folders (`features/players`, `features/games`, `features/events`, `features/stats`, `features/leaderboard`) + shared utilities in `common/`.
+
+**Routing**: React Router v7 routes defined inline in [src/main.tsx](src/main.tsx). All forms/modals are JSX components, not separate routes.
 
 ## Critical Context Provider Pattern
 
@@ -27,7 +29,8 @@
 - Data flows: providers → context → hooks (one-way)
 - `ReadyGate` blocks rendering until all providers load (`useAppReady` checks `loading` flags)
 - All providers expose: `loading` boolean, data arrays, `*ById` Maps, CRUD methods
-- **Provider-to-Map pattern**: Use `createMapById()` helper for O(1) lookups (e.g., `playerById.get(id)`)
+- **Provider-to-Map pattern**: Use `createMapBy()` helper for O(1) lookups (e.g., `playerById.get(id)`)
+- **Year filtering**: `UIProvider` manages global `selectedYear` state, initialized to most recent year on load (see [common/utils/yearFilter.ts](common/utils/yearFilter.ts))
 
 ## Data Model
 
@@ -67,22 +70,40 @@ import { usePlayers } from "features/players/context/PlayersContext";
 const { players, playerById, addPlayer, editPlayer, deletePlayer } = usePlayers();
 ```
 
-**Provider-to-Map pattern**: All providers expose both array (`players`) and Map (`playerById`) for O(1) lookups. Use `createMapById` helper from `common/utils/helpers.ts`.
+**Provider-to-Map pattern**: All providers expose both array (`players`) and Map (`playerById`) for O(1) lookups. Use `createMapBy` helper from [common/utils/helpers.ts](common/utils/helpers.ts) (note: named `createMapBy`, not `createMapById`).
 
 ## Modal System
 
-**Global modal controlled by `ModalProvider`** (see `common/context/ModalProvider.tsx`):
+**Global modal controlled by `ModalProvider`** (see [common/context/ModalProvider.tsx](common/context/ModalProvider.tsx)):
 
 ```typescript
 const { openModal, closeModal } = useModal();
 openModal(<PlayerForm onSubmit={handleSubmit} />);
 ```
 
-Forms are rendered as modal content, not separate routes. See `features/players/pages/PlayersList.tsx` for reference.
+Forms are rendered as modal content, not separate routes. See [features/players/pages/PlayersList.tsx](features/players/pages/PlayersList.tsx) for reference.
+
+## Year Filtering Pattern
+
+**Global year filter managed by `UIProvider`** (see [common/context/UIProvider.tsx](common/context/UIProvider.tsx)):
+
+- `selectedYear` state defaults to most recent year from events on initial load
+- Set to `null` for "All Years" view
+- Use filtering utilities from [common/utils/yearFilter.ts](common/utils/yearFilter.ts):
+    - `filterEventsByYear(events, year)` - Filter events by year
+    - `filterResultsByYear(results, events, year)` - Filter results based on event dates
+    - `getAvailableYears(events)` - Extract unique years, sorted descending
+
+**Access pattern**:
+
+```typescript
+const { selectedYear, setSelectedYear, availableYears } = useUI();
+const filteredEvents = filterEventsByYear(events, selectedYear);
+```
 
 ## Stats & Aggregation
 
-**Player stats are computed on-the-fly** in `features/players/utils/stats.ts`. Key functions:
+**Player stats are computed on-the-fly** in [features/players/utils/stats.ts](features/players/utils/stats.ts). Key functions:
 
 - `getPlayerData()`: Calculates wins, games played, win rate, points from results
 - `getPlayerAggregates()`: Game-specific stats, rank distribution, recent form
@@ -94,16 +115,16 @@ Forms are rendered as modal content, not separate routes. See `features/players/
 
 Uses **Tailwind CSS v4** (imported via Vite plugin, not PostCSS):
 
-- Custom colors via CSS variables in `src/index.css`: `--color-primary`, `--color-secondary`, `--color-bg`, `--color-surface`, `--color-text`
+- Custom colors via CSS variables in [src/index.css](src/index.css): `--color-primary`, `--color-secondary`, `--color-bg`, `--color-surface`, `--color-text`
 - Player colors stored as hex strings in database and applied via inline styles
 - Responsive grid layouts: `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3`
-- Use `@theme` directive in CSS for defining design tokens (see `src/index.css`)
+- Use `@theme` directive in CSS for defining design tokens (see [src/index.css](src/index.css))
 
 ## Firebase Integration
 
-**Firebase config is in `src/firebase.ts`** (exports `db`, `auth`, `storage`).
+**Firebase config is in [src/firebase.ts](src/firebase.ts)** (exports `db`, `auth`, `storage`).
 
-**Real-time listeners pattern** (see `PlayersProvider.tsx` for reference):
+**Real-time listeners pattern** (see [features/players/context/PlayersProvider.tsx](features/players/context/PlayersProvider.tsx) for reference):
 
 ```typescript
 useEffect(() => {
@@ -120,30 +141,30 @@ useEffect(() => {
 
 ## Development Workflow
 
-**Commands** (from `package.json`):
+**Commands** (from [package.json](package.json)):
 
 - `npm run dev` - Start Vite dev server (default port 5173)
 - `npm run build` - TypeScript compile + Vite production build
 - `npm run lint` - ESLint check
 - `npm run preview` - Preview production build locally
 
-**Deployment**: AWS S3 + CloudFront via `buildspec.yml` (CodeBuild pipeline). Invalidates `/index.html` after deploy.
+**Deployment**: AWS S3 + CloudFront via [buildspec.yml](buildspec.yml) (CodeBuild pipeline). Invalidates `/index.html` after deploy.
 
 **Git hooks**: Husky + lint-staged runs Prettier and ESLint on staged files before commit.
 
 ## Common Patterns to Follow
 
-1. **Display names**: Use `getDisplayName(player)` (from `features/players/utils/helpers.ts`) - prefers `preferredName` over `firstName`
+1. **Display names**: Use `getDisplayName(player)` (from [features/players/utils/helpers.ts](features/players/utils/helpers.ts)) - prefers `preferredName` over `firstName`
 2. **Icons**: Use `lucide-react` for all icons
-3. **Animations**: Use `framer-motion` for modal transitions (see `common/components/Modal.tsx`)
+3. **Animations**: Use `framer-motion` for modal transitions (see [common/components/Modal.tsx](common/components/Modal.tsx))
 4. **Date handling**: Use `date-fns` library (already in dependencies)
-5. **Charts**: Use `recharts` for all data visualizations (see `features/stats/components/`)
-6. **Percentage formatting**: Use `formatPct()` from `common/utils/helpers.ts` (rounds to whole number)
+5. **Charts**: Use `recharts` for all data visualizations (see [features/stats/components/](features/stats/components/))
+6. **Percentage formatting**: Use `formatPct()` from [common/utils/helpers.ts](common/utils/helpers.ts) (rounds to whole number)
 
 ## Key Files Reference
 
-- **Provider setup**: `src/main.tsx`
+- **Provider setup**: [src/main.tsx](src/main.tsx)
 - **Type definitions**: `src/features/*/types.d.ts`
 - **Stat calculations**: `src/features/*/utils/stats.ts`
-- **Reusable components**: `src/common/components/`
-- **Routing**: All routes defined in `src/main.tsx` (no separate router config)
+- **Reusable components**: [src/common/components/](src/common/components/)
+- **Routing**: All routes defined in [src/main.tsx](src/main.tsx) (no separate router config)
