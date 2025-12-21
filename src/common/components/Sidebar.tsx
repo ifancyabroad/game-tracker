@@ -45,7 +45,7 @@ export const Sidebar: React.FC = () => {
 							<img src={logo} alt="Logo" />
 						</div>
 						<div>
-							<h1 className="text-base leading-tight font-bold text-[var(--color-text)]">
+							<h1 className="font-display text-base leading-tight text-[var(--color-text)]">
 								THE NIGHTINGAMES
 							</h1>
 						</div>
