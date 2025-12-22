@@ -14,6 +14,7 @@ import { EventGameCard } from "features/events/components/EventGameCard";
 import type { IEvent, IResult } from "features/events/types";
 import { useAuth } from "common/context/AuthContext";
 import { useEventPlayerStats, useEventGameStats } from "features/events/utils/hooks";
+import { useToast } from "common/utils/hooks";
 
 export const EventDetailPage: React.FC = () => {
 	const { eventId: eventIdParam } = useParams();
@@ -26,6 +27,7 @@ export const EventDetailPage: React.FC = () => {
 	const { results, deleteResult } = useResults();
 	const { openModal, closeModal } = useModal();
 	const user = useAuth();
+	const toast = useToast();
 
 	const event = eventById.get(eventId);
 	const eventResults = results.filter((r) => r.eventId === eventId).sort((a, b) => a.order - b.order);
@@ -33,18 +35,39 @@ export const EventDetailPage: React.FC = () => {
 	const playerStats = useEventPlayerStats(eventId);
 	const gameStats = useEventGameStats(eventId);
 
+	const handleEditEventSubmit = async (changes: Omit<IEvent, "id">) => {
+		try {
+			await editEvent(eventId, changes);
+			toast.success("Event updated successfully");
+			closeModal();
+		} catch {
+			toast.error("Failed to update event");
+		}
+	};
+
+	const handleDeleteEventConfirm = async () => {
+		try {
+			await deleteEvent(eventId);
+			toast.success("Event deleted successfully");
+			closeModal();
+			navigate("/events");
+		} catch {
+			toast.error("Failed to delete event");
+		}
+	};
+
+	const handleDeleteResultConfirm = async (resultId: string) => {
+		try {
+			await deleteResult(resultId);
+			toast.success("Result deleted successfully");
+			closeModal();
+		} catch {
+			toast.error("Failed to delete result");
+		}
+	};
+
 	const handleEditEvent = (ev: IEvent) => {
-		openModal(
-			<EventForm
-				initialData={ev}
-				players={players}
-				games={games}
-				onSubmit={async (data) => {
-					await editEvent(ev.id, data);
-					closeModal();
-				}}
-			/>,
-		);
+		openModal(<EventForm initialData={ev} players={players} games={games} onSubmit={handleEditEventSubmit} />);
 	};
 
 	const handleDeleteEvent = (ev: IEvent) => {
@@ -52,11 +75,7 @@ export const EventDetailPage: React.FC = () => {
 			<ConfirmDelete
 				title="Delete event?"
 				message={`This will remove the event at ${ev.location}.`}
-				onConfirm={async () => {
-					await deleteEvent(ev.id);
-					closeModal();
-					navigate("/events");
-				}}
+				onConfirm={handleDeleteEventConfirm}
 				onCancel={closeModal}
 			/>,
 		);
@@ -98,10 +117,7 @@ export const EventDetailPage: React.FC = () => {
 			<ConfirmDelete
 				title="Delete result?"
 				message="This will remove the selected result."
-				onConfirm={async () => {
-					await deleteResult(resultId);
-					closeModal();
-				}}
+				onConfirm={() => handleDeleteResultConfirm(resultId)}
 				onCancel={closeModal}
 			/>,
 		);

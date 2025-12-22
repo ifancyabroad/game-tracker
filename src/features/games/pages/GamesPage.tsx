@@ -6,33 +6,50 @@ import { ConfirmDelete, Button, PageHeader, EmptyState } from "common/components
 import { GameCard } from "features/games/components/GameCard";
 import { useAuth } from "common/context/AuthContext";
 import { Gamepad2, Plus } from "lucide-react";
+import { useToast } from "common/utils/hooks";
 
 const GamesPage: React.FC = () => {
 	const { games, addGame, editGame, deleteGame } = useGames();
 	const { openModal, closeModal } = useModal();
 	const user = useAuth();
+	const toast = useToast();
+
+	const handleAddGame = async (game: Omit<IGame, "id">) => {
+		try {
+			await addGame(game);
+			toast.success("Game added successfully");
+			closeModal();
+		} catch {
+			toast.error("Failed to add game");
+		}
+	};
+
+	const handleEditGame = async (game: IGame, changes: Omit<IGame, "id">) => {
+		try {
+			await editGame(game.id, changes);
+			toast.success("Game updated successfully");
+			closeModal();
+		} catch {
+			toast.error("Failed to update game");
+		}
+	};
+
+	const handleDeleteGame = async (game: IGame) => {
+		try {
+			await deleteGame(game.id);
+			toast.success("Game deleted successfully");
+			closeModal();
+		} catch {
+			toast.error("Failed to delete game");
+		}
+	};
 
 	const handleAdd = () => {
-		openModal(
-			<GameForm
-				onSubmit={async (game: Omit<IGame, "id">) => {
-					await addGame(game);
-					closeModal();
-				}}
-			/>,
-		);
+		openModal(<GameForm onSubmit={(game) => handleAddGame(game)} />);
 	};
 
 	const handleEdit = (game: IGame) => {
-		openModal(
-			<GameForm
-				initialData={game}
-				onSubmit={async (changes: Omit<IGame, "id">) => {
-					await editGame(game.id, changes);
-					closeModal();
-				}}
-			/>,
-		);
+		openModal(<GameForm initialData={game} onSubmit={(changes) => handleEditGame(game, changes)} />);
 	};
 
 	const handleDelete = (game: IGame) => {
@@ -40,10 +57,7 @@ const GamesPage: React.FC = () => {
 			<ConfirmDelete
 				title="Delete game?"
 				message={`This will remove ${game.name}.`}
-				onConfirm={async () => {
-					await deleteGame(game.id);
-					closeModal();
-				}}
+				onConfirm={() => handleDeleteGame(game)}
 				onCancel={closeModal}
 			/>,
 		);

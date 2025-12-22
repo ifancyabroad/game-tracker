@@ -10,6 +10,7 @@ import { EventCard } from "features/events/components/EventCard";
 import { NavLink } from "react-router";
 import { useAuth } from "common/context/AuthContext";
 import { CalendarPlus, CalendarDays } from "lucide-react";
+import { useToast } from "common/utils/hooks";
 
 export const EventsPage: React.FC = () => {
 	const { addEvent, editEvent, deleteEvent } = useEvents();
@@ -18,28 +19,47 @@ export const EventsPage: React.FC = () => {
 	const { games, gameById } = useGames();
 	const user = useAuth();
 	const { openModal, closeModal } = useModal();
+	const toast = useToast();
+
+	const handleAddEvent = async (event: Omit<IEvent, "id">) => {
+		try {
+			await addEvent(event);
+			toast.success("Event added successfully");
+			closeModal();
+		} catch {
+			toast.error("Failed to add event");
+		}
+	};
+
+	const handleEditEvent = async (event: IEvent, changes: Omit<IEvent, "id">) => {
+		try {
+			await editEvent(event.id, changes);
+			toast.success("Event updated successfully");
+			closeModal();
+		} catch {
+			toast.error("Failed to update event");
+		}
+	};
+
+	const handleDeleteEvent = async (event: IEvent) => {
+		try {
+			await deleteEvent(event.id);
+			toast.success("Event deleted successfully");
+			closeModal();
+		} catch {
+			toast.error("Failed to delete event");
+		}
+	};
 
 	const handleAdd = () => {
-		openModal(
-			<EventForm
-				onSubmit={async (event: Omit<IEvent, "id">) => {
-					await addEvent(event);
-					closeModal();
-				}}
-				players={players}
-				games={games}
-			/>,
-		);
+		openModal(<EventForm onSubmit={(event) => handleAddEvent(event)} players={players} games={games} />);
 	};
 
 	const handleEdit = (event: IEvent) => {
 		openModal(
 			<EventForm
 				initialData={event}
-				onSubmit={async (changes: Omit<IEvent, "id">) => {
-					await editEvent(event.id, changes);
-					closeModal();
-				}}
+				onSubmit={(changes) => handleEditEvent(event, changes)}
 				players={players}
 				games={games}
 			/>,
@@ -51,10 +71,7 @@ export const EventsPage: React.FC = () => {
 			<ConfirmDelete
 				title="Delete event?"
 				message={`This will remove the event at ${event.location}.`}
-				onConfirm={async () => {
-					await deleteEvent(event.id);
-					closeModal();
-				}}
+				onConfirm={() => handleDeleteEvent(event)}
 				onCancel={closeModal}
 			/>,
 		);

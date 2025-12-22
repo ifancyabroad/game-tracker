@@ -1,11 +1,15 @@
-import { useState, type ChangeEvent, type FormEvent, useEffect, useMemo } from "react";
+import { useMemo } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useResults } from "features/events/context/ResultsContext";
 import type { IPlayer } from "features/players/types";
-import type { IPlayerResult, IResult } from "features/events/types";
+import type { IResult } from "features/events/types";
 import type { IGame } from "features/games/types";
 import { Gamepad2, Target } from "lucide-react";
 import { getDisplayName } from "features/players/utils/helpers";
-import { Button, Select, Label, Input } from "common/components";
+import { Button, Select, Label, Input, ErrorMessage } from "common/components";
+import { useToast } from "common/utils/hooks";
+import { resultSchema, type ResultFormData } from "common/utils/validation";
 
 interface ResultFormProps {
 	eventId: string;
@@ -29,94 +33,56 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 	numOfResults,
 }) => {
 	const { addResult, editResult } = useResults();
-	const [gameId, setGameId] = useState<string>(initialData?.gameId ?? "");
-	const [order, setOrder] = useState<number>(initialData?.order ?? numOfResults + 1);
-
+	const toast = useToast();
 	const filteredGames = useMemo(() => {
 		if (!Array.isArray(allowedGameIds) || allowedGameIds.length === 0) return [] as IGame[];
 		const set = new Set(allowedGameIds);
 		return games.filter((g) => set.has(g.id));
 	}, [games, allowedGameIds]);
 
-	useEffect(() => {
-		if (!filteredGames.length) {
-			setGameId("");
-			return;
-		}
-		if (!filteredGames.some((g) => g.id === gameId)) {
-			setGameId(
-				initialData?.gameId && filteredGames.some((g) => g.id === initialData.gameId)
-					? initialData.gameId
-					: filteredGames[0].id,
-			);
-		}
-	}, [filteredGames, gameId, initialData?.gameId]);
-
-	const [playerResults, setPlayerResults] = useState<IPlayerResult[]>(
+	// Default playerResults for form
+	const defaultPlayerResults =
 		initialData?.playerResults ||
-			eventPlayerIds.map((id) => ({ playerId: id, rank: null, isWinner: false, isLoser: false })),
-	);
+		eventPlayerIds.map((id) => ({ playerId: id, rank: null, isWinner: false, isLoser: false }));
 
-	// Participation map (playerId -> included)
-	const [included, setIncluded] = useState<Record<string, boolean>>(() => {
-		if (initialData) {
-			const present = new Set(initialData.playerResults.map((r) => r.playerId));
-			return Object.fromEntries(eventPlayerIds.map((id) => [id, present.has(id)]));
-		}
-		return Object.fromEntries(eventPlayerIds.map((id) => [id, true]));
+	const {
+		register,
+		handleSubmit,
+		watch,
+		control,
+		formState: { errors },
+	} = useForm<ResultFormData>({
+		resolver: zodResolver(resultSchema),
+		defaultValues: {
+			eventId,
+			gameId: initialData?.gameId ?? filteredGames[0]?.id ?? "",
+			order: initialData?.order ?? numOfResults + 1,
+			playerResults: defaultPlayerResults,
+		},
 	});
 
-	// Keep playerResults in sync with event players
-	useEffect(() => {
-		setPlayerResults((prev) => {
-			const setIds = new Set(eventPlayerIds);
-			const filtered = prev.filter((pr) => setIds.has(pr.playerId));
-			const missing = eventPlayerIds
-				.filter((id) => !filtered.some((pr) => pr.playerId === id))
-				.map((id) => ({ playerId: id, rank: null, isWinner: false, isLoser: false }));
-			return [...filtered, ...missing];
-		});
-	}, [eventPlayerIds]);
-
-	// Keep included map in sync with event players & initial data
-	useEffect(() => {
-		const present = initialData ? new Set(initialData.playerResults.map((r) => r.playerId)) : null;
-		setIncluded((prev) => {
-			const next: Record<string, boolean> = {};
-			for (const id of eventPlayerIds) {
-				next[id] = prev[id] ?? (present ? present.has(id) : true);
-			}
-			return next;
-		});
-	}, [eventPlayerIds, initialData]);
-
-	const handleSubmit = async (e: FormEvent) => {
-		e.preventDefault();
-		const filtered = playerResults.filter((pr) => included[pr.playerId]);
-		const resultData: Omit<IResult, "id"> = {
-			eventId,
-			gameId,
-			order,
-			playerResults: filtered,
-		};
-
-		if (initialData) {
-			await editResult(initialData.id, resultData);
-		} else {
-			await addResult(resultData);
-		}
-
-		onSuccess?.();
-	};
-
-	function update<K extends keyof IPlayerResult>(playerId: string, key: K, value: IPlayerResult[K]) {
-		setPlayerResults((rows) => rows.map((r) => (r.playerId === playerId ? { ...r, [key]: value } : r)));
-	}
+	const gameId = watch("gameId");
+	const playerResults = watch("playerResults");
 
 	const getPlayer = (id: string) => playerById.get(id);
 
+	const onFormSubmit = async (data: ResultFormData) => {
+		try {
+			if (initialData) {
+				await editResult(initialData.id, data);
+				toast.success("Result updated successfully");
+			} else {
+				await addResult(data);
+				toast.success("Result added successfully");
+			}
+			onSuccess?.();
+		} catch {
+			toast.error("Failed to save result");
+		}
+	};
+
 	return (
-		<form onSubmit={handleSubmit} className="m-0 flex flex-col gap-4 p-0">
+		<form onSubmit={handleSubmit(onFormSubmit)} className="m-0 flex flex-col gap-4 p-0">
 			<div className="flex items-center gap-2 text-[var(--color-text-secondary)]">
 				<Target className="h-4 w-4 text-[var(--color-primary)]" />
 				<h3 className="text-sm font-semibold text-[var(--color-text)]">
@@ -127,13 +93,7 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 			<div>
 				<div className="flex items-center justify-between gap-4">
 					<div className="min-w-0 flex-1">
-						<Select
-							label="Game"
-							icon={Gamepad2}
-							value={gameId}
-							onChange={(e) => setGameId(e.target.value)}
-							disabled={!filteredGames.length}
-						>
+						<Select label="Game" icon={Gamepad2} {...register("gameId")} disabled={!filteredGames.length}>
 							{!filteredGames.length ? (
 								<option value="">No games added to this event</option>
 							) : (
@@ -144,21 +104,20 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 								))
 							)}
 						</Select>
+						{errors.gameId && <ErrorMessage>{errors.gameId.message}</ErrorMessage>}
 					</div>
 
 					<div>
 						<Label>Order</Label>
 						<Input
 							type="number"
-							value={order}
-							onChange={(e: ChangeEvent<HTMLInputElement>) =>
-								setOrder(e.target.value ? Number(e.target.value) : 1)
-							}
+							{...register("order", { valueAsNumber: true })}
 							fullWidth={false}
 							className="w-16"
 							min={1}
 							placeholder="#"
 						/>
+						{errors.order && <ErrorMessage>{errors.order.message}</ErrorMessage>}
 					</div>
 				</div>
 
@@ -172,80 +131,78 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 			<div>
 				<p className="mb-2 text-xs font-medium text-[var(--color-text-secondary)]">Players</p>
 				<div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-					{playerResults.map((pr) => {
+					{playerResults.map((pr, idx) => {
 						const p = getPlayer(pr.playerId);
 						const name = getDisplayName(p);
-						const isIncluded = !!included[pr.playerId];
 						return (
-							<div
+							<Controller
 								key={pr.playerId}
-								className={`rounded-md bg-[var(--color-accent)] p-3 ${isIncluded ? "" : "opacity-60"}`}
-							>
-								<div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
-									<label className="flex items-center gap-2 text-sm whitespace-nowrap text-[var(--color-text)]">
-										<input
-											type="checkbox"
-											checked={isIncluded}
-											onChange={(e: ChangeEvent<HTMLInputElement>) =>
-												setIncluded((m) => ({ ...m, [pr.playerId]: e.target.checked }))
-											}
-											className="h-4 w-4 accent-[var(--color-primary)]"
-										/>
-										{name}
-									</label>
-								</div>
+								control={control}
+								name={`playerResults.${idx}`}
+								render={({ field }) => (
+									<div className="rounded-md bg-[var(--color-accent)] p-3">
+										<div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
+											<label className="flex items-center gap-2 text-sm whitespace-nowrap text-[var(--color-text)]">
+												<input
+													type="checkbox"
+													checked={field.value.playerId === pr.playerId}
+													readOnly
+													className="h-4 w-4 accent-[var(--color-primary)]"
+												/>
+												{name}
+											</label>
+										</div>
 
-								<div className="mt-2 flex flex-wrap items-center gap-3">
-									<div className="flex items-center gap-2">
-										<span className="text-xs text-[var(--color-text-secondary)]">Rank</span>
-										<Input
-											type="number"
-											min={1}
-											value={pr.rank ?? ""}
-											onChange={(e: ChangeEvent<HTMLInputElement>) =>
-												update(
-													pr.playerId,
-													"rank",
-													e.target.value ? Number(e.target.value) : null,
-												)
-											}
-											inputSize="sm"
-											fullWidth={false}
-											className="w-12 text-center tabular-nums"
-											placeholder="#"
-											disabled={!isIncluded}
-										/>
+										<div className="mt-2 flex flex-wrap items-center gap-3">
+											<div className="flex items-center gap-2">
+												<span className="text-xs text-[var(--color-text-secondary)]">Rank</span>
+												<Input
+													type="number"
+													min={1}
+													value={field.value.rank ?? ""}
+													onChange={(e) =>
+														field.onChange({
+															...field.value,
+															rank: e.target.value ? Number(e.target.value) : null,
+														})
+													}
+													inputSize="sm"
+													fullWidth={false}
+													className="w-12 text-center tabular-nums"
+													placeholder="#"
+												/>
+											</div>
+
+											<label className="flex items-center gap-1 text-xs whitespace-nowrap text-[var(--color-text-secondary)]">
+												<input
+													type="checkbox"
+													checked={!!field.value.isWinner}
+													onChange={(e) =>
+														field.onChange({ ...field.value, isWinner: e.target.checked })
+													}
+													className="h-4 w-4 accent-green-500"
+												/>
+												Win
+											</label>
+											<label className="flex items-center gap-1 text-xs whitespace-nowrap text-[var(--color-text-secondary)]">
+												<input
+													type="checkbox"
+													checked={!!field.value.isLoser}
+													onChange={(e) =>
+														field.onChange({ ...field.value, isLoser: e.target.checked })
+													}
+													className="h-4 w-4 accent-red-500"
+												/>
+												Lose
+											</label>
+										</div>
 									</div>
-
-									<label className="flex items-center gap-1 text-xs whitespace-nowrap text-[var(--color-text-secondary)]">
-										<input
-											type="checkbox"
-											checked={!!pr.isWinner}
-											onChange={(e: ChangeEvent<HTMLInputElement>) =>
-												update(pr.playerId, "isWinner", e.target.checked)
-											}
-											className="h-4 w-4 accent-green-500"
-											disabled={!isIncluded}
-										/>
-										Win
-									</label>
-									<label className="flex items-center gap-1 text-xs whitespace-nowrap text-[var(--color-text-secondary)]">
-										<input
-											type="checkbox"
-											checked={!!pr.isLoser}
-											onChange={(e: ChangeEvent<HTMLInputElement>) =>
-												update(pr.playerId, "isLoser", e.target.checked)
-											}
-											className="h-4 w-4 accent-red-500"
-											disabled={!isIncluded}
-										/>
-										Lose
-									</label>
-								</div>
-							</div>
+								)}
+							/>
 						);
 					})}
 				</div>
+				{errors.playerResults && <ErrorMessage>{errors.playerResults.message}</ErrorMessage>}
 			</div>
 
 			<Button type="submit" disabled={!filteredGames.length || !gameId} variant="primary" size="md">
