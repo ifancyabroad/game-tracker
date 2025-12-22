@@ -24,6 +24,7 @@ export const eventSchema = z.object({
 	date: z.string().min(1, "Date is required"),
 	gameIds: z.array(z.string()).min(1, "At least one game must be selected"),
 	playerIds: z.array(z.string()).min(1, "At least one player must be selected"),
+	notes: z.string().max(1000, "Summary must be 1000 characters or less").optional(),
 });
 
 export const playerResultSchema = z.object({
@@ -38,6 +39,7 @@ export const resultSchema = z.object({
 	gameId: z.string().min(1, "Game ID is required"),
 	order: z.number().min(1, "Order must be at least 1"),
 	playerResults: z.array(playerResultSchema).min(1, "At least one player result is required"),
+	notes: z.string().max(500, "Notes must be 500 characters or less").optional(),
 });
 
 // ============================================

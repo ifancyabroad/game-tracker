@@ -3,7 +3,7 @@ import { useEvents } from "features/events/context/EventsContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useGames } from "features/games/context/GamesContext";
 import { useResults } from "features/events/context/ResultsContext";
-import { CalendarDays, MapPin, Users, Gamepad2, Plus, Edit, Trash2, Trophy } from "lucide-react";
+import { CalendarDays, MapPin, Users, Gamepad2, Plus, Edit, Trash2, Trophy, MessageSquare } from "lucide-react";
 import { useModal } from "common/context/ModalContext";
 import { BackButton, Button, Card, ConfirmDelete, EmptyState, KpiCard } from "common/components";
 import { EventForm } from "features/events/components/EventForm";
@@ -199,6 +199,18 @@ export const EventDetailPage: React.FC = () => {
 						value={event.location}
 					/>
 				</div>
+
+				{event.notes && (
+					<div className="border-l-4 border-[var(--color-primary)] bg-[var(--color-accent)] p-3 sm:p-4">
+						<div className="mb-2 flex items-center gap-2 text-sm font-semibold text-[var(--color-text)]">
+							<MessageSquare className="h-4 w-4 text-[var(--color-primary)]" />
+							Event Summary
+						</div>
+						<p className="text-sm leading-relaxed whitespace-pre-wrap text-[var(--color-text-secondary)]">
+							{event.notes}
+						</p>
+					</div>
+				)}
 			</Card>
 
 			<div className="grid gap-4 sm:gap-4 lg:grid-cols-2">

@@ -58,6 +58,7 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 			gameId: initialData?.gameId ?? filteredGames[0]?.id ?? "",
 			order: initialData?.order ?? numOfResults + 1,
 			playerResults: defaultPlayerResults,
+			notes: initialData?.notes || "",
 		},
 	});
 
@@ -126,6 +127,18 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 						This event doesn't have any games yet. Add a game to the event to create a result.
 					</p>
 				)}
+			</div>
+
+			<div>
+				<Label>Notes (optional)</Label>
+				<textarea
+					{...register("notes")}
+					placeholder="Add notes about this result (e.g., asterisk wins, special circumstances)..."
+					rows={2}
+					maxLength={500}
+					className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] px-3 py-2 text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] focus:outline-none"
+				/>
+				{errors.notes && <ErrorMessage>{errors.notes.message}</ErrorMessage>}
 			</div>
 
 			<div>
