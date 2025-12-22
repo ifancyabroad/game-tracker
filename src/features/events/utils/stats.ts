@@ -34,6 +34,7 @@ export interface IEventPlayerStat {
 	wins: number;
 	losses: number;
 	gamesPlayed: number;
+	points: number;
 }
 
 export interface IEventGameStat {
@@ -49,22 +50,28 @@ export function getEventPlayerStats(
 	event: IEvent,
 	eventResults: IResult[],
 	playerById: Map<string, IPlayer>,
+	gameById: Map<string, IGame>,
 ): IEventPlayerStat[] {
 	return event.playerIds.map((playerId) => {
 		const player = playerById.get(playerId);
 		let wins = 0;
 		let losses = 0;
 		let gamesPlayed = 0;
+		let points = 0;
 
 		eventResults.forEach((result) => {
 			const playerResult = result.playerResults.find((pr) => pr.playerId === playerId);
 			if (playerResult) {
+				const game = gameById.get(result.gameId);
+				const gamePoints = game?.points || 0;
 				gamesPlayed++;
 				if (isPlayerWinner(playerResult)) {
 					wins++;
+					points += gamePoints;
 				}
 				if (playerResult.isLoser) {
 					losses++;
+					points -= gamePoints;
 				}
 			}
 		});
@@ -76,15 +83,16 @@ export function getEventPlayerStats(
 			wins,
 			losses,
 			gamesPlayed,
+			points,
 		};
 	});
 }
 
 export function sortEventPlayerStats(stats: IEventPlayerStat[]): IEventPlayerStat[] {
 	return stats.slice().sort((a, b) => {
-		// Sort by wins (descending), then by losses (ascending), then by name
+		// Sort by points (descending), then by wins (descending), then by name
+		if (b.points !== a.points) return b.points - a.points;
 		if (b.wins !== a.wins) return b.wins - a.wins;
-		if (a.losses !== b.losses) return a.losses - b.losses;
 		return a.name.localeCompare(b.name);
 	});
 }
@@ -145,11 +153,12 @@ export function getSortedEventPlayerStats(
 	eventById: Map<string, IEvent>,
 	results: IResult[],
 	playerById: Map<string, IPlayer>,
+	gameById: Map<string, IGame>,
 ): IEventPlayerStat[] {
 	const event = eventById.get(eventId);
 	if (!event) return [];
 	const eventResults = results.filter((r) => r.eventId === eventId);
-	const stats = getEventPlayerStats(event, eventResults, playerById);
+	const stats = getEventPlayerStats(event, eventResults, playerById, gameById);
 	return sortEventPlayerStats(stats);
 }
 
