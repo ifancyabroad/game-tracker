@@ -1,13 +1,16 @@
 import { NavLink } from "react-router";
-import { Home, Users, Calendar, Gamepad2, BarChart, X, LogIn, LogOut, CalendarRange } from "lucide-react";
+import { Home, Users, Calendar, Gamepad2, BarChart, X, LogIn, LogOut, CalendarRange, Sun, Moon } from "lucide-react";
 import { useUI } from "common/context/UIContext";
 import { useModal } from "common/context/ModalContext";
-import { LoginForm, Select, Button, ThemeToggle } from "common/components";
+import { LoginForm, Select, Button, Label, SegmentedControl } from "common/components";
+import type { SegmentedControlOption } from "common/components/SegmentedControl";
 import { useAuth } from "common/context/AuthContext";
 import { signOut } from "firebase/auth";
 import { auth } from "firebase";
 import { Link } from "react-router";
 import logo from "assets/logo.svg";
+import { useEffect } from "react";
+import type { Theme } from "common/utils/theme";
 
 const navItems = [
 	{ to: "/", label: "Home", icon: Home },
@@ -17,8 +20,13 @@ const navItems = [
 	{ to: "/stats", label: "Stats", icon: BarChart },
 ];
 
+const themeOptions: SegmentedControlOption<Theme>[] = [
+	{ value: "light", label: "Light", icon: Sun },
+	{ value: "dark", label: "Dark", icon: Moon },
+];
+
 export const Sidebar: React.FC = () => {
-	const { isSidebarOpen, closeSidebar, selectedYear, setSelectedYear, availableYears } = useUI();
+	const { isSidebarOpen, closeSidebar, selectedYear, setSelectedYear, availableYears, theme, updateTheme } = useUI();
 	const { openModal, closeModal } = useModal();
 	const { user } = useAuth();
 
@@ -30,9 +38,34 @@ export const Sidebar: React.FC = () => {
 		await signOut(auth);
 	};
 
+	// Handle Escape key to close sidebar on mobile
+	useEffect(() => {
+		const handleEscape = (e: KeyboardEvent) => {
+			if (e.key === "Escape" && isSidebarOpen) {
+				closeSidebar();
+			}
+		};
+
+		document.addEventListener("keydown", handleEscape);
+		return () => document.removeEventListener("keydown", handleEscape);
+	}, [isSidebarOpen, closeSidebar]);
+
 	return (
 		<>
-			{isSidebarOpen && <div className="fixed inset-0 z-40 bg-black/50 sm:hidden" onClick={closeSidebar} />}
+			{isSidebarOpen && (
+				<div
+					className="fixed inset-0 z-40 bg-black/50 sm:hidden"
+					onClick={closeSidebar}
+					aria-label="Close sidebar"
+					role="button"
+					tabIndex={0}
+					onKeyDown={(e) => {
+						if (e.key === "Enter" || e.key === " ") {
+							closeSidebar();
+						}
+					}}
+				/>
+			)}
 
 			<aside
 				className={`fixed z-50 flex h-full w-72 flex-col border-r border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-4 transition-transform sm:static sm:translate-x-0 sm:py-6 ${
@@ -53,26 +86,34 @@ export const Sidebar: React.FC = () => {
 					<button
 						onClick={closeSidebar}
 						className="text-[var(--color-text-secondary)] hover:text-[var(--color-text)] sm:hidden"
+						aria-label="Close sidebar"
 					>
 						<X size={20} />
 					</button>
 				</div>
 
 				{availableYears.length > 0 && (
-					<div className="mb-4">
-						<Select
-							icon={CalendarRange}
-							value={selectedYear ?? "all"}
-							onChange={(e) => setSelectedYear(e.target.value === "all" ? null : Number(e.target.value))}
-						>
-							<option value="all">All Years</option>
-							{availableYears.map((year) => (
-								<option key={year} value={year}>
-									{year}
-								</option>
-							))}
-						</Select>
-					</div>
+					<>
+						<div className="mb-4">
+							<Label htmlFor="year-filter">Year</Label>
+							<Select
+								id="year-filter"
+								icon={CalendarRange}
+								value={selectedYear ?? "all"}
+								onChange={(e) =>
+									setSelectedYear(e.target.value === "all" ? null : Number(e.target.value))
+								}
+							>
+								<option value="all">All Years</option>
+								{availableYears.map((year) => (
+									<option key={year} value={year}>
+										{year}
+									</option>
+								))}
+							</Select>
+						</div>
+						<div className="mb-4 border-t border-[var(--color-border)]" />
+					</>
 				)}
 
 				<nav className="flex flex-col gap-1">
@@ -95,11 +136,8 @@ export const Sidebar: React.FC = () => {
 					))}
 				</nav>
 
-				<div className="mt-auto flex flex-col gap-2 pt-6">
-					<div className="flex items-center justify-between border-t border-[var(--color-border)] pt-4">
-						<span className="text-sm text-[var(--color-text-secondary)]">Theme</span>
-						<ThemeToggle />
-					</div>
+				<div className="mt-auto flex flex-col gap-3 border-t border-[var(--color-border)] pt-4">
+					<SegmentedControl value={theme} onChange={updateTheme} options={themeOptions} />
 					{user ? (
 						<Button onClick={handleLogoutClick} variant="secondary" size="md">
 							<LogOut size={16} />

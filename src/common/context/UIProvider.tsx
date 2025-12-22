@@ -22,6 +22,11 @@ export const UIProvider: React.FC<PropsWithChildren> = ({ children }) => {
 		});
 	};
 
+	const updateTheme = (newTheme: Theme) => {
+		localStorage.setItem("theme", newTheme);
+		setTheme(newTheme);
+	};
+
 	// Compute available years from events
 	const availableYears = useMemo(() => getAvailableYears(events), [events]);
 
@@ -56,6 +61,7 @@ export const UIProvider: React.FC<PropsWithChildren> = ({ children }) => {
 				setSelectedYear,
 				availableYears,
 				theme,
+				updateTheme,
 				toggleTheme,
 			}}
 		>
