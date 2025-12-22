@@ -85,7 +85,7 @@ export const EventsPage: React.FC = () => {
 				count={events.length}
 				action={
 					user ? (
-						<Button onClick={handleAdd} variant="secondary" size="md">
+						<Button onClick={handleAdd} variant="primary" size="md">
 							<CalendarPlus className="h-4 w-4" /> Add Event
 						</Button>
 					) : undefined

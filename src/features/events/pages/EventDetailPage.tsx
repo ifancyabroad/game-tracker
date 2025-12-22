@@ -149,12 +149,7 @@ export const EventDetailPage: React.FC = () => {
 						<Button onClick={() => handleEditEvent(event)} variant="secondary" size="md">
 							<Edit size={16} /> Edit
 						</Button>
-						<Button
-							onClick={() => handleDeleteEvent(event)}
-							variant="secondary"
-							size="md"
-							className="text-red-300 hover:bg-red-500/20"
-						>
+						<Button onClick={() => handleDeleteEvent(event)} variant="danger" size="md">
 							<Trash2 size={16} /> Delete
 						</Button>
 					</div>
@@ -244,7 +239,7 @@ export const EventDetailPage: React.FC = () => {
 						Results
 					</h2>
 					{user && (
-						<Button onClick={handleAddResult} variant="secondary" size="md">
+						<Button onClick={handleAddResult} variant="primary" size="md">
 							<Plus size={16} /> Add Result
 						</Button>
 					)}

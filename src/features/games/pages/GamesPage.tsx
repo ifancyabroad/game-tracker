@@ -71,7 +71,7 @@ const GamesPage: React.FC = () => {
 				count={games.length}
 				action={
 					user ? (
-						<Button onClick={handleAdd} variant="secondary" size="md">
+						<Button onClick={handleAdd} variant="primary" size="md">
 							<Plus className="h-4 w-4" /> Add Game
 						</Button>
 					) : undefined
