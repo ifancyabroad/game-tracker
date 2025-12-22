@@ -4,6 +4,7 @@ export { Header } from "./Header";
 export { Sidebar } from "./Sidebar";
 export { ReadyGate } from "./ReadyGate";
 export { PageLoader } from "./PageLoader";
+export { ErrorBoundary } from "./ErrorBoundary";
 
 // Form Components
 export { Input } from "./Input";

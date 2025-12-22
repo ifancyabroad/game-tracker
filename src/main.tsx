@@ -3,12 +3,13 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import { AuthProvider } from "common/context/AuthProvider";
 import { ModalProvider } from "common/context/ModalProvider";
+import { ToastProvider } from "common/context/ToastProvider";
 import { PlayersProvider } from "features/players/context/PlayersProvider";
 import { GamesProvider } from "features/games/context/GamesProvider";
 import { EventsProvider } from "features/events/context/EventsProvider";
 import { ResultsProvider } from "features/events/context/ResultsProvider";
 import { BrowserRouter, Route, Routes } from "react-router";
-import { AppLayout, Modal, ReadyGate } from "common/components";
+import { AppLayout, Modal, ReadyGate, ErrorBoundary } from "common/components";
 import HomePage from "features/leaderboard/pages/HomePage";
 import PlayersList from "features/players/pages/PlayersList";
 import PlayerStatsPage from "features/players/pages/PlayerStatsPage";
@@ -21,37 +22,44 @@ import { StatsPage } from "features/stats/pages/StatsPage";
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
-		<AuthProvider>
-			<PlayersProvider>
-				<GamesProvider>
-					<EventsProvider>
-						<ResultsProvider>
-							<UIProvider>
-								<ModalProvider>
-									<ReadyGate>
-										<BrowserRouter>
-											<Routes>
-												<Route element={<AppLayout />}>
-													<Route path="/" element={<HomePage />} />
-													<Route path="/players" element={<PlayersList />} />
-													<Route path="/players/:id" element={<PlayerStatsPage />} />
-													<Route path="/games" element={<GamesPage />} />
-													<Route path="/games/:id" element={<GameStatsPage />} />
-													<Route path="/events" element={<EventsPage />} />
-													<Route path="/events/:eventId" element={<EventDetailPage />} />
-													<Route path="/stats" element={<StatsPage />} />
-													<Route path="*" element={<div>404 Not Found</div>} />
-												</Route>
-											</Routes>
-											<Modal />
-										</BrowserRouter>
-									</ReadyGate>
-								</ModalProvider>
-							</UIProvider>
-						</ResultsProvider>
-					</EventsProvider>
-				</GamesProvider>
-			</PlayersProvider>
-		</AuthProvider>
+		<ErrorBoundary>
+			<AuthProvider>
+				<PlayersProvider>
+					<GamesProvider>
+						<EventsProvider>
+							<ResultsProvider>
+								<UIProvider>
+									<ModalProvider>
+										<ToastProvider>
+											<ReadyGate>
+												<BrowserRouter>
+													<Routes>
+														<Route element={<AppLayout />}>
+															<Route path="/" element={<HomePage />} />
+															<Route path="/players" element={<PlayersList />} />
+															<Route path="/players/:id" element={<PlayerStatsPage />} />
+															<Route path="/games" element={<GamesPage />} />
+															<Route path="/games/:id" element={<GameStatsPage />} />
+															<Route path="/events" element={<EventsPage />} />
+															<Route
+																path="/events/:eventId"
+																element={<EventDetailPage />}
+															/>
+															<Route path="/stats" element={<StatsPage />} />
+															<Route path="*" element={<div>404 Not Found</div>} />
+														</Route>
+													</Routes>
+													<Modal />
+												</BrowserRouter>
+											</ReadyGate>
+										</ToastProvider>
+									</ModalProvider>
+								</UIProvider>
+							</ResultsProvider>
+						</EventsProvider>
+					</GamesProvider>
+				</PlayersProvider>
+			</AuthProvider>
+		</ErrorBoundary>
 	</StrictMode>,
 );

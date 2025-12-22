@@ -1,10 +1,11 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useContext } from "react";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useGames } from "features/games/context/GamesContext";
 import { useEvents } from "features/events/context/EventsContext";
 import { useResults } from "features/events/context/ResultsContext";
 import { useUI } from "common/context/UIContext";
 import { filterEventsByYear, filterResultsByYear } from "common/utils/yearFilter";
+import { ToastContext } from "common/context/ToastContext";
 
 export function useAppReady() {
 	const p = usePlayers();
@@ -50,4 +51,12 @@ export function useFilteredData() {
 		events: filteredEvents,
 		results: filteredResults,
 	};
+}
+
+export function useToast() {
+	const context = useContext(ToastContext);
+	if (context === undefined) {
+		throw new Error("useToast must be used within a ToastProvider");
+	}
+	return context.showToast;
 }

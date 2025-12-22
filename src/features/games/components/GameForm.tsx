@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import type { IGame, GameType } from "features/games/types";
 import { Gamepad2 } from "lucide-react";
-import { ColorPicker, Input, Label, Button, FormHeader, Radio } from "common/components";
+import { ColorPicker, Input, Label, Button, FormHeader, Radio, ErrorMessage } from "common/components";
+import { gameSchema, type GameFormData } from "common/utils/validation";
 
 interface IGameFormProps {
 	initialData?: IGame;
@@ -9,49 +11,53 @@ interface IGameFormProps {
 }
 
 export const GameForm: React.FC<IGameFormProps> = ({ initialData, onSubmit }) => {
-	const [name, setName] = useState(initialData?.name || "");
-	const [points, setPoints] = useState(initialData?.points || 1);
-	const [type, setType] = useState<GameType>(initialData?.type || "board");
-	const [color, setColor] = useState<string>(initialData?.color || "#6366f1");
+	const {
+		register,
+		handleSubmit,
+		setValue,
+		watch,
+		reset,
+		formState: { errors },
+	} = useForm<GameFormData>({
+		resolver: zodResolver(gameSchema),
+		defaultValues: {
+			name: initialData?.name || "",
+			points: initialData?.points || 1,
+			type: initialData?.type || "board",
+			color: initialData?.color || "#6366f1",
+		},
+	});
 
-	const handleSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
-		if (!name.trim()) return;
-		onSubmit({ name: name.trim(), points, type, color });
+	const typeValue = watch("type");
+	const colorValue = watch("color");
+
+	const onFormSubmit = (data: GameFormData) => {
+		onSubmit(data);
 		if (!initialData) {
-			setName("");
-			setPoints(1);
-			setType("board");
-			setColor("#6366f1");
+			reset();
 		}
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className="m-0 flex flex-col gap-4 p-0">
+		<form onSubmit={handleSubmit(onFormSubmit)} className="m-0 flex flex-col gap-4 p-0">
 			<FormHeader icon={<Gamepad2 />} title={initialData ? "Edit Game" : "Add Game"} />
 
 			<div>
 				<Label required>Name</Label>
-				<Input
-					type="text"
-					value={name}
-					onChange={(e) => setName(e.target.value)}
-					placeholder="Game Name"
-					required
-				/>
+				<Input type="text" {...register("name")} placeholder="Game Name" />
+				{errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
 			</div>
 
 			<div>
 				<Label required>Points</Label>
 				<Input
 					type="number"
-					value={points}
-					onChange={(e) => setPoints(Number(e.target.value))}
+					{...register("points", { valueAsNumber: true })}
 					placeholder="Game Points"
 					min={1}
 					max={3}
-					required
 				/>
+				{errors.points && <ErrorMessage>{errors.points.message}</ErrorMessage>}
 			</div>
 
 			<div>
@@ -60,19 +66,28 @@ export const GameForm: React.FC<IGameFormProps> = ({ initialData, onSubmit }) =>
 					<Radio
 						label="Board Game"
 						value="board"
-						checked={type === "board"}
-						onChange={(e) => setType(e.target.value as GameType)}
+						checked={typeValue === "board"}
+						onChange={(e) => setValue("type", e.target.value as GameType)}
 					/>
 					<Radio
 						label="Video Game"
 						value="video"
-						checked={type === "video"}
-						onChange={(e) => setType(e.target.value as GameType)}
+						checked={typeValue === "video"}
+						onChange={(e) => setValue("type", e.target.value as GameType)}
 					/>
 				</div>
+				{errors.type && <ErrorMessage>{errors.type.message}</ErrorMessage>}
 			</div>
 
-			<ColorPicker label="Game colour" value={color} onChange={setColor} showInput />
+			<div>
+				<ColorPicker
+					label="Game colour"
+					value={colorValue}
+					onChange={(newColor) => setValue("color", newColor)}
+					showInput
+				/>
+				{errors.color && <ErrorMessage>{errors.color.message}</ErrorMessage>}
+			</div>
 
 			<Button type="submit">{initialData ? "Save Changes" : "Add Game"}</Button>
 		</form>
