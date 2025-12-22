@@ -15,7 +15,7 @@ const getTintBar = (rank: number) => {
 	if (rank === 1) return "bg-gradient-to-r from-yellow-400 to-yellow-500 shadow-lg shadow-yellow-500/50";
 	if (rank === 2) return "bg-gradient-to-r from-slate-300 to-slate-400 shadow-lg shadow-slate-400/50";
 	if (rank === 3) return "bg-gradient-to-r from-amber-500 to-amber-600 shadow-lg shadow-amber-500/50";
-	return "bg-white/30";
+	return "bg-gradient-to-r from-indigo-400 to-indigo-500";
 };
 
 const getRankStyles = (rank: number) => {
