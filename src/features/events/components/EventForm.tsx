@@ -29,6 +29,7 @@ export const EventForm: React.FC<IEventFormProps> = ({ initialData, players, gam
 			date: initialData?.date || new Date().toISOString().split("T")[0],
 			playerIds: initialData?.playerIds || [],
 			gameIds: initialData?.gameIds || [],
+			notes: initialData?.notes || "",
 		},
 	});
 
@@ -67,6 +68,18 @@ export const EventForm: React.FC<IEventFormProps> = ({ initialData, players, gam
 				<Label required>Date</Label>
 				<Input type="date" {...register("date")} icon={<CalendarDays />} />
 				{errors.date && <ErrorMessage>{errors.date.message}</ErrorMessage>}
+			</div>
+
+			<div>
+				<Label>Event Summary (optional)</Label>
+				<textarea
+					{...register("notes")}
+					placeholder="Write a summary of this event - highlights, memorable moments, funny stories..."
+					rows={4}
+					maxLength={1000}
+					className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] px-3 py-2 text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] focus:outline-none"
+				/>
+				{errors.notes && <ErrorMessage>{errors.notes.message}</ErrorMessage>}
 			</div>
 
 			<div>

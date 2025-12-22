@@ -170,6 +170,12 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({
 					</tbody>
 				</table>
 			</div>
+
+			{result.notes && (
+				<div className="mt-3 rounded-lg bg-[var(--color-accent)] p-2.5">
+					<p className="text-xs text-[var(--color-text-secondary)] italic">{result.notes}</p>
+				</div>
+			)}
 		</Card>
 	);
 };
