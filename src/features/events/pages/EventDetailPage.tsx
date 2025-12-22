@@ -26,7 +26,7 @@ export const EventDetailPage: React.FC = () => {
 	const { games, gameById } = useGames();
 	const { results, deleteResult } = useResults();
 	const { openModal, closeModal } = useModal();
-	const user = useAuth();
+	const { user } = useAuth();
 	const toast = useToast();
 
 	const event = eventById.get(eventId);

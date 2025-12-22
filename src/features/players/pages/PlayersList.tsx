@@ -12,7 +12,7 @@ import { getDisplayName } from "features/players/utils/helpers";
 const PlayersList: React.FC = () => {
 	const { players, addPlayer, editPlayer, deletePlayer } = usePlayers();
 	const { openModal, closeModal } = useModal();
-	const user = useAuth();
+	const { user } = useAuth();
 	const toast = useToast();
 
 	const handleAddPlayer = async (player: Omit<IPlayer, "id">) => {

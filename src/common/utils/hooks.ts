@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useContext } from "react";
+import { useAuth } from "common/context/AuthContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useGames } from "features/games/context/GamesContext";
 import { useEvents } from "features/events/context/EventsContext";
@@ -8,11 +9,12 @@ import { filterEventsByYear, filterResultsByYear } from "common/utils/yearFilter
 import { ToastContext } from "common/context/ToastContext";
 
 export function useAppReady() {
+	const a = useAuth();
 	const p = usePlayers();
 	const g = useGames();
 	const e = useEvents();
 	const r = useResults();
-	return { loading: p.loading || g.loading || e.loading || r.loading };
+	return { loading: a.loading || p.loading || g.loading || e.loading || r.loading };
 }
 
 export function useIsMobile(breakpoint = 768) {

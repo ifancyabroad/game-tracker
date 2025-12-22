@@ -11,7 +11,7 @@ import { useToast } from "common/utils/hooks";
 const GamesPage: React.FC = () => {
 	const { games, addGame, editGame, deleteGame } = useGames();
 	const { openModal, closeModal } = useModal();
-	const user = useAuth();
+	const { user } = useAuth();
 	const toast = useToast();
 
 	const handleAddGame = async (game: Omit<IGame, "id">) => {
