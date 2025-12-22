@@ -22,9 +22,10 @@ export function useEventPlayerStats(eventId: string) {
 	const { eventById } = useEvents();
 	const { results } = useResults();
 	const { playerById } = usePlayers();
+	const { gameById } = useGames();
 	return useMemo(
-		() => getSortedEventPlayerStats(eventId, eventById, results, playerById),
-		[eventId, eventById, results, playerById],
+		() => getSortedEventPlayerStats(eventId, eventById, results, playerById, gameById),
+		[eventId, eventById, results, playerById, gameById],
 	);
 }
 

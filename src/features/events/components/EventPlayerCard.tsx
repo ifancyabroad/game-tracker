@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { Award, Frown } from "lucide-react";
+import { TrendingUp, TrendingDown } from "lucide-react";
 import { Avatar } from "common/components";
 import type { IEventPlayerStat } from "features/events/utils/stats";
 import { pluralize } from "common/utils/helpers";
@@ -22,16 +22,16 @@ export const EventPlayerCard: React.FC<IEventPlayerCardProps> = ({ stat }) => {
 				</div>
 			</div>
 			<div className="flex items-center gap-1.5">
-				{stat.wins > 0 && (
-					<div className="flex items-center gap-1 rounded-md bg-yellow-500/10 px-2 py-1">
-						<Award className="h-3.5 w-3.5 text-yellow-500" />
-						<span className="text-xs font-semibold text-yellow-500">{stat.wins}</span>
+				{stat.points > 0 && (
+					<div className="flex items-center gap-1 rounded-md bg-green-500/10 px-2 py-1">
+						<TrendingUp className="h-3.5 w-3.5 text-green-500" />
+						<span className="text-xs font-semibold text-green-500">+{stat.points}</span>
 					</div>
 				)}
-				{stat.losses > 0 && (
+				{stat.points < 0 && (
 					<div className="flex items-center gap-1 rounded-md bg-red-500/10 px-2 py-1">
-						<Frown className="h-3.5 w-3.5 text-red-400" />
-						<span className="text-xs font-semibold text-red-400">{stat.losses}</span>
+						<TrendingDown className="h-3.5 w-3.5 text-red-400" />
+						<span className="text-xs font-semibold text-red-400">{stat.points}</span>
 					</div>
 				)}
 			</div>
