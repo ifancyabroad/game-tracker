@@ -16,9 +16,9 @@
 	--color-surface: #ffffff;
 	--color-text: #111827;
 	--color-text-secondary: #6b7280;
-	--color-text-muted: #9ca3af;
-	--color-border: #e5e7eb;
-	--color-border-strong: #d1d5db;
+	--color-text-muted: #6b7280;
+	--color-border: #d1d5db;
+	--color-border-strong: #9ca3af;
 	--color-hover: #e5e7eb;
 	--color-accent: #eef2ff;
 }
