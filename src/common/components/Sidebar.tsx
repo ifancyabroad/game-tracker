@@ -20,7 +20,7 @@ const navItems = [
 export const Sidebar: React.FC = () => {
 	const { isSidebarOpen, closeSidebar, selectedYear, setSelectedYear, availableYears } = useUI();
 	const { openModal, closeModal } = useModal();
-	const user = useAuth();
+	const { user } = useAuth();
 
 	const handleLoginClick = () => {
 		openModal(<LoginForm onSuccess={closeModal} />);

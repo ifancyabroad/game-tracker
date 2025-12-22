@@ -17,7 +17,7 @@ export const EventsPage: React.FC = () => {
 	const events = useSortedEvents();
 	const { players } = usePlayers();
 	const { games, gameById } = useGames();
-	const user = useAuth();
+	const { user } = useAuth();
 	const { openModal, closeModal } = useModal();
 	const toast = useToast();
 
