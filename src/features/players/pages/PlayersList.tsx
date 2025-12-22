@@ -72,7 +72,7 @@ const PlayersList: React.FC = () => {
 				count={players.length}
 				action={
 					user ? (
-						<Button onClick={handleAdd} variant="secondary" size="md">
+						<Button onClick={handleAdd} variant="primary" size="md">
 							<Plus className="h-4 w-4" /> Add Player
 						</Button>
 					) : undefined

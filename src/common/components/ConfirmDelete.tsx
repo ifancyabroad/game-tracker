@@ -1,4 +1,5 @@
 import { Trash2 } from "lucide-react";
+import { Button } from "./Button";
 
 interface IConfirmDeleteProps {
 	title?: string;
@@ -21,20 +22,12 @@ export const ConfirmDelete: React.FC<IConfirmDeleteProps> = ({
 			</div>
 			<p className="mb-4 text-sm text-[var(--color-text)]">{message}</p>
 			<div className="flex justify-end gap-2">
-				<button
-					type="button"
-					onClick={onCancel}
-					className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-accent)] px-3 py-2 text-sm text-[var(--color-text)] hover:bg-[var(--color-primary)]/10 focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:outline-none"
-				>
+				<Button type="button" onClick={onCancel} variant="secondary" size="md">
 					Cancel
-				</button>
-				<button
-					type="button"
-					onClick={onConfirm}
-					className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-500 focus:ring-2 focus:ring-red-400 focus:outline-none"
-				>
+				</Button>
+				<Button type="button" onClick={onConfirm} variant="danger" size="md">
 					Delete
-				</button>
+				</Button>
 			</div>
 		</div>
 	);

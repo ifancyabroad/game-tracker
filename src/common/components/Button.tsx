@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes } from "react";
 
 interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-	variant?: "primary" | "secondary" | "ghost";
+	variant?: "primary" | "secondary" | "ghost" | "danger";
 	size?: "sm" | "md" | "lg";
 	fullWidth?: boolean;
 }
@@ -14,13 +14,16 @@ export const Button: React.FC<IButtonProps> = ({
 	fullWidth = false,
 	...props
 }) => {
-	const baseStyles = "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-opacity";
+	const baseStyles =
+		"inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2";
 
 	const variantStyles = {
-		primary: "bg-[var(--color-primary)] text-[var(--color-primary-contrast)] hover:opacity-90 disabled:opacity-50",
+		primary:
+			"bg-[var(--color-primary)] text-[var(--color-primary-contrast)] shadow-sm hover:opacity-90 hover:shadow-md focus:ring-[var(--color-primary)]/50",
 		secondary:
-			"border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] shadow-sm hover:bg-[var(--color-primary)]/10",
-		ghost: "text-[var(--color-text-secondary)] hover:bg-[var(--color-hover)]",
+			"border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] shadow-sm hover:bg-[var(--color-hover)] hover:border-[var(--color-border-strong)] hover:shadow focus:ring-[var(--color-primary)]/30",
+		ghost: "text-[var(--color-text-secondary)] hover:bg-[var(--color-hover)] hover:text-[var(--color-text)] focus:ring-[var(--color-border)]",
+		danger: "bg-red-600 text-white shadow-sm hover:bg-red-500 hover:shadow-md focus:ring-red-500/50",
 	};
 
 	const sizeStyles = {
