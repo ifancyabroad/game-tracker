@@ -10,6 +10,7 @@ interface IUIContext {
 	setSelectedYear: (year: number | null) => void;
 	availableYears: number[];
 	theme: Theme;
+	updateTheme: (theme: Theme) => void;
 	toggleTheme: () => void;
 }
 

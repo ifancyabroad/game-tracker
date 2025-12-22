@@ -1,11 +1,10 @@
-import { Menu } from "lucide-react";
+import { Menu, Sun, Moon } from "lucide-react";
 import { Link } from "react-router";
 import { useUI } from "common/context/UIContext";
-import { ThemeToggle } from "common/components";
 import logo from "assets/logo.svg";
 
 export const Header: React.FC = () => {
-	const { openSidebar } = useUI();
+	const { openSidebar, theme, toggleTheme } = useUI();
 
 	return (
 		<header className="flex items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 sm:hidden">
@@ -16,7 +15,13 @@ export const Header: React.FC = () => {
 				<h1 className="font-display text-base text-[var(--color-text)]">THE NIGHTINGAMES</h1>
 			</Link>
 			<div className="flex items-center gap-1">
-				<ThemeToggle />
+				<button
+					onClick={toggleTheme}
+					className="rounded-lg p-2 text-[var(--color-text)] transition-colors hover:bg-[var(--color-bg)]"
+					aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+				>
+					{theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
+				</button>
 				<button
 					onClick={openSidebar}
 					className="text-[var(--color-text-secondary)] hover:text-[var(--color-text)]"

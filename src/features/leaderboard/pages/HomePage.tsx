@@ -1,9 +1,15 @@
 import React, { useState } from "react";
-import { Trophy } from "lucide-react";
+import { Trophy, Dices, Gamepad2 } from "lucide-react";
 import { usePlayerLeaderboard } from "features/leaderboard/utils/hooks";
 import { PlayerCard } from "features/leaderboard/components/PlayerCard";
-import { GameTypeToggle, PageHeader } from "common/components";
+import { SegmentedControl, PageHeader } from "common/components";
+import type { SegmentedControlOption } from "common/components/SegmentedControl";
 import type { GameType } from "features/games/types";
+
+const gameTypeOptions: SegmentedControlOption<GameType>[] = [
+	{ value: "board", label: "Board", icon: Dices },
+	{ value: "video", label: "Video", icon: Gamepad2 },
+];
 
 export const HomePage: React.FC = () => {
 	const [gameType, setGameType] = useState<GameType>("board");
@@ -16,7 +22,7 @@ export const HomePage: React.FC = () => {
 			<PageHeader
 				icon={<Trophy />}
 				title="Leaderboard"
-				action={<GameTypeToggle value={gameType} onChange={setGameType} />}
+				action={<SegmentedControl value={gameType} onChange={setGameType} options={gameTypeOptions} />}
 			/>
 
 			<div className="mt-3 space-y-3 sm:mt-4 sm:space-y-4">
