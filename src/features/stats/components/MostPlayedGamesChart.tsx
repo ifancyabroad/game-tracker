@@ -1,6 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { ChartCard, ChartTooltip } from "common/components";
-import type { MostPlayedGames } from "features/stats/utils/stats";
+import type { MostPlayedGames } from "features/stats/types";
 
 interface MostPlayedGamesChartProps {
 	mostPlayedGames: MostPlayedGames[];

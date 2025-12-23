@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { Trophy, Medal, Award, Target, TrendingUp } from "lucide-react";
-import type { PlayerWithData } from "features/players/utils/stats";
+import type { PlayerWithData } from "features/players/types";
 import { Avatar, Card } from "common/components";
 import { calculateWinRatePercent } from "common/utils/calculations";
 

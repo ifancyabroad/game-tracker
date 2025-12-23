@@ -1,6 +1,6 @@
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, BarChart, Bar, Cell } from "recharts";
 import { ChartCard, ChartTooltip } from "common/components";
-import type { PlayerGameStats } from "features/games/utils/stats";
+import type { PlayerGameStats } from "features/games/types";
 import { formatPct } from "common/utils/helpers";
 import { STATS_THRESHOLDS } from "common/utils/constants";
 

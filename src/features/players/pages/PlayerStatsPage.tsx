@@ -11,7 +11,7 @@ import { WinRateByGameChart } from "features/players/components/WinRateByGameCha
 import { PointsByGameChart } from "features/players/components/PointsByGameChart";
 import { PerformanceByGameTable } from "features/players/components/PerformanceByGameTable";
 import { HeadToHeadTable } from "features/players/components/HeadToHeadTable";
-import type { GameWinRateRow } from "features/players/utils/stats";
+import type { GameWinRateRow } from "features/players/types";
 
 const getBestGameLines = (bestGame?: GameWinRateRow) => {
 	if (!bestGame) {

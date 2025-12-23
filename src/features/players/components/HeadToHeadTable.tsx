@@ -1,4 +1,4 @@
-import type { TopOpponent } from "features/players/utils/stats";
+import type { TopOpponent } from "features/players/types";
 import { useNavigate } from "react-router";
 import { Card } from "common/components";
 interface HeadToHeadTableProps {

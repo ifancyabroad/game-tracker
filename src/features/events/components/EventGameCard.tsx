@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { Avatar } from "common/components";
 import { getDisplayName } from "features/players/utils/helpers";
-import type { IEventGameStat } from "features/events/utils/stats";
+import type { IEventGameStat } from "features/events/types";
 
 interface IEventGameCardProps {
 	stat: IEventGameStat;

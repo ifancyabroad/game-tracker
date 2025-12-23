@@ -5,7 +5,7 @@ import {
 	getFeaturedStats,
 	computeWinStreaks,
 	computeLossStreaks,
-} from "./stats";
+} from "./calculations";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useGames } from "features/games/context/GamesContext";
 import { useFilteredData } from "common/utils/hooks";

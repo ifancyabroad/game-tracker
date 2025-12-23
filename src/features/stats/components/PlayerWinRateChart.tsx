@@ -1,6 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { ChartCard, ChartTooltip } from "common/components";
-import type { PlayerWithData } from "features/players/utils/stats";
+import type { PlayerWithData } from "features/players/types";
 
 interface PlayerWinRateChartProps {
 	overallStats: PlayerWithData[];

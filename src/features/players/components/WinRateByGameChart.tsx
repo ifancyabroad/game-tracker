@@ -1,6 +1,6 @@
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, BarChart, Bar, Cell } from "recharts";
 import { ChartCard, ChartTooltip } from "common/components";
-import type { GameWinRateRow } from "features/players/utils/stats";
+import type { GameWinRateRow } from "features/players/types";
 import { formatPct } from "common/utils/helpers";
 import { STATS_THRESHOLDS } from "common/utils/constants";
 

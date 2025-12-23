@@ -1,7 +1,7 @@
 import { Card } from "common/components";
 import { TrendingDown, CloudRain } from "lucide-react";
 import { Link } from "react-router";
-import type { StreakPlayer } from "features/stats/utils/stats";
+import type { StreakPlayer } from "features/stats/types";
 
 interface LossStreaksCardProps {
 	streaks: StreakPlayer[];

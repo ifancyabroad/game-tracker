@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { Avatar } from "common/components";
-import type { IEventPlayerStat } from "features/events/utils/stats";
+import type { IEventPlayerStat } from "features/events/types";
 import { pluralize } from "common/utils/helpers";
 
 interface IEventPlayerCardProps {

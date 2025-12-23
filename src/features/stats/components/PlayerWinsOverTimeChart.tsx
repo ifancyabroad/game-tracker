@@ -1,7 +1,7 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import { ChartCard, ChartTooltip } from "common/components";
-import type { TimeSeriesData } from "features/stats/utils/stats";
-import type { PlayerWithData } from "features/players/utils/stats";
+import type { TimeSeriesData } from "features/stats/types";
+import type { PlayerWithData } from "features/players/types";
 
 interface PlayerWinsOverTimeChartProps {
 	overallStats: PlayerWithData[];

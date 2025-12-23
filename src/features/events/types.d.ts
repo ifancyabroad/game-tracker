@@ -1,3 +1,6 @@
+import type { IPlayer } from "features/players/types";
+import type { IGame } from "features/games/types";
+
 export interface IEvent {
 	id: string;
 	location: string;
@@ -21,4 +24,23 @@ export interface IResult {
 	order: number;
 	playerResults: IPlayerResult[];
 	notes?: string | null;
+}
+
+export interface IEventPlayerStat {
+	playerId: string;
+	player: IPlayer | undefined;
+	name: string;
+	wins: number;
+	losses: number;
+	gamesPlayed: number;
+	points: number;
+}
+
+export interface IEventGameStat {
+	gameId: string;
+	game: IGame | undefined;
+	name: string;
+	timesPlayed: number;
+	winners: (IPlayer | undefined)[];
+	losers: (IPlayer | undefined)[];
 }
