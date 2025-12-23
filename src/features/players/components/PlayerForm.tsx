@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { IPlayer } from "features/players/types";
 import { User } from "lucide-react";
 import { usePlayers } from "features/players/context/PlayersContext";
-import { ColorPicker, Input, Label, Button, FormHeader, ErrorMessage } from "common/components";
+import { ColorPicker, Input, Label, Button, FormHeader, ErrorMessage, Switch } from "common/components";
 import { playerSchema, type PlayerFormData } from "common/utils/validation";
 
 interface IPlayerFormProps {
@@ -31,11 +31,13 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData }
 			preferredName: initialData?.preferredName || "",
 			color: initialData?.color || "#6366f1",
 			pictureUrl: initialData?.pictureUrl || "",
+			showOnLeaderboard: initialData?.showOnLeaderboard ?? true,
 		},
 	});
 
 	const colorValue = watch("color");
 	const pictureUrlValue = watch("pictureUrl");
+	const showOnLeaderboardValue = watch("showOnLeaderboard");
 
 	const handleImageUpload = async (file: File) => {
 		const url = await uploadImage(file);
@@ -114,6 +116,15 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData }
 						/>
 					</label>
 				</div>
+			</div>
+
+			<div>
+				<Switch
+					checked={showOnLeaderboardValue}
+					onChange={(checked) => setValue("showOnLeaderboard", checked)}
+					label="Show on Leaderboard"
+					description="Include this player in the public leaderboard"
+				/>
 			</div>
 
 			<Button type="submit">{initialData ? "Save Changes" : "Add Player"}</Button>

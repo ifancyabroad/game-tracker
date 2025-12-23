@@ -10,6 +10,7 @@ export const playerSchema = z.object({
 	preferredName: z.string().optional(),
 	color: z.string().min(1, "Color is required"),
 	pictureUrl: z.string().optional(),
+	showOnLeaderboard: z.boolean(),
 });
 
 export const gameSchema = z.object({

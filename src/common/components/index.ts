@@ -13,6 +13,7 @@ export { Button } from "./Button";
 export { BackButton } from "./BackButton";
 export { Radio } from "./Radio";
 export { Select } from "./Select";
+export { Switch } from "./Switch";
 export { FormHeader } from "./FormHeader";
 export { ErrorMessage } from "./ErrorMessage";
 export { default as ColorPicker } from "./ColorPicker";

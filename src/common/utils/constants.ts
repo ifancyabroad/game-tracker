@@ -15,7 +15,7 @@ export const STATS_THRESHOLDS = {
 	/** Minimum games required to qualify for "best game" stats */
 	MIN_GAMES_FOR_BEST_GAME: 3,
 	/** Minimum games required to appear on leaderboard */
-	MIN_GAMES_FOR_LEADERBOARD: 10,
+	MIN_GAMES_FOR_LEADERBOARD: 1,
 	/** Minimum games required for win rate calculations */
 	MIN_GAMES_FOR_WIN_RATE: 3,
 	/** Number of recent games to show in "recent form" charts */
