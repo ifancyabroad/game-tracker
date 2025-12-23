@@ -5,6 +5,7 @@ export interface IPlayer {
 	preferredName: string | null;
 	pictureUrl: string | null;
 	color: string;
+	showOnLeaderboard: boolean;
 }
 
 export interface PlayerData {

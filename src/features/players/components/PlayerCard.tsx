@@ -1,6 +1,6 @@
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2, Trophy } from "lucide-react";
 import type { IPlayer } from "features/players/types";
-import { Avatar, IconButton, Card } from "common/components";
+import { Avatar, IconButton, Card, Badge } from "common/components";
 import { Link } from "react-router";
 import { getDisplayName, getFullName } from "features/players/utils/helpers";
 
@@ -32,7 +32,14 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, canEdit, onEdit,
 				<Avatar src={player.pictureUrl || undefined} name={preferred} size={48} />
 
 				<div className="min-w-0 flex-1">
-					<p className="truncate text-sm font-semibold text-[var(--color-text)]">{preferred}</p>
+					<div className="flex items-center gap-2">
+						<p className="truncate text-sm font-semibold text-[var(--color-text)]">{preferred}</p>
+						{player.showOnLeaderboard && (
+							<Badge variant="success">
+								<Trophy className="h-3 w-3" />
+							</Badge>
+						)}
+					</div>
 					{showFullBelow && <p className="truncate text-xs text-[var(--color-text-secondary)]">{fullName}</p>}
 				</div>
 
