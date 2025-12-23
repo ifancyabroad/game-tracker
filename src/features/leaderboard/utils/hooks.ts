@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { getFeaturedStats, getLeaderboard } from "./stats";
+import { getFeaturedStats, getLeaderboard } from "./calculations";
 import { usePlayerData } from "features/players/utils/hooks";
 import type { GameType } from "features/games/types";
 
