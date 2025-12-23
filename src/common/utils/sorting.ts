@@ -1,4 +1,5 @@
 import type { IEvent, IResult } from "features/events/types";
+import type { PlayerWithData } from "features/players/types";
 
 /**
  * Sort events chronologically by date
@@ -32,5 +33,19 @@ export function sortResultsChronologically(results: IResult[], eventById: Map<st
 		const dateA = new Date(eventA.date).getTime();
 		const dateB = new Date(eventB.date).getTime();
 		return dateA === dateB ? a.order - b.order : dateA - dateB;
+	});
+}
+
+/**
+ * Sort leaderboard by points, wins, win rate, games played, then name
+ * @param players - Players to sort
+ */
+export function sortLeaderboard(players: PlayerWithData[]): PlayerWithData[] {
+	return players.slice().sort((a, b) => {
+		if (b.data.points !== a.data.points) return b.data.points - a.data.points;
+		if (b.data.wins !== a.data.wins) return b.data.wins - a.data.wins;
+		if (b.data.winRate !== a.data.winRate) return b.data.winRate - a.data.winRate;
+		if (b.data.games !== a.data.games) return b.data.games - a.data.games;
+		return a.data.name.toLowerCase().localeCompare(b.data.name.toLowerCase());
 	});
 }
