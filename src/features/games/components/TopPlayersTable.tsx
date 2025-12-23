@@ -34,7 +34,7 @@ export const TopPlayersTable: React.FC<TopPlayersTableProps> = ({ playerStats })
 						{playerStats.length ? (
 							playerStats
 								.slice()
-								.sort((a, b) => b.games - a.games)
+								.sort((a, b) => b.games - a.games || b.wins - a.wins)
 								.slice(0, 10)
 								.map((p) => (
 									<tr

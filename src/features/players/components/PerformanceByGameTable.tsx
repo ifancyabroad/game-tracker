@@ -33,7 +33,7 @@ export const PerformanceByGameTable: React.FC<PerformanceByGameTableProps> = ({ 
 					<tbody>
 						{gameWinRates
 							.slice()
-							.sort((a, b) => b.games - a.games)
+							.sort((a, b) => b.games - a.games || b.wins - a.wins)
 							.slice(0, 5)
 							.map((g) => (
 								<tr
