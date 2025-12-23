@@ -2,6 +2,7 @@ import type { PlayerEntry, GameWinRateRow, PlayerAggregates } from "features/pla
 import type { IGame } from "features/games/types";
 import { isPlayerWinner } from "common/utils/gameHelpers";
 import { calculateWinRatePercent } from "common/utils/calculations";
+import { getColorForGame, getDisplayName } from "features/games/utils/helpers";
 
 interface GameStatsAccumulator {
 	games: number;
@@ -36,12 +37,12 @@ function buildGameWinRates(entries: PlayerEntry[], gameById: Map<string, IGame>)
 		const game = gameById.get(gameId);
 		return {
 			gameId,
-			name: game?.name ?? "Unknown",
+			name: getDisplayName(game),
+			color: getColorForGame(game),
 			games: stats.games,
 			wins: stats.wins,
 			wr: stats.games ? stats.wins / stats.games : 0,
 			points: (game?.points ?? 0) * stats.wins,
-			color: game?.color ?? "#6366f1",
 		};
 	});
 }

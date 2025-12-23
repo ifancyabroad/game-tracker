@@ -1,7 +1,7 @@
 import type { IEvent, IResult } from "features/events/types";
 import type { IPlayer } from "features/players/types";
 import type { StreakPlayer, StreakStats } from "features/stats/types";
-import { getDisplayName } from "features/players/utils/helpers";
+import { getColorForPlayer, getDisplayName } from "features/players/utils/helpers";
 import { isPlayerWinner } from "common/utils/gameHelpers";
 import { sortResultsChronologically } from "common/utils/sorting";
 
@@ -46,7 +46,7 @@ function mapStreaksToPlayers(
 		return {
 			playerId,
 			playerName: getDisplayName(player),
-			playerColor: player.color || "#6366f1",
+			playerColor: getColorForPlayer(player),
 			streak: stats.maxStreak,
 		};
 	});

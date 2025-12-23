@@ -1,14 +1,4 @@
 /**
- * Application-wide constants
- */
-
-/**
- * Default color values
- */
-export const DEFAULT_COLOR = "#6366f1";
-export const DEFAULT_GAME_COLOR = "#6366f1";
-
-/**
  * Stats calculation thresholds
  */
 export const STATS_THRESHOLDS = {
@@ -24,22 +14,4 @@ export const STATS_THRESHOLDS = {
 	TOP_OPPONENTS_LIMIT: 5,
 	/** Maximum number of most played games to display */
 	MOST_PLAYED_GAMES_LIMIT: 8,
-} as const;
-
-/**
- * Chart dimensions
- */
-export const CHART_DEFAULTS = {
-	/** Standard chart height in pixels */
-	HEIGHT: 320,
-} as const;
-
-/**
- * Avatar sizes in pixels
- */
-export const AVATAR_SIZES = {
-	SMALL: 24,
-	MEDIUM: 32,
-	DEFAULT: 48,
-	LARGE: 64,
 } as const;
