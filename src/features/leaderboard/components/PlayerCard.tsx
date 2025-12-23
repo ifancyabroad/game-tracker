@@ -3,6 +3,7 @@ import { Trophy, Medal, Award, Target, TrendingUp } from "lucide-react";
 import type { PlayerWithData } from "features/players/types";
 import { Avatar, Card } from "common/components";
 import { calculateWinRatePercent } from "common/utils/calculations";
+import { ChampionshipBadge } from "./ChampionshipBadge";
 
 const getTintBg = (rank: number) => {
 	if (rank === 1) return "bg-gradient-to-br from-yellow-500/15 via-yellow-500/5 to-transparent";
@@ -44,7 +45,8 @@ export const PlayerCard: React.FC<{
 	row: PlayerWithData;
 	rank: number;
 	maxPoints: number;
-}> = ({ row, rank, maxPoints }) => {
+	championshipYears?: number[];
+}> = ({ row, rank, maxPoints, championshipYears = [] }) => {
 	const {
 		id,
 		pictureUrl,
@@ -72,9 +74,18 @@ export const PlayerCard: React.FC<{
 					{/* Player Info */}
 					<div className="min-w-0 flex-1">
 						<div className="flex items-baseline justify-between gap-2">
-							<h3 className="truncate text-sm font-semibold text-[var(--color-text)] sm:text-lg">
-								{name}
-							</h3>
+							<div className="flex min-w-0 flex-1 items-center gap-1.5">
+								<h3 className="truncate text-sm font-semibold text-[var(--color-text)] sm:text-lg">
+									{name}
+								</h3>
+								{championshipYears.length > 0 && (
+									<div className="flex flex-wrap items-center gap-0.5 sm:gap-1">
+										{championshipYears.map((year) => (
+											<ChampionshipBadge key={year} year={year} />
+										))}
+									</div>
+								)}
+							</div>
 							<div className="flex shrink-0 items-baseline gap-0.5 sm:gap-1">
 								<span className="text-lg font-bold text-[var(--color-text)] tabular-nums sm:text-2xl">
 									{points}

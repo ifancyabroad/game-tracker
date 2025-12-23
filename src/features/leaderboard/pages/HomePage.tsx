@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Trophy, Dices, Gamepad2 } from "lucide-react";
-import { usePlayerLeaderboard } from "features/leaderboard/utils/hooks";
+import { usePlayerLeaderboard, usePlayerChampionships } from "features/leaderboard/utils/hooks";
 import { PlayerCard } from "features/leaderboard/components/PlayerCard";
 import { SegmentedControl, PageHeader } from "common/components";
 import type { SegmentedControlOption } from "common/components/SegmentedControl";
@@ -14,6 +14,7 @@ const gameTypeOptions: SegmentedControlOption<GameType>[] = [
 export const HomePage: React.FC = () => {
 	const [gameType, setGameType] = useState<GameType>("board");
 	const leaderboard = usePlayerLeaderboard(gameType);
+	const championships = usePlayerChampionships(gameType);
 	const hasData = leaderboard.length > 0;
 	const maxPoints = hasData ? leaderboard[0].data.points : 0;
 
@@ -32,7 +33,13 @@ export const HomePage: React.FC = () => {
 					</div>
 				) : (
 					leaderboard.map((row, idx) => (
-						<PlayerCard key={row.id} row={row} rank={idx + 1} maxPoints={maxPoints} />
+						<PlayerCard
+							key={row.id}
+							row={row}
+							rank={idx + 1}
+							maxPoints={maxPoints}
+							championshipYears={championships.get(row.id) || []}
+						/>
 					))
 				)}
 			</div>
