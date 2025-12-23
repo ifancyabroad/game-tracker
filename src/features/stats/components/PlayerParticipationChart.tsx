@@ -1,7 +1,7 @@
 import { PieChart, Pie, Cell, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from "recharts";
 import { ChartCard, ChartTooltip } from "common/components";
 import { useIsMobile } from "common/utils/hooks";
-import type { PlayerWithData } from "features/players/utils/stats";
+import type { PlayerWithData } from "features/players/types";
 
 interface PlayerParticipationChartProps {
 	overallStats: PlayerWithData[];

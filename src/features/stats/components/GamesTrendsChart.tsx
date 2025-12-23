@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { useResults } from "features/events/context/ResultsContext";
 import { useGames } from "features/games/context/GamesContext";
 import { ChartCard, ChartTooltip } from "common/components";
-import type { TimeSeriesData } from "features/stats/utils/stats";
+import type { TimeSeriesData } from "features/stats/types";
 
 interface GameTrendsChartProps {
 	gameTrends: TimeSeriesData[];

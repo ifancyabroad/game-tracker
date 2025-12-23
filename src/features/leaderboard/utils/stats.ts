@@ -1,4 +1,4 @@
-import type { PlayerWithData } from "features/players/utils/stats";
+import type { PlayerWithData } from "features/players/types";
 import { STATS_THRESHOLDS } from "common/utils/constants";
 
 export function sortLeaderboard(rows: PlayerWithData[]) {

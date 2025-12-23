@@ -1,6 +1,6 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { ChartCard, ChartTooltip } from "common/components";
-import type { GameWithData } from "features/games/utils/stats";
+import type { GameWithData } from "features/games/types";
 
 interface PlayFrequencyChartProps {
 	game: GameWithData;

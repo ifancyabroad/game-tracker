@@ -1,4 +1,4 @@
-import type { PlayerGameStats } from "features/games/utils/stats";
+import type { PlayerGameStats } from "features/games/types";
 import { useNavigate } from "react-router";
 import { Card } from "common/components";
 import { formatPct } from "common/utils/helpers";

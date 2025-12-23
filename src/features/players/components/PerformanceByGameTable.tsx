@@ -1,4 +1,4 @@
-import type { GameWinRateRow } from "features/players/utils/stats";
+import type { GameWinRateRow } from "features/players/types";
 import { useNavigate } from "react-router";
 import { Card } from "common/components";
 import { formatPct } from "common/utils/helpers";

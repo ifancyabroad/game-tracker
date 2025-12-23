@@ -1,5 +1,6 @@
 import { useMemo } from "react";
-import { sortResults, sortEvents, getSortedEventPlayerStats, getSortedEventGameStats } from "./stats";
+import { getSortedEventPlayerStats, getSortedEventGameStats } from "./calculations";
+import { sortResultsChronologically, sortEventsByDate } from "common/utils/sorting";
 import type { IResult, IEvent } from "features/events/types";
 import { useEvents } from "features/events/context/EventsContext";
 import { useResults } from "features/events/context/ResultsContext";
@@ -10,12 +11,12 @@ import { useGames } from "features/games/context/GamesContext";
 export function useSortedResults(): IResult[] {
 	const { results } = useFilteredData();
 	const { eventById } = useEvents();
-	return useMemo(() => sortResults(results, eventById), [results, eventById]);
+	return useMemo(() => sortResultsChronologically(results, eventById), [results, eventById]);
 }
 
 export function useSortedEvents(): IEvent[] {
 	const { events } = useFilteredData();
-	return useMemo(() => sortEvents(events), [events]);
+	return useMemo(() => sortEventsByDate(events, true), [events]);
 }
 
 export function useEventPlayerStats(eventId: string) {

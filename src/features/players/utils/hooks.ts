@@ -4,9 +4,9 @@ import {
 	aggregatePlayerStatsForPage,
 	computeOpponentStats,
 	computeStreaks,
-	type PlayerWithData,
 	computePlayerData,
-} from "./stats";
+} from "./calculations";
+import type { PlayerWithData } from "features/players/types";
 import { useGames } from "features/games/context/GamesContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useSortedResults } from "features/events/utils/hooks";

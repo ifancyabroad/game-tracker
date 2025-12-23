@@ -1,5 +1,6 @@
 import { useMemo } from "react";
-import { getGameResults, aggregateGameStatsForPage, computeGameData, type GameWithData } from "./stats";
+import { getGameResults, computeGameData, aggregateGameStatsForPage } from "./calculations";
+import type { GameWithData } from "features/games/types";
 import { useGames } from "features/games/context/GamesContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useEvents } from "features/events/context/EventsContext";
