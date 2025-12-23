@@ -3,6 +3,7 @@ import type { IGame } from "features/games/types";
 import type { MostPlayedGames, TimeSeriesData } from "features/stats/types";
 import { formatEventDate } from "common/utils/dateFormatters";
 import { parseISO } from "date-fns";
+import { getColorForGame, getDisplayName } from "features/games/utils/helpers";
 
 /**
  * Count games by ID
@@ -22,9 +23,9 @@ function mapGameCountsToDisplay(gameCounts: Record<string, number>, gameById: Ma
 	return Object.entries(gameCounts).map(([gameId, count]) => {
 		const game = gameById.get(gameId);
 		return {
-			name: game?.name || "Unknown",
+			name: getDisplayName(game),
+			color: getColorForGame(game),
 			count,
-			color: game?.color || "#6366f1",
 		};
 	});
 }
