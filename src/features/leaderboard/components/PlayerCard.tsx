@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { Trophy, Medal, Award, Target, TrendingUp } from "lucide-react";
+import { motion } from "framer-motion";
 import type { PlayerWithData } from "features/players/types";
 import { Avatar, Card } from "common/components";
 import { calculateWinRatePercent } from "common/utils/calculations";
@@ -116,9 +117,15 @@ export const PlayerCard: React.FC<{
 
 						{/* Progress Bar */}
 						<div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[var(--color-border)] shadow-inner sm:mt-2.5 sm:h-2">
-							<div
-								className={`h-full rounded-full transition-all duration-500 ${tintBar}`}
-								style={{ width: `${pct}%` }}
+							<motion.div
+								className={`h-full rounded-full ${tintBar}`}
+								initial={{ width: 0 }}
+								animate={{ width: `${pct}%` }}
+								transition={{
+									duration: 1,
+									delay: rank * 0.05,
+									ease: [0.4, 0, 0.2, 1],
+								}}
 							/>
 						</div>
 					</div>
