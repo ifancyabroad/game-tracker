@@ -8,20 +8,37 @@ import { buildPlayerStatsMap } from "./playerStats";
 import { computePlayFrequency, computeRankDistribution } from "./aggregates";
 
 /**
- * Find top and bottom players by win rate (minimum games required)
+ * Find top player by win rate (highest win rate, tie-break by most games)
  */
-function findTopAndBottomPlayers(
-	playerStats: PlayerGameStats[],
-	minGames: number,
-): { topPlayer?: PlayerGameStats; bottomPlayer?: PlayerGameStats } {
-	const qualified = playerStats
-		.filter((p) => p.games >= minGames)
-		.sort((a, b) => b.winRate - a.winRate || b.games - a.games);
+function findTopPlayer(playerStats: PlayerGameStats[], minGames: number): PlayerGameStats | undefined {
+	const qualified = playerStats.filter((p) => p.games >= minGames);
 
-	return {
-		topPlayer: qualified[0],
-		bottomPlayer: qualified[qualified.length - 1],
-	};
+	if (qualified.length === 0) {
+		return undefined;
+	}
+
+	return qualified.reduce((best, current) => {
+		if (current.winRate > best.winRate) return current;
+		if (current.winRate === best.winRate && current.games > best.games) return current;
+		return best;
+	});
+}
+
+/**
+ * Find bottom player by win rate (lowest win rate, tie-break by most games)
+ */
+function findBottomPlayer(playerStats: PlayerGameStats[], minGames: number): PlayerGameStats | undefined {
+	const qualified = playerStats.filter((p) => p.games >= minGames);
+
+	if (qualified.length === 0) {
+		return undefined;
+	}
+
+	return qualified.reduce((worst, current) => {
+		if (current.winRate < worst.winRate) return current;
+		if (current.winRate === worst.winRate && current.games > worst.games) return current;
+		return worst;
+	});
 }
 
 /**
@@ -42,7 +59,8 @@ export function aggregateGameStatsForPage(
 	const playerStats = buildPlayerStatsMap(gameResults, playerById, gamePoints);
 
 	// Find top/bottom players
-	const { topPlayer, bottomPlayer } = findTopAndBottomPlayers(playerStats, STATS_THRESHOLDS.MIN_GAMES_FOR_BEST_GAME);
+	const topPlayer = findTopPlayer(playerStats, STATS_THRESHOLDS.MIN_GAMES_FOR_BEST_GAME);
+	const bottomPlayer = findBottomPlayer(playerStats, STATS_THRESHOLDS.MIN_GAMES_FOR_BEST_GAME);
 
 	// Compute time series and distributions
 	const playFrequencySeries = computePlayFrequency(gameResults, eventById);
