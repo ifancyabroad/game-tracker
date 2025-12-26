@@ -11,15 +11,17 @@ import { useGames } from "features/games/context/GamesContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useSortedResults } from "features/events/utils/hooks";
 import { useFilteredData } from "common/utils/hooks";
+import { useEvents } from "features/events/context/EventsContext";
 import type { GameType } from "features/games/types";
 
 export function usePlayerData(gameType?: GameType): PlayerWithData[] {
 	const { players } = usePlayers();
 	const { results } = useFilteredData();
+	const { events } = useEvents();
 	const { gameById } = useGames();
 	return useMemo(
-		() => computePlayerData(players, results, gameById, gameType),
-		[players, results, gameById, gameType],
+		() => computePlayerData(players, results, gameById, events, gameType),
+		[players, results, gameById, events, gameType],
 	);
 }
 
