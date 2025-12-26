@@ -29,7 +29,7 @@ export function getPlayerChampionships(
 		const yearResults = filterResultsByYear(results, events, year);
 
 		// Calculate leaderboard for this specific year
-		const playerData = computePlayerData(players, yearResults, gameById, gameType);
+		const playerData = computePlayerData(players, yearResults, gameById, events, gameType);
 		const leaderboard = getLeaderboard(playerData);
 
 		// Get the champion (rank 1 player)
