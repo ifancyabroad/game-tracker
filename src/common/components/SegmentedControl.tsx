@@ -10,9 +10,15 @@ interface SegmentedControlProps<T extends string> {
 	value: T;
 	onChange: (value: T) => void;
 	options: SegmentedControlOption<T>[];
+	hideLabelsOnMobile?: boolean;
 }
 
-export const SegmentedControl = <T extends string>({ value, onChange, options }: SegmentedControlProps<T>) => {
+export const SegmentedControl = <T extends string>({
+	value,
+	onChange,
+	options,
+	hideLabelsOnMobile = false,
+}: SegmentedControlProps<T>) => {
 	return (
 		<div className="flex gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-accent)] p-1">
 			{options.map((option) => {
@@ -29,9 +35,10 @@ export const SegmentedControl = <T extends string>({ value, onChange, options }:
 								: "text-[var(--color-text-secondary)] hover:text-[var(--color-text)]"
 						}`}
 						aria-pressed={isActive}
+						aria-label={option.label}
 					>
 						<Icon className="h-4 w-4" />
-						{option.label}
+						<span className={hideLabelsOnMobile ? "hidden sm:inline" : ""}>{option.label}</span>
 					</button>
 				);
 			})}

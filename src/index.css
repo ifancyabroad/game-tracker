@@ -32,8 +32,8 @@
 	--color-text-muted: #6b7280;
 	--color-border: #2a2a2a;
 	--color-border-strong: #374151;
-	--color-hover: rgba(255, 255, 255, 0.05);
-	--color-accent: rgba(0, 0, 0, 0.2);
+	--color-hover: #1f1f1f;
+	--color-accent: #141414;
 }
 
 html {
