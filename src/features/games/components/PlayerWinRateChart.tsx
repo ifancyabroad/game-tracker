@@ -26,7 +26,7 @@ export const PlayerWinRateChart: React.FC<PlayerWinRateChartProps> = ({ playerSt
 						tick={{ fill: "#9CA3AF", fontSize: 12 }}
 					/>
 					<Tooltip
-						cursor={{ fill: "rgba(255,255,255,0.05)" }}
+						cursor={{ fill: "var(--color-hover)" }}
 						content={<ChartTooltip formatter={(v) => formatPct(v)} />}
 					/>
 					<Bar dataKey="winRate">
