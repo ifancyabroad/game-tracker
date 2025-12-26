@@ -8,6 +8,13 @@ export interface IPlayer {
 	showOnLeaderboard: boolean;
 }
 
+export interface BestGame {
+	gameId: string;
+	gameName: string;
+	gameType: "board" | "video";
+	points: number;
+}
+
 export interface PlayerData {
 	playerId: string;
 	name: string;
@@ -18,6 +25,8 @@ export interface PlayerData {
 	games: number;
 	winRate: number; // Decimal (0-1)
 	winRatePercent: number; // Percentage (0-100)
+	recentForm: (number | null)[]; // Points from last 3 events (newest first), null if not attended
+	bestGame: BestGame | null;
 }
 
 export interface PlayerWithData extends IPlayer {

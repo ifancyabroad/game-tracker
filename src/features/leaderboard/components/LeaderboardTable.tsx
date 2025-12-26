@@ -4,6 +4,7 @@ import type { PlayerWithData } from "features/players/types";
 import { Avatar } from "common/components";
 import { formatPct } from "common/utils/helpers";
 import { ChampionshipBadge } from "./ChampionshipBadge";
+import { GameTypeIcon } from "features/games/components/GameTypeIcon";
 
 const getRankIcon = (rank: number) => {
 	if (rank === 1) return <Trophy className="h-4 w-4 shrink-0 text-yellow-500 sm:h-5 sm:w-5" />;
@@ -19,6 +20,21 @@ const getRankBorderColor = (rank: number) => {
 	if (rank === 2) return "bg-slate-400";
 	if (rank === 3) return "bg-amber-600";
 	return "";
+};
+
+const getFormColor = (points: number | null) => {
+	if (points === null) return "bg-gray-700 text-gray-400";
+	if (points >= 3) return "bg-green-600 text-white";
+	if (points > 0) return "bg-yellow-500 text-black";
+	if (points === 0) return "bg-gray-500 text-white";
+	return "bg-red-600 text-white";
+};
+
+const formatFormValue = (points: number | null) => {
+	if (points === null) return "—";
+	if (points > 0) return `+${points}`;
+	if (points === 0) return "0";
+	return points.toString();
 };
 
 export const LeaderboardTable: React.FC<{
@@ -68,6 +84,8 @@ export const LeaderboardTable: React.FC<{
 							<th className="px-3 py-2 text-center whitespace-nowrap sm:px-4">Wins</th>
 							<th className="px-3 py-2 text-center whitespace-nowrap sm:px-4">Games</th>
 							<th className="px-3 py-2 text-center whitespace-nowrap sm:px-4">Win Rate</th>
+							<th className="px-3 py-2 text-center whitespace-nowrap sm:px-4">Recent Form</th>
+							<th className="px-3 py-2 text-center whitespace-nowrap sm:px-4">Best Game</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -140,6 +158,50 @@ export const LeaderboardTable: React.FC<{
 									{/* Win Rate Column */}
 									<td className="border-b border-[var(--color-border)] px-3 py-3 text-center text-[var(--color-text)] tabular-nums sm:px-4">
 										{formatPct(row.data.winRate)}
+									</td>
+
+									{/* Form Column */}
+									<td className="border-b border-[var(--color-border)] px-3 py-3 text-center sm:px-4">
+										<div className="flex items-center justify-center gap-1">
+											{row.data.recentForm.length > 0 ? (
+												row.data.recentForm
+													.slice()
+													.reverse()
+													.map((points, idx) => (
+														<span
+															key={idx}
+															className={`inline-flex min-w-[2.25rem] justify-center rounded px-1.5 py-0.5 text-xs font-semibold tabular-nums ${getFormColor(points)}`}
+														>
+															{formatFormValue(points)}
+														</span>
+													))
+											) : (
+												<span className="text-xs text-[var(--color-text-secondary)]">—</span>
+											)}
+										</div>
+									</td>
+
+									{/* Best Game Column */}
+									<td className="border-b border-[var(--color-border)] px-3 py-3 sm:px-4">
+										{row.data.bestGame ? (
+											<div className="flex items-center gap-2">
+												<GameTypeIcon
+													type={row.data.bestGame.gameType}
+													className="h-3.5 w-3.5 shrink-0 text-[var(--color-primary)]"
+												/>
+												<span
+													className="text-xs whitespace-nowrap text-[var(--color-text)] sm:text-sm"
+													title={row.data.bestGame.gameName}
+												>
+													{row.data.bestGame.gameName}
+												</span>
+												<span className="shrink-0 rounded bg-[var(--color-accent)] px-1.5 py-0.5 text-xs font-semibold text-[var(--color-text)]">
+													{row.data.bestGame.points} pts
+												</span>
+											</div>
+										) : (
+											<span className="text-xs text-[var(--color-text-secondary)]">—</span>
+										)}
 									</td>
 								</tr>
 							);
