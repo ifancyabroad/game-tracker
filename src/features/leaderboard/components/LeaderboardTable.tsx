@@ -212,7 +212,7 @@ export const LeaderboardTable: React.FC<{
 
 			{/* Scroll gradient indicator */}
 			<div
-				className={`pointer-events-none absolute top-0 right-0 h-full w-16 bg-gradient-to-l from-gray-200 via-gray-200/60 to-transparent transition-opacity duration-300 dark:from-[var(--color-surface)] dark:via-[var(--color-surface)]/80 ${
+				className={`pointer-events-none absolute top-0 right-0 h-full w-16 bg-gradient-to-l from-[var(--color-surface)] to-transparent transition-opacity duration-300 ${
 					scrollState.canScrollRight ? "opacity-100" : "opacity-0"
 				}`}
 			/>
