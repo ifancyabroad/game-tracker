@@ -5,6 +5,10 @@ import {
 	getFeaturedStats,
 	computeWinStreaks,
 	computeLossStreaks,
+	computeGameTrendsOverTime,
+	computeGameDifficulty,
+	getTopRivalries,
+	computePlayerAttendance,
 } from "./calculations";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useGames } from "features/games/context/GamesContext";
@@ -40,4 +44,32 @@ export function useLossStreaks() {
 	const { playerById } = usePlayers();
 	const { eventById } = useEvents();
 	return useMemo(() => computeLossStreaks(results, playerById, eventById), [results, playerById, eventById]);
+}
+
+export function useGameTrends() {
+	const { results } = useFilteredData();
+	const { gameById } = useGames();
+	const { eventById } = useEvents();
+	return useMemo(() => computeGameTrendsOverTime(results, gameById, eventById), [results, gameById, eventById]);
+}
+
+export function useGameDifficulty() {
+	const { results } = useFilteredData();
+	const { gameById } = useGames();
+	return useMemo(() => computeGameDifficulty(results, gameById), [results, gameById]);
+}
+
+export function useTopRivalries(limit: number = 5) {
+	const { results } = useFilteredData();
+	const { playerById } = usePlayers();
+	return useMemo(() => getTopRivalries(results, playerById, limit), [results, playerById, limit]);
+}
+
+export function usePlayerAttendance(limit: number = 5) {
+	const { results, events } = useFilteredData();
+	const { playerById } = usePlayers();
+	return useMemo(
+		() => computePlayerAttendance(results, events, playerById, limit),
+		[results, events, playerById, limit],
+	);
 }

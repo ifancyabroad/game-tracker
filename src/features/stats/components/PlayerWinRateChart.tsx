@@ -1,4 +1,4 @@
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from "recharts";
 import { ChartCard, ChartTooltip } from "common/components";
 import type { PlayerWithData } from "features/players/types";
 
@@ -15,6 +15,7 @@ export const PlayerWinRateChart: React.FC<PlayerWinRateChartProps> = ({ overallS
 		<ChartCard title="Player Win Rates">
 			<ResponsiveContainer width="100%" height="100%">
 				<BarChart data={chartData} layout="vertical" margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
+					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
 					<XAxis
 						type="number"
 						domain={[0, 100]}

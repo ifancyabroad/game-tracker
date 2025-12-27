@@ -12,7 +12,7 @@ export const WinStreaksCard: React.FC<WinStreaksCardProps> = ({ streaks }) => {
 		<Card className="p-4 sm:p-6">
 			<div className="mb-4 flex items-center gap-2">
 				<Flame className="h-5 w-5 text-orange-500" />
-				<h3 className="text-base font-semibold text-[var(--color-text)] sm:text-lg">Win Streaks</h3>
+				<h3 className="text-sm font-semibold text-[var(--color-text)]">Win Streaks</h3>
 			</div>
 
 			{streaks.length === 0 ? (
