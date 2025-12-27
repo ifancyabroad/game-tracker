@@ -1,8 +1,7 @@
 import type { IEvent, IResult } from "features/events/types";
 import type { IGame } from "features/games/types";
 import type { MostPlayedGames, TimeSeriesData } from "features/stats/types";
-import { formatEventDate } from "common/utils/dateFormatters";
-import { parseISO } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { getColorForGame, getDisplayName } from "features/games/utils/helpers";
 
 /**
@@ -38,7 +37,7 @@ function sortAndLimitGames(games: MostPlayedGames[], limit: number): MostPlayedG
 }
 
 /**
- * Aggregate game counts by date
+ * Aggregate game counts by date with cumulative totals
  */
 function aggregateGamesByDate(
 	results: IResult[],
@@ -52,23 +51,58 @@ function aggregateGamesByDate(
 		const game = gameById.get(result.gameId);
 		if (!event || !game) return;
 
-		const formattedDate = formatEventDate(event);
-		if (!dateMap[formattedDate]) {
-			dateMap[formattedDate] = {};
+		// Use ISO date for sorting, not formatted date
+		const isoDate = event.date;
+		if (!dateMap[isoDate]) {
+			dateMap[isoDate] = {};
 		}
-		dateMap[formattedDate][game.name] = (dateMap[formattedDate][game.name] || 0) + 1;
+		dateMap[isoDate][game.name] = (dateMap[isoDate][game.name] || 0) + 1;
 	});
 
 	return dateMap;
 }
 
 /**
- * Convert date map to time series data
+ * Convert date map to cumulative time series data
  */
 function convertToTimeSeriesData(dateMap: Record<string, Record<string, number>>): TimeSeriesData[] {
-	return Object.entries(dateMap)
-		.map(([date, counts]) => ({ date, ...counts }))
-		.sort((a, b) => parseISO(a.date).getTime() - parseISO(b.date).getTime());
+	// Convert ISO dates to Date objects for proper sorting
+	const entries = Object.entries(dateMap).map(([isoDate, counts]) => ({
+		dateObj: parseISO(isoDate),
+		isoDate,
+		counts,
+	}));
+
+	// Sort by actual Date objects
+	entries.sort((a, b) => a.dateObj.getTime() - b.dateObj.getTime());
+
+	// Calculate cumulative totals for each game
+	const cumulativeTotals: Record<string, number> = {};
+	const allGames = new Set<string>();
+
+	// Collect all game names
+	entries.forEach(({ counts }) => {
+		Object.keys(counts).forEach((game) => allGames.add(game));
+	});
+
+	// Build cumulative data
+	return entries.map(({ dateObj, counts }) => {
+		const dataPoint: TimeSeriesData = {
+			date: format(dateObj, "MMM d"),
+		};
+
+		// Update cumulative totals for games played on this date
+		Object.entries(counts).forEach(([game, count]) => {
+			cumulativeTotals[game] = (cumulativeTotals[game] || 0) + count;
+		});
+
+		// Only include games that have been played at least once up to this point
+		Object.keys(cumulativeTotals).forEach((game) => {
+			dataPoint[game] = cumulativeTotals[game];
+		});
+
+		return dataPoint;
+	});
 }
 
 /**

@@ -1,4 +1,4 @@
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from "recharts";
 import { ChartCard, ChartTooltip } from "common/components";
 import type { MostPlayedGames } from "features/stats/types";
 
@@ -10,6 +10,7 @@ export const MostPlayedGamesChart: React.FC<MostPlayedGamesChartProps> = ({ most
 	<ChartCard title="Most Played Games">
 		<ResponsiveContainer width="100%" height={300}>
 			<BarChart data={mostPlayedGames} margin={{ top: 10, right: 20, left: 0, bottom: 40 }}>
+				<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
 				<XAxis
 					dataKey="name"
 					interval={0}

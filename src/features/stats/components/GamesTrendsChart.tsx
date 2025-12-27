@@ -1,4 +1,4 @@
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, CartesianGrid } from "recharts";
 import { useMemo } from "react";
 import { useResults } from "features/events/context/ResultsContext";
 import { useGames } from "features/games/context/GamesContext";
@@ -28,6 +28,7 @@ export const GameTrendsChart: React.FC<GameTrendsChartProps> = ({ gameTrends }) 
 		<ChartCard title="Game Trends Over Time">
 			<ResponsiveContainer width="100%" height="100%">
 				<LineChart data={gameTrends} margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
+					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
 					<XAxis dataKey="date" tick={{ fontSize: 12, fill: "var(--color-text-secondary)" }} />
 					<YAxis allowDecimals={false} tick={{ fontSize: 12, fill: "var(--color-text-secondary)" }} />
 					<Tooltip content={<ChartTooltip formatter={(v) => `${v} plays`} />} />
@@ -40,6 +41,7 @@ export const GameTrendsChart: React.FC<GameTrendsChartProps> = ({ gameTrends }) 
 							stroke={game.color}
 							strokeWidth={2}
 							dot={false}
+							activeDot={{ r: 6 }}
 						/>
 					))}
 				</LineChart>
