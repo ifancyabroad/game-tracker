@@ -1,6 +1,7 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from "recharts";
 import { Target } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
+import { DISPLAY_LIMITS } from "common/utils/constants";
 import type { GameDifficulty } from "features/stats/utils/calculations/gameDifficulty";
 
 interface GameDifficultyChartProps {
@@ -8,17 +9,19 @@ interface GameDifficultyChartProps {
 }
 
 export const GameDifficultyChart: React.FC<GameDifficultyChartProps> = ({ difficulties }) => {
+	const chartData = difficulties.slice(0, DISPLAY_LIMITS.CHARTS.GAME_DIFFICULTY);
+
 	return (
 		<ChartCard
 			title="Game Competitiveness"
 			subtitle="Shows how evenly wins are distributed across players"
 			icon={Target}
-			isEmpty={difficulties.length === 0}
+			isEmpty={chartData.length === 0}
 			emptyTitle="No competitiveness data available"
 			emptyDescription="Games need at least 3 plays to calculate competitiveness"
 		>
 			<ResponsiveContainer width="100%" height={300}>
-				<BarChart data={difficulties} margin={{ top: 20, right: 20, left: 0, bottom: 40 }}>
+				<BarChart data={chartData} margin={{ top: 20, right: 20, left: 0, bottom: 40 }}>
 					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
 					<XAxis
 						dataKey="gameName"
@@ -55,7 +58,7 @@ export const GameDifficultyChart: React.FC<GameDifficultyChartProps> = ({ diffic
 						content={<ChartTooltip formatter={(value: number) => `${value}%`} />}
 					/>
 					<Bar dataKey="difficultyScore" radius={[4, 4, 0, 0]}>
-						{difficulties.map((entry, index) => (
+						{chartData.map((entry, index) => (
 							<Cell key={`cell-${index}`} fill={entry.color} />
 						))}
 					</Bar>
