@@ -54,7 +54,7 @@ export const Sidebar: React.FC = () => {
 		<>
 			{isSidebarOpen && (
 				<div
-					className="fixed inset-0 z-40 bg-black/50 sm:hidden"
+					className="fixed inset-0 z-40 bg-black/50 md:hidden"
 					onClick={closeSidebar}
 					aria-label="Close sidebar"
 					role="button"
@@ -68,11 +68,11 @@ export const Sidebar: React.FC = () => {
 			)}
 
 			<aside
-				className={`fixed z-50 flex h-full w-72 flex-col border-r border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-4 transition-transform sm:static sm:translate-x-0 sm:py-6 ${
-					isSidebarOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"
+				className={`fixed z-50 flex h-full w-72 flex-col border-r border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-4 transition-transform lg:static lg:translate-x-0 lg:py-6 ${
+					isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
 				}`}
 			>
-				<div className="mb-4 flex items-center justify-between sm:mb-6">
+				<div className="mb-4 flex items-center justify-between lg:mb-6">
 					<Link to="/" className="flex items-center gap-3" onClick={closeSidebar}>
 						<div className="flex h-9 w-9 items-center justify-center">
 							<img src={logo} alt="Logo" />
@@ -85,7 +85,7 @@ export const Sidebar: React.FC = () => {
 					</Link>
 					<button
 						onClick={closeSidebar}
-						className="text-[var(--color-text-secondary)] hover:text-[var(--color-text)] sm:hidden"
+						className="text-[var(--color-text-secondary)] hover:text-[var(--color-text)] lg:hidden"
 						aria-label="Close sidebar"
 					>
 						<X size={20} />
