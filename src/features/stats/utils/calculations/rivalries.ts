@@ -31,37 +31,218 @@ export interface TopRivalry {
 	closeness: number; // 0-100, 100 = perfectly even
 }
 
+interface PlayerStatus {
+	playerId: string;
+	isWinner: boolean;
+}
+
+interface PairStats {
+	player1Id: string;
+	player2Id: string;
+	player1Wins: number;
+	player2Wins: number;
+	totalGames: number;
+}
+
+/**
+ * Get player statuses (ID and winner status) from a result
+ */
+function getPlayerStatuses(result: IResult): PlayerStatus[] {
+	return result.playerResults.map((pr) => ({
+		playerId: pr.playerId,
+		isWinner: isPlayerWinner(pr),
+	}));
+}
+
+/**
+ * Create a consistent pair key from two player IDs
+ */
+function createPairKey(playerId1: string, playerId2: string): string {
+	return [playerId1, playerId2].sort().join("-");
+}
+
+/**
+ * Initialize pair stats if not exists
+ */
+function initializePairStats(
+	pairStats: Map<string, PairStats>,
+	pairKey: string,
+	player1Id: string,
+	player2Id: string,
+): void {
+	if (!pairStats.has(pairKey)) {
+		pairStats.set(pairKey, {
+			player1Id,
+			player2Id,
+			player1Wins: 0,
+			player2Wins: 0,
+			totalGames: 0,
+		});
+	}
+}
+
+/**
+ * Update pair stats based on game outcome
+ */
+function updatePairStats(stats: PairStats, player1: PlayerStatus, player2: PlayerStatus): void {
+	stats.totalGames++;
+
+	if (player1.isWinner && !player2.isWinner) {
+		if (stats.player1Id === player1.playerId) {
+			stats.player1Wins++;
+		} else {
+			stats.player2Wins++;
+		}
+	} else if (!player1.isWinner && player2.isWinner) {
+		if (stats.player1Id === player1.playerId) {
+			stats.player2Wins++;
+		} else {
+			stats.player1Wins++;
+		}
+	}
+}
+
+/**
+ * Process all results to build pair statistics
+ */
+function buildPairStatistics(results: IResult[]): Map<string, PairStats> {
+	const pairStats = new Map<string, PairStats>();
+
+	results.forEach((result) => {
+		const playerStatuses = getPlayerStatuses(result);
+
+		// For each unique pair in this game
+		for (let i = 0; i < playerStatuses.length; i++) {
+			for (let j = i + 1; j < playerStatuses.length; j++) {
+				const player1 = playerStatuses[i];
+				const player2 = playerStatuses[j];
+				const pairKey = createPairKey(player1.playerId, player2.playerId);
+
+				initializePairStats(pairStats, pairKey, player1.playerId, player2.playerId);
+				const stats = pairStats.get(pairKey)!;
+				updatePairStats(stats, player1, player2);
+			}
+		}
+	});
+
+	return pairStats;
+}
+
+/**
+ * Get display name for a player
+ */
+function getPlayerDisplayName(player: IPlayer): string {
+	return player.preferredName || player.firstName;
+}
+
+/**
+ * Calculate closeness metric (100 = perfectly even, 0 = one player dominates)
+ */
+function calculateCloseness(player1Wins: number, player2Wins: number, totalGames: number): number {
+	const winDiff = Math.abs(player1Wins - player2Wins);
+	return Math.max(0, 100 - (winDiff / totalGames) * 100);
+}
+
+/**
+ * Convert pair stats to rivalry object
+ */
+function createRivalry(
+	stats: PairStats,
+	player1: IPlayer,
+	player2: IPlayer,
+	player1Wins: number,
+	player2Wins: number,
+): TopRivalry {
+	const closeness = calculateCloseness(player1Wins, player2Wins, stats.totalGames);
+
+	return {
+		player1Id: stats.player1Id,
+		player1Name: getPlayerDisplayName(player1),
+		player1Color: player1.color,
+		player1PictureUrl: player1.pictureUrl || undefined,
+		player2Id: stats.player2Id,
+		player2Name: getPlayerDisplayName(player2),
+		player2Color: player2.color,
+		player2PictureUrl: player2.pictureUrl || undefined,
+		totalGames: stats.totalGames,
+		player1Wins,
+		player2Wins,
+		closeness,
+	};
+}
+
+/**
+ * Convert pair stats to rivalry with dominant player first
+ */
+function createLopsidedRivalry(stats: PairStats, player1: IPlayer, player2: IPlayer): TopRivalry {
+	const p1Wins = stats.player1Wins;
+	const p2Wins = stats.player2Wins;
+	const isDominant = p1Wins > p2Wins;
+
+	const closeness = calculateCloseness(p1Wins, p2Wins, stats.totalGames);
+
+	return {
+		player1Id: isDominant ? stats.player1Id : stats.player2Id,
+		player1Name: getPlayerDisplayName(isDominant ? player1 : player2),
+		player1Color: isDominant ? player1.color : player2.color,
+		player1PictureUrl: (isDominant ? player1.pictureUrl : player2.pictureUrl) || undefined,
+		player2Id: isDominant ? stats.player2Id : stats.player1Id,
+		player2Name: getPlayerDisplayName(isDominant ? player2 : player1),
+		player2Color: isDominant ? player2.color : player1.color,
+		player2PictureUrl: (isDominant ? player2.pictureUrl : player1.pictureUrl) || undefined,
+		totalGames: stats.totalGames,
+		player1Wins: isDominant ? p1Wins : p2Wins,
+		player2Wins: isDominant ? p2Wins : p1Wins,
+		closeness,
+	};
+}
+
+/**
+ * Filter pair stats by minimum games threshold
+ */
+function filterByMinimumGames(
+	pairStats: Map<string, PairStats>,
+	playerById: Map<string, IPlayer>,
+	minGames: number = 5,
+): Array<{ stats: PairStats; player1: IPlayer; player2: IPlayer }> {
+	const filtered: Array<{ stats: PairStats; player1: IPlayer; player2: IPlayer }> = [];
+
+	pairStats.forEach((stats) => {
+		const player1 = playerById.get(stats.player1Id);
+		const player2 = playerById.get(stats.player2Id);
+
+		// Require minimum games AND at least one player has a win (not all ties)
+		if (player1 && player2 && stats.totalGames >= minGames && (stats.player1Wins > 0 || stats.player2Wins > 0)) {
+			filtered.push({ stats, player1, player2 });
+		}
+	});
+
+	return filtered;
+}
+
 /**
  * Build rivalry matrix for all players
  */
 export const buildRivalryMatrix = (results: IResult[], playerById: Map<string, IPlayer>): RivalryData[] => {
-	// Map of playerId -> Map of opponentId -> record
 	const rivalries = new Map<string, Map<string, { wins: number; losses: number; total: number }>>();
 
-	// Process each result
 	results.forEach((result) => {
-		// Get all player IDs and their winner status
-		const playerStatuses = result.playerResults.map((pr) => ({
-			playerId: pr.playerId,
-			isWinner: isPlayerWinner(pr),
-		}));
+		const playerStatuses = getPlayerStatuses(result);
 
 		// For each player pair in this game
 		for (let i = 0; i < playerStatuses.length; i++) {
 			const player1 = playerStatuses[i];
 
-			// Initialize player1's rivalry map if needed
 			if (!rivalries.has(player1.playerId)) {
 				rivalries.set(player1.playerId, new Map());
 			}
 			const player1Rivalries = rivalries.get(player1.playerId)!;
 
 			for (let j = 0; j < playerStatuses.length; j++) {
-				if (i === j) continue; // Skip self
+				if (i === j) continue;
 
 				const player2 = playerStatuses[j];
 
-				// Initialize record if needed
 				if (!player1Rivalries.has(player2.playerId)) {
 					player1Rivalries.set(player2.playerId, { wins: 0, losses: 0, total: 0 });
 				}
@@ -69,7 +250,6 @@ export const buildRivalryMatrix = (results: IResult[], playerById: Map<string, I
 				const record = player1Rivalries.get(player2.playerId)!;
 				record.total++;
 
-				// Update wins/losses
 				if (player1.isWinner && !player2.isWinner) {
 					record.wins++;
 				} else if (!player1.isWinner && player2.isWinner) {
@@ -100,7 +280,7 @@ export const buildRivalryMatrix = (results: IResult[], playerById: Map<string, I
 
 		rivalryData.push({
 			playerId,
-			playerName: player.preferredName || player.firstName,
+			playerName: getPlayerDisplayName(player),
 			color: player.color,
 			opponents: opponentsMap,
 		});
@@ -117,101 +297,15 @@ export const getTopRivalries = (
 	playerById: Map<string, IPlayer>,
 	limit: number = 5,
 ): TopRivalry[] => {
-	// Track head-to-head games between each pair
-	const pairStats = new Map<
-		string,
-		{
-			player1Id: string;
-			player2Id: string;
-			player1Wins: number;
-			player2Wins: number;
-			totalGames: number;
-		}
-	>();
+	const pairStats = buildPairStatistics(results);
+	const validPairs = filterByMinimumGames(pairStats, playerById);
 
-	results.forEach((result) => {
-		const playerStatuses = result.playerResults.map((pr) => ({
-			playerId: pr.playerId,
-			isWinner: isPlayerWinner(pr),
-		}));
+	const rivalries = validPairs.map(({ stats, player1, player2 }) =>
+		createRivalry(stats, player1, player2, stats.player1Wins, stats.player2Wins),
+	);
 
-		// For each unique pair
-		for (let i = 0; i < playerStatuses.length; i++) {
-			for (let j = i + 1; j < playerStatuses.length; j++) {
-				const player1 = playerStatuses[i];
-				const player2 = playerStatuses[j];
-
-				// Create consistent pair key (sorted IDs)
-				const pairKey = [player1.playerId, player2.playerId].sort().join("-");
-
-				if (!pairStats.has(pairKey)) {
-					pairStats.set(pairKey, {
-						player1Id: player1.playerId,
-						player2Id: player2.playerId,
-						player1Wins: 0,
-						player2Wins: 0,
-						totalGames: 0,
-					});
-				}
-
-				const stats = pairStats.get(pairKey)!;
-				stats.totalGames++;
-
-				// Update wins
-				if (player1.isWinner && !player2.isWinner) {
-					if (stats.player1Id === player1.playerId) {
-						stats.player1Wins++;
-					} else {
-						stats.player2Wins++;
-					}
-				} else if (!player1.isWinner && player2.isWinner) {
-					if (stats.player1Id === player1.playerId) {
-						stats.player2Wins++;
-					} else {
-						stats.player1Wins++;
-					}
-				}
-			}
-		}
-	});
-
-	// Convert to TopRivalry array with closeness metric
-	const rivalries: TopRivalry[] = [];
-
-	pairStats.forEach((stats) => {
-		const player1 = playerById.get(stats.player1Id);
-		const player2 = playerById.get(stats.player2Id);
-		if (!player1 || !player2 || stats.totalGames < 3) return; // Minimum 3 games
-
-		// Closeness: 100 = perfectly even, 0 = one player dominates
-		const winDiff = Math.abs(stats.player1Wins - stats.player2Wins);
-		const closeness = Math.max(0, 100 - (winDiff / stats.totalGames) * 100);
-
-		rivalries.push({
-			player1Id: stats.player1Id,
-			player1Name: player1.preferredName || player1.firstName,
-			player1Color: player1.color,
-			player1PictureUrl: player1.pictureUrl ? player1.pictureUrl : undefined,
-			player2Id: stats.player2Id,
-			player2Name: player2.preferredName || player2.firstName,
-			player2Color: player2.color,
-			player2PictureUrl: player2.pictureUrl ? player2.pictureUrl : undefined,
-			totalGames: stats.totalGames,
-			player1Wins: stats.player1Wins,
-			player2Wins: stats.player2Wins,
-			closeness,
-		});
-	});
-
-	// Sort by total games first (minimum engagement), then closeness
-	return rivalries
-		.sort((a, b) => {
-			if (b.totalGames !== a.totalGames) {
-				return b.totalGames - a.totalGames;
-			}
-			return b.closeness - a.closeness;
-		})
-		.slice(0, limit);
+	// Sort by closeness (most competitive rivalries)
+	return rivalries.sort((a, b) => b.closeness - a.closeness).slice(0, limit);
 };
 
 /**
@@ -222,118 +316,11 @@ export const getLopsidedRivalries = (
 	playerById: Map<string, IPlayer>,
 	limit: number = 5,
 ): TopRivalry[] => {
-	// Track head-to-head games between each pair
-	const pairStats = new Map<
-		string,
-		{
-			player1Id: string;
-			player2Id: string;
-			player1Wins: number;
-			player2Wins: number;
-			totalGames: number;
-		}
-	>();
+	const pairStats = buildPairStatistics(results);
+	const validPairs = filterByMinimumGames(pairStats, playerById);
 
-	results.forEach((result) => {
-		const playerStatuses = result.playerResults.map((pr) => ({
-			playerId: pr.playerId,
-			isWinner: isPlayerWinner(pr),
-		}));
+	const rivalries = validPairs.map(({ stats, player1, player2 }) => createLopsidedRivalry(stats, player1, player2));
 
-		// For each unique pair
-		for (let i = 0; i < playerStatuses.length; i++) {
-			for (let j = i + 1; j < playerStatuses.length; j++) {
-				const player1 = playerStatuses[i];
-				const player2 = playerStatuses[j];
-
-				// Create consistent pair key (sorted IDs)
-				const pairKey = [player1.playerId, player2.playerId].sort().join("-");
-
-				if (!pairStats.has(pairKey)) {
-					pairStats.set(pairKey, {
-						player1Id: player1.playerId,
-						player2Id: player2.playerId,
-						player1Wins: 0,
-						player2Wins: 0,
-						totalGames: 0,
-					});
-				}
-
-				const stats = pairStats.get(pairKey)!;
-				stats.totalGames++;
-
-				// Update wins
-				if (player1.isWinner && !player2.isWinner) {
-					if (stats.player1Id === player1.playerId) {
-						stats.player1Wins++;
-					} else {
-						stats.player2Wins++;
-					}
-				} else if (!player1.isWinner && player2.isWinner) {
-					if (stats.player1Id === player1.playerId) {
-						stats.player2Wins++;
-					} else {
-						stats.player1Wins++;
-					}
-				}
-			}
-		}
-	});
-
-	// Convert to TopRivalry array with gap percentage
-	const rivalries: TopRivalry[] = [];
-
-	pairStats.forEach((stats) => {
-		const player1 = playerById.get(stats.player1Id);
-		const player2 = playerById.get(stats.player2Id);
-		if (!player1 || !player2 || stats.totalGames < 3) return; // Minimum 3 games
-
-		// Calculate win gap percentage
-		const winDiff = Math.abs(stats.player1Wins - stats.player2Wins);
-		const gapPct = (winDiff / stats.totalGames) * 100;
-
-		// Ensure dominant player is listed first
-		const p1Wins = stats.player1Wins;
-		const p2Wins = stats.player2Wins;
-		const isPlayer1Dominant = p1Wins > p2Wins;
-
-		rivalries.push({
-			player1Id: isPlayer1Dominant ? stats.player1Id : stats.player2Id,
-			player1Name: isPlayer1Dominant
-				? player1.preferredName || player1.firstName
-				: player2.preferredName || player2.firstName,
-			player1Color: isPlayer1Dominant ? player1.color : player2.color,
-			player1PictureUrl: isPlayer1Dominant
-				? player1.pictureUrl
-					? player1.pictureUrl
-					: undefined
-				: player2.pictureUrl
-					? player2.pictureUrl
-					: undefined,
-			player2Id: isPlayer1Dominant ? stats.player2Id : stats.player1Id,
-			player2Name: isPlayer1Dominant
-				? player2.preferredName || player2.firstName
-				: player1.preferredName || player1.firstName,
-			player2Color: isPlayer1Dominant ? player2.color : player1.color,
-			player2PictureUrl: isPlayer1Dominant
-				? player2.pictureUrl
-					? player2.pictureUrl
-					: undefined
-				: player1.pictureUrl
-					? player1.pictureUrl
-					: undefined,
-			totalGames: stats.totalGames,
-			player1Wins: isPlayer1Dominant ? p1Wins : p2Wins,
-			player2Wins: isPlayer1Dominant ? p2Wins : p1Wins,
-			closeness: 100 - gapPct, // Store inverse of gap as closeness
-		});
-	});
-
-	// Sort by biggest gap (lowest closeness) with minimum engagement threshold
-	return rivalries
-		.sort((a, b) => {
-			// Prioritize larger gaps (lower closeness)
-			return a.closeness - b.closeness;
-		})
-		.slice(0, limit);
+	// Sort by biggest gap (lowest closeness)
+	return rivalries.sort((a, b) => a.closeness - b.closeness).slice(0, limit);
 };
