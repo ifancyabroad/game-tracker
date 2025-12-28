@@ -5,15 +5,17 @@ import type { TopRivalry } from "features/stats/utils/calculations/rivalries";
 
 interface RivalryMatrixProps {
 	rivalries: TopRivalry[];
+	title: string;
+	description: string;
 }
 
-export const RivalryMatrix: React.FC<RivalryMatrixProps> = ({ rivalries }) => {
+export const RivalryMatrix: React.FC<RivalryMatrixProps> = ({ rivalries, title, description }) => {
 	if (rivalries.length === 0) {
 		return (
 			<Card className="p-4">
 				<div className="mb-3 flex items-center gap-2">
 					<Swords size={20} className="text-[var(--color-primary)]" />
-					<h3 className="text-sm font-semibold text-[var(--color-text)]">Top Rivalries</h3>
+					<h3 className="text-sm font-semibold text-[var(--color-text)]">{title}</h3>
 				</div>
 				<EmptyState>
 					<Swords size={32} className="mx-auto mb-2 text-[var(--color-text-secondary)]" />
@@ -29,11 +31,9 @@ export const RivalryMatrix: React.FC<RivalryMatrixProps> = ({ rivalries }) => {
 			<div className="border-b border-[var(--color-border)] p-3 sm:p-4">
 				<div className="flex items-center gap-2">
 					<Swords size={20} className="text-[var(--color-primary)]" />
-					<h3 className="text-sm font-semibold text-[var(--color-text)]">Top Rivalries</h3>
+					<h3 className="text-sm font-semibold text-[var(--color-text)]">{title}</h3>
 				</div>
-				<p className="mt-1 text-xs text-[var(--color-text-secondary)]">
-					Most competitive head-to-head matchups
-				</p>
+				<p className="mt-1 text-xs text-[var(--color-text-secondary)]">{description}</p>
 			</div>
 
 			<div className="divide-y divide-[var(--color-border)]">
@@ -97,7 +97,7 @@ export const RivalryMatrix: React.FC<RivalryMatrixProps> = ({ rivalries }) => {
 							</div>
 
 							{/* Win Distribution Bar */}
-							<div className="flex h-2 w-full overflow-hidden rounded-full bg-[var(--color-accent)]">
+							<div className="flex h-2 overflow-hidden rounded-full bg-[var(--color-accent)]">
 								<div
 									className="h-full transition-all"
 									style={{

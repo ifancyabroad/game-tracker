@@ -213,3 +213,127 @@ export const getTopRivalries = (
 		})
 		.slice(0, limit);
 };
+
+/**
+ * Find the most lopsided rivalries (biggest win gap percentage)
+ */
+export const getLopsidedRivalries = (
+	results: IResult[],
+	playerById: Map<string, IPlayer>,
+	limit: number = 5,
+): TopRivalry[] => {
+	// Track head-to-head games between each pair
+	const pairStats = new Map<
+		string,
+		{
+			player1Id: string;
+			player2Id: string;
+			player1Wins: number;
+			player2Wins: number;
+			totalGames: number;
+		}
+	>();
+
+	results.forEach((result) => {
+		const playerStatuses = result.playerResults.map((pr) => ({
+			playerId: pr.playerId,
+			isWinner: isPlayerWinner(pr),
+		}));
+
+		// For each unique pair
+		for (let i = 0; i < playerStatuses.length; i++) {
+			for (let j = i + 1; j < playerStatuses.length; j++) {
+				const player1 = playerStatuses[i];
+				const player2 = playerStatuses[j];
+
+				// Create consistent pair key (sorted IDs)
+				const pairKey = [player1.playerId, player2.playerId].sort().join("-");
+
+				if (!pairStats.has(pairKey)) {
+					pairStats.set(pairKey, {
+						player1Id: player1.playerId,
+						player2Id: player2.playerId,
+						player1Wins: 0,
+						player2Wins: 0,
+						totalGames: 0,
+					});
+				}
+
+				const stats = pairStats.get(pairKey)!;
+				stats.totalGames++;
+
+				// Update wins
+				if (player1.isWinner && !player2.isWinner) {
+					if (stats.player1Id === player1.playerId) {
+						stats.player1Wins++;
+					} else {
+						stats.player2Wins++;
+					}
+				} else if (!player1.isWinner && player2.isWinner) {
+					if (stats.player1Id === player1.playerId) {
+						stats.player2Wins++;
+					} else {
+						stats.player1Wins++;
+					}
+				}
+			}
+		}
+	});
+
+	// Convert to TopRivalry array with gap percentage
+	const rivalries: TopRivalry[] = [];
+
+	pairStats.forEach((stats) => {
+		const player1 = playerById.get(stats.player1Id);
+		const player2 = playerById.get(stats.player2Id);
+		if (!player1 || !player2 || stats.totalGames < 3) return; // Minimum 3 games
+
+		// Calculate win gap percentage
+		const winDiff = Math.abs(stats.player1Wins - stats.player2Wins);
+		const gapPct = (winDiff / stats.totalGames) * 100;
+
+		// Ensure dominant player is listed first
+		const p1Wins = stats.player1Wins;
+		const p2Wins = stats.player2Wins;
+		const isPlayer1Dominant = p1Wins > p2Wins;
+
+		rivalries.push({
+			player1Id: isPlayer1Dominant ? stats.player1Id : stats.player2Id,
+			player1Name: isPlayer1Dominant
+				? player1.preferredName || player1.firstName
+				: player2.preferredName || player2.firstName,
+			player1Color: isPlayer1Dominant ? player1.color : player2.color,
+			player1PictureUrl: isPlayer1Dominant
+				? player1.pictureUrl
+					? player1.pictureUrl
+					: undefined
+				: player2.pictureUrl
+					? player2.pictureUrl
+					: undefined,
+			player2Id: isPlayer1Dominant ? stats.player2Id : stats.player1Id,
+			player2Name: isPlayer1Dominant
+				? player2.preferredName || player2.firstName
+				: player1.preferredName || player1.firstName,
+			player2Color: isPlayer1Dominant ? player2.color : player1.color,
+			player2PictureUrl: isPlayer1Dominant
+				? player2.pictureUrl
+					? player2.pictureUrl
+					: undefined
+				: player1.pictureUrl
+					? player1.pictureUrl
+					: undefined,
+			totalGames: stats.totalGames,
+			player1Wins: isPlayer1Dominant ? p1Wins : p2Wins,
+			player2Wins: isPlayer1Dominant ? p2Wins : p1Wins,
+			closeness: 100 - gapPct, // Store inverse of gap as closeness
+		});
+	});
+
+	// Sort by biggest gap (lowest closeness) with minimum engagement threshold
+	return rivalries
+		.sort((a, b) => {
+			// Prioritize larger gaps (lower closeness)
+			return a.closeness - b.closeness;
+		})
+		.slice(0, limit);
+};

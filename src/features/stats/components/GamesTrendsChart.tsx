@@ -14,14 +14,21 @@ export const GameTrendsChart: React.FC<GameTrendsChartProps> = ({ gameTrends }) 
 	const { gameById } = useGames();
 
 	const gameData = useMemo(() => {
-		const uniqueGames = new Map<string, { name: string; color: string }>();
+		const gameCounts = new Map<string, { name: string; color: string; count: number }>();
 		results.forEach((r) => {
 			const game = gameById.get(r.gameId);
-			if (game && !uniqueGames.has(game.name)) {
-				uniqueGames.set(game.name, { name: game.name, color: game.color });
+			if (game) {
+				const existing = gameCounts.get(game.name);
+				if (existing) {
+					existing.count++;
+				} else {
+					gameCounts.set(game.name, { name: game.name, color: game.color, count: 1 });
+				}
 			}
 		});
-		return Array.from(uniqueGames.values());
+		return Array.from(gameCounts.values())
+			.sort((a, b) => b.count - a.count)
+			.slice(0, 10);
 	}, [results, gameById]);
 
 	return (
@@ -30,7 +37,18 @@ export const GameTrendsChart: React.FC<GameTrendsChartProps> = ({ gameTrends }) 
 				<LineChart data={gameTrends} margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
 					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
 					<XAxis dataKey="date" tick={{ fontSize: 12, fill: "var(--color-text-secondary)" }} />
-					<YAxis allowDecimals={false} tick={{ fontSize: 12, fill: "var(--color-text-secondary)" }} />
+					<YAxis
+						allowDecimals={false}
+						tick={{ fontSize: 12, fill: "var(--color-text-secondary)" }}
+						label={{
+							value: "Total Plays",
+							angle: -90,
+							position: "center",
+							style: { textAnchor: "middle" },
+							fontSize: 12,
+							dx: -20,
+						}}
+					/>
 					<Tooltip content={<ChartTooltip formatter={(v) => `${v} plays`} />} />
 					<Legend wrapperStyle={{ fontSize: "12px", color: "var(--color-text-secondary)" }} />
 					{gameData.map((game) => (
