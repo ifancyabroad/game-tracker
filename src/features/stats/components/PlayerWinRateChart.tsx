@@ -13,7 +13,13 @@ export const PlayerWinRateChart: React.FC<PlayerWinRateChartProps> = ({ overallS
 		.sort((a, b) => b.data.winRatePercent - a.data.winRatePercent);
 
 	return (
-		<ChartCard title="Player Win Rates" icon={Percent}>
+		<ChartCard
+			title="Player Win Rates"
+			icon={Percent}
+			isEmpty={chartData.length === 0}
+			emptyTitle="No win rate data available"
+			emptyDescription="Players need at least one win to appear here"
+		>
 			<ResponsiveContainer width="100%" height="100%">
 				<BarChart data={chartData} layout="vertical" margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
 					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" horizontal={false} />

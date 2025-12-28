@@ -33,7 +33,13 @@ export const GameTrendsChart: React.FC<GameTrendsChartProps> = ({ gameTrends }) 
 	}, [results, gameById]);
 
 	return (
-		<ChartCard title="Game Trends Over Time" icon={TrendingUp}>
+		<ChartCard
+			title="Game Trends Over Time"
+			icon={TrendingUp}
+			isEmpty={gameTrends.length === 0}
+			emptyTitle="No game trends available"
+			emptyDescription="Play some games to see trends over time"
+		>
 			<ResponsiveContainer width="100%" height="100%">
 				<LineChart data={gameTrends} margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
 					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />

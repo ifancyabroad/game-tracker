@@ -17,7 +17,14 @@ export const WinRateByGameChart: React.FC<RecentFormChartProps> = ({ player, gam
 		.slice(0, STATS_THRESHOLDS.MOST_PLAYED_GAMES_LIMIT);
 
 	return (
-		<ChartCard title="Win Rate by Game (min 3 plays)" icon={Percent} iconColor={player.color}>
+		<ChartCard
+			title="Win Rate by Game (min 3 plays)"
+			icon={Percent}
+			iconColor={player.color}
+			isEmpty={chartData.length === 0}
+			emptyTitle="No win rate data"
+			emptyDescription="Play at least 3 games of the same type to see win rates"
+		>
 			<ResponsiveContainer width="100%" height="100%">
 				<BarChart data={chartData} margin={{ top: 10, right: 20, left: 20, bottom: 10 }}>
 					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />

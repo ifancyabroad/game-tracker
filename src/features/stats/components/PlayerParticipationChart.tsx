@@ -12,7 +12,13 @@ export const PlayerParticipationChart: React.FC<PlayerParticipationChartProps> =
 	const isMobile = useIsMobile();
 
 	return (
-		<ChartCard title="Player Participation" icon={PieChartIcon}>
+		<ChartCard
+			title="Player Participation"
+			icon={PieChartIcon}
+			isEmpty={overallStats.length === 0}
+			emptyTitle="No player data available"
+			emptyDescription="Add some players and play games to see participation"
+		>
 			<ResponsiveContainer width="100%" height="100%">
 				<PieChart>
 					<Pie

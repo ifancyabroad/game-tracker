@@ -9,7 +9,14 @@ interface RecentFormChartProps {
 }
 
 export const RecentFormChart: React.FC<RecentFormChartProps> = ({ player, lastGamesSeries }) => (
-	<ChartCard title="Recent Form (last 20 games)" icon={TrendingUp} iconColor={player.color}>
+	<ChartCard
+		title="Recent Form (last 20 games)"
+		icon={TrendingUp}
+		iconColor={player.color}
+		isEmpty={lastGamesSeries.length === 0}
+		emptyTitle="No recent games"
+		emptyDescription="Play at least one game to see recent form"
+	>
 		<ResponsiveContainer width="100%" height="100%">
 			<LineChart data={lastGamesSeries} margin={{ top: 10, right: 20, left: 20, bottom: 10 }}>
 				<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />

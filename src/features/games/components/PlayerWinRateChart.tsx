@@ -17,7 +17,14 @@ export const PlayerWinRateChart: React.FC<PlayerWinRateChartProps> = ({ game, pl
 		.slice(0, STATS_THRESHOLDS.MOST_PLAYED_GAMES_LIMIT);
 
 	return (
-		<ChartCard title="Player Win Rates (min 3 plays)" icon={Percent} iconColor={game.color}>
+		<ChartCard
+			title="Player Win Rates (min 3 plays)"
+			icon={Percent}
+			iconColor={game.color}
+			isEmpty={chartData.length === 0}
+			emptyTitle="No player data"
+			emptyDescription="Need at least 3 plays per player to show win rates"
+		>
 			<ResponsiveContainer width="100%" height="100%">
 				<BarChart data={chartData} margin={{ top: 10, right: 20, left: 20, bottom: 10 }}>
 					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
