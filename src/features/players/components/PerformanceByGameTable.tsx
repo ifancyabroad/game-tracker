@@ -2,6 +2,7 @@ import type { GameWinRateRow } from "features/players/types";
 import { useNavigate } from "react-router";
 import { Card } from "common/components";
 import { formatPct } from "common/utils/helpers";
+import { DISPLAY_LIMITS } from "common/utils/constants";
 
 interface PerformanceByGameTableProps {
 	gameWinRates: GameWinRateRow[];
@@ -34,7 +35,7 @@ export const PerformanceByGameTable: React.FC<PerformanceByGameTableProps> = ({ 
 						{gameWinRates
 							.slice()
 							.sort((a, b) => b.games - a.games || b.wins - a.wins)
-							.slice(0, 5)
+							.slice(0, DISPLAY_LIMITS.TABLES.PERFORMANCE_BY_GAME)
 							.map((g) => (
 								<tr
 									key={g.gameId}

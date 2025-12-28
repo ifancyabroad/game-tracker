@@ -3,7 +3,7 @@ import { Percent } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import type { IPlayer, GameWinRateRow } from "features/players/types";
 import { formatPct } from "common/utils/helpers";
-import { STATS_THRESHOLDS } from "common/utils/constants";
+import { STATS_THRESHOLDS, DISPLAY_LIMITS } from "common/utils/constants";
 
 interface RecentFormChartProps {
 	player: IPlayer;
@@ -14,7 +14,7 @@ export const WinRateByGameChart: React.FC<RecentFormChartProps> = ({ player, gam
 	const chartData = gameWinRates
 		.filter((g) => g.games >= STATS_THRESHOLDS.MIN_GAMES_FOR_BEST_GAME)
 		.sort((a, b) => b.wr - a.wr)
-		.slice(0, STATS_THRESHOLDS.MOST_PLAYED_GAMES_LIMIT);
+		.slice(0, DISPLAY_LIMITS.CHARTS.MOST_PLAYED_GAMES);
 
 	return (
 		<ChartCard

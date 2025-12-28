@@ -3,6 +3,7 @@ import type { IGame } from "features/games/types";
 import { isPlayerWinner } from "common/utils/gameHelpers";
 import { calculateWinRatePercent } from "common/utils/calculations";
 import { getColorForGame, getDisplayName } from "features/games/utils/helpers";
+import { STATS_THRESHOLDS, DISPLAY_LIMITS } from "common/utils/constants";
 
 interface GameStatsAccumulator {
 	games: number;
@@ -117,8 +118,8 @@ export function aggregatePlayerStatsForPage(
 	gameById: Map<string, IGame>,
 	opts: { bestGameMinSamples?: number; recentWindow?: number } = {},
 ): PlayerAggregates {
-	const bestGameMinSamples = opts.bestGameMinSamples ?? 3;
-	const recentWindow = opts.recentWindow ?? 20;
+	const bestGameMinSamples = opts.bestGameMinSamples ?? STATS_THRESHOLDS.MIN_GAMES_FOR_BEST_GAME;
+	const recentWindow = opts.recentWindow ?? DISPLAY_LIMITS.CHARTS.RECENT_GAMES;
 
 	const gameWinRates = buildGameWinRates(entries, gameById);
 	const rankCounts = buildRankCounts(entries);

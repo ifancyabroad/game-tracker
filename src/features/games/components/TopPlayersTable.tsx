@@ -2,6 +2,7 @@ import type { PlayerGameStats } from "features/games/types";
 import { useNavigate } from "react-router";
 import { Card } from "common/components";
 import { formatPct } from "common/utils/helpers";
+import { DISPLAY_LIMITS } from "common/utils/constants";
 
 interface TopPlayersTableProps {
 	playerStats: PlayerGameStats[];
@@ -35,7 +36,7 @@ export const TopPlayersTable: React.FC<TopPlayersTableProps> = ({ playerStats })
 							playerStats
 								.slice()
 								.sort((a, b) => b.games - a.games || b.wins - a.wins)
-								.slice(0, 10)
+								.slice(0, DISPLAY_LIMITS.TABLES.TOP_PLAYERS)
 								.map((p) => (
 									<tr
 										key={p.playerId}

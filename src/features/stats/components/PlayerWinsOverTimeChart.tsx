@@ -1,6 +1,7 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, CartesianGrid } from "recharts";
 import { TrendingUp } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
+import { DISPLAY_LIMITS } from "common/utils/constants";
 import type { TimeSeriesData } from "features/stats/types";
 import type { PlayerWithData } from "features/players/types";
 
@@ -16,7 +17,7 @@ export const PlayerWinsOverTimeChart: React.FC<PlayerWinsOverTimeChartProps> = (
 	const playerData = overallStats
 		.filter((p) => p.data.wins > 0)
 		.sort((a, b) => b.data.wins - a.data.wins)
-		.slice(0, 10);
+		.slice(0, DISPLAY_LIMITS.CHARTS.TOP_PLAYERS_OVER_TIME);
 
 	return (
 		<ChartCard

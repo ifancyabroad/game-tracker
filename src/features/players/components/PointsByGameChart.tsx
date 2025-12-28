@@ -2,6 +2,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recha
 import { PieChart as PieChartIcon } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import { useIsMobile } from "common/utils/hooks";
+import { DISPLAY_LIMITS } from "common/utils/constants";
 import type { IPlayer, GameWinRateRow } from "features/players/types";
 
 interface PointsByGameChartProps {
@@ -14,7 +15,7 @@ export const PointsByGameChart: React.FC<PointsByGameChartProps> = ({ player, ga
 	const chartData = gameWinRates
 		.filter((g) => g.points > 0)
 		.sort((a, b) => b.points - a.points)
-		.slice(0, 8);
+		.slice(0, DISPLAY_LIMITS.CHARTS.POINTS_BY_GAME_PIE);
 
 	return (
 		<ChartCard

@@ -4,6 +4,7 @@ import { TrendingUp } from "lucide-react";
 import { useResults } from "features/events/context/ResultsContext";
 import { useGames } from "features/games/context/GamesContext";
 import { ChartCard, ChartTooltip } from "common/components";
+import { DISPLAY_LIMITS } from "common/utils/constants";
 import type { TimeSeriesData } from "features/stats/types";
 
 interface GameTrendsChartProps {
@@ -29,7 +30,7 @@ export const GameTrendsChart: React.FC<GameTrendsChartProps> = ({ gameTrends }) 
 		});
 		return Array.from(gameCounts.values())
 			.sort((a, b) => b.count - a.count)
-			.slice(0, 10);
+			.slice(0, DISPLAY_LIMITS.CHARTS.GAME_TRENDS);
 	}, [results, gameById]);
 
 	return (

@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { Avatar } from "common/components";
 import { getDisplayName } from "features/players/utils/helpers";
+import { DISPLAY_LIMITS } from "common/utils/constants";
 import type { IEventGameStat } from "features/events/types";
 
 interface IEventGameCardProps {
@@ -23,7 +24,7 @@ export const EventGameCard: React.FC<IEventGameCardProps> = ({ stat }) => {
 				<div className="flex flex-col gap-1.5">
 					{stat.winners.length > 0 && (
 						<div className="flex -space-x-1.5">
-							{stat.winners.slice(0, 6).map((winner, idx) => (
+							{stat.winners.slice(0, DISPLAY_LIMITS.UI.EVENT_CARD_MAX_AVATARS).map((winner, idx) => (
 								<div
 									key={`${stat.gameId}-win-${winner?.id}-${idx}`}
 									className="rounded-full"
@@ -36,16 +37,16 @@ export const EventGameCard: React.FC<IEventGameCardProps> = ({ stat }) => {
 									/>
 								</div>
 							))}
-							{stat.winners.length > 6 && (
+							{stat.winners.length > DISPLAY_LIMITS.UI.EVENT_CARD_MAX_AVATARS && (
 								<div className="flex h-6 w-6 items-center justify-center rounded-full bg-yellow-500/20 text-xs font-semibold text-yellow-500 ring-2 ring-yellow-500">
-									+{stat.winners.length - 6}
+									+{stat.winners.length - DISPLAY_LIMITS.UI.EVENT_CARD_MAX_AVATARS}
 								</div>
 							)}
 						</div>
 					)}
 					{stat.losers.length > 0 && (
 						<div className="flex -space-x-1.5">
-							{stat.losers.slice(0, 6).map((loser, idx) => (
+							{stat.losers.slice(0, DISPLAY_LIMITS.UI.EVENT_CARD_MAX_AVATARS).map((loser, idx) => (
 								<div
 									key={`${stat.gameId}-loss-${loser?.id}-${idx}`}
 									className="rounded-full ring-2 ring-red-500"
@@ -58,9 +59,9 @@ export const EventGameCard: React.FC<IEventGameCardProps> = ({ stat }) => {
 									/>
 								</div>
 							))}
-							{stat.losers.length > 6 && (
+							{stat.losers.length > DISPLAY_LIMITS.UI.EVENT_CARD_MAX_AVATARS && (
 								<div className="flex h-6 w-6 items-center justify-center rounded-full bg-red-500/20 text-xs font-semibold text-red-400 ring-2 ring-red-500">
-									+{stat.losers.length - 6}
+									+{stat.losers.length - DISPLAY_LIMITS.UI.EVENT_CARD_MAX_AVATARS}
 								</div>
 							)}
 						</div>

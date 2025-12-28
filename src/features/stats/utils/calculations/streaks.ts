@@ -4,6 +4,7 @@ import type { StreakPlayer, StreakStats } from "features/stats/types";
 import { getColorForPlayer, getDisplayName } from "features/players/utils/helpers";
 import { isPlayerWinner } from "common/utils/gameHelpers";
 import { sortResultsChronologically } from "common/utils/sorting";
+import { DISPLAY_LIMITS } from "common/utils/constants";
 
 /**
  * Initialize streak tracking for all players
@@ -69,7 +70,6 @@ export function computeWinStreaks(
 	results: IResult[],
 	playerById: Map<string, IPlayer>,
 	eventById: Map<string, IEvent>,
-	topN: number = 5,
 ): StreakPlayer[] {
 	const sortedResults = sortResultsChronologically(results, eventById);
 	const playerStreaks = initializePlayerStreaks(sortedResults);
@@ -83,7 +83,7 @@ export function computeWinStreaks(
 	});
 
 	const streakPlayers = mapStreaksToPlayers(playerStreaks, playerById);
-	return filterAndSortStreaks(streakPlayers, topN);
+	return filterAndSortStreaks(streakPlayers, DISPLAY_LIMITS.TABLES.STREAKS);
 }
 
 /**
@@ -93,7 +93,6 @@ export function computeLossStreaks(
 	results: IResult[],
 	playerById: Map<string, IPlayer>,
 	eventById: Map<string, IEvent>,
-	topN: number = 5,
 ): StreakPlayer[] {
 	const sortedResults = sortResultsChronologically(results, eventById);
 	const playerStreaks = initializePlayerStreaks(sortedResults);
@@ -107,5 +106,5 @@ export function computeLossStreaks(
 	});
 
 	const streakPlayers = mapStreaksToPlayers(playerStreaks, playerById);
-	return filterAndSortStreaks(streakPlayers, topN);
+	return filterAndSortStreaks(streakPlayers, DISPLAY_LIMITS.TABLES.STREAKS);
 }
