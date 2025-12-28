@@ -1,13 +1,14 @@
 import React from "react";
-import { useParams } from "react-router";
-import { BackButton, Card, KpiCard, HighlightCard } from "common/components";
+import { useParams, useNavigate } from "react-router";
+import { BackButton, Card, KpiCard, HighlightCard, DataTable } from "common/components";
 import { Award, Users, TrendingUp, TrendingDown, Star } from "lucide-react";
 import { formatPct } from "common/utils/helpers";
+import { DISPLAY_LIMITS } from "common/utils/constants";
 import { useGameDataById, useGamePageStats } from "features/games/utils/hooks";
 import { PlayerWinRateChart } from "features/games/components/PlayerWinRateChart";
 import { PlayFrequencyChart } from "features/games/components/PlayFrequencyChart";
-import { TopPlayersTable } from "features/games/components/TopPlayersTable";
 import { GameTypeIcon } from "features/games/components/GameTypeIcon";
+import type { PlayerGameStats } from "features/games/types";
 
 const getPlayerLines = (player?: { name: string; winRate: number; games: number; wins: number }) => {
 	if (!player) {
@@ -24,6 +25,7 @@ const getPlayerLines = (player?: { name: string; winRate: number; games: number;
 export const GameStatsPage: React.FC = () => {
 	const { id: gameIdParam } = useParams<{ id: string }>();
 	const gameId = String(gameIdParam || "");
+	const navigate = useNavigate();
 	const game = useGameDataById(gameId);
 	const { topPlayer, bottomPlayer, playerStats, playFrequencySeries } = useGamePageStats(gameId);
 
@@ -101,7 +103,27 @@ export const GameStatsPage: React.FC = () => {
 				<PlayerWinRateChart game={game} playerStats={playerStats} />
 			</div>
 
-			<TopPlayersTable playerStats={playerStats} />
+			<DataTable
+				data={[...playerStats].sort((a, b) => b.games - a.games || b.wins - a.wins)}
+				columns={[
+					{ key: "name", label: "Player", align: "left" },
+					{ key: "games", label: "Games", align: "center", width: "w-20 sm:w-24" },
+					{ key: "wins", label: "Wins", align: "center", width: "w-20 sm:w-24" },
+					{
+						key: "winRate",
+						label: "Win %",
+						align: "center",
+						width: "w-20 sm:w-24",
+						render: (row: PlayerGameStats) => formatPct(row.winRate),
+					},
+				]}
+				title="Top Players"
+				subtitle="Top 10 players by number of games played"
+				onRowClick={(row: PlayerGameStats) => navigate(`/players/${row.playerId}`)}
+				getRowKey={(row: PlayerGameStats) => row.playerId}
+				limit={DISPLAY_LIMITS.TABLES.TOP_PLAYERS}
+				emptyMessage="No player stats yet."
+			/>
 		</div>
 	);
 };
