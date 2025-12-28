@@ -60,16 +60,16 @@ export function useGameDifficulty() {
 	return useMemo(() => computeGameDifficulty(results, gameById), [results, gameById]);
 }
 
-export function useTopRivalries(limit: number = 5) {
+export function useTopRivalries() {
 	const { results } = useFilteredData();
 	const { playerById } = usePlayers();
-	return useMemo(() => getTopRivalries(results, playerById, limit), [results, playerById, limit]);
+	return useMemo(() => getTopRivalries(results, playerById), [results, playerById]);
 }
 
-export function useLopsidedRivalries(limit: number = 5) {
+export function useLopsidedRivalries() {
 	const { results } = useFilteredData();
 	const { playerById } = usePlayers();
-	return useMemo(() => getLopsidedRivalries(results, playerById, limit), [results, playerById, limit]);
+	return useMemo(() => getLopsidedRivalries(results, playerById), [results, playerById]);
 }
 
 export function useGamePoints() {

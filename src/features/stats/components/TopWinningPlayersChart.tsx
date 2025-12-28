@@ -1,6 +1,7 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from "recharts";
 import { Award } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
+import { DISPLAY_LIMITS } from "common/utils/constants";
 import type { PlayerWithData } from "features/players/types";
 
 interface TopWinningPlayersChartProps {
@@ -11,7 +12,7 @@ export const TopWinningPlayersChart: React.FC<TopWinningPlayersChartProps> = ({ 
 	const chartData = overallStats
 		.filter((p) => p.data.wins > 0)
 		.sort((a, b) => b.data.wins - a.data.wins)
-		.slice(0, 8);
+		.slice(0, DISPLAY_LIMITS.CHARTS.TOP_WINNING_PLAYERS);
 
 	return (
 		<ChartCard

@@ -3,7 +3,7 @@ import { Percent } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import type { GameWithData, PlayerGameStats } from "features/games/types";
 import { formatPct } from "common/utils/helpers";
-import { STATS_THRESHOLDS } from "common/utils/constants";
+import { STATS_THRESHOLDS, DISPLAY_LIMITS } from "common/utils/constants";
 
 interface PlayerWinRateChartProps {
 	game: GameWithData;
@@ -14,7 +14,7 @@ export const PlayerWinRateChart: React.FC<PlayerWinRateChartProps> = ({ game, pl
 	const chartData = playerStats
 		.filter((p) => p.games >= STATS_THRESHOLDS.MIN_GAMES_FOR_BEST_GAME)
 		.sort((a, b) => b.winRate - a.winRate)
-		.slice(0, STATS_THRESHOLDS.MOST_PLAYED_GAMES_LIMIT);
+		.slice(0, DISPLAY_LIMITS.CHARTS.MOST_PLAYED_GAMES);
 
 	return (
 		<ChartCard

@@ -30,13 +30,6 @@ function mapGameCountsToDisplay(gameCounts: Record<string, number>, gameById: Ma
 }
 
 /**
- * Sort and limit game data
- */
-function sortAndLimitGames(games: MostPlayedGames[], limit: number): MostPlayedGames[] {
-	return games.sort((a, b) => b.count - a.count).slice(0, limit);
-}
-
-/**
  * Aggregate game counts by date with cumulative totals
  */
 function aggregateGamesByDate(
@@ -111,7 +104,7 @@ function convertToTimeSeriesData(dateMap: Record<string, Record<string, number>>
 export function computeMostPlayedGames(results: IResult[], gameById: Map<string, IGame>): MostPlayedGames[] {
 	const gameCounts = countGameOccurrences(results);
 	const gamesData = mapGameCountsToDisplay(gameCounts, gameById);
-	return sortAndLimitGames(gamesData, 10);
+	return gamesData.sort((a, b) => b.count - a.count);
 }
 
 /**

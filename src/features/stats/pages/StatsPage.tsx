@@ -30,8 +30,8 @@ export const StatsPage: React.FC = () => {
 	const lossStreaks = useLossStreaks();
 	const gameTrends = useGameTrends();
 	const gamePoints = useGamePoints();
-	const topRivalries = useTopRivalries(5);
-	const lopsidedRivalries = useLopsidedRivalries(5);
+	const topRivalries = useTopRivalries();
+	const lopsidedRivalries = useLopsidedRivalries();
 
 	const { totalGamesPlayed, totalPlayersInvolved, totalEvents } = useFeaturedStats();
 	const { mostPoints, mostWins } = usePlayerFeaturedStats();

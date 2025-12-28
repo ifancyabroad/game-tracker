@@ -1,6 +1,7 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from "recharts";
 import { BarChart3 } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
+import { DISPLAY_LIMITS } from "common/utils/constants";
 import type { GamePointsData } from "features/stats/utils/calculations/gamePoints";
 
 interface GamePointsChartProps {
@@ -8,19 +9,17 @@ interface GamePointsChartProps {
 }
 
 export const GamePointsChart: React.FC<GamePointsChartProps> = ({ gamePoints }) => {
-	// Show top 10 games by points
-	const topGames = gamePoints.slice(0, 10);
-
+	const chartData = gamePoints.slice(0, DISPLAY_LIMITS.CHARTS.GAME_POINTS);
 	return (
 		<ChartCard
 			title="Top Games by Points"
 			icon={BarChart3}
-			isEmpty={topGames.length === 0}
+			isEmpty={chartData.length === 0}
 			emptyTitle="No game points data available"
 			emptyDescription="Play some games to see point totals"
 		>
 			<ResponsiveContainer width="100%" height={300}>
-				<BarChart data={topGames} margin={{ top: 20, right: 20, left: 0, bottom: 40 }}>
+				<BarChart data={chartData} margin={{ top: 20, right: 20, left: 0, bottom: 40 }}>
 					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
 					<XAxis
 						dataKey="gameName"
@@ -55,7 +54,7 @@ export const GamePointsChart: React.FC<GamePointsChartProps> = ({ gamePoints }) 
 						content={<ChartTooltip formatter={(value: number) => `${value} points`} />}
 					/>
 					<Bar dataKey="totalPoints" radius={[4, 4, 0, 0]}>
-						{topGames.map((entry, index) => (
+						{chartData.map((entry, index) => (
 							<Cell key={`cell-${index}`} fill={entry.color} />
 						))}
 					</Bar>

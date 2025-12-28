@@ -1,6 +1,7 @@
 import type { IPlayerResult, IResult } from "features/events/types";
 import type { IPlayer } from "features/players/types";
 import type { TopOpponent } from "features/players/types";
+import { DISPLAY_LIMITS } from "common/utils/constants";
 import { getDisplayName } from "../helpers";
 
 /**
@@ -80,7 +81,7 @@ export function computeOpponentStats(
 	results: IResult[],
 	playerById: Map<string, IPlayer>,
 	playerId: string,
-	limit: number = 5,
+	limit: number = DISPLAY_LIMITS.TABLES.TOP_OPPONENTS,
 ): TopOpponent[] {
 	const tally = buildOpponentTally(results, playerId);
 	return convertTallyToOpponents(tally, playerById, limit);

@@ -1,6 +1,7 @@
 import type { IResult } from "features/events/types";
 import type { IPlayer } from "features/players/types";
 import { isPlayerWinner } from "common/utils/gameHelpers";
+import { DISPLAY_LIMITS } from "common/utils/constants";
 
 export interface HeadToHeadRecord {
 	wins: number;
@@ -292,11 +293,7 @@ export const buildRivalryMatrix = (results: IResult[], playerById: Map<string, I
 /**
  * Find the most competitive rivalries (most even records)
  */
-export const getTopRivalries = (
-	results: IResult[],
-	playerById: Map<string, IPlayer>,
-	limit: number = 5,
-): TopRivalry[] => {
+export const getTopRivalries = (results: IResult[], playerById: Map<string, IPlayer>): TopRivalry[] => {
 	const pairStats = buildPairStatistics(results);
 	const validPairs = filterByMinimumGames(pairStats, playerById);
 
@@ -305,22 +302,18 @@ export const getTopRivalries = (
 	);
 
 	// Sort by closeness (most competitive rivalries)
-	return rivalries.sort((a, b) => b.closeness - a.closeness).slice(0, limit);
+	return rivalries.sort((a, b) => b.closeness - a.closeness).slice(0, DISPLAY_LIMITS.TABLES.RIVALRIES);
 };
 
 /**
  * Find the most lopsided rivalries (biggest win gap percentage)
  */
-export const getLopsidedRivalries = (
-	results: IResult[],
-	playerById: Map<string, IPlayer>,
-	limit: number = 5,
-): TopRivalry[] => {
+export const getLopsidedRivalries = (results: IResult[], playerById: Map<string, IPlayer>): TopRivalry[] => {
 	const pairStats = buildPairStatistics(results);
 	const validPairs = filterByMinimumGames(pairStats, playerById);
 
 	const rivalries = validPairs.map(({ stats, player1, player2 }) => createLopsidedRivalry(stats, player1, player2));
 
 	// Sort by biggest gap (lowest closeness)
-	return rivalries.sort((a, b) => a.closeness - b.closeness).slice(0, limit);
+	return rivalries.sort((a, b) => a.closeness - b.closeness).slice(0, DISPLAY_LIMITS.TABLES.RIVALRIES);
 };

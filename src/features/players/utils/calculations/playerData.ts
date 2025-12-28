@@ -5,6 +5,7 @@ import { getColorForPlayer, getDisplayName, getFullName } from "../helpers";
 import { isPlayerWinner } from "common/utils/gameHelpers";
 import { calculateWinRate, calculateWinRatePercent } from "common/utils/calculations";
 import { sortEventsByDate } from "common/utils/sorting";
+import { DISPLAY_LIMITS } from "common/utils/constants";
 
 interface PlayerStatsAccumulator {
 	wins: number;
@@ -61,7 +62,7 @@ function calculateRecentForm(
 	gameType?: GameType,
 ): (number | null)[] {
 	const sortedEvents = sortEventsByDate(events, true); // Sort descending (newest first)
-	const recentEvents = sortedEvents.slice(0, 3);
+	const recentEvents = sortedEvents.slice(0, DISPLAY_LIMITS.UI.RECENT_EVENTS);
 
 	return recentEvents.map((event) => {
 		let eventPoints = 0;
