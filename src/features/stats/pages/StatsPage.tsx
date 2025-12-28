@@ -2,8 +2,7 @@ import { Calendar, Gamepad2, Users, BarChart3, Trophy, Star, TrendingUp } from "
 import { PlayerWinsOverTimeChart } from "features/stats/components/PlayerWinsOverTimeChart";
 import { MostPlayedGamesChart } from "features/stats/components/MostPlayedGamesChart";
 import { PlayerWinRateChart } from "features/stats/components/PlayerWinRateChart";
-import { WinStreaksCard } from "features/stats/components/WinStreaksCard";
-import { LossStreaksCard } from "features/stats/components/LossStreaksCard";
+import { StreaksCard } from "features/stats/components/StreaksCard";
 import { GameTrendsChart } from "features/stats/components/GamesTrendsChart";
 import { TopWinningPlayersChart } from "features/stats/components/TopWinningPlayersChart";
 import { GamePointsChart } from "features/stats/components/GamePointsChart";
@@ -99,8 +98,8 @@ export const StatsPage: React.FC = () => {
 			<div className="mb-4 grid gap-4 sm:mb-6 sm:gap-6 md:grid-cols-2">
 				<PlayerWinRateChart overallStats={data} />
 				<TopWinningPlayersChart overallStats={data} />
-				<WinStreaksCard streaks={winStreaks} />
-				<LossStreaksCard streaks={lossStreaks} />
+				<StreaksCard streaks={winStreaks} type="win" />
+				<StreaksCard streaks={lossStreaks} type="loss" />
 				<RivalryMatrix
 					rivalries={topRivalries}
 					title="Most Competitive Rivalries"

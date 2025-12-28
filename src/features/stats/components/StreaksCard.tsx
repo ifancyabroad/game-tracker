@@ -1,24 +1,34 @@
 import { Card } from "common/components";
-import { TrendingDown, CloudRain } from "lucide-react";
+import { TrendingUp, TrendingDown, Flame, CloudRain } from "lucide-react";
 import { Link } from "react-router";
 import type { StreakPlayer } from "features/stats/types";
 
-interface LossStreaksCardProps {
+interface StreaksCardProps {
 	streaks: StreakPlayer[];
+	type: "win" | "loss";
 }
 
-export const LossStreaksCard: React.FC<LossStreaksCardProps> = ({ streaks }) => {
+export const StreaksCard: React.FC<StreaksCardProps> = ({ streaks, type }) => {
+	const isWinStreak = type === "win";
+
+	const Icon = isWinStreak ? Flame : CloudRain;
+	const TrendIcon = isWinStreak ? TrendingUp : TrendingDown;
+	const iconColor = isWinStreak ? "text-orange-500" : "text-blue-400";
+	const title = isWinStreak ? "Win Streaks" : "Loss Streaks";
+	const streakType = isWinStreak ? "wins" : "losses";
+	const emptyMessage = isWinStreak ? "winning streaks" : "losing streaks";
+
 	return (
 		<Card className="p-4 sm:p-6">
 			<div className="mb-4 flex items-center gap-2">
-				<CloudRain className="h-5 w-5 text-blue-400" />
-				<h3 className="text-sm font-semibold text-[var(--color-text)]">Loss Streaks</h3>
+				<Icon className={`h-5 w-5 ${iconColor}`} />
+				<h3 className="text-sm font-semibold text-[var(--color-text)]">{title}</h3>
 			</div>
 
 			{streaks.length === 0 ? (
 				<div className="py-8 text-center">
 					<p className="text-sm text-[var(--color-text-secondary)]">No streak data yet</p>
-					<p className="text-xs text-[var(--color-text-muted)]">Play some games to see losing streaks</p>
+					<p className="text-xs text-[var(--color-text-muted)]">Play some games to see {emptyMessage}</p>
 				</div>
 			) : (
 				<div className="space-y-2">
@@ -36,11 +46,13 @@ export const LossStreaksCard: React.FC<LossStreaksCardProps> = ({ streaks }) => 
 									className="flex h-10 w-10 items-center justify-center rounded-lg"
 									style={{ backgroundColor: `${player.playerColor}20` }}
 								>
-									<TrendingDown size={20} style={{ color: player.playerColor }} />
+									<TrendIcon size={20} style={{ color: player.playerColor }} />
 								</div>
 								<div>
 									<p className="font-semibold text-[var(--color-text)]">{player.playerName}</p>
-									<p className="text-xs text-[var(--color-text-secondary)]">Consecutive losses</p>
+									<p className="text-xs text-[var(--color-text-secondary)]">
+										Consecutive {streakType}
+									</p>
 								</div>
 							</div>
 							<div className="text-right">

@@ -20,7 +20,7 @@ export const RivalryMatrix: React.FC<RivalryMatrixProps> = ({ rivalries, title, 
 				<EmptyState>
 					<Swords size={32} className="mx-auto mb-2 text-[var(--color-text-secondary)]" />
 					<p>No rivalries found</p>
-					<p className="text-xs">Players need at least 3 games together to establish a rivalry</p>
+					<p className="text-xs">Players need at least 5 games together to establish a rivalry</p>
 				</EmptyState>
 			</Card>
 		);
