@@ -84,7 +84,7 @@ export const StatsPage: React.FC = () => {
 					Trends Over Time
 				</h2>
 			</div>
-			<div className="mb-4 grid gap-4 sm:mb-6 sm:gap-6 md:grid-cols-2">
+			<div className="mb-4 grid gap-4 sm:mb-6 sm:gap-6 lg:grid-cols-2">
 				<PlayerWinsOverTimeChart overallStats={data} playerWinsOverTime={playerWinsOverTime} />
 				<GameTrendsChart gameTrends={gameTrends} />
 			</div>
@@ -95,7 +95,7 @@ export const StatsPage: React.FC = () => {
 					Player Performance
 				</h2>
 			</div>
-			<div className="mb-4 grid gap-4 sm:mb-6 sm:gap-6 md:grid-cols-2">
+			<div className="mb-4 grid gap-4 sm:mb-6 sm:gap-6 lg:grid-cols-2">
 				<PlayerWinRateChart overallStats={data} />
 				<TopWinningPlayersChart overallStats={data} />
 				<StreaksCard streaks={winStreaks} type="win" />
@@ -118,7 +118,7 @@ export const StatsPage: React.FC = () => {
 					Game Insights
 				</h2>
 			</div>
-			<div className="grid gap-4 sm:gap-6 md:grid-cols-2">
+			<div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
 				<MostPlayedGamesChart mostPlayedGames={mostPlayedGames} />
 				<GamePointsChart gamePoints={gamePoints} />
 			</div>
