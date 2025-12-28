@@ -14,7 +14,6 @@ export const GamePointsChart: React.FC<GamePointsChartProps> = ({ gamePoints }) 
 	return (
 		<ChartCard
 			title="Top Games by Points"
-			subtitle="Total points awarded from each game across all plays"
 			icon={BarChart3}
 			isEmpty={topGames.length === 0}
 			emptyTitle="No game points data available"
