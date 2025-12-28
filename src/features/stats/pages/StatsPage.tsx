@@ -6,9 +6,8 @@ import { WinStreaksCard } from "features/stats/components/WinStreaksCard";
 import { LossStreaksCard } from "features/stats/components/LossStreaksCard";
 import { GameTrendsChart } from "features/stats/components/GamesTrendsChart";
 import { TopWinningPlayersChart } from "features/stats/components/TopWinningPlayersChart";
-import { GameDifficultyChart } from "features/stats/components/GameDifficultyChart";
+import { GamePointsChart } from "features/stats/components/GamePointsChart";
 import { RivalryMatrix } from "features/stats/components/RivalryMatrix";
-import { PlayerAttendanceCard } from "features/stats/components/PlayerAttendanceCard";
 import {
 	useFeaturedStats,
 	useMostPlayedGames,
@@ -16,9 +15,9 @@ import {
 	useWinStreaks,
 	useLossStreaks,
 	useGameTrends,
-	useGameDifficulty,
+	useGamePoints,
 	useTopRivalries,
-	usePlayerAttendance,
+	useLopsidedRivalries,
 } from "features/stats/utils/hooks";
 import { usePlayerData } from "features/players/utils/hooks";
 import { usePlayerFeaturedStats } from "features/leaderboard/utils/hooks";
@@ -31,9 +30,9 @@ export const StatsPage: React.FC = () => {
 	const winStreaks = useWinStreaks();
 	const lossStreaks = useLossStreaks();
 	const gameTrends = useGameTrends();
-	const gameDifficulty = useGameDifficulty();
+	const gamePoints = useGamePoints();
 	const topRivalries = useTopRivalries(5);
-	const playerAttendance = usePlayerAttendance(5);
+	const lopsidedRivalries = useLopsidedRivalries(5);
 
 	const { totalGamesPlayed, totalPlayersInvolved, totalEvents } = useFeaturedStats();
 	const { mostPoints, mostWins } = usePlayerFeaturedStats();
@@ -102,8 +101,16 @@ export const StatsPage: React.FC = () => {
 				<TopWinningPlayersChart overallStats={data} />
 				<WinStreaksCard streaks={winStreaks} />
 				<LossStreaksCard streaks={lossStreaks} />
-				<PlayerAttendanceCard attendances={playerAttendance} />
-				<RivalryMatrix rivalries={topRivalries} />
+				<RivalryMatrix
+					rivalries={topRivalries}
+					title="Most Competitive Rivalries"
+					description="Closest head-to-head matchups with similar win rates"
+				/>
+				<RivalryMatrix
+					rivalries={lopsidedRivalries}
+					title="Most Dominant Rivalries"
+					description="One-sided matchups where one player significantly outperforms the other"
+				/>
 			</div>
 
 			{/* Game Insights Section */}
@@ -114,7 +121,7 @@ export const StatsPage: React.FC = () => {
 			</div>
 			<div className="grid gap-4 sm:gap-6 md:grid-cols-2">
 				<MostPlayedGamesChart mostPlayedGames={mostPlayedGames} />
-				<GameDifficultyChart difficulties={gameDifficulty} />
+				<GamePointsChart gamePoints={gamePoints} />
 			</div>
 		</div>
 	);

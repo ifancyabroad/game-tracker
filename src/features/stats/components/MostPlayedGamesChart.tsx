@@ -28,7 +28,18 @@ export const MostPlayedGamesChart: React.FC<MostPlayedGamesChartProps> = ({ most
 						</g>
 					)}
 				/>
-				<YAxis tick={{ fontSize: 12, fill: "var(--color-text-secondary)" }} allowDecimals={false} />
+				<YAxis
+					tick={{ fontSize: 12, fill: "var(--color-text-secondary)" }}
+					allowDecimals={false}
+					label={{
+						value: "Times Played",
+						angle: -90,
+						position: "center",
+						style: { textAnchor: "middle" },
+						fontSize: 12,
+						dx: -20,
+					}}
+				/>
 				<Tooltip
 					cursor={{ fill: "var(--color-hover)" }}
 					content={<ChartTooltip formatter={(v) => `${v} plays`} />}

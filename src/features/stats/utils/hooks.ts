@@ -7,8 +7,9 @@ import {
 	computeLossStreaks,
 	computeGameTrendsOverTime,
 	computeGameDifficulty,
+	computeGamePoints,
 	getTopRivalries,
-	computePlayerAttendance,
+	getLopsidedRivalries,
 } from "./calculations";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useGames } from "features/games/context/GamesContext";
@@ -65,11 +66,14 @@ export function useTopRivalries(limit: number = 5) {
 	return useMemo(() => getTopRivalries(results, playerById, limit), [results, playerById, limit]);
 }
 
-export function usePlayerAttendance(limit: number = 5) {
-	const { results, events } = useFilteredData();
+export function useLopsidedRivalries(limit: number = 5) {
+	const { results } = useFilteredData();
 	const { playerById } = usePlayers();
-	return useMemo(
-		() => computePlayerAttendance(results, events, playerById, limit),
-		[results, events, playerById, limit],
-	);
+	return useMemo(() => getLopsidedRivalries(results, playerById, limit), [results, playerById, limit]);
+}
+
+export function useGamePoints() {
+	const { results } = useFilteredData();
+	const { gameById } = useGames();
+	return useMemo(() => computeGamePoints(results, gameById), [results, gameById]);
 }
