@@ -1,4 +1,4 @@
-import { Calendar, Gamepad2, Users, BarChart3, Trophy, Star, TrendingUp } from "lucide-react";
+import { Calendar, Gamepad2, Users, BarChart3, Trophy, Star } from "lucide-react";
 import { PlayerWinsOverTimeChart } from "features/stats/components/PlayerWinsOverTimeChart";
 import { MostPlayedGamesChart } from "features/stats/components/MostPlayedGamesChart";
 import { PlayerWinRateChart } from "features/stats/components/PlayerWinRateChart";
@@ -36,7 +36,7 @@ export const StatsPage: React.FC = () => {
 	const { totalGamesPlayed, totalPlayersInvolved, totalEvents } = useFeaturedStats();
 	const { mostPoints, mostWins } = usePlayerFeaturedStats();
 
-	const avgGamesPerEvent = totalEvents > 0 ? (totalGamesPlayed / totalEvents).toFixed(1) : "0";
+	const mostPlayedGame = mostPlayedGames.length > 0 ? mostPlayedGames[0].name : "N/A";
 
 	return (
 		<div className="mx-auto max-w-6xl">
@@ -61,9 +61,9 @@ export const StatsPage: React.FC = () => {
 						value={totalEvents}
 					/>
 					<KpiCard
-						icon={<TrendingUp size={16} className="text-[var(--color-primary)]" />}
-						label="Games/Event"
-						value={avgGamesPerEvent}
+						icon={<Gamepad2 size={16} className="text-[var(--color-primary)]" />}
+						label="Most Played"
+						value={mostPlayedGame}
 					/>
 					<KpiCard
 						icon={<Trophy size={16} className="text-[var(--color-primary)]" />}
