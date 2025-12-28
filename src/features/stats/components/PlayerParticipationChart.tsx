@@ -1,4 +1,5 @@
 import { PieChart, Pie, Cell, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from "recharts";
+import { PieChart as PieChartIcon } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import { useIsMobile } from "common/utils/hooks";
 import type { PlayerWithData } from "features/players/types";
@@ -11,7 +12,7 @@ export const PlayerParticipationChart: React.FC<PlayerParticipationChartProps> =
 	const isMobile = useIsMobile();
 
 	return (
-		<ChartCard title="Player Participation">
+		<ChartCard title="Player Participation" icon={PieChartIcon}>
 			<ResponsiveContainer width="100%" height="100%">
 				<PieChart>
 					<Pie

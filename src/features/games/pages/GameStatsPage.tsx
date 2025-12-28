@@ -98,7 +98,7 @@ export const GameStatsPage: React.FC = () => {
 
 			<div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
 				<PlayFrequencyChart game={game} playFrequencySeries={playFrequencySeries} />
-				<PlayerWinRateChart playerStats={playerStats} />
+				<PlayerWinRateChart game={game} playerStats={playerStats} />
 			</div>
 
 			<TopPlayersTable playerStats={playerStats} />

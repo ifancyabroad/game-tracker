@@ -1,4 +1,5 @@
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, BarChart, Bar } from "recharts";
+import { BarChart3 } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import type { IPlayer } from "features/players/types";
 
@@ -8,37 +9,38 @@ interface RecentFormChartProps {
 }
 
 export const RankDistributionChart: React.FC<RecentFormChartProps> = ({ player, rankCounts }) => (
-	<ChartCard title="Rank Distribution">
+	<ChartCard title="Rank Distribution" icon={BarChart3} iconColor={player.color}>
 		<ResponsiveContainer width="100%" height="100%">
-			<BarChart data={rankCounts}>
-				<CartesianGrid stroke="rgba(148,163,184,0.2)" vertical={false} />
+			<BarChart data={rankCounts} margin={{ top: 10, right: 20, left: 20, bottom: 10 }}>
+				<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
 				<XAxis
 					dataKey="rank"
-					tick={{ fill: "#9CA3AF", fontSize: 12 }}
+					tick={{ fill: "var(--color-text-secondary)", fontSize: 12 }}
 					label={{
 						value: "Rank",
 						position: "insideBottom",
 						offset: -5,
-						fill: "#9CA3AF",
+						fill: "var(--color-text-secondary)",
 						fontSize: 12,
 					}}
 				/>
 				<YAxis
 					allowDecimals={false}
-					tick={{ fill: "#9CA3AF", fontSize: 12 }}
+					tick={{ fill: "var(--color-text-secondary)", fontSize: 12 }}
 					label={{
 						value: "Count",
 						angle: -90,
-						position: "insideLeft",
-						fill: "#9CA3AF",
+						position: "center",
+						style: { textAnchor: "middle" },
 						fontSize: 12,
+						dx: -20,
 					}}
 				/>
 				<Tooltip
 					cursor={{ fill: "var(--color-hover)" }}
 					content={<ChartTooltip labelFormatter={(v) => `Rank ${v}`} />}
 				/>
-				<Bar dataKey="count" fill={player.color} />
+				<Bar dataKey="count" fill={player.color} radius={[4, 4, 0, 0]} />
 			</BarChart>
 		</ResponsiveContainer>
 	</ChartCard>

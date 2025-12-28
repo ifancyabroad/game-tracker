@@ -1,4 +1,5 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from "recharts";
+import { Award } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import type { PlayerWithData } from "features/players/types";
 
@@ -13,10 +14,10 @@ export const TopWinningPlayersChart: React.FC<TopWinningPlayersChartProps> = ({ 
 		.slice(0, 8);
 
 	return (
-		<ChartCard title="Top Winning Players">
+		<ChartCard title="Top Winning Players" icon={Award}>
 			<ResponsiveContainer width="100%" height="100%">
 				<BarChart layout="vertical" data={chartData} margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
-					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
+					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" horizontal={false} />
 					<XAxis
 						type="number"
 						allowDecimals={false}

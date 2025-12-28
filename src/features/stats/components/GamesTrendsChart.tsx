@@ -1,5 +1,6 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, CartesianGrid } from "recharts";
 import { useMemo } from "react";
+import { TrendingUp } from "lucide-react";
 import { useResults } from "features/events/context/ResultsContext";
 import { useGames } from "features/games/context/GamesContext";
 import { ChartCard, ChartTooltip } from "common/components";
@@ -32,10 +33,10 @@ export const GameTrendsChart: React.FC<GameTrendsChartProps> = ({ gameTrends }) 
 	}, [results, gameById]);
 
 	return (
-		<ChartCard title="Game Trends Over Time">
+		<ChartCard title="Game Trends Over Time" icon={TrendingUp}>
 			<ResponsiveContainer width="100%" height="100%">
 				<LineChart data={gameTrends} margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
-					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
+					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
 					<XAxis dataKey="date" tick={{ fontSize: 12, fill: "var(--color-text-secondary)" }} />
 					<YAxis
 						allowDecimals={false}

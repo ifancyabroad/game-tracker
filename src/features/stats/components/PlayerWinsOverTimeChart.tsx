@@ -1,4 +1,5 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, CartesianGrid } from "recharts";
+import { TrendingUp } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import type { TimeSeriesData } from "features/stats/types";
 import type { PlayerWithData } from "features/players/types";
@@ -18,10 +19,10 @@ export const PlayerWinsOverTimeChart: React.FC<PlayerWinsOverTimeChartProps> = (
 		.slice(0, 10);
 
 	return (
-		<ChartCard title="Player Wins Over Time">
+		<ChartCard title="Player Wins Over Time" icon={TrendingUp}>
 			<ResponsiveContainer width="100%" height="100%">
 				<LineChart data={playerWinsOverTime} margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
-					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
+					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
 					<XAxis dataKey="date" tick={{ fontSize: 12, fill: "var(--color-text-secondary)" }} />
 					<YAxis
 						allowDecimals={false}

@@ -1,4 +1,5 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
+import { TrendingUp } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import type { IPlayer } from "features/players/types";
 
@@ -8,30 +9,31 @@ interface RecentFormChartProps {
 }
 
 export const RecentFormChart: React.FC<RecentFormChartProps> = ({ player, lastGamesSeries }) => (
-	<ChartCard title="Recent Form (last 20 games)">
+	<ChartCard title="Recent Form (last 20 games)" icon={TrendingUp} iconColor={player.color}>
 		<ResponsiveContainer width="100%" height="100%">
-			<LineChart data={lastGamesSeries}>
-				<CartesianGrid stroke="rgba(148,163,184,0.2)" vertical={false} />
+			<LineChart data={lastGamesSeries} margin={{ top: 10, right: 20, left: 20, bottom: 10 }}>
+				<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
 				<XAxis
 					dataKey="x"
-					tick={{ fill: "#9CA3AF", fontSize: 12 }}
+					tick={{ fill: "var(--color-text-secondary)", fontSize: 12 }}
 					label={{
 						value: "Game",
 						position: "insideBottom",
 						offset: -5,
-						fill: "#9CA3AF",
+						fill: "var(--color-text-secondary)",
 						fontSize: 12,
 					}}
 				/>
 				<YAxis
 					domain={[0, 100]}
-					tick={{ fill: "#9CA3AF", fontSize: 12 }}
+					tick={{ fill: "var(--color-text-secondary)", fontSize: 12 }}
 					label={{
 						value: "Win Rate",
 						angle: -90,
-						position: "insideLeft",
-						fill: "#9CA3AF",
+						position: "center",
+						style: { textAnchor: "middle" },
 						fontSize: 12,
+						dx: -20,
 					}}
 				/>
 				<Tooltip content={<ChartTooltip formatter={(v) => `${v}%`} labelFormatter={(v) => `Game ${v}`} />} />

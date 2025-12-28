@@ -111,7 +111,7 @@ function convertToTimeSeriesData(dateMap: Record<string, Record<string, number>>
 export function computeMostPlayedGames(results: IResult[], gameById: Map<string, IGame>): MostPlayedGames[] {
 	const gameCounts = countGameOccurrences(results);
 	const gamesData = mapGameCountsToDisplay(gameCounts, gameById);
-	return sortAndLimitGames(gamesData, 8);
+	return sortAndLimitGames(gamesData, 10);
 }
 
 /**

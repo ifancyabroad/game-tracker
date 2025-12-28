@@ -1,4 +1,5 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from "recharts";
+import { Percent } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import type { PlayerWithData } from "features/players/types";
 
@@ -12,10 +13,10 @@ export const PlayerWinRateChart: React.FC<PlayerWinRateChartProps> = ({ overallS
 		.sort((a, b) => b.data.winRatePercent - a.data.winRatePercent);
 
 	return (
-		<ChartCard title="Player Win Rates">
+		<ChartCard title="Player Win Rates" icon={Percent}>
 			<ResponsiveContainer width="100%" height="100%">
 				<BarChart data={chartData} layout="vertical" margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
-					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
+					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" horizontal={false} />
 					<XAxis
 						type="number"
 						domain={[0, 100]}

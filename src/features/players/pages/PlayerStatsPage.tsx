@@ -151,9 +151,9 @@ export const PlayerStatsPage: React.FC = () => {
 			<PerformanceByGameTable gameWinRates={gameWinRates} />
 
 			<div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
-				<WinRateByGameChart gameWinRates={gameWinRates} />
+				<WinRateByGameChart player={player} gameWinRates={gameWinRates} />
 
-				<PointsByGameChart gameWinRates={gameWinRates} />
+				<PointsByGameChart player={player} gameWinRates={gameWinRates} />
 			</div>
 
 			<HeadToHeadTable topOpponents={topOpponents} />

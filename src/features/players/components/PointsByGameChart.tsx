@@ -1,13 +1,15 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
+import { PieChart as PieChartIcon } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import { useIsMobile } from "common/utils/hooks";
-import type { GameWinRateRow } from "features/players/types";
+import type { IPlayer, GameWinRateRow } from "features/players/types";
 
 interface PointsByGameChartProps {
+	player: IPlayer;
 	gameWinRates: GameWinRateRow[];
 }
 
-export const PointsByGameChart: React.FC<PointsByGameChartProps> = ({ gameWinRates }) => {
+export const PointsByGameChart: React.FC<PointsByGameChartProps> = ({ player, gameWinRates }) => {
 	const isMobile = useIsMobile();
 	const chartData = gameWinRates
 		.filter((g) => g.points > 0)
@@ -15,7 +17,7 @@ export const PointsByGameChart: React.FC<PointsByGameChartProps> = ({ gameWinRat
 		.slice(0, 8);
 
 	return (
-		<ChartCard title="Points by Game">
+		<ChartCard title="Points by Game" icon={PieChartIcon} iconColor={player.color}>
 			<ResponsiveContainer width="100%" height="100%">
 				<PieChart>
 					<Pie
