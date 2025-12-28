@@ -1,6 +1,7 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from "recharts";
 import { Percent } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
+import { DISPLAY_LIMITS } from "common/utils/constants";
 import type { PlayerWithData } from "features/players/types";
 
 interface PlayerWinRateChartProps {
@@ -10,7 +11,8 @@ interface PlayerWinRateChartProps {
 export const PlayerWinRateChart: React.FC<PlayerWinRateChartProps> = ({ overallStats }) => {
 	const chartData = overallStats
 		.filter((p) => p.data.wins > 0)
-		.sort((a, b) => b.data.winRatePercent - a.data.winRatePercent);
+		.sort((a, b) => b.data.winRatePercent - a.data.winRatePercent)
+		.slice(0, DISPLAY_LIMITS.CHARTS.PLAYER_WIN_RATES);
 
 	return (
 		<ChartCard
