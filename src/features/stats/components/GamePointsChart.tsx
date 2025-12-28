@@ -1,4 +1,5 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from "recharts";
+import { BarChart3 } from "lucide-react";
 import { ChartCard, ChartTooltip, EmptyState } from "common/components";
 import { Trophy } from "lucide-react";
 import type { GamePointsData } from "features/stats/utils/calculations/gamePoints";
@@ -13,7 +14,7 @@ export const GamePointsChart: React.FC<GamePointsChartProps> = ({ gamePoints }) 
 
 	if (topGames.length === 0) {
 		return (
-			<ChartCard title="Top Games by Points">
+			<ChartCard title="Top Games by Points" icon={BarChart3}>
 				<EmptyState>
 					<Trophy size={32} className="mx-auto mb-2 text-[var(--color-text-secondary)]" />
 					<p>No game points data available</p>
@@ -24,10 +25,10 @@ export const GamePointsChart: React.FC<GamePointsChartProps> = ({ gamePoints }) 
 	}
 
 	return (
-		<ChartCard title="Top Games by Points" subtitle="Total points awarded from each game across all plays">
+		<ChartCard title="Top Games by Points" icon={BarChart3}>
 			<ResponsiveContainer width="100%" height={300}>
 				<BarChart data={topGames} margin={{ top: 20, right: 20, left: 0, bottom: 40 }}>
-					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
+					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
 					<XAxis
 						dataKey="gameName"
 						interval={0}
@@ -58,8 +59,7 @@ export const GamePointsChart: React.FC<GamePointsChartProps> = ({ gamePoints }) 
 					/>
 					<Tooltip
 						cursor={{ fill: "var(--color-hover)" }}
-						content={<ChartTooltip />}
-						formatter={(value: number) => `${value} points`}
+						content={<ChartTooltip formatter={(value: number) => `${value} points`} />}
 					/>
 					<Bar dataKey="totalPoints" radius={[4, 4, 0, 0]}>
 						{topGames.map((entry, index) => (

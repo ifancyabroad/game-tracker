@@ -1,4 +1,5 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from "recharts";
+import { BarChart3 } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import type { MostPlayedGames } from "features/stats/types";
 
@@ -7,10 +8,10 @@ interface MostPlayedGamesChartProps {
 }
 
 export const MostPlayedGamesChart: React.FC<MostPlayedGamesChartProps> = ({ mostPlayedGames }) => (
-	<ChartCard title="Most Played Games">
+	<ChartCard title="Most Played Games" icon={BarChart3}>
 		<ResponsiveContainer width="100%" height={300}>
 			<BarChart data={mostPlayedGames} margin={{ top: 10, right: 20, left: 0, bottom: 40 }}>
-				<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
+				<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
 				<XAxis
 					dataKey="name"
 					interval={0}

@@ -1,6 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from "recharts";
+import { Target, Trophy } from "lucide-react";
 import { ChartCard, ChartTooltip, EmptyState } from "common/components";
-import { Trophy } from "lucide-react";
 import type { GameDifficulty } from "features/stats/utils/calculations/gameDifficulty";
 
 interface GameDifficultyChartProps {
@@ -10,7 +10,7 @@ interface GameDifficultyChartProps {
 export const GameDifficultyChart: React.FC<GameDifficultyChartProps> = ({ difficulties }) => {
 	if (difficulties.length === 0) {
 		return (
-			<ChartCard title="Game Competitiveness">
+			<ChartCard title="Game Competitiveness" icon={Target}>
 				<EmptyState>
 					<Trophy size={32} className="mx-auto mb-2 text-[var(--color-text-secondary)]" />
 					<p>No competitiveness data available</p>
@@ -57,8 +57,7 @@ export const GameDifficultyChart: React.FC<GameDifficultyChartProps> = ({ diffic
 					/>
 					<Tooltip
 						cursor={{ fill: "var(--color-hover)" }}
-						content={<ChartTooltip />}
-						formatter={(value: number) => `${value}%`}
+						content={<ChartTooltip formatter={(value: number) => `${value}%`} />}
 					/>
 					<Bar dataKey="difficultyScore" radius={[4, 4, 0, 0]}>
 						{difficulties.map((entry, index) => (
