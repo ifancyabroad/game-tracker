@@ -8,7 +8,13 @@ interface MostPlayedGamesChartProps {
 }
 
 export const MostPlayedGamesChart: React.FC<MostPlayedGamesChartProps> = ({ mostPlayedGames }) => (
-	<ChartCard title="Most Played Games" icon={BarChart3}>
+	<ChartCard
+		title="Most Played Games"
+		icon={BarChart3}
+		isEmpty={mostPlayedGames.length === 0}
+		emptyTitle="No games played yet"
+		emptyDescription="Play some games to see which are most popular"
+	>
 		<ResponsiveContainer width="100%" height={300}>
 			<BarChart data={mostPlayedGames} margin={{ top: 10, right: 20, left: 0, bottom: 40 }}>
 				<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />

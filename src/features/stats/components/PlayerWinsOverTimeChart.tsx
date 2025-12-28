@@ -19,7 +19,13 @@ export const PlayerWinsOverTimeChart: React.FC<PlayerWinsOverTimeChartProps> = (
 		.slice(0, 10);
 
 	return (
-		<ChartCard title="Player Wins Over Time" icon={TrendingUp}>
+		<ChartCard
+			title="Player Wins Over Time"
+			icon={TrendingUp}
+			isEmpty={playerWinsOverTime.length === 0}
+			emptyTitle="No win data available"
+			emptyDescription="Play some games to see player wins over time"
+		>
 			<ResponsiveContainer width="100%" height="100%">
 				<LineChart data={playerWinsOverTime} margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
 					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />

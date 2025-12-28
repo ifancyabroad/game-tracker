@@ -9,7 +9,14 @@ interface PlayFrequencyChartProps {
 }
 
 export const PlayFrequencyChart: React.FC<PlayFrequencyChartProps> = ({ game, playFrequencySeries }) => (
-	<ChartCard title="Play Frequency Over Time" icon={TrendingUp} iconColor={game.color}>
+	<ChartCard
+		title="Play Frequency Over Time"
+		icon={TrendingUp}
+		iconColor={game.color}
+		isEmpty={playFrequencySeries.length === 0}
+		emptyTitle="No play history"
+		emptyDescription="Play this game to see frequency over time"
+	>
 		<ResponsiveContainer width="100%" height="100%">
 			<LineChart data={playFrequencySeries} margin={{ top: 10, right: 20, left: 20, bottom: 10 }}>
 				<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />

@@ -9,7 +9,14 @@ interface RecentFormChartProps {
 }
 
 export const RankDistributionChart: React.FC<RecentFormChartProps> = ({ player, rankCounts }) => (
-	<ChartCard title="Rank Distribution" icon={BarChart3} iconColor={player.color}>
+	<ChartCard
+		title="Rank Distribution"
+		icon={BarChart3}
+		iconColor={player.color}
+		isEmpty={rankCounts.length === 0}
+		emptyTitle="No rank data"
+		emptyDescription="Play some games to see rank distribution"
+	>
 		<ResponsiveContainer width="100%" height="100%">
 			<BarChart data={rankCounts} margin={{ top: 10, right: 20, left: 20, bottom: 10 }}>
 				<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />

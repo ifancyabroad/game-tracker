@@ -1,7 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from "recharts";
 import { BarChart3 } from "lucide-react";
-import { ChartCard, ChartTooltip, EmptyState } from "common/components";
-import { Trophy } from "lucide-react";
+import { ChartCard, ChartTooltip } from "common/components";
 import type { GamePointsData } from "features/stats/utils/calculations/gamePoints";
 
 interface GamePointsChartProps {
@@ -12,20 +11,15 @@ export const GamePointsChart: React.FC<GamePointsChartProps> = ({ gamePoints }) 
 	// Show top 10 games by points
 	const topGames = gamePoints.slice(0, 10);
 
-	if (topGames.length === 0) {
-		return (
-			<ChartCard title="Top Games by Points" icon={BarChart3}>
-				<EmptyState>
-					<Trophy size={32} className="mx-auto mb-2 text-[var(--color-text-secondary)]" />
-					<p>No game points data available</p>
-					<p className="text-xs">Play some games to see point totals</p>
-				</EmptyState>
-			</ChartCard>
-		);
-	}
-
 	return (
-		<ChartCard title="Top Games by Points" icon={BarChart3}>
+		<ChartCard
+			title="Top Games by Points"
+			subtitle="Total points awarded from each game across all plays"
+			icon={BarChart3}
+			isEmpty={topGames.length === 0}
+			emptyTitle="No game points data available"
+			emptyDescription="Play some games to see point totals"
+		>
 			<ResponsiveContainer width="100%" height={300}>
 				<BarChart data={topGames} margin={{ top: 20, right: 20, left: 0, bottom: 40 }}>
 					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />

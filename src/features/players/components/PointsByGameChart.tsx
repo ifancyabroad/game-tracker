@@ -17,7 +17,14 @@ export const PointsByGameChart: React.FC<PointsByGameChartProps> = ({ player, ga
 		.slice(0, 8);
 
 	return (
-		<ChartCard title="Points by Game" icon={PieChartIcon} iconColor={player.color}>
+		<ChartCard
+			title="Points by Game"
+			icon={PieChartIcon}
+			iconColor={player.color}
+			isEmpty={chartData.length === 0}
+			emptyTitle="No points earned yet"
+			emptyDescription="Win some games to earn points"
+		>
 			<ResponsiveContainer width="100%" height="100%">
 				<PieChart>
 					<Pie

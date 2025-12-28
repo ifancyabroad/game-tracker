@@ -14,7 +14,13 @@ export const TopWinningPlayersChart: React.FC<TopWinningPlayersChartProps> = ({ 
 		.slice(0, 8);
 
 	return (
-		<ChartCard title="Top Winning Players" icon={Award}>
+		<ChartCard
+			title="Top Winning Players"
+			icon={Award}
+			isEmpty={chartData.length === 0}
+			emptyTitle="No winners yet"
+			emptyDescription="Play some games to see top winning players"
+		>
 			<ResponsiveContainer width="100%" height="100%">
 				<BarChart layout="vertical" data={chartData} margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
 					<CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" horizontal={false} />
