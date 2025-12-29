@@ -1,11 +1,8 @@
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, BarChart, Bar, Cell } from "recharts";
-import { Percent } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import { formatPct } from "common/utils/helpers";
 import { STATS_THRESHOLDS, DISPLAY_LIMITS } from "common/utils/constants";
 import { useGamePageStats } from "features/games/utils/hooks";
-import { getColorForGame } from "features/games/utils/helpers";
-import { useGames } from "features/games/context/GamesContext";
 
 interface PlayerWinRateChartProps {
 	gameId: string;
@@ -13,9 +10,6 @@ interface PlayerWinRateChartProps {
 
 export const PlayerWinRateChart: React.FC<PlayerWinRateChartProps> = ({ gameId }) => {
 	const { playerStats } = useGamePageStats(gameId);
-	const { gameById } = useGames();
-	const game = gameById.get(gameId);
-	const color = getColorForGame(game);
 
 	const chartData = playerStats
 		.filter((p) => p.games >= STATS_THRESHOLDS.MIN_GAMES_FOR_BEST_GAME)
@@ -25,8 +19,6 @@ export const PlayerWinRateChart: React.FC<PlayerWinRateChartProps> = ({ gameId }
 	return (
 		<ChartCard
 			title="Player Win Rates (min 3 plays)"
-			icon={Percent}
-			iconColor={color}
 			isEmpty={chartData.length === 0}
 			emptyTitle="No player data"
 			emptyDescription="Need at least 3 plays per player to show win rates"

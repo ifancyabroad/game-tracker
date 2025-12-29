@@ -1,5 +1,4 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from "recharts";
-import { BarChart3 } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import { DISPLAY_LIMITS } from "common/utils/constants";
 import { useGamePoints } from "features/stats/utils/hooks";
@@ -10,7 +9,6 @@ export const GamePointsChart: React.FC = () => {
 	return (
 		<ChartCard
 			title="Top Games by Points"
-			icon={BarChart3}
 			isEmpty={chartData.length === 0}
 			emptyTitle="No game points data available"
 			emptyDescription="Play some games to see point totals"

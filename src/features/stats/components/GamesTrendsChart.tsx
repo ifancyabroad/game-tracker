@@ -1,6 +1,5 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, CartesianGrid } from "recharts";
 import { useMemo } from "react";
-import { TrendingUp } from "lucide-react";
 import { useResults } from "features/events/context/ResultsContext";
 import { useGames } from "features/games/context/GamesContext";
 import { ChartCard, ChartTooltip } from "common/components";
@@ -33,7 +32,6 @@ export const GameTrendsChart: React.FC = () => {
 	return (
 		<ChartCard
 			title="Game Trends Over Time"
-			icon={TrendingUp}
 			isEmpty={gameTrends.length === 0}
 			emptyTitle="No game trends available"
 			emptyDescription="Play some games to see trends over time"

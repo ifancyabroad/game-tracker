@@ -1,5 +1,4 @@
 import { PieChart, Pie, Cell, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from "recharts";
-import { PieChart as PieChartIcon } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import { useIsMobile } from "common/utils/hooks";
 import { usePlayerData } from "features/players/utils/hooks";
@@ -11,7 +10,6 @@ export const PlayerParticipationChart: React.FC = () => {
 	return (
 		<ChartCard
 			title="Player Participation"
-			icon={PieChartIcon}
 			isEmpty={overallStats.length === 0}
 			emptyTitle="No player data available"
 			emptyDescription="Add some players and play games to see participation"

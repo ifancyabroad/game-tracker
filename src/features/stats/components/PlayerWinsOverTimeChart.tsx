@@ -1,5 +1,4 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, CartesianGrid } from "recharts";
-import { TrendingUp } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import { DISPLAY_LIMITS } from "common/utils/constants";
 import { usePlayerWinsOverTime } from "features/stats/utils/hooks";
@@ -16,7 +15,6 @@ export const PlayerWinsOverTimeChart: React.FC = () => {
 	return (
 		<ChartCard
 			title="Player Wins Over Time"
-			icon={TrendingUp}
 			isEmpty={playerWinsOverTime.length === 0}
 			emptyTitle="No win data available"
 			emptyDescription="Play some games to see player wins over time"

@@ -1,5 +1,4 @@
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, BarChart, Bar } from "recharts";
-import { BarChart3 } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import { usePlayerPageStats } from "features/players/utils/hooks";
 import { usePlayers } from "features/players/context/PlayersContext";
@@ -18,8 +17,6 @@ export const RankDistributionChart: React.FC<RankDistributionChartProps> = ({ pl
 	return (
 		<ChartCard
 			title="Rank Distribution"
-			icon={BarChart3}
-			iconColor={color}
 			isEmpty={rankCounts.length === 0}
 			emptyTitle="No rank data"
 			emptyDescription="Play some games to see rank distribution"
