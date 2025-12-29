@@ -2,13 +2,10 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, Cartes
 import { Percent } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import { DISPLAY_LIMITS } from "common/utils/constants";
-import type { PlayerWithData } from "features/players/types";
+import { usePlayerData } from "features/players/utils/hooks";
 
-interface PlayerWinRateChartProps {
-	overallStats: PlayerWithData[];
-}
-
-export const PlayerWinRateChart: React.FC<PlayerWinRateChartProps> = ({ overallStats }) => {
+export const PlayerWinRateChart: React.FC = () => {
+	const overallStats = usePlayerData();
 	const chartData = overallStats
 		.filter((p) => p.data.wins > 0)
 		.sort((a, b) => b.data.winRatePercent - a.data.winRatePercent)

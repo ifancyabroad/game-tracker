@@ -10,26 +10,18 @@ import { RivalryMatrix } from "features/stats/components/RivalryMatrix";
 import {
 	useFeaturedStats,
 	useMostPlayedGames,
-	usePlayerWinsOverTime,
 	useWinStreaks,
 	useLossStreaks,
-	useGameTrends,
-	useGamePoints,
 	useTopRivalries,
 	useLopsidedRivalries,
 } from "features/stats/utils/hooks";
-import { usePlayerData } from "features/players/utils/hooks";
 import { usePlayerFeaturedStats } from "features/leaderboard/utils/hooks";
 import { PageHeader, Card, KpiCard } from "common/components";
 
 export const StatsPage: React.FC = () => {
-	const data = usePlayerData();
 	const mostPlayedGames = useMostPlayedGames();
-	const playerWinsOverTime = usePlayerWinsOverTime();
 	const winStreaks = useWinStreaks();
 	const lossStreaks = useLossStreaks();
-	const gameTrends = useGameTrends();
-	const gamePoints = useGamePoints();
 	const topRivalries = useTopRivalries();
 	const lopsidedRivalries = useLopsidedRivalries();
 
@@ -85,8 +77,8 @@ export const StatsPage: React.FC = () => {
 				</h2>
 			</div>
 			<div className="mb-4 grid gap-4 sm:mb-6 sm:gap-6 lg:grid-cols-2">
-				<PlayerWinsOverTimeChart overallStats={data} playerWinsOverTime={playerWinsOverTime} />
-				<GameTrendsChart gameTrends={gameTrends} />
+				<PlayerWinsOverTimeChart />
+				<GameTrendsChart />
 			</div>
 
 			{/* Player Performance Section */}
@@ -96,8 +88,8 @@ export const StatsPage: React.FC = () => {
 				</h2>
 			</div>
 			<div className="mb-4 grid gap-4 sm:mb-6 sm:gap-6 lg:grid-cols-2">
-				<PlayerWinRateChart overallStats={data} />
-				<TopWinningPlayersChart overallStats={data} />
+				<PlayerWinRateChart />
+				<TopWinningPlayersChart />
 				<StreaksCard streaks={winStreaks} type="win" />
 				<StreaksCard streaks={lossStreaks} type="loss" />
 				<RivalryMatrix
@@ -119,8 +111,8 @@ export const StatsPage: React.FC = () => {
 				</h2>
 			</div>
 			<div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
-				<MostPlayedGamesChart mostPlayedGames={mostPlayedGames} />
-				<GamePointsChart gamePoints={gamePoints} />
+				<MostPlayedGamesChart />
+				<GamePointsChart />
 			</div>
 		</div>
 	);

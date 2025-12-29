@@ -2,13 +2,10 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, Cartes
 import { BarChart3 } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import { DISPLAY_LIMITS } from "common/utils/constants";
-import type { MostPlayedGames } from "features/stats/types";
+import { useMostPlayedGames } from "features/stats/utils/hooks";
 
-interface MostPlayedGamesChartProps {
-	mostPlayedGames: MostPlayedGames[];
-}
-
-export const MostPlayedGamesChart: React.FC<MostPlayedGamesChartProps> = ({ mostPlayedGames }) => {
+export const MostPlayedGamesChart: React.FC = () => {
+	const mostPlayedGames = useMostPlayedGames();
 	const chartData = mostPlayedGames.slice(0, DISPLAY_LIMITS.CHARTS.MOST_PLAYED_GAMES);
 
 	return (

@@ -27,7 +27,7 @@ export const GameStatsPage: React.FC = () => {
 	const gameId = String(gameIdParam || "");
 	const navigate = useNavigate();
 	const game = useGameDataById(gameId);
-	const { topPlayer, bottomPlayer, playerStats, playFrequencySeries } = useGamePageStats(gameId);
+	const { topPlayer, bottomPlayer, playerStats } = useGamePageStats(gameId);
 
 	const topPlayerLines = getPlayerLines(topPlayer);
 	const bottomPlayerLines = getPlayerLines(bottomPlayer);
@@ -99,8 +99,8 @@ export const GameStatsPage: React.FC = () => {
 			</div>
 
 			<div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
-				<PlayFrequencyChart game={game} playFrequencySeries={playFrequencySeries} />
-				<PlayerWinRateChart game={game} playerStats={playerStats} />
+				<PlayFrequencyChart gameId={gameId} />
+				<PlayerWinRateChart gameId={gameId} />
 			</div>
 
 			<DataTable

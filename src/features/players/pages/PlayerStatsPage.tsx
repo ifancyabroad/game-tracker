@@ -53,8 +53,7 @@ export const PlayerStatsPage: React.FC = () => {
 	const playerId = String(playerIdParam || "");
 	const navigate = useNavigate();
 	const player = usePlayerDataById(playerId);
-	const { bestGame, mostPlayed, mostPoints, rankCounts, gameWinRates, lastGamesSeries } =
-		usePlayerPageStats(playerId);
+	const { bestGame, mostPlayed, mostPoints, gameWinRates } = usePlayerPageStats(playerId);
 	const { longestWinStreak, longestLossStreak } = usePlayerStreaks(playerId);
 	const topOpponents = useTopOpponents(playerId);
 	const bestGameLines = getBestGameLines(bestGame);
@@ -143,9 +142,9 @@ export const PlayerStatsPage: React.FC = () => {
 			</div>
 
 			<div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
-				<RecentFormChart player={player} lastGamesSeries={lastGamesSeries} />
+				<RecentFormChart playerId={playerId} />
 
-				<RankDistributionChart player={player} rankCounts={rankCounts} />
+				<RankDistributionChart playerId={playerId} />
 			</div>
 
 			<DataTable
@@ -171,9 +170,9 @@ export const PlayerStatsPage: React.FC = () => {
 			/>
 
 			<div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
-				<WinRateByGameChart player={player} gameWinRates={gameWinRates} />
+				<WinRateByGameChart playerId={playerId} />
 
-				<PointsByGameChart player={player} gameWinRates={gameWinRates} />
+				<PointsByGameChart playerId={playerId} />
 			</div>
 
 			<DataTable

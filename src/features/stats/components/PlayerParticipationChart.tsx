@@ -2,13 +2,10 @@ import { PieChart, Pie, Cell, Tooltip as RechartsTooltip, ResponsiveContainer, L
 import { PieChart as PieChartIcon } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import { useIsMobile } from "common/utils/hooks";
-import type { PlayerWithData } from "features/players/types";
+import { usePlayerData } from "features/players/utils/hooks";
 
-interface PlayerParticipationChartProps {
-	overallStats: PlayerWithData[];
-}
-
-export const PlayerParticipationChart: React.FC<PlayerParticipationChartProps> = ({ overallStats }) => {
+export const PlayerParticipationChart: React.FC = () => {
+	const overallStats = usePlayerData();
 	const isMobile = useIsMobile();
 
 	return (
