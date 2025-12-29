@@ -10,6 +10,7 @@ import {
 	computeGamePoints,
 	getTopRivalries,
 	getLopsidedRivalries,
+	getPlayerRivalries,
 } from "./calculations";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useGames } from "features/games/context/GamesContext";
@@ -76,4 +77,10 @@ export function useGamePoints() {
 	const { results } = useFilteredData();
 	const { gameById } = useGames();
 	return useMemo(() => computeGamePoints(results, gameById), [results, gameById]);
+}
+
+export function usePlayerRivalries(playerId: string) {
+	const { results } = useFilteredData();
+	const { playerById } = usePlayers();
+	return useMemo(() => getPlayerRivalries(results, playerById, playerId), [results, playerById, playerId]);
 }
