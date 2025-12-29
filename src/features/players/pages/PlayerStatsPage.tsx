@@ -5,12 +5,14 @@ import { Award, Gamepad2, ListOrdered, Percent, Star, TrendingDown, TrendingUp }
 import { formatPct } from "common/utils/helpers";
 import { DISPLAY_LIMITS } from "common/utils/constants";
 import { usePlayerDataById } from "features/players/utils/hooks";
-import { usePlayerPageStats, usePlayerStreaks, useTopOpponents } from "features/players/utils/hooks";
+import { usePlayerPageStats, usePlayerStreaks } from "features/players/utils/hooks";
 import { RecentFormChart } from "features/players/components/RecentFormChart";
 import { RankDistributionChart } from "features/players/components/RankDistributionChart";
 import { WinRateByGameChart } from "features/players/components/WinRateByGameChart";
 import { PointsByGameChart } from "features/players/components/PointsByGameChart";
-import type { GameWinRateRow, TopOpponent } from "features/players/types";
+import { RivalryMatrix } from "features/stats/components/RivalryMatrix";
+import { usePlayerRivalries } from "features/stats/utils/hooks";
+import type { GameWinRateRow } from "features/players/types";
 
 const getBestGameLines = (bestGame?: GameWinRateRow) => {
 	if (!bestGame) {
@@ -55,7 +57,7 @@ export const PlayerStatsPage: React.FC = () => {
 	const player = usePlayerDataById(playerId);
 	const { bestGame, mostPlayed, mostPoints, gameWinRates } = usePlayerPageStats(playerId);
 	const { longestWinStreak, longestLossStreak } = usePlayerStreaks(playerId);
-	const topOpponents = useTopOpponents(playerId);
+	const playerRivalries = usePlayerRivalries(playerId);
 	const bestGameLines = getBestGameLines(bestGame);
 	const mostPlayedLines = getMostPlayedLines(mostPlayed);
 	const mostPointsLines = getMostPointsLines(mostPoints);
@@ -147,6 +149,18 @@ export const PlayerStatsPage: React.FC = () => {
 				<RankDistributionChart playerId={playerId} />
 			</div>
 
+			<RivalryMatrix
+				rivalries={playerRivalries}
+				title="Head-to-Head Rivalries"
+				description="Most frequent opponents ranked by games played together"
+			/>
+
+			<div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
+				<WinRateByGameChart playerId={playerId} />
+
+				<PointsByGameChart playerId={playerId} />
+			</div>
+
 			<DataTable
 				data={[...gameWinRates].sort((a, b) => b.games - a.games || b.wins - a.wins)}
 				columns={[
@@ -167,27 +181,6 @@ export const PlayerStatsPage: React.FC = () => {
 				getRowKey={(row) => row.gameId}
 				limit={DISPLAY_LIMITS.TABLES.PERFORMANCE_BY_GAME}
 				emptyMessage="No game stats yet."
-			/>
-
-			<div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
-				<WinRateByGameChart playerId={playerId} />
-
-				<PointsByGameChart playerId={playerId} />
-			</div>
-
-			<DataTable
-				data={topOpponents}
-				columns={[
-					{ key: "name", label: "Opponent", align: "left" },
-					{ key: "games", label: "Games", align: "center", width: "w-20 sm:w-24" },
-					{ key: "wins", label: "Wins", align: "center", width: "w-20 sm:w-24" },
-					{ key: "losses", label: "Losses", align: "center", width: "w-20 sm:w-24" },
-				]}
-				title="Head-to-Head (Top 5)"
-				subtitle="Most common opponents"
-				onRowClick={(row: TopOpponent) => navigate(`/players/${row.opponentId}`)}
-				getRowKey={(row: TopOpponent) => row.opponentId}
-				emptyMessage="No opponent data yet."
 			/>
 		</div>
 	);

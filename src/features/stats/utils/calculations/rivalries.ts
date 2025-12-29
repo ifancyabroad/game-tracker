@@ -157,11 +157,11 @@ function createRivalry(
 	const closeness = calculateCloseness(player1Wins, player2Wins, stats.totalGames);
 
 	return {
-		player1Id: stats.player1Id,
+		player1Id: player1.id,
 		player1Name: getPlayerDisplayName(player1),
 		player1Color: player1.color,
 		player1PictureUrl: player1.pictureUrl || undefined,
-		player2Id: stats.player2Id,
+		player2Id: player2.id,
 		player2Name: getPlayerDisplayName(player2),
 		player2Color: player2.color,
 		player2PictureUrl: player2.pictureUrl || undefined,
@@ -316,4 +316,34 @@ export const getLopsidedRivalries = (results: IResult[], playerById: Map<string,
 
 	// Sort by biggest gap (lowest closeness)
 	return rivalries.sort((a, b) => a.closeness - b.closeness).slice(0, DISPLAY_LIMITS.TABLES.RIVALRIES);
+};
+
+/**
+ * Get top rivalries for a specific player (by number of games played together)
+ */
+export const getPlayerRivalries = (
+	results: IResult[],
+	playerById: Map<string, IPlayer>,
+	playerId: string,
+): TopRivalry[] => {
+	const pairStats = buildPairStatistics(results);
+	const validPairs = filterByMinimumGames(pairStats, playerById, 1); // Lower threshold for player-specific view
+
+	// Filter pairs where the player is involved
+	const playerPairs = validPairs.filter(({ stats }) => stats.player1Id === playerId || stats.player2Id === playerId);
+
+	const rivalries = playerPairs.map(({ stats, player1, player2 }) => {
+		// Ensure the target player is always on the left (player1 position)
+		const isTargetPlayer1 = stats.player1Id === playerId;
+		return createRivalry(
+			stats,
+			isTargetPlayer1 ? player1 : player2,
+			isTargetPlayer1 ? player2 : player1,
+			isTargetPlayer1 ? stats.player1Wins : stats.player2Wins,
+			isTargetPlayer1 ? stats.player2Wins : stats.player1Wins,
+		);
+	});
+
+	// Sort by total games played together, then by closeness
+	return rivalries.sort((a, b) => b.totalGames - a.totalGames || b.closeness - a.closeness).slice(0, 5);
 };

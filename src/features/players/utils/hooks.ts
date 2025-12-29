@@ -1,11 +1,5 @@
 import { useMemo } from "react";
-import {
-	getPlayerEntries,
-	aggregatePlayerStatsForPage,
-	computeOpponentStats,
-	computeStreaks,
-	computePlayerData,
-} from "./calculations";
+import { getPlayerEntries, aggregatePlayerStatsForPage, computeStreaks, computePlayerData } from "./calculations";
 import type { PlayerWithData } from "features/players/types";
 import { useGames } from "features/games/context/GamesContext";
 import { usePlayers } from "features/players/context/PlayersContext";
@@ -44,10 +38,4 @@ export function usePlayerPageStats(playerId: string) {
 export function usePlayerStreaks(playerId: string) {
 	const entries = usePlayerEntries(playerId);
 	return useMemo(() => computeStreaks(entries), [entries]);
-}
-
-export function useTopOpponents(playerId: string) {
-	const { results } = useFilteredData();
-	const { playerById } = usePlayers();
-	return useMemo(() => computeOpponentStats(results, playerById, playerId), [results, playerById, playerId]);
 }

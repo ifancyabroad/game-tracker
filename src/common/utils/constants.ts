@@ -36,7 +36,7 @@ export const DISPLAY_LIMITS = {
 	},
 	TABLES: {
 		/** Performance by game table - number of rows to display */
-		PERFORMANCE_BY_GAME: 5,
+		PERFORMANCE_BY_GAME: 10,
 		/** Top players per game table - number of players to display */
 		TOP_PLAYERS: 10,
 		/** Top opponents list - number of opponents to display */

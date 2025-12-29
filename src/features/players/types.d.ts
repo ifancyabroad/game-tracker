@@ -61,14 +61,6 @@ export interface PlayerAggregates {
 	lastGamesSeries: Array<{ x: number; wr: number }>;
 }
 
-export interface TopOpponent {
-	opponentId: string;
-	name: string;
-	games: number;
-	wins: number;
-	losses: number;
-}
-
 export interface PlayerStreaks {
 	longestWinStreak: number;
 	longestLossStreak: number;
