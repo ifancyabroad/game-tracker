@@ -1,5 +1,4 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from "recharts";
-import { BarChart3 } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import { DISPLAY_LIMITS } from "common/utils/constants";
 import { useMostPlayedGames } from "features/stats/utils/hooks";
@@ -11,7 +10,6 @@ export const MostPlayedGamesChart: React.FC = () => {
 	return (
 		<ChartCard
 			title="Most Played Games"
-			icon={BarChart3}
 			isEmpty={chartData.length === 0}
 			emptyTitle="No games played yet"
 			emptyDescription="Play some games to see which are most popular"

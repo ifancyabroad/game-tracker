@@ -1,5 +1,4 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
-import { TrendingUp } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import { useGamePageStats } from "features/games/utils/hooks";
 import { getColorForGame } from "features/games/utils/helpers";
@@ -18,8 +17,6 @@ export const PlayFrequencyChart: React.FC<PlayFrequencyChartProps> = ({ gameId }
 	return (
 		<ChartCard
 			title="Play Frequency Over Time"
-			icon={TrendingUp}
-			iconColor={color}
 			isEmpty={playFrequencySeries.length === 0}
 			emptyTitle="No play history"
 			emptyDescription="Play this game to see frequency over time"

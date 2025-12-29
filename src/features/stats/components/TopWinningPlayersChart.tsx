@@ -1,5 +1,4 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from "recharts";
-import { Award } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import { DISPLAY_LIMITS } from "common/utils/constants";
 import { usePlayerData } from "features/players/utils/hooks";
@@ -14,7 +13,6 @@ export const TopWinningPlayersChart: React.FC = () => {
 	return (
 		<ChartCard
 			title="Top Winning Players"
-			icon={Award}
 			isEmpty={chartData.length === 0}
 			emptyTitle="No winners yet"
 			emptyDescription="Play some games to see top winning players"

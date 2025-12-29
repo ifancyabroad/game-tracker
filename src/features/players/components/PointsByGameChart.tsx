@@ -1,11 +1,8 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
-import { PieChart as PieChartIcon } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import { useIsMobile } from "common/utils/hooks";
 import { DISPLAY_LIMITS } from "common/utils/constants";
 import { usePlayerPageStats } from "features/players/utils/hooks";
-import { usePlayers } from "features/players/context/PlayersContext";
-import { getColorForPlayer } from "features/players/utils/helpers";
 
 interface PointsByGameChartProps {
 	playerId: string;
@@ -14,9 +11,6 @@ interface PointsByGameChartProps {
 export const PointsByGameChart: React.FC<PointsByGameChartProps> = ({ playerId }) => {
 	const isMobile = useIsMobile();
 	const { gameWinRates } = usePlayerPageStats(playerId);
-	const { playerById } = usePlayers();
-	const player = playerById.get(playerId);
-	const color = getColorForPlayer(player);
 
 	const chartData = gameWinRates
 		.filter((g) => g.points > 0)
@@ -26,8 +20,6 @@ export const PointsByGameChart: React.FC<PointsByGameChartProps> = ({ playerId }
 	return (
 		<ChartCard
 			title="Points by Game"
-			icon={PieChartIcon}
-			iconColor={color}
 			isEmpty={chartData.length === 0}
 			emptyTitle="No points earned yet"
 			emptyDescription="Win some games to earn points"

@@ -1,5 +1,4 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
-import { TrendingUp } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import { usePlayerPageStats } from "features/players/utils/hooks";
 import { usePlayers } from "features/players/context/PlayersContext";
@@ -18,8 +17,6 @@ export const RecentFormChart: React.FC<RecentFormChartProps> = ({ playerId }) =>
 	return (
 		<ChartCard
 			title="Recent Form (last 20 games)"
-			icon={TrendingUp}
-			iconColor={color}
 			isEmpty={lastGamesSeries.length === 0}
 			emptyTitle="No recent games"
 			emptyDescription="Play at least one game to see recent form"

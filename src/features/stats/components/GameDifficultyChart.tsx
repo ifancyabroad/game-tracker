@@ -1,5 +1,4 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from "recharts";
-import { Target } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import { DISPLAY_LIMITS } from "common/utils/constants";
 import type { GameDifficulty } from "features/stats/utils/calculations/gameDifficulty";
@@ -15,7 +14,6 @@ export const GameDifficultyChart: React.FC<GameDifficultyChartProps> = ({ diffic
 		<ChartCard
 			title="Game Competitiveness"
 			subtitle="Shows how evenly wins are distributed across players"
-			icon={Target}
 			isEmpty={chartData.length === 0}
 			emptyTitle="No competitiveness data available"
 			emptyDescription="Games need at least 3 plays to calculate competitiveness"
