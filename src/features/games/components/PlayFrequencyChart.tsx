@@ -46,7 +46,7 @@ export const PlayFrequencyChart: React.FC<PlayFrequencyChartProps> = ({ gameId }
 						}}
 					/>
 					<Tooltip content={<ChartTooltip formatter={(v) => `${v} plays`} />} />
-					<Line type="monotone" dataKey="plays" stroke={game.color} strokeWidth={2} dot={false} />
+					<Line type="monotone" dataKey="plays" stroke={color} strokeWidth={2} dot={false} />
 				</LineChart>
 			</ResponsiveContainer>
 		</ChartCard>
