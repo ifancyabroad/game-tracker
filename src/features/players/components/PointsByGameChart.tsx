@@ -3,15 +3,21 @@ import { PieChart as PieChartIcon } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import { useIsMobile } from "common/utils/hooks";
 import { DISPLAY_LIMITS } from "common/utils/constants";
-import type { IPlayer, GameWinRateRow } from "features/players/types";
+import { usePlayerPageStats } from "features/players/utils/hooks";
+import { usePlayers } from "features/players/context/PlayersContext";
+import { getColorForPlayer } from "features/players/utils/helpers";
 
 interface PointsByGameChartProps {
-	player: IPlayer;
-	gameWinRates: GameWinRateRow[];
+	playerId: string;
 }
 
-export const PointsByGameChart: React.FC<PointsByGameChartProps> = ({ player, gameWinRates }) => {
+export const PointsByGameChart: React.FC<PointsByGameChartProps> = ({ playerId }) => {
 	const isMobile = useIsMobile();
+	const { gameWinRates } = usePlayerPageStats(playerId);
+	const { playerById } = usePlayers();
+	const player = playerById.get(playerId);
+	const color = getColorForPlayer(player);
+
 	const chartData = gameWinRates
 		.filter((g) => g.points > 0)
 		.sort((a, b) => b.points - a.points)
@@ -21,7 +27,7 @@ export const PointsByGameChart: React.FC<PointsByGameChartProps> = ({ player, ga
 		<ChartCard
 			title="Points by Game"
 			icon={PieChartIcon}
-			iconColor={player.color}
+			iconColor={color}
 			isEmpty={chartData.length === 0}
 			emptyTitle="No points earned yet"
 			emptyDescription="Win some games to earn points"

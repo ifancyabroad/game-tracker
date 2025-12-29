@@ -2,13 +2,10 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, Cartes
 import { BarChart3 } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import { DISPLAY_LIMITS } from "common/utils/constants";
-import type { GamePointsData } from "features/stats/utils/calculations/gamePoints";
+import { useGamePoints } from "features/stats/utils/hooks";
 
-interface GamePointsChartProps {
-	gamePoints: GamePointsData[];
-}
-
-export const GamePointsChart: React.FC<GamePointsChartProps> = ({ gamePoints }) => {
+export const GamePointsChart: React.FC = () => {
+	const gamePoints = useGamePoints();
 	const chartData = gamePoints.slice(0, DISPLAY_LIMITS.CHARTS.GAME_POINTS);
 	return (
 		<ChartCard

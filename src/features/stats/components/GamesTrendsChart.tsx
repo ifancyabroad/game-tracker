@@ -5,13 +5,10 @@ import { useResults } from "features/events/context/ResultsContext";
 import { useGames } from "features/games/context/GamesContext";
 import { ChartCard, ChartTooltip } from "common/components";
 import { DISPLAY_LIMITS } from "common/utils/constants";
-import type { TimeSeriesData } from "features/stats/types";
+import { useGameTrends } from "features/stats/utils/hooks";
 
-interface GameTrendsChartProps {
-	gameTrends: TimeSeriesData[];
-}
-
-export const GameTrendsChart: React.FC<GameTrendsChartProps> = ({ gameTrends }) => {
+export const GameTrendsChart: React.FC = () => {
+	const gameTrends = useGameTrends();
 	const { results } = useResults();
 	const { gameById } = useGames();
 

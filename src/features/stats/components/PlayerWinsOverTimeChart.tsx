@@ -2,18 +2,12 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, Ca
 import { TrendingUp } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import { DISPLAY_LIMITS } from "common/utils/constants";
-import type { TimeSeriesData } from "features/stats/types";
-import type { PlayerWithData } from "features/players/types";
+import { usePlayerWinsOverTime } from "features/stats/utils/hooks";
+import { usePlayerData } from "features/players/utils/hooks";
 
-interface PlayerWinsOverTimeChartProps {
-	overallStats: PlayerWithData[];
-	playerWinsOverTime: TimeSeriesData[];
-}
-
-export const PlayerWinsOverTimeChart: React.FC<PlayerWinsOverTimeChartProps> = ({
-	playerWinsOverTime,
-	overallStats,
-}) => {
+export const PlayerWinsOverTimeChart: React.FC = () => {
+	const playerWinsOverTime = usePlayerWinsOverTime();
+	const overallStats = usePlayerData();
 	const playerData = overallStats
 		.filter((p) => p.data.wins > 0)
 		.sort((a, b) => b.data.wins - a.data.wins)

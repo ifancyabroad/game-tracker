@@ -2,13 +2,10 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, Cartes
 import { Award } from "lucide-react";
 import { ChartCard, ChartTooltip } from "common/components";
 import { DISPLAY_LIMITS } from "common/utils/constants";
-import type { PlayerWithData } from "features/players/types";
+import { usePlayerData } from "features/players/utils/hooks";
 
-interface TopWinningPlayersChartProps {
-	overallStats: PlayerWithData[];
-}
-
-export const TopWinningPlayersChart: React.FC<TopWinningPlayersChartProps> = ({ overallStats }) => {
+export const TopWinningPlayersChart: React.FC = () => {
+	const overallStats = usePlayerData();
 	const chartData = overallStats
 		.filter((p) => p.data.wins > 0)
 		.sort((a, b) => b.data.wins - a.data.wins)
