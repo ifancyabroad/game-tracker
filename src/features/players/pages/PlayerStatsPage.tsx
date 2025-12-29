@@ -153,7 +153,6 @@ export const PlayerStatsPage: React.FC = () => {
 				rivalries={playerRivalries}
 				title="Head-to-Head Rivalries"
 				description="Most frequent opponents ranked by games played together"
-				iconColor={player.color}
 			/>
 
 			<div className="grid gap-4 sm:gap-6 lg:grid-cols-2">

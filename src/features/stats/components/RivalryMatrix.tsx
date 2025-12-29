@@ -7,15 +7,14 @@ interface RivalryMatrixProps {
 	rivalries: TopRivalry[];
 	title: string;
 	description: string;
-	iconColor?: string;
 }
 
-export const RivalryMatrix: React.FC<RivalryMatrixProps> = ({ rivalries, title, description, iconColor }) => {
+export const RivalryMatrix: React.FC<RivalryMatrixProps> = ({ rivalries, title, description }) => {
 	if (rivalries.length === 0) {
 		return (
 			<Card className="p-4">
 				<div className="mb-3 flex items-center gap-2">
-					<Swords size={20} style={{ color: iconColor || "var(--color-primary)" }} />
+					<Swords size={20} className="text-[var(--color-primary)]" />
 					<h3 className="text-sm font-semibold text-[var(--color-text)]">{title}</h3>
 				</div>
 				<EmptyState>
@@ -30,11 +29,8 @@ export const RivalryMatrix: React.FC<RivalryMatrixProps> = ({ rivalries, title, 
 	return (
 		<Card className="overflow-hidden">
 			<div className="border-b border-[var(--color-border)] p-3 sm:p-4">
-				<div className="flex items-center gap-2">
-					<Swords size={20} style={{ color: iconColor || "var(--color-primary)" }} />
-					<h3 className="text-sm font-semibold text-[var(--color-text)]">{title}</h3>
-				</div>
-				<p className="mt-1 text-xs text-[var(--color-text-secondary)]">{description}</p>
+				<h3 className="text-sm font-semibold text-[var(--color-text)]">{title}</h3>
+				<p className="text-xs text-[var(--color-text-secondary)]">{description}</p>
 			</div>
 
 			<div className="divide-y divide-[var(--color-border)]">
