@@ -8,13 +8,10 @@ import { useTopRivalries } from "features/stats/utils/hooks";
 import { LeaderCard } from "features/dashboard/components/LeaderCard";
 import { EventCard } from "features/dashboard/components/EventCard";
 import { Card, EmptyState } from "common/components";
-import { useGames } from "features/games/context/GamesContext";
 import { getDisplayName } from "features/players/utils/helpers";
 import { pluralize } from "common/utils/helpers";
 
 export const HomePage: React.FC = () => {
-	const { gameById } = useGames();
-
 	// Leaderboard data (current year)
 	const leaderboard = usePlayerLeaderboard();
 	const topThree = leaderboard.slice(0, 3);
@@ -89,12 +86,7 @@ export const HomePage: React.FC = () => {
 							</div>
 							<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 								{latestEvents.map((event) => (
-									<EventCard
-										key={event.id}
-										event={event}
-										gameById={gameById}
-										playerCount={event.playerIds?.length || 0}
-									/>
+									<EventCard key={event.id} event={event} />
 								))}
 							</div>
 						</section>

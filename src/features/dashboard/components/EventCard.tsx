@@ -1,23 +1,24 @@
 import { Link } from "react-router";
-import { MapPin, Users } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { Card } from "common/components";
+import { useResults } from "features/events/context/ResultsContext";
 import type { IEvent } from "features/events/types";
-import type { IGame } from "features/games/types";
 
 interface IEventCardProps {
 	event: IEvent;
-	gameById: Map<string, IGame>;
-	playerCount: number;
 }
 
-export const EventCard: React.FC<IEventCardProps> = ({ event, gameById, playerCount }) => {
+export const EventCard: React.FC<IEventCardProps> = ({ event }) => {
+	const { results } = useResults();
+
 	const date = new Date(event.date);
 	const dateLabel = isNaN(date.getTime())
 		? event.date
 		: date.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
 
-	const games = event.gameIds.map((id) => gameById.get(id)).filter(Boolean) as IGame[];
-	const gameCount = games.length;
+	const gameCount = event.gameIds.length;
+	const playerCount = event.playerIds?.length || 0;
+	const resultsCount = results.filter((r) => r.eventId === event.id).length;
 
 	return (
 		<Link to={`/events/${event.id}`}>
@@ -28,25 +29,31 @@ export const EventCard: React.FC<IEventCardProps> = ({ event, gameById, playerCo
 				</div>
 
 				{/* Location */}
-				<div className="mb-3 flex items-center gap-2">
+				<div className="mb-4 flex items-center gap-2">
 					<MapPin className="h-5 w-5 flex-shrink-0 text-[var(--color-text-secondary)]" />
-					<h3 className="truncate text-sm font-bold text-[var(--color-text)] md:text-base">
-						{event.location}
-					</h3>
+					<h3 className="truncate font-bold text-[var(--color-text)]">{event.location}</h3>
 				</div>
 
-				{/* Stats */}
-				<div className="flex items-center gap-4 text-sm text-[var(--color-text-secondary)]">
-					<div className="flex items-center gap-1.5">
-						<Users className="h-4 w-4" />
-						<span>
-							{playerCount} {playerCount === 1 ? "player" : "players"}
-						</span>
+				{/* Stats Grid */}
+				<div className="grid grid-cols-3 gap-2 text-center">
+					<div className="rounded-lg bg-[var(--color-accent)] p-2">
+						<p className="text-lg font-bold text-[var(--color-text)] md:text-xl">{playerCount}</p>
+						<p className="text-xs text-[var(--color-text-secondary)]">
+							{playerCount === 1 ? "Player" : "Players"}
+						</p>
 					</div>
-					<div className="h-1 w-1 rounded-full bg-[var(--color-text-secondary)]" />
-					<span>
-						{gameCount} {gameCount === 1 ? "game" : "games"}
-					</span>
+					<div className="rounded-lg bg-[var(--color-accent)] p-2">
+						<p className="text-lg font-bold text-[var(--color-text)] md:text-xl">{gameCount}</p>
+						<p className="text-xs text-[var(--color-text-secondary)]">
+							{gameCount === 1 ? "Game" : "Games"}
+						</p>
+					</div>
+					<div className="rounded-lg bg-[var(--color-accent)] p-2">
+						<p className="text-lg font-bold text-[var(--color-text)] md:text-xl">{resultsCount}</p>
+						<p className="text-xs text-[var(--color-text-secondary)]">
+							{resultsCount === 1 ? "Result" : "Results"}
+						</p>
+					</div>
 				</div>
 			</Card>
 		</Link>
