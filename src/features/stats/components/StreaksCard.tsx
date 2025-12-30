@@ -22,7 +22,7 @@ export const StreaksCard: React.FC<StreaksCardProps> = ({ streaks, type }) => {
 		<Card className="p-4 sm:p-6">
 			<div className="mb-4 flex items-center gap-2">
 				<Icon className={`h-5 w-5 ${iconColor}`} />
-				<h3 className="text-sm font-semibold text-[var(--color-text)]">{title}</h3>
+				<h3 className="text-sm font-bold text-[var(--color-text)] md:text-base">{title}</h3>
 			</div>
 
 			{streaks.length === 0 ? (

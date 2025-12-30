@@ -56,7 +56,7 @@ export const DataTable = <T,>({
 		<Card className={`p-0 ${className || ""}`}>
 			{(title || subtitle) && (
 				<div className="border-b border-[var(--color-border)] px-3 py-2.5 sm:px-4 sm:py-3">
-					{title && <h3 className="text-sm font-semibold text-[var(--color-text)]">{title}</h3>}
+					{title && <h3 className="text-sm font-bold text-[var(--color-text)] md:text-base">{title}</h3>}
 					{subtitle && <p className="text-xs text-[var(--color-text-secondary)]">{subtitle}</p>}
 				</div>
 			)}

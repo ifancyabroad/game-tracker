@@ -86,7 +86,7 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 		<form onSubmit={handleSubmit(onFormSubmit)} className="m-0 flex flex-col gap-4 p-0">
 			<div className="flex items-center gap-2 text-[var(--color-text-secondary)]">
 				<Target className="h-4 w-4 text-[var(--color-primary)]" />
-				<h3 className="text-sm font-semibold text-[var(--color-text)]">
+				<h3 className="text-base font-bold text-[var(--color-text)] md:text-lg">
 					{initialData ? "Edit Result" : "Add Result"}
 				</h3>
 			</div>

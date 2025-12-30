@@ -30,7 +30,9 @@ export const EventCard: React.FC<IEventCardProps> = ({ event, gameById, playerCo
 				{/* Location */}
 				<div className="mb-3 flex items-center gap-2">
 					<MapPin className="h-5 w-5 flex-shrink-0 text-[var(--color-text-secondary)]" />
-					<h3 className="truncate text-base font-bold text-[var(--color-text)]">{event.location}</h3>
+					<h3 className="truncate text-sm font-bold text-[var(--color-text)] md:text-base">
+						{event.location}
+					</h3>
 				</div>
 
 				{/* Stats */}

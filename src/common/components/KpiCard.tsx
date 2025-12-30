@@ -8,7 +8,9 @@ export const KpiCard: React.FC<{ icon: React.ReactNode; label: string; value: Re
 			<div className="flex h-8 w-8 items-center justify-center rounded-md bg-[var(--color-accent)]">{icon}</div>
 			<div className="overflow-hidden">
 				<div className="text-xs text-[var(--color-text-secondary)]">{label}</div>
-				<div className="truncate text-sm font-semibold text-[var(--color-text)] tabular-nums">{value}</div>
+				<div className="truncate text-base font-bold text-[var(--color-text)] tabular-nums md:text-lg">
+					{value}
+				</div>
 			</div>
 		</div>
 	);
