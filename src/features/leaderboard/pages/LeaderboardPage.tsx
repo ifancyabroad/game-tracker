@@ -19,7 +19,7 @@ const viewModeOptions: SegmentedControlOption<ViewMode>[] = [
 	{ value: "table", label: "Table", icon: List },
 ];
 
-export const HomePage: React.FC = () => {
+export const LeaderboardPage: React.FC = () => {
 	const [gameType, setGameType] = useState<GameType>("board");
 	const [viewMode, setViewMode] = useState<ViewMode>("card");
 	const leaderboard = usePlayerLeaderboard(gameType);
@@ -75,4 +75,4 @@ export const HomePage: React.FC = () => {
 	);
 };
 
-export default HomePage;
+export default LeaderboardPage;

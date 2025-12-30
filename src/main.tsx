@@ -10,7 +10,8 @@ import { EventsProvider } from "features/events/context/EventsProvider";
 import { ResultsProvider } from "features/events/context/ResultsProvider";
 import { BrowserRouter, Route, Routes } from "react-router";
 import { AppLayout, Modal, ReadyGate, ErrorBoundary } from "common/components";
-import HomePage from "features/leaderboard/pages/HomePage";
+import HomePage from "features/dashboard/pages/HomePage";
+import LeaderboardPage from "features/leaderboard/pages/LeaderboardPage";
 import PlayersList from "features/players/pages/PlayersList";
 import PlayerStatsPage from "features/players/pages/PlayerStatsPage";
 import GamesPage from "features/games/pages/GamesPage";
@@ -36,6 +37,7 @@ createRoot(document.getElementById("root")!).render(
 													<Routes>
 														<Route element={<AppLayout />}>
 															<Route path="/" element={<HomePage />} />
+															<Route path="/leaderboard" element={<LeaderboardPage />} />
 															<Route path="/players" element={<PlayersList />} />
 															<Route path="/players/:id" element={<PlayerStatsPage />} />
 															<Route path="/games" element={<GamesPage />} />

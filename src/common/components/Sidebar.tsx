@@ -1,5 +1,18 @@
 import { NavLink } from "react-router";
-import { Home, Users, Calendar, Gamepad2, BarChart, X, LogIn, LogOut, CalendarRange, Sun, Moon } from "lucide-react";
+import {
+	Home,
+	Users,
+	Calendar,
+	Gamepad2,
+	BarChart,
+	X,
+	LogIn,
+	LogOut,
+	CalendarRange,
+	Sun,
+	Moon,
+	Trophy,
+} from "lucide-react";
 import { useUI } from "common/context/UIContext";
 import { useModal } from "common/context/ModalContext";
 import { LoginForm, Select, Button, Label, SegmentedControl } from "common/components";
@@ -14,6 +27,7 @@ import type { Theme } from "common/utils/theme";
 
 const navItems = [
 	{ to: "/", label: "Home", icon: Home },
+	{ to: "/leaderboard", label: "Leaderboard", icon: Trophy },
 	{ to: "/players", label: "Players", icon: Users },
 	{ to: "/events", label: "Events", icon: Calendar },
 	{ to: "/games", label: "Games", icon: Gamepad2 },
