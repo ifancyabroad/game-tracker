@@ -162,7 +162,7 @@ export const HomePage: React.FC = () => {
 									<div className="space-y-2">
 										<div className="flex items-center justify-between">
 											<span className="text-sm text-[var(--color-text-secondary)]">Players</span>
-											<span className="text-sm font-medium text-[var(--color-text)]">
+											<span className="font-medium text-[var(--color-text)]">
 												{topRivalry.player1Name} vs {topRivalry.player2Name}
 											</span>
 										</div>
