@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
-import { Trophy, BarChart3, Calendar, TrendingUp, TrendingDown, Swords } from "lucide-react";
+import { Trophy, BarChart3, Calendar, TrendingUp, TrendingDown, Swords, ArrowRight } from "lucide-react";
 import { usePlayerLeaderboard } from "features/leaderboard/utils/hooks";
 import { useLastEventTopScorers, useLongestDrought } from "features/dashboard/utils/hooks";
 import { useSortedEvents } from "features/events/utils/hooks";
@@ -58,9 +58,10 @@ export const HomePage: React.FC = () => {
 							<h2 className="text-base font-bold text-[var(--color-text)] md:text-lg">Current Leaders</h2>
 							<Link
 								to="/leaderboard"
-								className="text-sm font-medium text-[var(--color-primary)] hover:underline"
+								className="flex items-center gap-1 text-sm font-medium text-[var(--color-primary)] hover:underline"
 							>
-								View All →
+								<span>View All</span>
+								<ArrowRight className="h-3.5 w-3.5" />
 							</Link>
 						</div>
 						{topThree.length > 0 ? (
@@ -85,9 +86,10 @@ export const HomePage: React.FC = () => {
 								</h2>
 								<Link
 									to="/events"
-									className="text-sm font-medium text-[var(--color-primary)] hover:underline"
+									className="flex items-center gap-1 text-sm font-medium text-[var(--color-primary)] hover:underline"
 								>
-									View All →
+									<span>View All</span>
+									<ArrowRight className="h-3.5 w-3.5" />
 								</Link>
 							</div>
 							<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
