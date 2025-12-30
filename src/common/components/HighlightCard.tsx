@@ -11,7 +11,7 @@ export const HighlightCard: React.FC<{
 				<div className="flex h-8 w-8 items-center justify-center rounded-md bg-[var(--color-accent)]">
 					{icon}
 				</div>
-				<h3 className="text-sm font-semibold text-[var(--color-text)]">{title}</h3>
+				<h3 className="text-sm font-bold text-[var(--color-text)] md:text-base">{title}</h3>
 			</div>
 			<dl className="grid grid-cols-3 gap-x-4 gap-y-1 text-sm sm:grid-cols-2">
 				{lines.map((row, i) => (

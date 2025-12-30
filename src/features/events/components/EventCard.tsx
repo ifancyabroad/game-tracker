@@ -35,7 +35,9 @@ export const EventCard: React.FC<IEventCardProps> = ({ event, canEdit, onEdit, o
 				<div className="min-w-0 flex-1">
 					<div className="mb-0.5 flex items-center gap-1.5 sm:mb-1">
 						<MapPin className="h-4 w-4 flex-shrink-0 text-[var(--color-primary)]" />
-						<h3 className="truncate text-sm font-semibold text-[var(--color-text)]">{event.location}</h3>
+						<h3 className="truncate text-sm font-bold text-[var(--color-text)] md:text-base">
+							{event.location}
+						</h3>
 					</div>
 					<div className="flex items-center gap-1.5 text-xs text-[var(--color-text-secondary)]">
 						<CalendarDays className="h-3.5 w-3.5" />

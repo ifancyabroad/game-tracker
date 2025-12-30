@@ -38,22 +38,24 @@ export const LeaderCard: React.FC<ILeaderCardProps> = ({ player, rank }) => {
 						</div>
 						<Avatar src={player.pictureUrl || undefined} name={displayName} size={56} />
 						<div className="min-w-0 flex-1">
-							<h3 className="truncate text-base font-bold text-[var(--color-text)]">{displayName}</h3>
+							<h3 className="truncate text-base font-bold text-[var(--color-text)] md:text-lg">
+								{displayName}
+							</h3>
 						</div>
 					</div>
 
 					{/* Stats Row */}
 					<div className="grid grid-cols-3 gap-2 text-center">
 						<div className="rounded-lg bg-[var(--color-accent)] p-2">
-							<p className="text-xl font-bold text-[var(--color-text)]">{points}</p>
+							<p className="text-lg font-bold text-[var(--color-text)] md:text-xl">{points}</p>
 							<p className="text-xs text-[var(--color-text-secondary)]">Points</p>
 						</div>
 						<div className="rounded-lg bg-[var(--color-accent)] p-2">
-							<p className="text-xl font-bold text-[var(--color-text)]">{wins}</p>
+							<p className="text-lg font-bold text-[var(--color-text)] md:text-xl">{wins}</p>
 							<p className="text-xs text-[var(--color-text-secondary)]">Wins</p>
 						</div>
 						<div className="rounded-lg bg-[var(--color-accent)] p-2">
-							<p className="text-xl font-bold text-[var(--color-text)]">{winRatePercent}%</p>
+							<p className="text-lg font-bold text-[var(--color-text)] md:text-xl">{winRatePercent}%</p>
 							<p className="text-xs text-[var(--color-text-secondary)]">Win Rate</p>
 						</div>
 					</div>

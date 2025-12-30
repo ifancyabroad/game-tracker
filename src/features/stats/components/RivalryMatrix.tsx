@@ -15,7 +15,7 @@ export const RivalryMatrix: React.FC<RivalryMatrixProps> = ({ rivalries, title, 
 			<Card className="p-4">
 				<div className="mb-3 flex items-center gap-2">
 					<Swords size={20} className="text-[var(--color-primary)]" />
-					<h3 className="text-sm font-semibold text-[var(--color-text)]">{title}</h3>
+					<h3 className="text-sm font-bold text-[var(--color-text)] md:text-base">{title}</h3>
 				</div>
 				<EmptyState>
 					<Swords size={32} className="mx-auto mb-2 text-[var(--color-text-secondary)]" />
@@ -29,7 +29,7 @@ export const RivalryMatrix: React.FC<RivalryMatrixProps> = ({ rivalries, title, 
 	return (
 		<Card className="overflow-hidden">
 			<div className="border-b border-[var(--color-border)] p-3 sm:p-4">
-				<h3 className="text-sm font-semibold text-[var(--color-text)]">{title}</h3>
+				<h3 className="text-sm font-bold text-[var(--color-text)] md:text-base">{title}</h3>
 				<p className="text-xs text-[var(--color-text-secondary)]">{description}</p>
 			</div>
 

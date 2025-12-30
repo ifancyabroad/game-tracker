@@ -55,7 +55,9 @@ export const GameStatsPage: React.FC = () => {
 						<GameTypeIcon type={game.type} className="h-8 w-8" style={{ color: game.color }} />
 					</div>
 					<div className="min-w-0">
-						<h1 className="truncate text-lg font-semibold text-[var(--color-text)]">{game.data.name}</h1>
+						<h1 className="truncate text-xl font-bold text-[var(--color-text)] md:text-2xl">
+							{game.data.name}
+						</h1>
 						<p className="truncate text-sm text-[var(--color-text-secondary)]">
 							{game.data.points} points per win
 						</p>

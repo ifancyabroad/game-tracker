@@ -50,7 +50,7 @@ export const HomePage: React.FC = () => {
 					{/* Current Year Leaders */}
 					<section>
 						<div className="mb-4 flex items-center justify-between">
-							<h2 className="text-lg font-bold text-[var(--color-text)] sm:text-xl">
+							<h2 className="text-base font-bold text-[var(--color-text)] md:text-lg">
 								Current Year Leaders
 							</h2>
 							<Link
@@ -77,7 +77,9 @@ export const HomePage: React.FC = () => {
 					{latestEvents.length > 0 && (
 						<section>
 							<div className="mb-4 flex items-center justify-between">
-								<h2 className="text-lg font-bold text-[var(--color-text)] sm:text-xl">Recent Events</h2>
+								<h2 className="text-base font-bold text-[var(--color-text)] md:text-lg">
+									Recent Events
+								</h2>
 								<Link
 									to="/events"
 									className="text-sm font-medium text-[var(--color-primary)] hover:underline"
@@ -100,7 +102,7 @@ export const HomePage: React.FC = () => {
 
 					{/* Dynamic Insights */}
 					<section>
-						<h2 className="mb-4 text-lg font-bold text-[var(--color-text)] sm:text-xl">Highlights</h2>
+						<h2 className="mb-4 text-base font-bold text-[var(--color-text)] md:text-lg">Highlights</h2>
 						<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 							{/* Top Scorer(s) from Last Event */}
 							{topScorers.length > 0 && (

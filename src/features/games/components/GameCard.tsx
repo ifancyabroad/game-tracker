@@ -38,7 +38,7 @@ export const GameCard: React.FC<IGameCardProps> = ({ game, canEdit, onEdit, onDe
 					</span>
 				</div>
 				<div className="min-w-0 flex-1">
-					<p className="truncate text-sm font-semibold text-[var(--color-text)]">{game.name}</p>
+					<p className="truncate text-sm font-bold text-[var(--color-text)] md:text-base">{game.name}</p>
 					<p className="truncate text-xs text-[var(--color-text-secondary)]">
 						{numOfPlays} {numOfPlays === 1 ? "play" : "plays"}
 					</p>

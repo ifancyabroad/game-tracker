@@ -33,7 +33,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, canEdit, onEdit,
 
 				<div className="min-w-0 flex-1">
 					<div className="flex items-center gap-2">
-						<p className="truncate text-sm font-semibold text-[var(--color-text)]">{preferred}</p>
+						<p className="truncate text-sm font-bold text-[var(--color-text)] md:text-base">{preferred}</p>
 						{player.showOnLeaderboard && (
 							<Badge variant="success">
 								<Trophy className="h-3 w-3" />

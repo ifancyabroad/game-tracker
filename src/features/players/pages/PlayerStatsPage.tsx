@@ -83,7 +83,9 @@ export const PlayerStatsPage: React.FC = () => {
 				<div className="flex items-center gap-4">
 					<Avatar src={player.pictureUrl || undefined} name={player.data.name} size={56} />
 					<div className="min-w-0">
-						<h1 className="truncate text-lg font-semibold text-[var(--color-text)]">{player.data.name}</h1>
+						<h1 className="truncate text-xl font-bold text-[var(--color-text)] md:text-2xl">
+							{player.data.name}
+						</h1>
 						{player.data.fullName !== player.data.name && (
 							<p className="truncate text-sm text-[var(--color-text-secondary)]">
 								{player.data.fullName}

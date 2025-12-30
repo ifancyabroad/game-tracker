@@ -163,7 +163,7 @@ export const EventDetailPage: React.FC = () => {
 							<CalendarDays className="h-8 w-8 text-[var(--color-primary)]" />
 						</div>
 						<div className="min-w-0">
-							<h1 className="text-lg font-semibold text-[var(--color-text)]">{event.location}</h1>
+							<h1 className="text-xl font-bold text-[var(--color-text)] md:text-2xl">{event.location}</h1>
 							<div className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
 								<CalendarDays size={14} />
 								<span>{dateLabel}</span>
@@ -210,7 +210,7 @@ export const EventDetailPage: React.FC = () => {
 
 			<div className="grid gap-4 sm:gap-4 lg:grid-cols-2">
 				<Card className="p-3 sm:p-4">
-					<h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-[var(--color-text)]">
+					<h3 className="mb-3 flex items-center gap-2 text-sm font-bold text-[var(--color-text)] md:text-base">
 						<Users size={16} className="text-[var(--color-primary)]" /> Players
 					</h3>
 					<div className="space-y-2">
@@ -221,7 +221,7 @@ export const EventDetailPage: React.FC = () => {
 				</Card>
 
 				<Card className="p-3 sm:p-4">
-					<h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-[var(--color-text)]">
+					<h3 className="mb-3 flex items-center gap-2 text-sm font-bold text-[var(--color-text)] md:text-base">
 						<Gamepad2 size={16} className="text-[var(--color-primary)]" /> Games Played
 					</h3>
 					<div className="space-y-2">
@@ -234,7 +234,7 @@ export const EventDetailPage: React.FC = () => {
 
 			<div>
 				<div className="mb-3 flex items-center justify-between">
-					<h2 className="flex items-center gap-2 text-base font-semibold text-[var(--color-text)]">
+					<h2 className="flex items-center gap-2 text-base font-bold text-[var(--color-text)] md:text-lg">
 						<Trophy size={18} className="text-[var(--color-primary)]" />
 						Results
 					</h2>

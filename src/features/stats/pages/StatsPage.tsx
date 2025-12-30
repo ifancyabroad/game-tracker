@@ -72,9 +72,7 @@ export const StatsPage: React.FC = () => {
 
 			{/* Trends Over Time Section */}
 			<div className="mb-3 sm:mb-4">
-				<h2 className="text-sm font-semibold tracking-wide text-[var(--color-text-secondary)] uppercase">
-					Trends Over Time
-				</h2>
+				<h2 className="text-base font-bold text-[var(--color-text)] md:text-lg">Trends Over Time</h2>
 			</div>
 			<div className="mb-4 grid gap-4 sm:mb-6 sm:gap-6 lg:grid-cols-2">
 				<PlayerWinsOverTimeChart />
@@ -83,9 +81,7 @@ export const StatsPage: React.FC = () => {
 
 			{/* Player Performance Section */}
 			<div className="mb-3 sm:mb-4">
-				<h2 className="text-sm font-semibold tracking-wide text-[var(--color-text-secondary)] uppercase">
-					Player Performance
-				</h2>
+				<h2 className="text-base font-bold text-[var(--color-text)] md:text-lg">Player Performance</h2>
 			</div>
 			<div className="mb-4 grid gap-4 sm:mb-6 sm:gap-6 lg:grid-cols-2">
 				<PlayerWinRateChart />
@@ -106,9 +102,7 @@ export const StatsPage: React.FC = () => {
 
 			{/* Game Insights Section */}
 			<div className="mb-3 sm:mb-4">
-				<h2 className="text-sm font-semibold tracking-wide text-[var(--color-text-secondary)] uppercase">
-					Game Insights
-				</h2>
+				<h2 className="text-base font-bold text-[var(--color-text)] md:text-lg">Game Insights</h2>
 			</div>
 			<div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
 				<MostPlayedGamesChart />
