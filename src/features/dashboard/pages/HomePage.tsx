@@ -30,6 +30,14 @@ export const HomePage: React.FC = () => {
 
 	return (
 		<div className="mx-auto max-w-6xl">
+			{/* Welcome Header */}
+			<div className="mb-6">
+				<h1 className="text-2xl font-bold text-[var(--color-text)] md:text-3xl">Welcome back! 👋</h1>
+				<p className="text-sm text-[var(--color-text-secondary)]">
+					Here's what's been happening in your game nights
+				</p>
+			</div>
+
 			{!hasData ? (
 				<EmptyState>
 					<div className="flex flex-col items-center gap-3">
@@ -47,9 +55,7 @@ export const HomePage: React.FC = () => {
 					{/* Current Year Leaders */}
 					<section>
 						<div className="mb-4 flex items-center justify-between">
-							<h2 className="text-base font-bold text-[var(--color-text)] md:text-lg">
-								Current Year Leaders
-							</h2>
+							<h2 className="text-base font-bold text-[var(--color-text)] md:text-lg">Current Leaders</h2>
 							<Link
 								to="/leaderboard"
 								className="text-sm font-medium text-[var(--color-primary)] hover:underline"
@@ -97,7 +103,7 @@ export const HomePage: React.FC = () => {
 						<h2 className="mb-4 text-base font-bold text-[var(--color-text)] md:text-lg">Highlights</h2>
 						<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 							{/* Top Scorer(s) from Last Event */}
-							{topScorers.length > 0 && (
+							{topScorers.length > 0 ? (
 								<Card className="relative overflow-hidden border-2 border-green-500/30 bg-gradient-to-br from-green-500/10 via-green-500/5 to-transparent p-4">
 									<div className="mb-3 inline-flex rounded-lg bg-green-500/20 p-2">
 										<TrendingUp className="h-5 w-5 text-green-600" />
@@ -118,10 +124,22 @@ export const HomePage: React.FC = () => {
 										))}
 									</div>
 								</Card>
+							) : (
+								<Card className="relative overflow-hidden border-2 border-green-500/20 bg-gradient-to-br from-green-500/5 via-green-500/5 to-transparent p-4">
+									<div className="mb-3 inline-flex rounded-lg bg-green-500/20 p-2">
+										<TrendingUp className="h-5 w-5 text-green-600" />
+									</div>
+									<h3 className="mb-3 font-semibold text-[var(--color-text)]">
+										Last Event Top Scorer
+									</h3>
+									<p className="text-sm text-[var(--color-text-secondary)]">
+										No recent event results yet
+									</p>
+								</Card>
 							)}
 
 							{/* Longest Drought */}
-							{longestDrought && (
+							{longestDrought ? (
 								<Card className="relative overflow-hidden border-2 border-orange-500/30 bg-gradient-to-br from-orange-500/10 via-orange-500/5 to-transparent p-4">
 									<div className="mb-3 inline-flex rounded-lg bg-orange-500/20 p-2">
 										<TrendingDown className="h-5 w-5 text-orange-600" />
@@ -144,10 +162,20 @@ export const HomePage: React.FC = () => {
 										</div>
 									</div>
 								</Card>
+							) : (
+								<Card className="relative overflow-hidden border-2 border-orange-500/20 bg-gradient-to-br from-orange-500/5 via-orange-500/5 to-transparent p-4">
+									<div className="mb-3 inline-flex rounded-lg bg-orange-500/20 p-2">
+										<TrendingDown className="h-5 w-5 text-orange-600" />
+									</div>
+									<h3 className="mb-3 font-semibold text-[var(--color-text)]">Longest Drought</h3>
+									<p className="text-sm text-[var(--color-text-secondary)]">
+										Everyone's winning! No active droughts
+									</p>
+								</Card>
 							)}
 
 							{/* Top Rivalry */}
-							{topRivalry && (
+							{topRivalry ? (
 								<Card className="relative overflow-hidden border-2 border-purple-500/30 bg-gradient-to-br from-purple-500/10 via-purple-500/5 to-transparent p-4">
 									<div className="mb-3 inline-flex rounded-lg bg-purple-500/20 p-2">
 										<Swords className="h-5 w-5 text-purple-600" />
@@ -177,6 +205,16 @@ export const HomePage: React.FC = () => {
 											</span>
 										</div>
 									</div>
+								</Card>
+							) : (
+								<Card className="relative overflow-hidden border-2 border-purple-500/20 bg-gradient-to-br from-purple-500/5 via-purple-500/5 to-transparent p-4">
+									<div className="mb-3 inline-flex rounded-lg bg-purple-500/20 p-2">
+										<Swords className="h-5 w-5 text-purple-600" />
+									</div>
+									<h3 className="mb-3 font-semibold text-[var(--color-text)]">Hottest Rivalry</h3>
+									<p className="text-sm text-[var(--color-text-secondary)]">
+										No rivalries yet - play more games together!
+									</p>
 								</Card>
 							)}
 						</div>
