@@ -1,14 +1,18 @@
 import { useModal } from "common/context/ModalContext";
 import { AnimatePresence, motion } from "framer-motion";
+import { useBodyScrollLock } from "common/utils/hooks";
 
 export const Modal: React.FC = () => {
 	const { isOpen, modalContent, closeModal } = useModal();
+
+	// Lock body scroll when modal is open
+	useBodyScrollLock(isOpen);
 
 	return (
 		<AnimatePresence>
 			{isOpen && modalContent && (
 				<motion.div
-					className="fixed inset-0 z-50 overflow-y-auto bg-black/60 px-4 py-8"
+					className="fixed inset-0 z-[70] overflow-y-auto bg-black/60 px-4 py-8"
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}
