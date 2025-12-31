@@ -115,13 +115,13 @@ export const PlayerStatsPage: React.FC = () => {
 						value={player.data.points}
 					/>
 					<KpiCard
-						label="Best Streak"
+						label="Winning Streak"
 						value={`${longestWinStreak}`}
 						icon={<TrendingUp className="h-4 w-4" style={{ color: player.color }} />}
 					/>
 					<KpiCard
 						icon={<TrendingDown className="h-4 w-4" style={{ color: player.color }} />}
-						label="Worst Streak"
+						label="Losing Streak"
 						value={`${longestLossStreak}`}
 					/>
 				</div>
