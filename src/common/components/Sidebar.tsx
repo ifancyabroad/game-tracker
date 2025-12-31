@@ -24,6 +24,7 @@ import { Link } from "react-router";
 import logo from "assets/logo.svg";
 import { useEffect } from "react";
 import type { Theme } from "common/utils/theme";
+import { useBodyScrollLock } from "common/utils/hooks";
 
 const navItems = [
 	{ to: "/", label: "Home", icon: Home },
@@ -43,6 +44,9 @@ export const Sidebar: React.FC = () => {
 	const { isSidebarOpen, closeSidebar, selectedYear, setSelectedYear, availableYears, theme, updateTheme } = useUI();
 	const { openModal, closeModal } = useModal();
 	const { user } = useAuth();
+
+	// Lock body scroll when sidebar is open on mobile
+	useBodyScrollLock(isSidebarOpen);
 
 	const handleLoginClick = () => {
 		openModal(<LoginForm onSuccess={closeModal} />);
@@ -68,7 +72,7 @@ export const Sidebar: React.FC = () => {
 		<>
 			{isSidebarOpen && (
 				<div
-					className="fixed inset-0 z-40 bg-black/50 md:hidden"
+					className="fixed inset-0 z-50 bg-black/50 lg:hidden"
 					onClick={closeSidebar}
 					aria-label="Close sidebar"
 					role="button"
@@ -82,7 +86,7 @@ export const Sidebar: React.FC = () => {
 			)}
 
 			<aside
-				className={`fixed top-0 left-0 z-50 flex h-screen w-72 flex-col border-r border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-4 transition-transform lg:py-6 ${
+				className={`fixed inset-y-0 left-0 z-[60] flex w-72 flex-col overflow-y-auto border-r border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-4 transition-transform lg:py-6 ${
 					isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
 				}`}
 			>

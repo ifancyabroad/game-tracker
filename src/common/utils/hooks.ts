@@ -62,3 +62,34 @@ export function useToast() {
 	}
 	return context.showToast;
 }
+
+/**
+ * Locks body scroll when enabled (typically for modals/sidebars on mobile)
+ * Preserves scroll position when lock is applied and restores it when removed
+ * Compensates for scrollbar width to prevent layout shift
+ */
+export function useBodyScrollLock(isLocked: boolean) {
+	useEffect(() => {
+		if (!isLocked) return;
+
+		// Save current scroll position and measure scrollbar width
+		const scrollY = window.scrollY;
+		const body = document.body;
+		const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+		// Lock scroll and compensate for scrollbar
+		body.style.position = "fixed";
+		body.style.top = `-${scrollY}px`;
+		body.style.width = "100%";
+		body.style.paddingRight = `${scrollbarWidth}px`;
+
+		// Cleanup: restore scroll
+		return () => {
+			body.style.position = "";
+			body.style.top = "";
+			body.style.width = "";
+			body.style.paddingRight = "";
+			window.scrollTo(0, scrollY);
+		};
+	}, [isLocked]);
+}
