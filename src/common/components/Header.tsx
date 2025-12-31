@@ -7,7 +7,7 @@ export const Header: React.FC = () => {
 	const { openSidebar, theme, toggleTheme } = useUI();
 
 	return (
-		<header className="flex items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 lg:hidden">
+		<header className="sticky top-0 z-40 flex items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 lg:hidden">
 			<Link to="/" className="flex items-center gap-2.5">
 				<div className="flex h-9 w-9 items-center justify-center">
 					<img src={logo} alt="Logo" />
