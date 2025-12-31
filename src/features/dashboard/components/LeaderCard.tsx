@@ -22,7 +22,7 @@ export const LeaderCard: React.FC<ILeaderCardProps> = ({ player, rank }) => {
 
 	return (
 		<Link to={`/players/${player.id}`}>
-			<Card variant="interactive" className="p-0 transition-all hover:shadow-lg">
+			<Card variant="interactive" className="overflow-hidden rounded-t-none p-0 transition-all hover:shadow-lg">
 				{/* Colored Top Bar */}
 				<div
 					className={`h-1 w-full ${rank === 1 ? "bg-yellow-500" : rank === 2 ? "bg-slate-400" : rank === 3 ? "bg-amber-600" : "bg-[var(--color-border)]"}`}
