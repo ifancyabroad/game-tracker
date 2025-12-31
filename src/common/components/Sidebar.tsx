@@ -29,9 +29,9 @@ import { useBodyScrollLock } from "common/utils/hooks";
 const navItems = [
 	{ to: "/", label: "Home", icon: Home },
 	{ to: "/leaderboard", label: "Leaderboard", icon: Trophy },
-	{ to: "/players", label: "Players", icon: Users },
 	{ to: "/events", label: "Events", icon: Calendar },
 	{ to: "/games", label: "Games", icon: Gamepad2 },
+	{ to: "/players", label: "Players", icon: Users },
 	{ to: "/stats", label: "Stats", icon: BarChart },
 ];
 

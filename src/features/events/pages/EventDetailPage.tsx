@@ -3,7 +3,7 @@ import { useEvents } from "features/events/context/EventsContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useGames } from "features/games/context/GamesContext";
 import { useResults } from "features/events/context/ResultsContext";
-import { CalendarDays, MapPin, Users, Gamepad2, Plus, Edit, Trash2, Trophy, MessageSquare } from "lucide-react";
+import { CalendarDays, Users, Gamepad2, Plus, Edit, Trash2, Trophy, MessageSquare, ClipboardList } from "lucide-react";
 import { useModal } from "common/context/ModalContext";
 import { BackButton, Button, Card, ConfirmDelete, EmptyState, KpiCard } from "common/components";
 import { EventForm } from "features/events/components/EventForm";
@@ -13,7 +13,7 @@ import { EventPlayerCard } from "features/events/components/EventPlayerCard";
 import { EventGameCard } from "features/events/components/EventGameCard";
 import type { IEvent, IResult } from "features/events/types";
 import { useAuth } from "common/context/AuthContext";
-import { useEventPlayerStats, useEventGameStats } from "features/events/utils/hooks";
+import { useEventPlayerStats, useEventGameStats, useEventTopScorers } from "features/events/utils/hooks";
 import { useToast } from "common/utils/hooks";
 
 export const EventDetailPage: React.FC = () => {
@@ -34,6 +34,7 @@ export const EventDetailPage: React.FC = () => {
 
 	const playerStats = useEventPlayerStats(eventId);
 	const gameStats = useEventGameStats(eventId);
+	const topScorerDisplay = useEventTopScorers(eventId);
 
 	const handleEditEventSubmit = async (changes: Omit<IEvent, "id">) => {
 		try {
@@ -184,14 +185,14 @@ export const EventDetailPage: React.FC = () => {
 						value={event.gameIds.length}
 					/>
 					<KpiCard
-						icon={<Trophy className="h-4 w-4 text-[var(--color-primary)]" />}
+						icon={<ClipboardList className="h-4 w-4 text-[var(--color-primary)]" />}
 						label="Results"
 						value={eventResults.length}
 					/>
 					<KpiCard
-						icon={<MapPin className="h-4 w-4 text-[var(--color-primary)]" />}
-						label="Location"
-						value={event.location}
+						icon={<Trophy className="h-4 w-4 text-[var(--color-primary)]" />}
+						label="Top Scorer"
+						value={topScorerDisplay}
 					/>
 				</div>
 
@@ -235,7 +236,7 @@ export const EventDetailPage: React.FC = () => {
 			<div>
 				<div className="mb-3 flex items-center justify-between">
 					<h2 className="flex items-center gap-2 text-base font-bold text-[var(--color-text)] md:text-lg">
-						<Trophy size={18} className="text-[var(--color-primary)]" />
+						<ClipboardList size={18} className="text-[var(--color-primary)]" />
 						Results
 					</h2>
 					{user && (

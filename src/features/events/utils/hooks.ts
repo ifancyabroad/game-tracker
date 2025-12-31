@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { getSortedEventPlayerStats, getSortedEventGameStats } from "./calculations";
+import { getSortedEventPlayerStats, getSortedEventGameStats, getEventTopScorers } from "./calculations";
 import { sortResultsChronologically, sortEventsByDate } from "common/utils/sorting";
 import type { IResult, IEvent } from "features/events/types";
 import { useEvents } from "features/events/context/EventsContext";
@@ -39,4 +39,10 @@ export function useEventGameStats(eventId: string) {
 		() => getSortedEventGameStats(eventId, eventById, results, gameById, playerById),
 		[eventId, eventById, results, gameById, playerById],
 	);
+}
+
+export function useEventTopScorers(eventId: string) {
+	const { playerById } = usePlayers();
+	const playerStats = useEventPlayerStats(eventId);
+	return useMemo(() => getEventTopScorers(playerStats, playerById), [playerStats, playerById]);
 }

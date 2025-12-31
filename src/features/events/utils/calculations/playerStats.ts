@@ -5,6 +5,30 @@ import { isPlayerWinner } from "common/utils/gameHelpers";
 import { getDisplayName } from "features/players/utils/helpers";
 
 /**
+ * Get the top scorer(s) for an event
+ * Returns a comma-separated string of player names who scored the most points
+ */
+export function getEventTopScorers(playerStats: IEventPlayerStat[], playerById: Map<string, IPlayer>): string {
+	if (playerStats.length === 0) {
+		return "N/A";
+	}
+
+	const maxPoints = Math.max(...playerStats.map((s) => s.points));
+
+	if (maxPoints <= 0) {
+		return "N/A";
+	}
+
+	const topScorers = playerStats
+		.filter((s) => s.points === maxPoints)
+		.map((s) => playerById.get(s.playerId))
+		.filter(Boolean)
+		.map((p) => getDisplayName(p!));
+
+	return topScorers.length > 0 ? topScorers.join(", ") : "N/A";
+}
+
+/**
  * Calculate stats for a single player in an event
  */
 function calculatePlayerStats(
