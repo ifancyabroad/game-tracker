@@ -50,7 +50,7 @@ export const GameForm: React.FC<IGameFormProps> = ({ initialData, onSubmit }) =>
 
 			<div>
 				<Label required>Name</Label>
-				<Input type="text" {...register("name")} placeholder="Game Name" />
+				<Input type="text" {...register("name")} placeholder="Game Name" maxLength={100} />
 				{errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
 			</div>
 

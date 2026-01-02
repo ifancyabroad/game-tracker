@@ -5,27 +5,42 @@ import { z } from "zod";
 // ============================================
 
 export const playerSchema = z.object({
-	firstName: z.string().min(1, "First name is required"),
-	lastName: z.string().min(1, "Last name is required"),
-	preferredName: z.string().optional(),
-	color: z.string().min(1, "Color is required"),
-	pictureUrl: z.string().optional(),
+	firstName: z.string().min(1, "First name is required").max(30, "First name must be 30 characters or less").trim(),
+	lastName: z.string().min(1, "Last name is required").max(30, "Last name must be 30 characters or less").trim(),
+	preferredName: z
+		.string()
+		.max(30, "Preferred name must be 30 characters or less")
+		.trim()
+		.optional()
+		.or(z.literal("")),
+	color: z
+		.string()
+		.regex(/^#[0-9A-Fa-f]{6}$/, "Color must be a valid hex color (e.g., #6366f1)")
+		.min(1, "Color is required"),
+	pictureUrl: z
+		.url("Picture URL must be a valid URL")
+		.max(2048, "Picture URL is too long")
+		.optional()
+		.or(z.literal("")),
 	showOnLeaderboard: z.boolean(),
 });
 
 export const gameSchema = z.object({
-	name: z.string().min(1, "Game name is required"),
+	name: z.string().min(1, "Game name is required").max(100, "Game name must be 100 characters or less").trim(),
 	points: z.number().min(1, "Points must be at least 1").max(3, "Points must be at most 3"),
 	type: z.enum(["board", "video"]),
-	color: z.string().min(1, "Color is required"),
+	color: z
+		.string()
+		.regex(/^#[0-9A-Fa-f]{6}$/, "Color must be a valid hex color (e.g., #6366f1)")
+		.min(1, "Color is required"),
 });
 
 export const eventSchema = z.object({
-	location: z.string().min(1, "Location is required"),
+	location: z.string().min(1, "Location is required").max(100, "Location must be 100 characters or less").trim(),
 	date: z.string().min(1, "Date is required"),
 	gameIds: z.array(z.string()).min(1, "At least one game must be selected"),
 	playerIds: z.array(z.string()).min(1, "At least one player must be selected"),
-	notes: z.string().max(1000, "Summary must be 1000 characters or less").optional(),
+	notes: z.string().max(1000, "Summary must be 1000 characters or less").trim().optional().or(z.literal("")),
 });
 
 export const playerResultSchema = z.object({
@@ -40,11 +55,11 @@ export const resultSchema = z.object({
 	gameId: z.string().min(1, "Game ID is required"),
 	order: z.number().min(1, "Order must be at least 1"),
 	playerResults: z.array(playerResultSchema).min(1, "At least one player result is required"),
-	notes: z.string().max(500, "Notes must be 500 characters or less").optional(),
+	notes: z.string().max(500, "Notes must be 500 characters or less").trim().optional().or(z.literal("")),
 });
 
 export const userSchema = z.object({
-	email: z.email(),
+	email: z.email("Invalid email address").max(254, "Email is too long").toLowerCase().trim(),
 	role: z.enum(["admin", "user"] as const),
 	linkedPlayerId: z.string().nullable(),
 });
