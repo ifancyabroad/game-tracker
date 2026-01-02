@@ -50,7 +50,7 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 		handleSubmit,
 		watch,
 		control,
-		formState: { errors },
+		formState: { errors, isDirty, isSubmitting },
 	} = useForm<ResultFormData>({
 		resolver: zodResolver(resultSchema),
 		defaultValues: {
@@ -66,6 +66,9 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 	const playerResults = watch("playerResults");
 
 	const getPlayer = (id: string) => playerById.get(id);
+
+	const isEditMode = !!initialData;
+	const isSubmitDisabled = isSubmitting || !filteredGames.length || !gameId || (isEditMode && !isDirty);
 
 	const onFormSubmit = async (data: ResultFormData) => {
 		try {
@@ -218,8 +221,8 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 				{errors.playerResults && <ErrorMessage>{errors.playerResults.message}</ErrorMessage>}
 			</div>
 
-			<Button type="submit" disabled={!filteredGames.length || !gameId} variant="primary" size="md">
-				{initialData ? "Update Result" : "Submit Result"}
+			<Button type="submit" disabled={isSubmitDisabled} variant="primary" size="md">
+				{isEditMode ? "Update Result" : "Submit Result"}
 			</Button>
 		</form>
 	);

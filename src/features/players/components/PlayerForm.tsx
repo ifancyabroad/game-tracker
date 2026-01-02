@@ -23,7 +23,7 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData, 
 		setValue,
 		watch,
 		reset,
-		formState: { errors },
+		formState: { errors, isDirty, isSubmitting },
 	} = useForm<PlayerFormData>({
 		resolver: zodResolver(playerSchema),
 		defaultValues: {
@@ -59,6 +59,9 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData, 
 		}
 	};
 
+	const isEditMode = !!initialData;
+	const isSubmitDisabled = isSubmitting || (isEditMode && !isDirty);
+
 	return (
 		<form onSubmit={handleSubmit(onFormSubmit)} className="m-0 flex flex-col gap-4 p-0">
 			{!hideHeader && <FormHeader icon={<User />} title={initialData ? "Edit Player" : "Add Player"} />}
@@ -86,7 +89,7 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData, 
 				<ColorPicker
 					label="Favourite colour"
 					value={colorValue}
-					onChange={(newColor) => setValue("color", newColor)}
+					onChange={(newColor) => setValue("color", newColor, { shouldDirty: true })}
 					showInput
 				/>
 				{errors.color && <ErrorMessage>{errors.color.message}</ErrorMessage>}
@@ -123,13 +126,15 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData, 
 			<div>
 				<Switch
 					checked={showOnLeaderboardValue}
-					onChange={(checked) => setValue("showOnLeaderboard", checked)}
+					onChange={(checked) => setValue("showOnLeaderboard", checked, { shouldDirty: true })}
 					label="Show on Leaderboard"
 					description="Include this player in the public leaderboard"
 				/>
 			</div>
 
-			<Button type="submit">{initialData ? "Save Changes" : "Add Player"}</Button>
+			<Button type="submit" disabled={isSubmitDisabled}>
+				{isEditMode ? "Save Changes" : "Add Player"}
+			</Button>
 		</form>
 	);
 };

@@ -21,7 +21,8 @@ export const EventForm: React.FC<IEventFormProps> = ({ initialData, players, gam
 		handleSubmit,
 		setValue,
 		watch,
-		formState: { errors },
+		reset,
+		formState: { errors, isDirty, isSubmitting },
 	} = useForm<EventFormData>({
 		resolver: zodResolver(eventSchema),
 		defaultValues: {
@@ -40,19 +41,31 @@ export const EventForm: React.FC<IEventFormProps> = ({ initialData, players, gam
 		const newPlayers = selectedPlayers.includes(playerId)
 			? selectedPlayers.filter((id) => id !== playerId)
 			: [...selectedPlayers, playerId];
-		setValue("playerIds", newPlayers, { shouldValidate: true });
+		setValue("playerIds", newPlayers, { shouldValidate: true, shouldDirty: true });
 	};
 
 	const toggleGame = (gameId: string) => {
 		const newGames = selectedGames.includes(gameId)
 			? selectedGames.filter((id) => id !== gameId)
 			: [...selectedGames, gameId];
-		setValue("gameIds", newGames, { shouldValidate: true });
+		setValue("gameIds", newGames, { shouldValidate: true, shouldDirty: true });
 	};
 
 	const onFormSubmit = (data: EventFormData) => {
-		onSubmit(data);
+		onSubmit({
+			location: data.location,
+			date: data.date,
+			gameIds: data.gameIds,
+			playerIds: data.playerIds,
+			notes: data.notes?.trim() || null,
+		});
+		if (!initialData) {
+			reset();
+		}
 	};
+
+	const isEditMode = !!initialData;
+	const isSubmitDisabled = isSubmitting || (isEditMode && !isDirty);
 
 	return (
 		<form onSubmit={handleSubmit(onFormSubmit)} className="m-0 flex flex-col gap-4 p-0">
@@ -116,7 +129,9 @@ export const EventForm: React.FC<IEventFormProps> = ({ initialData, players, gam
 				{errors.gameIds && <ErrorMessage>{errors.gameIds.message}</ErrorMessage>}
 			</div>
 
-			<Button type="submit">{initialData ? "Save Changes" : "Add Event"}</Button>
+			<Button type="submit" disabled={isSubmitDisabled}>
+				{isEditMode ? "Save Changes" : "Add Event"}
+			</Button>
 		</form>
 	);
 };
