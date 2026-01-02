@@ -25,7 +25,7 @@ export function UserForm({ initialData, onSubmit }: UserFormProps) {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors, isSubmitting },
+		formState: { errors, isSubmitting, isDirty },
 	} = useForm<UserFormData>({
 		resolver: zodResolver(userSchema),
 		defaultValues: initialData
@@ -43,6 +43,8 @@ export function UserForm({ initialData, onSubmit }: UserFormProps) {
 
 	// Filter out players that are already linked to other users
 	const availablePlayers = players.filter((p: IPlayer) => !p.linkedUserId || p.linkedUserId === initialData?.id);
+
+	const isSubmitDisabled = isSubmitting || (isEdit && !isDirty);
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -91,7 +93,7 @@ export function UserForm({ initialData, onSubmit }: UserFormProps) {
 			</div>
 
 			<div className="flex gap-3">
-				<Button type="submit" disabled={isSubmitting} className="flex-1">
+				<Button type="submit" disabled={isSubmitDisabled} className="flex-1">
 					{isSubmitting ? "Saving..." : isEdit ? "Update User" : "Create User"}
 				</Button>
 			</div>

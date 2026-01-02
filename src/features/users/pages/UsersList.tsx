@@ -114,7 +114,9 @@ export function UsersList() {
 			) : (
 				<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
 					{users.map((user) => (
-						<UserCard key={user.id} user={user} onEdit={handleEdit} onDelete={handleDelete} canEdit />
+						<div key={user.id} className="min-w-0">
+							<UserCard user={user} onEdit={handleEdit} onDelete={handleDelete} canEdit />
+						</div>
 					))}
 				</div>
 			)}

@@ -17,7 +17,7 @@ export const GameForm: React.FC<IGameFormProps> = ({ initialData, onSubmit }) =>
 		setValue,
 		watch,
 		reset,
-		formState: { errors },
+		formState: { errors, isDirty, isSubmitting },
 	} = useForm<GameFormData>({
 		resolver: zodResolver(gameSchema),
 		defaultValues: {
@@ -37,6 +37,9 @@ export const GameForm: React.FC<IGameFormProps> = ({ initialData, onSubmit }) =>
 			reset();
 		}
 	};
+
+	const isEditMode = !!initialData;
+	const isSubmitDisabled = isSubmitting || (isEditMode && !isDirty);
 
 	return (
 		<form onSubmit={handleSubmit(onFormSubmit)} className="m-0 flex flex-col gap-4 p-0">
@@ -89,7 +92,9 @@ export const GameForm: React.FC<IGameFormProps> = ({ initialData, onSubmit }) =>
 				{errors.color && <ErrorMessage>{errors.color.message}</ErrorMessage>}
 			</div>
 
-			<Button type="submit">{initialData ? "Save Changes" : "Add Game"}</Button>
+			<Button type="submit" disabled={isSubmitDisabled}>
+				{isEditMode ? "Save Changes" : "Add Game"}
+			</Button>
 		</form>
 	);
 };
