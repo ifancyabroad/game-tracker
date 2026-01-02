@@ -11,7 +11,7 @@ import { useToast } from "common/utils/hooks";
 const GamesPage: React.FC = () => {
 	const { games, addGame, editGame, deleteGame } = useGames();
 	const { openModal, closeModal } = useModal();
-	const { user } = useAuth();
+	const { isAdmin } = useAuth();
 	const toast = useToast();
 
 	const handleAddGame = async (game: Omit<IGame, "id">) => {
@@ -70,7 +70,7 @@ const GamesPage: React.FC = () => {
 				title="Games"
 				count={games.length}
 				action={
-					user ? (
+					isAdmin ? (
 						<Button onClick={handleAdd} variant="primary" size="md">
 							<Plus className="h-4 w-4" /> Add Game
 						</Button>
@@ -80,7 +80,7 @@ const GamesPage: React.FC = () => {
 
 			{games.length === 0 ? (
 				<EmptyState>
-					No games yet. {user ? "Add your first game to get started." : "Sign in to add games."}
+					No games yet. {isAdmin ? "Add your first game to get started." : "Check back later."}
 				</EmptyState>
 			) : (
 				<ul className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
@@ -88,7 +88,7 @@ const GamesPage: React.FC = () => {
 						<li key={game.id} className="transition-transform hover:-translate-y-0.5">
 							<GameCard
 								game={game}
-								canEdit={!!user}
+								canEdit={isAdmin}
 								onEdit={() => handleEdit(game)}
 								onDelete={() => handleDelete(game)}
 							/>

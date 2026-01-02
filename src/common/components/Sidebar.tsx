@@ -7,19 +7,19 @@ import {
 	BarChart,
 	X,
 	LogIn,
-	LogOut,
+	User,
 	CalendarRange,
 	Sun,
 	Moon,
 	Trophy,
+	UserCog,
+	ChevronRight,
 } from "lucide-react";
 import { useUI } from "common/context/UIContext";
 import { useModal } from "common/context/ModalContext";
 import { LoginForm, Select, Button, Label, SegmentedControl } from "common/components";
 import type { SegmentedControlOption } from "common/components/SegmentedControl";
 import { useAuth } from "common/context/AuthContext";
-import { signOut } from "firebase/auth";
-import { auth } from "firebase";
 import { Link } from "react-router";
 import logo from "assets/logo.svg";
 import { useEffect } from "react";
@@ -35,6 +35,8 @@ const navItems = [
 	{ to: "/stats", label: "Stats", icon: BarChart },
 ];
 
+const adminNavItems = [{ to: "/users", label: "Users", icon: UserCog }];
+
 const themeOptions: SegmentedControlOption<Theme>[] = [
 	{ value: "light", label: "Light", icon: Sun },
 	{ value: "dark", label: "Dark", icon: Moon },
@@ -43,17 +45,13 @@ const themeOptions: SegmentedControlOption<Theme>[] = [
 export const Sidebar: React.FC = () => {
 	const { isSidebarOpen, closeSidebar, selectedYear, setSelectedYear, availableYears, theme, updateTheme } = useUI();
 	const { openModal, closeModal } = useModal();
-	const { user } = useAuth();
+	const { authUser, user, isAdmin } = useAuth();
 
 	// Lock body scroll when sidebar is open on mobile
 	useBodyScrollLock(isSidebarOpen);
 
 	const handleLoginClick = () => {
 		openModal(<LoginForm onSuccess={closeModal} />);
-	};
-
-	const handleLogoutClick = async () => {
-		await signOut(auth);
 	};
 
 	// Handle Escape key to close sidebar on mobile
@@ -152,15 +150,49 @@ export const Sidebar: React.FC = () => {
 							{label}
 						</NavLink>
 					))}
+					{isAdmin && (
+						<>
+							<div className="my-2 border-t border-[var(--color-border)]" />
+							{adminNavItems.map(({ to, label, icon: Icon }) => (
+								<NavLink
+									key={to}
+									to={to}
+									className={({ isActive }) =>
+										`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+											isActive
+												? "bg-[var(--color-primary)] text-[var(--color-primary-contrast)]"
+												: "text-[var(--color-text-secondary)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-text)]"
+										}`
+									}
+									onClick={closeSidebar}
+								>
+									<Icon size={16} />
+									{label}
+								</NavLink>
+							))}
+						</>
+					)}
 				</nav>
 
 				<div className="mt-auto flex flex-col gap-3 border-t border-[var(--color-border)] pt-4">
 					<SegmentedControl value={theme} onChange={updateTheme} options={themeOptions} />
-					{user ? (
-						<Button onClick={handleLogoutClick} variant="secondary" size="md">
-							<LogOut size={16} />
-							Logout
-						</Button>
+					{authUser ? (
+						<Link
+							to="/profile"
+							onClick={closeSidebar}
+							className="group flex items-center gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-3 transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-accent)]"
+						>
+							<div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-blue-500">
+								<User className="h-5 w-5 text-white" />
+							</div>
+							<div className="min-w-0 flex-1">
+								<div className="truncate text-sm font-medium text-[var(--color-text)]">
+									{user?.email}
+								</div>
+								<div className="text-xs text-[var(--color-text-secondary)]">View profile</div>
+							</div>
+							<ChevronRight className="h-4 w-4 text-[var(--color-text-secondary)] transition-transform group-hover:translate-x-0.5" />
+						</Link>
 					) : (
 						<Button onClick={handleLoginClick} variant="secondary" size="md">
 							<LogIn size={16} />

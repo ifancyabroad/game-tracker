@@ -6,6 +6,7 @@ export interface IPlayer {
 	pictureUrl: string | null;
 	color: string;
 	showOnLeaderboard: boolean;
+	linkedUserId: string | null;
 }
 
 export interface BestGame {

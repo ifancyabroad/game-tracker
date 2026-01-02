@@ -10,9 +10,10 @@ import { playerSchema, type PlayerFormData } from "common/utils/validation";
 interface IPlayerFormProps {
 	onSubmit: (player: Omit<IPlayer, "id">) => Promise<void> | void;
 	initialData?: IPlayer;
+	hideHeader?: boolean;
 }
 
-export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData }) => {
+export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData, hideHeader = false }) => {
 	const [previewUrl, setPreviewUrl] = useState<string | null>(initialData?.pictureUrl || null);
 	const { uploadImage } = usePlayers();
 
@@ -50,6 +51,7 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData }
 			...data,
 			preferredName: data.preferredName?.trim() || null,
 			pictureUrl: data.pictureUrl?.trim() || null,
+			linkedUserId: initialData?.linkedUserId || null,
 		});
 		if (!initialData) {
 			reset();
@@ -59,7 +61,7 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData }
 
 	return (
 		<form onSubmit={handleSubmit(onFormSubmit)} className="m-0 flex flex-col gap-4 p-0">
-			<FormHeader icon={<User />} title={initialData ? "Edit Player" : "Add Player"} />
+			{!hideHeader && <FormHeader icon={<User />} title={initialData ? "Edit Player" : "Add Player"} />}
 
 			<div className="grid gap-3 sm:grid-cols-2">
 				<div>

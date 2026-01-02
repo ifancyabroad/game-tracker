@@ -43,6 +43,12 @@ export const resultSchema = z.object({
 	notes: z.string().max(500, "Notes must be 500 characters or less").optional(),
 });
 
+export const userSchema = z.object({
+	email: z.email(),
+	role: z.enum(["admin", "user"] as const),
+	linkedPlayerId: z.string().nullable(),
+});
+
 // ============================================
 // Type Inference from Schemas
 // ============================================
@@ -52,3 +58,4 @@ export type GameFormData = z.infer<typeof gameSchema>;
 export type EventFormData = z.infer<typeof eventSchema>;
 export type ResultFormData = z.infer<typeof resultSchema>;
 export type PlayerResultFormData = z.infer<typeof playerResultSchema>;
+export type UserFormData = z.infer<typeof userSchema>;

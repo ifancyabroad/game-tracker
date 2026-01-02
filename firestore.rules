@@ -1,0 +1,76 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+             exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      // Anyone can read user documents (for displaying user info)
+      allow read: if true;
+      
+      // Only admins can create new users
+      allow create: if isAdmin();
+      
+      // Only admins can update users (role, linkedPlayerId)
+      allow update: if isAdmin();
+      
+      // Only admins can delete users
+      allow delete: if isAdmin();
+    }
+    
+    // Players collection
+    match /players/{playerId} {
+      // Anyone can read players
+      allow read: if true;
+      
+      // Admins can do anything
+      // Users can update their own linked player (but not linkedUserId)
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || 
+                       (isAuthenticated() && 
+                        resource.data.linkedUserId == request.auth.uid &&
+                        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['linkedUserId']));
+    }
+    
+    // Games collection
+    match /games/{gameId} {
+      // Anyone can read games
+      allow read: if true;
+      
+      // Only admins can create, update, or delete games
+      allow create, update, delete: if isAdmin();
+    }
+    
+    // Events collection
+    match /events/{eventId} {
+      // Anyone can read events
+      allow read: if true;
+      
+      // Only admins can create, update, or delete events
+      allow create, update, delete: if isAdmin();
+    }
+    
+    // Results collection
+    match /results/{resultId} {
+      // Anyone can read results
+      allow read: if true;
+      
+      // Only admins can create, update, or delete results
+      allow create, update, delete: if isAdmin();
+    }
+  }
+}

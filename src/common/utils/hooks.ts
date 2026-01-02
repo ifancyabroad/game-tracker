@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useContext } from "react";
 import { useAuth } from "common/context/AuthContext";
+import { useUsers } from "features/users/context/UsersContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useGames } from "features/games/context/GamesContext";
 import { useEvents } from "features/events/context/EventsContext";
@@ -10,11 +11,12 @@ import { ToastContext } from "common/context/ToastContext";
 
 export function useAppReady() {
 	const a = useAuth();
+	const u = useUsers();
 	const p = usePlayers();
 	const g = useGames();
 	const e = useEvents();
 	const r = useResults();
-	return { loading: a.loading || p.loading || g.loading || e.loading || r.loading };
+	return { loading: a.loading || u.loading || p.loading || g.loading || e.loading || r.loading };
 }
 
 export function useIsMobile(breakpoint = 768) {
