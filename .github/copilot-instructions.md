@@ -19,14 +19,15 @@
 ```tsx
 <ErrorBoundary>
   <AuthProvider>
-    <PlayersProvider>
-      <GamesProvider>
-        <EventsProvider>
-          <ResultsProvider>
-            <UIProvider>
-              <ModalProvider>
-                <ToastProvider>
-                  <ReadyGate>{/* app content */}</ReadyGate>
+    <UsersProvider>
+      <PlayersProvider>
+        <GamesProvider>
+          <EventsProvider>
+            <ResultsProvider>
+              <UIProvider>
+                <ModalProvider>
+                  <ToastProvider>
+                    <ReadyGate>{/* app content */}</ReadyGate>
 ```
 
 **Key behaviors:**
@@ -43,11 +44,21 @@
 
 **Core entities** (Firestore collections):
 
-- **Players** (`IPlayer`): `firstName`, `lastName`, `preferredName`, `pictureUrl`, `color`
+- **Users** (`IUser`): `email`, `role` ("admin" | "user"), `linkedPlayerId`, `createdAt`
+- **Players** (`IPlayer`): `firstName`, `lastName`, `preferredName`, `pictureUrl`, `color`, `linkedUserId`
 - **Games** (`IGame`): `name`, `points` (base value), `type` ("board" | "video")
 - **Events** (`IEvent`): `location`, `date` (ISO string), `gameIds[]`, `playerIds[]`
 - **Results** (`IResult`): `eventId`, `gameId`, `order`, `playerResults[]`
     - `IPlayerResult`: `playerId`, `rank`, `isWinner`, `isLoser` (all nullable except `playerId`)
+
+**User-Player Relationship**:
+
+- Users and Players are separate entities with optional bidirectional linking
+- Users = app accounts with authentication and permissions (email, role only)
+- Players = game participants with profile data (names, photos, colors)
+- Link via `linkedPlayerId` on User and `linkedUserId` on Player
+- Admins manage linking via Users page
+- Users edit their profile via `/profile` page, which updates their linked player data directly
 
 **Winner logic** (`common/utils/gameHelpers.ts`):
 
@@ -70,7 +81,7 @@ import { usePlayers } from "../../../features/players/context/PlayersContext";
 
 ## Context Access Pattern
 
-**Each feature has its own context hooks** (e.g., `usePlayers()`, `useGames()`, `useEvents()`, `useResults()`). Access them via:
+**Each feature has its own context hooks** (e.g., `useUsers()`, `usePlayers()`, `useGames()`, `useEvents()`, `useResults()`). Access them via:
 
 ```typescript
 import { usePlayers } from "features/players/context/PlayersContext";
@@ -78,6 +89,35 @@ const { players, playerById, addPlayer, editPlayer, deletePlayer } = usePlayers(
 ```
 
 **Provider-to-Map pattern**: All providers expose both array (`players`) and Map (`playerById`) for O(1) lookups. Use `createMapBy` helper from [common/utils/helpers.ts](common/utils/helpers.ts) (note: named `createMapBy`, not `createMapById`).
+
+## Authentication & Authorization
+
+**Role-based access control** via `AuthProvider` and `UsersProvider`:
+
+```typescript
+import { useAuth } from "common/context/AuthContext";
+const { authUser, user, isAdmin, canEdit, currentUserPlayerId } = useAuth();
+// authUser = Firebase Auth user
+// user = IUser with role
+// isAdmin = computed boolean (user?.role === "admin")
+// canEdit = computed boolean (currently same as isAdmin)
+// currentUserPlayerId = computed string | null (user?.linkedPlayerId)
+```
+
+**Permission model**:
+
+- **Unauthenticated**: Read-only access to all data
+- **Users (role: "user")**: Can edit their linked player profile
+- **Admins (role: "admin")**: Full CRUD on all collections
+
+**UI pattern**: Use `isAdmin` to conditionally render edit/delete buttons:
+
+```typescript
+const { isAdmin } = useAuth();
+{isAdmin && <Button onClick={handleEdit}>Edit</Button>}
+```
+
+**First admin setup**: See [AUTH_SETUP.md](../AUTH_SETUP.md) for manual Firestore initialization.
 
 ## Modal System
 

@@ -17,7 +17,7 @@ export const EventsPage: React.FC = () => {
 	const events = useSortedEvents();
 	const { players } = usePlayers();
 	const { games, gameById } = useGames();
-	const { user } = useAuth();
+	const { isAdmin } = useAuth();
 	const { openModal, closeModal } = useModal();
 	const toast = useToast();
 
@@ -84,7 +84,7 @@ export const EventsPage: React.FC = () => {
 				title="Events"
 				count={events.length}
 				action={
-					user ? (
+					isAdmin ? (
 						<Button onClick={handleAdd} variant="primary" size="md">
 							<CalendarPlus className="h-4 w-4" /> Add Event
 						</Button>
@@ -95,7 +95,7 @@ export const EventsPage: React.FC = () => {
 			{events.length === 0 ? (
 				<EmptyState>
 					No events yet.{" "}
-					{user ? "Create your first event to start tracking results." : "Sign in to add events."}
+					{isAdmin ? "Create your first event to start tracking results." : "Check back later."}
 				</EmptyState>
 			) : (
 				<ul className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
@@ -104,7 +104,7 @@ export const EventsPage: React.FC = () => {
 							<NavLink to={`/events/${event.id}`} className="block">
 								<EventCard
 									event={event}
-									canEdit={!!user}
+									canEdit={isAdmin}
 									onEdit={() => handleEdit(event)}
 									onDelete={() => handleDelete(event)}
 									players={players}

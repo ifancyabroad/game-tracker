@@ -12,7 +12,7 @@ import { getDisplayName } from "features/players/utils/helpers";
 const PlayersList: React.FC = () => {
 	const { players, addPlayer, editPlayer, deletePlayer } = usePlayers();
 	const { openModal, closeModal } = useModal();
-	const { user } = useAuth();
+	const { isAdmin } = useAuth();
 	const toast = useToast();
 
 	const handleAddPlayer = async (player: Omit<IPlayer, "id">) => {
@@ -71,7 +71,7 @@ const PlayersList: React.FC = () => {
 				title="Players"
 				count={players.length}
 				action={
-					user ? (
+					isAdmin ? (
 						<Button onClick={handleAdd} variant="primary" size="md">
 							<Plus className="h-4 w-4" /> Add Player
 						</Button>
@@ -81,7 +81,7 @@ const PlayersList: React.FC = () => {
 
 			{players.length === 0 ? (
 				<EmptyState>
-					No players yet. {user ? "Add your first player to get started." : "Sign in to add players."}
+					No players yet. {isAdmin ? "Add your first player to get started." : "Check back later."}
 				</EmptyState>
 			) : (
 				<ul className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
@@ -89,7 +89,7 @@ const PlayersList: React.FC = () => {
 						<li key={player.id} className="transition-transform hover:-translate-y-0.5">
 							<PlayerCard
 								player={player}
-								canEdit={!!user}
+								canEdit={isAdmin}
 								onEdit={() => handleEdit(player)}
 								onDelete={() => handleDelete(player)}
 							/>

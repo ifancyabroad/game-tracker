@@ -26,7 +26,7 @@ export const EventDetailPage: React.FC = () => {
 	const { games, gameById } = useGames();
 	const { results, deleteResult } = useResults();
 	const { openModal, closeModal } = useModal();
-	const { user } = useAuth();
+	const { isAdmin } = useAuth();
 	const toast = useToast();
 
 	const event = eventById.get(eventId);
@@ -145,7 +145,7 @@ export const EventDetailPage: React.FC = () => {
 			<div className="flex items-center justify-between gap-3">
 				<BackButton />
 
-				{user && (
+				{isAdmin && (
 					<div className="flex flex-wrap items-center gap-2">
 						<Button onClick={() => handleEditEvent(event)} variant="secondary" size="md">
 							<Edit size={16} /> Edit
@@ -239,7 +239,7 @@ export const EventDetailPage: React.FC = () => {
 						<ClipboardList size={18} className="text-[var(--color-primary)]" />
 						Results
 					</h2>
-					{user && (
+					{isAdmin && (
 						<Button onClick={handleAddResult} variant="primary" size="md">
 							<Plus size={16} /> Add Result
 						</Button>
@@ -248,7 +248,7 @@ export const EventDetailPage: React.FC = () => {
 
 				{eventResults.length === 0 ? (
 					<EmptyState>
-						No results added yet. {user ? "Click 'Add Result' to record game outcomes." : ""}
+						No results added yet. {isAdmin ? "Click 'Add Result' to record game outcomes." : ""}
 					</EmptyState>
 				) : (
 					<div className="grid gap-3 sm:gap-4">
@@ -258,7 +258,7 @@ export const EventDetailPage: React.FC = () => {
 								result={result}
 								gameById={gameById}
 								playerById={playerById}
-								canEdit={!!user}
+								canEdit={isAdmin}
 								onEdit={handleEditResult}
 								onDelete={handleDeleteResult}
 							/>

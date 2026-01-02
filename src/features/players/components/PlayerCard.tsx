@@ -1,4 +1,4 @@
-import { Edit, Trash2, Trophy } from "lucide-react";
+import { Edit, Trash2, Trophy, UserCheck } from "lucide-react";
 import type { IPlayer } from "features/players/types";
 import { Avatar, IconButton, Card, Badge } from "common/components";
 import { Link } from "react-router";
@@ -37,6 +37,11 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, canEdit, onEdit,
 						{player.showOnLeaderboard && (
 							<Badge variant="success">
 								<Trophy className="h-3 w-3" />
+							</Badge>
+						)}
+						{player.linkedUserId && (
+							<Badge className="bg-blue-500/10 text-blue-500">
+								<UserCheck className="h-3 w-3" />
 							</Badge>
 						)}
 					</div>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "firebase";
 import { LogIn, Mail, Lock } from "lucide-react";
 import { Input, Label, Button, FormHeader, ErrorMessage } from "common/components";
@@ -13,6 +13,7 @@ export const LoginForm: React.FC<ILoginFormProps> = ({ onSuccess }) => {
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
+	const [resetSent, setResetSent] = useState(false);
 
 	const handleLogin = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -23,6 +24,26 @@ export const LoginForm: React.FC<ILoginFormProps> = ({ onSuccess }) => {
 			onSuccess?.();
 		} catch (err: unknown) {
 			let msg = "Login failed. Please try again.";
+			if (err instanceof Error) msg = err.message;
+			setError(msg);
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const handleForgotPassword = async (e: React.MouseEvent) => {
+		e.preventDefault();
+		if (!email.trim()) {
+			setError("Please enter your email address first");
+			return;
+		}
+		setError(null);
+		setLoading(true);
+		try {
+			await sendPasswordResetEmail(auth, email.trim());
+			setResetSent(true);
+		} catch (err: unknown) {
+			let msg = "Failed to send reset email. Please try again.";
 			if (err instanceof Error) msg = err.message;
 			setError(msg);
 		} finally {
@@ -64,9 +85,24 @@ export const LoginForm: React.FC<ILoginFormProps> = ({ onSuccess }) => {
 
 			<ErrorMessage className="-mt-2">{error}</ErrorMessage>
 
+			{resetSent && (
+				<p className="-mt-2 text-sm text-green-600 dark:text-green-400">
+					Password reset email sent! Check your inbox.
+				</p>
+			)}
+
 			<Button type="submit" disabled={loading}>
 				{loading ? "Logging in..." : "Login"}
 			</Button>
+
+			<button
+				type="button"
+				onClick={handleForgotPassword}
+				disabled={loading}
+				className="text-sm text-[var(--color-primary)] hover:underline disabled:opacity-50"
+			>
+				Forgot password?
+			</button>
 		</form>
 	);
 };

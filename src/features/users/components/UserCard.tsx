@@ -1,0 +1,71 @@
+import { Card, IconButton, Badge, Avatar } from "common/components";
+import { Edit, Trash2, UserCircle, Link as LinkIcon, Unlink } from "lucide-react";
+import type { IUser } from "features/users/types";
+import { getRoleLabel, getRoleBadgeColor } from "features/users/utils/helpers";
+import { usePlayers } from "features/players/context/PlayersContext";
+import { getDisplayName } from "features/players/utils/helpers";
+
+interface UserCardProps {
+	user: IUser;
+	onEdit?: (user: IUser) => void;
+	onDelete?: (user: IUser) => void;
+	canEdit?: boolean;
+}
+
+export function UserCard({ user, onEdit, onDelete, canEdit }: UserCardProps) {
+	const { playerById } = usePlayers();
+	const linkedPlayer = user.linkedPlayerId ? playerById.get(user.linkedPlayerId) : null;
+
+	// Use linked player's data when available, otherwise use email as fallback
+	const displayName = linkedPlayer ? getDisplayName(linkedPlayer) : user.email;
+	const photoUrl = linkedPlayer?.pictureUrl || null;
+
+	return (
+		<Card className="p-4">
+			<div className="flex items-start justify-between gap-3">
+				<div className="flex min-w-0 flex-1 items-start gap-3">
+					{photoUrl ? (
+						<Avatar name={displayName} src={photoUrl} size={48} />
+					) : (
+						<div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-blue-500">
+							<UserCircle className="h-7 w-7 text-white" />
+						</div>
+					)}
+					<div className="min-w-0 flex-1">
+						<h3 className="truncate text-lg font-semibold">{displayName}</h3>
+						<p className="truncate text-sm text-gray-500">{user.email}</p>
+						<div className="mt-2 flex flex-wrap items-center gap-2">
+							<Badge className={getRoleBadgeColor(user.role)}>{getRoleLabel(user.role)}</Badge>
+							{linkedPlayer && (
+								<Badge className="flex items-center gap-1 bg-green-500/10 text-green-500">
+									<LinkIcon className="h-3 w-3" />
+									Linked to player
+								</Badge>
+							)}
+							{!linkedPlayer && user.role === "user" && (
+								<Badge className="flex items-center gap-1 bg-yellow-500/10 text-yellow-500">
+									<Unlink className="h-3 w-3" />
+									Not linked
+								</Badge>
+							)}
+						</div>
+					</div>
+				</div>
+
+				{canEdit && (
+					<div className="flex gap-1">
+						{onEdit && <IconButton icon={<Edit />} onClick={() => onEdit(user)} title="Edit user" />}
+						{onDelete && (
+							<IconButton
+								icon={<Trash2 />}
+								onClick={() => onDelete(user)}
+								variant="danger"
+								title="Delete user"
+							/>
+						)}
+					</div>
+				)}
+			</div>
+		</Card>
+	);
+}
