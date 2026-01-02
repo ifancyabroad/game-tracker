@@ -8,7 +8,7 @@ interface PlayersContextValue {
 	addPlayer: (player: Omit<IPlayer, "id">) => Promise<void>;
 	editPlayer: (id: string, player: Partial<IPlayer>) => Promise<void>;
 	deletePlayer: (id: string) => Promise<void>;
-	uploadImage: (file: File) => Promise<string>;
+	uploadImage: (file: File | Blob, onProgress?: (progress: number) => void) => Promise<string>;
 }
 
 export const PlayersContext = createContext<PlayersContextValue | null>(null);

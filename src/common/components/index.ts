@@ -17,6 +17,7 @@ export * from "./Switch";
 export * from "./FormHeader";
 export * from "./ErrorMessage";
 export * from "./ColorPicker";
+export * from "./ImageCropper";
 
 // Card Components
 export * from "./Card";

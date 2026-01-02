@@ -4,7 +4,7 @@ import { addDoc, collection, deleteDoc, doc, onSnapshot, query, updateDoc } from
 import type { IPlayer } from "features/players/types";
 import { PlayersContext } from "features/players/context/PlayersContext";
 import { getDisplayName } from "features/players/utils/helpers";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { createMapBy } from "common/utils/helpers";
 
 export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
@@ -40,12 +40,28 @@ export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
 		await deleteDoc(doc(db, "players", id));
 	}
 
-	async function uploadImage(file: File) {
-		const imageRef = ref(storage, `players/${file.name}-${Date.now()}`);
-		await uploadBytes(imageRef, file, {
+	async function uploadImage(file: File | Blob, onProgress?: (progress: number) => void) {
+		const fileName = file instanceof File ? file.name : "cropped-image.jpg";
+		const imageRef = ref(storage, `players/${fileName}-${Date.now()}`);
+
+		const uploadTask = uploadBytesResumable(imageRef, file, {
 			cacheControl: "public,max-age=31536000",
 		});
-		return getDownloadURL(imageRef);
+
+		return new Promise<string>((resolve, reject) => {
+			uploadTask.on(
+				"state_changed",
+				(snapshot) => {
+					const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+					onProgress?.(progress);
+				},
+				(error) => reject(error),
+				async () => {
+					const url = await getDownloadURL(uploadTask.snapshot.ref);
+					resolve(url);
+				},
+			);
+		});
 	}
 
 	return (
