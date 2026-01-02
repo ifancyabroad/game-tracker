@@ -6,21 +6,27 @@
 
 **Feature-based structure**: Domain-driven folders (`features/players`, `features/games`, `features/events`, `features/stats`, `features/leaderboard`) + shared utilities in `common/`.
 
-**Routing**: React Router v7 routes defined inline in [src/main.tsx](src/main.tsx). All forms/modals are JSX components, not separate routes.
+**Routing**: React Router v7 (from `react-router` package) routes defined inline in [src/main.tsx](src/main.tsx). All forms/modals are JSX components, not separate routes.
+
+**Form validation**: Uses `react-hook-form` + `zod` schemas + `@hookform/resolvers` for type-safe form handling.
+
+**Notifications**: `react-hot-toast` via `ToastProvider` for success/error messages.
 
 ## Critical Context Provider Pattern
 
 **Nested provider architecture** with strict ordering (see `src/main.tsx`):
 
 ```tsx
-<AuthProvider>
-  <PlayersProvider>
-    <GamesProvider>
-      <EventsProvider>
-        <ResultsProvider>
-          <UIProvider>
-            <ModalProvider>
-              <ReadyGate>{/* app content */}</ReadyGate>
+<ErrorBoundary>
+  <AuthProvider>
+    <PlayersProvider>
+      <GamesProvider>
+        <EventsProvider>
+          <ResultsProvider>
+            <UIProvider>
+              <ModalProvider>
+                <ToastProvider>
+                  <ReadyGate>{/* app content */}</ReadyGate>
 ```
 
 **Key behaviors:**
@@ -31,6 +37,7 @@
 - All providers expose: `loading` boolean, data arrays, `*ById` Maps, CRUD methods
 - **Provider-to-Map pattern**: Use `createMapBy()` helper for O(1) lookups (e.g., `playerById.get(id)`)
 - **Year filtering**: `UIProvider` manages global `selectedYear` state, initialized to most recent year on load (see [common/utils/yearFilter.ts](common/utils/yearFilter.ts))
+- **Theme management**: `UIProvider` handles dark/light mode via `theme` state, persisted in localStorage, applied to `document.documentElement.classList`
 
 ## Data Model
 
@@ -82,6 +89,13 @@ openModal(<PlayerForm onSubmit={handleSubmit} />);
 ```
 
 Forms are rendered as modal content, not separate routes. See [features/players/pages/PlayersList.tsx](features/players/pages/PlayersList.tsx) for reference.
+**Toast notifications** via `useToast()` hook:
+
+```typescript
+import { useToast } from "common/context/ToastContext";
+const { showToast } = useToast();
+showToast("Player added successfully", "success");
+```
 
 ## Year Filtering Pattern
 
@@ -108,8 +122,8 @@ const filteredEvents = filterEventsByYear(events, selectedYear);
 - `getPlayerData()`: Calculates wins, games played, win rate, points from results
 - `getPlayerAggregates()`: Game-specific stats, rank distribution, recent form
 - `getHeadToHeadRecord()`: Player vs player matchups
-
-**Always filter results by player/game** before aggregating to avoid expensive full-table scans.
+  **Dark mode**: Toggle via `.dark` class on `document.documentElement`, managed by `UIProvider`
+- **Always filter results by player/game** before aggregating to avoid expensive full-table scans.
 
 ## Styling with Tailwind v4
 
@@ -159,7 +173,9 @@ useEffect(() => {
 3. **Animations**: Use `framer-motion` for modal transitions (see [common/components/Modal.tsx](common/components/Modal.tsx))
 4. **Date handling**: Use `date-fns` library (already in dependencies)
 5. **Charts**: Use `recharts` for all data visualizations (see [features/stats/components/](features/stats/components/))
-6. **Percentage formatting**: Use `formatPct()` from [common/utils/helpers.ts](common/utils/helpers.ts) (rounds to whole number)
+6. **Form validation**: Use `react-hook-form` with `zodResolver` from `@hookform/resolvers/zod` for schema validation
+7. **Error handling**: All components wrapped in `ErrorBoundary` (see [common/components/ErrorBoundary.tsx](common/components/ErrorBoundary.tsx))
+8. **Percentage formatting**: Use `formatPct()` from [common/utils/helpers.ts](common/utils/helpers.ts) (rounds to whole number)
 
 ## Key Files Reference
 
