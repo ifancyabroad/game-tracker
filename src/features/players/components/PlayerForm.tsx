@@ -2,10 +2,14 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { IPlayer } from "features/players/types";
-import { User } from "lucide-react";
+import { User, Upload as UploadIcon } from "lucide-react";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { ColorPicker, Input, Label, Button, FormHeader, ErrorMessage, Switch } from "common/components";
+import { ImageCropper } from "common/components/ImageCropper";
 import { playerSchema, type PlayerFormData } from "common/utils/validation";
+import { useToast } from "common/utils/hooks";
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 interface IPlayerFormProps {
 	onSubmit: (player: Omit<IPlayer, "id">) => Promise<void> | void;
@@ -15,7 +19,10 @@ interface IPlayerFormProps {
 
 export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData, hideHeader = false }) => {
 	const [previewUrl, setPreviewUrl] = useState<string | null>(initialData?.pictureUrl || null);
+	const [cropperImage, setCropperImage] = useState<string | null>(null);
+	const [uploadProgress, setUploadProgress] = useState<number | null>(null);
 	const { uploadImage } = usePlayers();
+	const toast = useToast();
 
 	const {
 		register,
@@ -40,22 +47,66 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData, 
 	const pictureUrlValue = watch("pictureUrl");
 	const showOnLeaderboardValue = watch("showOnLeaderboard");
 
-	const handleImageUpload = async (file: File) => {
-		const url = await uploadImage(file);
-		setValue("pictureUrl", url);
-		setPreviewUrl(url);
+	const handleFileSelect = (file: File) => {
+		// Validate file size
+		if (file.size > MAX_FILE_SIZE) {
+			toast.error(`File size must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB`);
+			return;
+		}
+
+		// Validate file type
+		if (!file.type.startsWith("image/")) {
+			toast.error("Please select an image file");
+			return;
+		}
+
+		// Create preview URL for cropper
+		const reader = new FileReader();
+		reader.onload = () => {
+			setCropperImage(reader.result as string);
+		};
+		reader.readAsDataURL(file);
 	};
 
-	const onFormSubmit = (data: PlayerFormData) => {
-		onSubmit({
-			...data,
-			preferredName: data.preferredName?.trim() || null,
-			pictureUrl: data.pictureUrl?.trim() || null,
-			linkedUserId: initialData?.linkedUserId || null,
-		});
+	const handleCropComplete = async (croppedBlob: Blob) => {
+		try {
+			setUploadProgress(0);
+			setCropperImage(null);
+
+			const url = await uploadImage(croppedBlob, (progress) => {
+				setUploadProgress(progress);
+			});
+
+			setValue("pictureUrl", url, { shouldDirty: true });
+			setPreviewUrl(url);
+			setUploadProgress(null);
+			toast.success("Image uploaded successfully");
+		} catch (error) {
+			console.error("Upload failed:", error);
+			toast.error("Failed to upload image");
+			setUploadProgress(null);
+		}
+	};
+
+	const handleCropCancel = () => {
+		setCropperImage(null);
+	};
+
+	const onFormSubmit = async (data: PlayerFormData) => {
+		await Promise.resolve(
+			onSubmit({
+				...data,
+				preferredName: data.preferredName?.trim() || null,
+				pictureUrl: data.pictureUrl?.trim() || null,
+				linkedUserId: initialData?.linkedUserId || null,
+			}),
+		);
 		if (!initialData) {
 			reset();
 			setPreviewUrl(null);
+		} else {
+			// Reset form with new values to clear dirty state
+			reset(data);
 		}
 	};
 
@@ -111,15 +162,22 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData, 
 							</div>
 						)}
 					</div>
-					<label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-accent)] px-3 py-2 text-sm text-[var(--color-text)] hover:bg-[var(--color-primary)]/10">
-						Upload
-						<input
-							type="file"
-							accept="image/*"
-							className="hidden"
-							onChange={async (e) => e.target.files && (await handleImageUpload(e.target.files[0]))}
-						/>
-					</label>
+					<div className="flex-1">
+						<label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-accent)] px-3 py-2 text-sm text-[var(--color-text)] hover:bg-[var(--color-primary)]/10">
+							<UploadIcon className="h-4 w-4" />
+							{uploadProgress !== null ? `Uploading ${Math.round(uploadProgress)}%` : "Upload Image"}
+							<input
+								type="file"
+								accept="image/*"
+								className="hidden"
+								disabled={uploadProgress !== null}
+								onChange={(e) => e.target.files?.[0] && handleFileSelect(e.target.files[0])}
+							/>
+						</label>
+						<p className="mt-1 text-xs text-[var(--color-text-muted)]">
+							Max {MAX_FILE_SIZE / 1024 / 1024}MB • Square images work best
+						</p>
+					</div>
 				</div>
 			</div>
 
@@ -135,6 +193,10 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData, 
 			<Button type="submit" disabled={isSubmitDisabled}>
 				{isEditMode ? "Save Changes" : "Add Player"}
 			</Button>
+
+			{cropperImage && (
+				<ImageCropper imageSrc={cropperImage} onCropComplete={handleCropComplete} onCancel={handleCropCancel} />
+			)}
 		</form>
 	);
 };

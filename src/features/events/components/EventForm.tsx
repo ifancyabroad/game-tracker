@@ -51,16 +51,21 @@ export const EventForm: React.FC<IEventFormProps> = ({ initialData, players, gam
 		setValue("gameIds", newGames, { shouldValidate: true, shouldDirty: true });
 	};
 
-	const onFormSubmit = (data: EventFormData) => {
-		onSubmit({
-			location: data.location,
-			date: data.date,
-			gameIds: data.gameIds,
-			playerIds: data.playerIds,
-			notes: data.notes?.trim() || null,
-		});
+	const onFormSubmit = async (data: EventFormData) => {
+		await Promise.resolve(
+			onSubmit({
+				location: data.location,
+				date: data.date,
+				gameIds: data.gameIds,
+				playerIds: data.playerIds,
+				notes: data.notes?.trim() || null,
+			}),
+		);
 		if (!initialData) {
 			reset();
+		} else {
+			// Reset form with new values to clear dirty state
+			reset(data);
 		}
 	};
 

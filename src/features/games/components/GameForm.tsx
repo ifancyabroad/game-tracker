@@ -31,10 +31,13 @@ export const GameForm: React.FC<IGameFormProps> = ({ initialData, onSubmit }) =>
 	const typeValue = watch("type");
 	const colorValue = watch("color");
 
-	const onFormSubmit = (data: GameFormData) => {
-		onSubmit(data);
+	const onFormSubmit = async (data: GameFormData) => {
+		await Promise.resolve(onSubmit(data));
 		if (!initialData) {
 			reset();
+		} else {
+			// Reset form with new values to clear dirty state
+			reset(data);
 		}
 	};
 

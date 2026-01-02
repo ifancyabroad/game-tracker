@@ -25,6 +25,7 @@ export function UserForm({ initialData, onSubmit }: UserFormProps) {
 	const {
 		register,
 		handleSubmit,
+		reset,
 		formState: { errors, isSubmitting, isDirty },
 	} = useForm<UserFormData>({
 		resolver: zodResolver(userSchema),
@@ -44,10 +45,20 @@ export function UserForm({ initialData, onSubmit }: UserFormProps) {
 	// Filter out players that are already linked to other users
 	const availablePlayers = players.filter((p: IPlayer) => !p.linkedUserId || p.linkedUserId === initialData?.id);
 
+	const onFormSubmit = async (data: UserFormData) => {
+		await Promise.resolve(onSubmit(data));
+		if (!isEdit) {
+			reset();
+		} else {
+			// Reset form with new values to clear dirty state
+			reset(data);
+		}
+	};
+
 	const isSubmitDisabled = isSubmitting || (isEdit && !isDirty);
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+		<form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
 			<FormHeader icon={<UserCog />} title={isEdit ? "Edit User" : "Add User"} />
 			{!isEdit && (
 				<p className="text-sm text-gray-500">
