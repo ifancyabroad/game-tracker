@@ -25,3 +25,8 @@ export const storage = getStorage(app);
 
 // Initialize Authentication and get a reference to the service
 export const auth = getAuth(app);
+
+// Secondary auth instance for creating users without affecting current session
+// This is the recommended approach for admin user creation
+const secondaryApp = initializeApp(firebaseConfig, "Secondary");
+export const secondaryAuth = getAuth(secondaryApp);
