@@ -70,10 +70,10 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({ imageSrc, onCropComp
 	};
 
 	return (
-		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
-			<div className="relative h-full w-full max-w-2xl p-4">
-				<div className="mb-4 flex items-center justify-between">
-					<h2 className="text-xl font-semibold text-white">Crop Image</h2>
+		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
+			<div className="relative flex h-full w-full max-w-2xl flex-col">
+				<div className="mb-3 flex items-center justify-between sm:mb-4">
+					<h2 className="text-lg font-semibold text-white sm:text-xl">Crop Image</h2>
 					<button
 						onClick={onCancel}
 						className="rounded-lg p-2 text-white/70 hover:bg-white/10 hover:text-white"
@@ -82,7 +82,7 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({ imageSrc, onCropComp
 					</button>
 				</div>
 
-				<div className="relative h-[calc(100%-120px)] w-full rounded-lg bg-black">
+				<div className="relative min-h-0 flex-1 rounded-lg bg-black">
 					<Cropper
 						image={imageSrc}
 						crop={crop}
@@ -96,9 +96,9 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({ imageSrc, onCropComp
 					/>
 				</div>
 
-				<div className="mt-4 flex items-center gap-4">
+				<div className="mt-3 flex flex-col gap-3 sm:mt-4 sm:flex-row sm:items-center sm:gap-4">
 					<div className="flex flex-1 items-center gap-2">
-						<ZoomOut className="h-4 w-4 text-white/70" />
+						<ZoomOut className="h-4 w-4 shrink-0 text-white/70" />
 						<input
 							type="range"
 							min={1}
@@ -108,13 +108,17 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({ imageSrc, onCropComp
 							onChange={(e) => setZoom(parseFloat(e.target.value))}
 							className="flex-1"
 						/>
-						<ZoomIn className="h-4 w-4 text-white/70" />
+						<ZoomIn className="h-4 w-4 shrink-0 text-white/70" />
 					</div>
 					<div className="flex gap-2">
-						<Button type="button" onClick={onCancel} className="bg-white/10 hover:bg-white/20">
+						<Button
+							type="button"
+							onClick={onCancel}
+							className="flex-1 bg-white/90 text-black hover:bg-white sm:flex-none"
+						>
 							Cancel
 						</Button>
-						<Button type="button" onClick={createCroppedImage}>
+						<Button type="button" onClick={createCroppedImage} className="flex-1 sm:flex-none">
 							Crop & Upload
 						</Button>
 					</div>
