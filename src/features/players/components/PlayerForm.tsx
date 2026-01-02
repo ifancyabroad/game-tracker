@@ -120,19 +120,19 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData, 
 			<div className="grid gap-3 sm:grid-cols-2">
 				<div>
 					<Label required>First Name</Label>
-					<Input type="text" {...register("firstName")} placeholder="First Name" />
+					<Input type="text" {...register("firstName")} placeholder="First Name" maxLength={30} />
 					{errors.firstName && <ErrorMessage>{errors.firstName.message}</ErrorMessage>}
 				</div>
 				<div>
 					<Label required>Last Name</Label>
-					<Input type="text" {...register("lastName")} placeholder="Last Name" />
+					<Input type="text" {...register("lastName")} placeholder="Last Name" maxLength={30} />
 					{errors.lastName && <ErrorMessage>{errors.lastName.message}</ErrorMessage>}
 				</div>
 			</div>
 
 			<div>
 				<Label>Preferred Name (optional)</Label>
-				<Input type="text" {...register("preferredName")} placeholder="Preferred Name" />
+				<Input type="text" {...register("preferredName")} placeholder="Preferred Name" maxLength={30} />
 				{errors.preferredName && <ErrorMessage>{errors.preferredName.message}</ErrorMessage>}
 			</div>
 

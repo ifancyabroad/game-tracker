@@ -78,7 +78,7 @@ export const EventForm: React.FC<IEventFormProps> = ({ initialData, players, gam
 
 			<div>
 				<Label required>Location</Label>
-				<Input {...register("location")} placeholder="Location" />
+				<Input {...register("location")} placeholder="Location" maxLength={100} />
 				{errors.location && <ErrorMessage>{errors.location.message}</ErrorMessage>}
 			</div>
 
