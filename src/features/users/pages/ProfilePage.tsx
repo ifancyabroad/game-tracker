@@ -4,6 +4,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "firebase";
 import { useAuth } from "common/context/AuthContext";
 import { usePlayers } from "features/players/context/PlayersContext";
+import { useCurrentPlayer } from "features/players/utils/hooks";
 import { PlayerForm } from "features/players/components/PlayerForm";
 import { PageHeader, Card, Button, EmptyState } from "common/components";
 import { useToast } from "common/utils/hooks";
@@ -12,7 +13,8 @@ import type { IPlayer } from "features/players/types";
 
 export const ProfilePage: React.FC = () => {
 	const { authUser, user } = useAuth();
-	const { playerById, editPlayer } = usePlayers();
+	const { editPlayer } = usePlayers();
+	const linkedPlayer = useCurrentPlayer();
 	const toast = useToast();
 	const { closeModal } = useModal();
 
@@ -20,8 +22,6 @@ export const ProfilePage: React.FC = () => {
 	if (!authUser) {
 		return <Navigate to="/" replace />;
 	}
-
-	const linkedPlayer = user?.linkedPlayerId ? playerById.get(user.linkedPlayerId) : null;
 
 	const handleUpdateProfile = async (playerData: Omit<IPlayer, "id">) => {
 		if (!linkedPlayer) return;

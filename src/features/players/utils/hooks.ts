@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useAuth } from "common/context/AuthContext";
 import { getPlayerEntries, aggregatePlayerStatsForPage, computeStreaks, computePlayerData } from "./calculations";
 import type { PlayerWithData } from "features/players/types";
 import { useGames } from "features/games/context/GamesContext";
@@ -7,6 +8,17 @@ import { useSortedResults } from "features/events/utils/hooks";
 import { useFilteredData } from "common/utils/hooks";
 import { useEvents } from "features/events/context/EventsContext";
 import type { GameType } from "features/games/types";
+
+/**
+ * Hook to get the linked player profile for the current authenticated user
+ * Returns null if user is not logged in or has no linked player
+ */
+export function useCurrentPlayer() {
+	const { user } = useAuth();
+	const { playerById } = usePlayers();
+
+	return user?.linkedPlayerId ? playerById.get(user.linkedPlayerId) || null : null;
+}
 
 export function usePlayerData(gameType?: GameType): PlayerWithData[] {
 	const { players } = usePlayers();

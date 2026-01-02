@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router";
 import { Trophy, BarChart3, Calendar, TrendingUp, TrendingDown, Swords, ArrowRight } from "lucide-react";
+import { useCurrentPlayer } from "features/players/utils/hooks";
 import { usePlayerLeaderboard } from "features/leaderboard/utils/hooks";
 import { useLastEventTopScorers, useLongestDrought } from "features/dashboard/utils/hooks";
 import { useSortedEvents } from "features/events/utils/hooks";
@@ -12,6 +13,8 @@ import { getDisplayName } from "features/players/utils/helpers";
 import { pluralize } from "common/utils/helpers";
 
 export const HomePage: React.FC = () => {
+	const linkedPlayer = useCurrentPlayer();
+	const welcomeName = linkedPlayer ? getDisplayName(linkedPlayer) : null;
 	// Leaderboard data (current year)
 	const leaderboard = usePlayerLeaderboard();
 	const topThree = leaderboard.slice(0, 3);
@@ -32,7 +35,9 @@ export const HomePage: React.FC = () => {
 		<div className="mx-auto max-w-6xl">
 			{/* Welcome Header */}
 			<div className="mb-6">
-				<h1 className="text-2xl font-bold text-[var(--color-text)] md:text-3xl">Welcome back! 👋</h1>
+				<h1 className="text-2xl font-bold text-[var(--color-text)] md:text-3xl">
+					Welcome back{welcomeName ? `, ${welcomeName}` : ""}! 👋
+				</h1>
 				<p className="text-sm text-[var(--color-text-secondary)]">
 					Here's what's been happening in your game nights
 				</p>
