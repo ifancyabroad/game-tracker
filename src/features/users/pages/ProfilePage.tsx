@@ -58,7 +58,7 @@ export const ProfilePage: React.FC = () => {
 						<PlayerForm onSubmit={handleUpdateProfile} initialData={linkedPlayer} hideHeader />
 					</Card>
 				) : (
-					<div className="flex items-center md:col-span-2">
+					<div className="md:col-span-2">
 						<EmptyState>
 							Your account is not linked to a player profile. Contact an administrator to link your
 							account.
