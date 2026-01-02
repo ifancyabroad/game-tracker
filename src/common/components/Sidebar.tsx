@@ -182,8 +182,8 @@ export const Sidebar: React.FC = () => {
 							onClick={closeSidebar}
 							className="group flex items-center gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-3 transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-accent)]"
 						>
-							<div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-blue-500">
-								<User className="h-5 w-5 text-white" />
+							<div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[var(--color-primary)]/10">
+								<User className="h-5 w-5 text-[var(--color-primary)]" />
 							</div>
 							<div className="min-w-0 flex-1">
 								<div className="truncate text-sm font-medium text-[var(--color-text)]">

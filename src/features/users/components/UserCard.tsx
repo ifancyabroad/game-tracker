@@ -27,8 +27,8 @@ export function UserCard({ user, onEdit, onDelete, canEdit }: UserCardProps) {
 					{photoUrl ? (
 						<Avatar name={displayName} src={photoUrl} size={48} />
 					) : (
-						<div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-blue-500">
-							<UserCircle className="h-7 w-7 text-white" />
+						<div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[var(--color-primary)]/10">
+							<UserCircle className="h-7 w-7 text-[var(--color-primary)]" />
 						</div>
 					)}
 					<div className="min-w-0 flex-1">
