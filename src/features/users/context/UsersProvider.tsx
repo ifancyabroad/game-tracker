@@ -18,8 +18,8 @@ export const UsersProvider: React.FC<PropsWithChildren> = ({ children }) => {
 				id: doc.id,
 				...doc.data(),
 			})) as IUser[];
-			// Sort by createdAt descending
-			data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+			// Sort alphabetically by email
+			data.sort((a, b) => a.email.localeCompare(b.email));
 			setUsers(data);
 			setLoading(false);
 		});
