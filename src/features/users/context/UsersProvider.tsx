@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, type PropsWithChildren } from "react";
 import { collection, onSnapshot, query, addDoc, updateDoc, deleteDoc, doc, writeBatch } from "firebase/firestore";
 import { createUserWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
-import { db, auth } from "firebase";
+import { db, auth, secondaryAuth } from "firebase";
 import { UsersContext } from "features/users/context/UsersContext";
 import type { IUser } from "features/users/types";
 import { createMapBy } from "common/utils/helpers";
@@ -30,9 +30,10 @@ export const UsersProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	const userById = useMemo(() => createMapBy(users, "id"), [users]);
 
 	async function addUser(user: Omit<IUser, "id" | "createdAt">) {
-		// Create Firebase Auth user first with a temporary password
+		// Create Firebase Auth user using secondary auth instance
+		// This prevents logging out the current admin user
 		const tempPassword = Math.random().toString(36).slice(-16) + "A1!";
-		const userCredential = await createUserWithEmailAndPassword(auth, user.email, tempPassword);
+		const userCredential = await createUserWithEmailAndPassword(secondaryAuth, user.email, tempPassword);
 
 		// Create user document in Firestore with the Auth UID
 		await addDoc(collection(db, "users"), {
@@ -42,6 +43,7 @@ export const UsersProvider: React.FC<PropsWithChildren> = ({ children }) => {
 		});
 
 		// Send password reset email so user can set their own password
+		// Use primary auth for this since it doesn't affect session
 		await sendPasswordResetEmail(auth, user.email);
 	}
 
