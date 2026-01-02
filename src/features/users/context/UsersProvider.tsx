@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, type PropsWithChildren } from "react";
-import { collection, onSnapshot, query, addDoc, updateDoc, deleteDoc, doc, writeBatch } from "firebase/firestore";
+import { collection, onSnapshot, query, updateDoc, deleteDoc, doc, writeBatch, setDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { db, auth, secondaryAuth } from "firebase";
 import { UsersContext } from "features/users/context/UsersContext";
@@ -35,10 +35,10 @@ export const UsersProvider: React.FC<PropsWithChildren> = ({ children }) => {
 		const tempPassword = Math.random().toString(36).slice(-16) + "A1!";
 		const userCredential = await createUserWithEmailAndPassword(secondaryAuth, user.email, tempPassword);
 
-		// Create user document in Firestore with the Auth UID
-		await addDoc(collection(db, "users"), {
+		// Create user document in Firestore using Auth UID as document ID
+		// Note: We don't store 'id' as a field - it's derived from the document ID
+		await setDoc(doc(db, "users", userCredential.user.uid), {
 			...user,
-			id: userCredential.user.uid,
 			createdAt: new Date().toISOString(),
 		});
 
