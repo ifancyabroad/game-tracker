@@ -21,7 +21,7 @@ import { LoginForm, Select, Button, Label, SegmentedControl } from "common/compo
 import type { SegmentedControlOption } from "common/components/SegmentedControl";
 import { useAuth } from "common/context/AuthContext";
 import { Link } from "react-router";
-import logo from "assets/logo.svg";
+import Logo from "assets/logo.svg?react";
 import { useEffect } from "react";
 import type { Theme } from "common/utils/theme";
 import { useBodyScrollLock } from "common/utils/hooks";
@@ -90,8 +90,8 @@ export const Sidebar: React.FC = () => {
 			>
 				<div className="mb-4 flex items-center justify-between lg:mb-6">
 					<Link to="/" className="flex items-center gap-3" onClick={closeSidebar}>
-						<div className="flex h-9 w-9 items-center justify-center">
-							<img src={logo} alt="Logo" />
+						<div className="flex h-9 w-9 items-center justify-center text-[var(--color-primary)]">
+							<Logo className="h-full w-full" />
 						</div>
 						<div>
 							<h1 className="font-display text-base leading-tight text-[var(--color-text)]">

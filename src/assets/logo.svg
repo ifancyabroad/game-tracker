@@ -7,11 +7,11 @@
       }
 
       .cls-2 {
-        fill: #6366f1;
+        fill: var(--color-primary);
       }
 
       .cls-3 {
-        fill: #14b8a6;
+        fill: var(--color-secondary);
       }
     </style>
   </defs>
