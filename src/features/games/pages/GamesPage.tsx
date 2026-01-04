@@ -19,8 +19,9 @@ const GamesPage: React.FC = () => {
 			await addGame(game);
 			toast.success("Game added successfully");
 			closeModal();
-		} catch {
+		} catch (error) {
 			toast.error("Failed to add game");
+			throw error;
 		}
 	};
 
@@ -29,8 +30,9 @@ const GamesPage: React.FC = () => {
 			await editGame(game.id, changes);
 			toast.success("Game updated successfully");
 			closeModal();
-		} catch {
+		} catch (error) {
 			toast.error("Failed to update game");
+			throw error;
 		}
 	};
 
@@ -45,7 +47,7 @@ const GamesPage: React.FC = () => {
 	};
 
 	const handleAdd = () => {
-		openModal(<GameForm onSubmit={(game) => handleAddGame(game)} />);
+		openModal(<GameForm onSubmit={handleAddGame} />);
 	};
 
 	const handleEdit = (game: IGame) => {

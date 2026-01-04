@@ -82,6 +82,7 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 			onSuccess?.();
 		} catch {
 			toast.error("Failed to save result");
+			// Don't throw - ResultForm is called from modal, not nested form
 		}
 	};
 

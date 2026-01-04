@@ -26,8 +26,9 @@ export const EventsPage: React.FC = () => {
 			await addEvent(event);
 			toast.success("Event added successfully");
 			closeModal();
-		} catch {
+		} catch (error) {
 			toast.error("Failed to add event");
+			throw error;
 		}
 	};
 
@@ -36,8 +37,9 @@ export const EventsPage: React.FC = () => {
 			await editEvent(event.id, changes);
 			toast.success("Event updated successfully");
 			closeModal();
-		} catch {
+		} catch (error) {
 			toast.error("Failed to update event");
+			throw error;
 		}
 	};
 
@@ -52,7 +54,7 @@ export const EventsPage: React.FC = () => {
 	};
 
 	const handleAdd = () => {
-		openModal(<EventForm onSubmit={(event) => handleAddEvent(event)} players={players} games={games} />);
+		openModal(<EventForm onSubmit={handleAddEvent} players={players} games={games} />);
 	};
 
 	const handleEdit = (event: IEvent) => {

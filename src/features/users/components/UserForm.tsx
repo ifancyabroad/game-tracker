@@ -46,7 +46,7 @@ export function UserForm({ initialData, onSubmit }: UserFormProps) {
 	const availablePlayers = players.filter((p: IPlayer) => !p.linkedUserId || p.linkedUserId === initialData?.id);
 
 	const onFormSubmit = async (data: UserFormData) => {
-		await Promise.resolve(onSubmit(data));
+		await onSubmit(data);
 		if (!isEdit) {
 			reset();
 		} else {

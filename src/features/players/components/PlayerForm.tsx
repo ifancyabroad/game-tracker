@@ -93,14 +93,12 @@ export const PlayerForm: React.FC<IPlayerFormProps> = ({ onSubmit, initialData, 
 	};
 
 	const onFormSubmit = async (data: PlayerFormData) => {
-		await Promise.resolve(
-			onSubmit({
-				...data,
-				preferredName: data.preferredName?.trim() || null,
-				pictureUrl: data.pictureUrl?.trim() || null,
-				linkedUserId: initialData?.linkedUserId || null,
-			}),
-		);
+		await onSubmit({
+			...data,
+			preferredName: data.preferredName?.trim() || null,
+			pictureUrl: data.pictureUrl?.trim() || null,
+			linkedUserId: initialData?.linkedUserId || null,
+		});
 		if (!initialData) {
 			reset();
 			setPreviewUrl(null);

@@ -33,6 +33,7 @@ export const ProfilePage: React.FC = () => {
 		} catch (error) {
 			console.error("Profile update error:", error);
 			toast.error("Failed to update profile");
+			throw error; // Re-throw so form knows submission failed
 		}
 	};
 
