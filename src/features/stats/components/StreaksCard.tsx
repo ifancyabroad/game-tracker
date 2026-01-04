@@ -13,7 +13,7 @@ export const StreaksCard: React.FC<StreaksCardProps> = ({ streaks, type }) => {
 
 	const Icon = isWinStreak ? Flame : CloudRain;
 	const TrendIcon = isWinStreak ? TrendingUp : TrendingDown;
-	const iconColor = isWinStreak ? "text-orange-500" : "text-blue-400";
+	const iconColor = isWinStreak ? "text-[var(--color-warning)]" : "text-[var(--color-info)]";
 	const title = isWinStreak ? "Win Streaks" : "Loss Streaks";
 	const streakType = isWinStreak ? "wins" : "losses";
 	const emptyMessage = isWinStreak ? "winning streaks" : "losing streaks";

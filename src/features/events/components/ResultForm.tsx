@@ -126,7 +126,7 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 				</div>
 
 				{!filteredGames.length && (
-					<p className="mt-2 text-xs text-amber-300">
+					<p className="mt-2 text-xs text-[var(--color-warning)]">
 						This event doesn't have any games yet. Add a game to the event to create a result.
 					</p>
 				)}
@@ -196,7 +196,7 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 													onChange={(e) =>
 														field.onChange({ ...field.value, isWinner: e.target.checked })
 													}
-													className="h-4 w-4 accent-green-500"
+													className="h-4 w-4 accent-[var(--color-success)]"
 												/>
 												Win
 											</label>
@@ -207,7 +207,7 @@ export const ResultForm: React.FC<ResultFormProps> = ({
 													onChange={(e) =>
 														field.onChange({ ...field.value, isLoser: e.target.checked })
 													}
-													className="h-4 w-4 accent-red-500"
+													className="h-4 w-4 accent-[var(--color-danger)]"
 												/>
 												Lose
 											</label>

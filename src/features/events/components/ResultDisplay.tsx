@@ -145,7 +145,7 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({
 										</span>
 										<span className="inline-block w-4">
 											{r.rank === 1 ? (
-												<Award className="h-4 w-4 align-middle text-yellow-500" />
+												<Award className="h-4 w-4 align-middle text-[var(--color-gold)]" />
 											) : null}
 										</span>
 									</div>
@@ -153,14 +153,14 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({
 
 								<td className="px-2 py-2 text-center whitespace-nowrap sm:px-4">
 									{r.isWinner ? (
-										<Award className="mx-auto h-4 w-4 text-yellow-500" />
+										<Award className="mx-auto h-4 w-4 text-[var(--color-gold)]" />
 									) : (
 										<span className="text-[var(--color-text-muted)]">—</span>
 									)}
 								</td>
 								<td className="px-2 py-2 text-center whitespace-nowrap sm:px-4">
 									{r.isLoser ? (
-										<Frown className="mx-auto h-4 w-4 text-red-500" />
+										<Frown className="mx-auto h-4 w-4 text-[var(--color-danger)]" />
 									) : (
 										<span className="text-[var(--color-text-muted)]">—</span>
 									)}

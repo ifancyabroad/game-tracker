@@ -12,7 +12,7 @@ export const IconButton: React.FC<IIconButtonProps> = ({ icon, variant = "defaul
 	const variantStyles = {
 		default:
 			"border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] shadow-sm hover:bg-[var(--color-hover)] hover:border-[var(--color-border-strong)] hover:shadow focus:ring-[var(--color-primary)]/30",
-		danger: "border border-red-600/20 bg-red-600/10 text-red-500 shadow-sm hover:bg-red-600 hover:text-white hover:border-red-600 hover:shadow-md focus:ring-red-500/50",
+		danger: "border border-[var(--color-danger)]/20 bg-[var(--color-danger)]/10 text-[var(--color-danger)] shadow-sm hover:bg-[var(--color-danger)] hover:text-[var(--color-danger-contrast)] hover:border-[var(--color-danger)] hover:shadow-md focus:ring-[var(--color-danger)]/50",
 	};
 
 	return (

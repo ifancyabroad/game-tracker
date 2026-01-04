@@ -7,33 +7,33 @@ import { calculateWinRatePercent } from "common/utils/calculations";
 import { ChampionshipBadge } from "./ChampionshipBadge";
 
 const getTintBg = (rank: number) => {
-	if (rank === 1) return "bg-gradient-to-br from-yellow-500/15 via-yellow-500/5 to-transparent";
-	if (rank === 2) return "bg-gradient-to-br from-slate-400/15 via-slate-400/5 to-transparent";
-	if (rank === 3) return "bg-gradient-to-br from-amber-600/15 via-amber-600/5 to-transparent";
+	if (rank === 1) return "bg-gradient-to-br from-[var(--color-gold)]/15 via-[var(--color-gold)]/5 to-transparent";
+	if (rank === 2) return "bg-gradient-to-br from-[var(--color-silver)]/15 via-[var(--color-silver)]/5 to-transparent";
+	if (rank === 3) return "bg-gradient-to-br from-[var(--color-bronze)]/15 via-[var(--color-bronze)]/5 to-transparent";
 	return "";
 };
 
 const getTintBar = (rank: number) => {
-	if (rank === 1) return "bg-gradient-to-r from-yellow-400 to-yellow-500 shadow-lg shadow-yellow-500/50";
-	if (rank === 2) return "bg-gradient-to-r from-slate-300 to-slate-400 shadow-lg shadow-slate-400/50";
-	if (rank === 3) return "bg-gradient-to-r from-amber-500 to-amber-600 shadow-lg shadow-amber-500/50";
-	return "bg-gradient-to-r from-indigo-400 to-indigo-500";
+	if (rank === 1) return "gradient-gold-horizontal shadow-lg shadow-[var(--color-gold)]/50";
+	if (rank === 2) return "gradient-silver-horizontal shadow-lg shadow-[var(--color-silver)]/50";
+	if (rank === 3) return "gradient-bronze-horizontal shadow-lg shadow-[var(--color-bronze)]/50";
+	return "gradient-info-horizontal";
 };
 
 const getRankStyles = (rank: number) => {
 	if (rank === 1)
 		return {
-			badge: "bg-gradient-to-br from-yellow-400 to-yellow-600 text-yellow-950 border-yellow-400/50",
+			badge: "gradient-gold text-[var(--color-gold-contrast)] border-[var(--color-gold)]/50",
 			icon: <Trophy className="h-3.5 w-3.5 sm:h-4 sm:w-4" />,
 		};
 	if (rank === 2)
 		return {
-			badge: "bg-gradient-to-br from-slate-300 to-slate-500 text-slate-950 border-slate-400/50",
+			badge: "gradient-silver text-[var(--color-silver-contrast)] border-[var(--color-silver)]/50",
 			icon: <Medal className="h-3.5 w-3.5 sm:h-4 sm:w-4" />,
 		};
 	if (rank === 3)
 		return {
-			badge: "bg-gradient-to-br from-amber-500 to-amber-700 text-amber-950 border-amber-500/50",
+			badge: "gradient-bronze text-[var(--color-bronze-contrast)] border-[var(--color-bronze)]/50",
 			icon: <Award className="h-3.5 w-3.5 sm:h-4 sm:w-4" />,
 		};
 	return {

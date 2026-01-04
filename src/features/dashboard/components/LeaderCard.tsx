@@ -9,9 +9,9 @@ interface ILeaderCardProps {
 }
 
 const getRankColor = (rank: number) => {
-	if (rank === 1) return "text-yellow-600 bg-yellow-500/10";
-	if (rank === 2) return "text-slate-500 bg-slate-500/10";
-	if (rank === 3) return "text-amber-700 bg-amber-600/10";
+	if (rank === 1) return "text-[var(--color-gold)] bg-[var(--color-gold)]/10";
+	if (rank === 2) return "text-[var(--color-silver)] bg-[var(--color-silver)]/10";
+	if (rank === 3) return "text-[var(--color-bronze)] bg-[var(--color-bronze)]/10";
 	return "text-[var(--color-text-secondary)] bg-[var(--color-accent)]";
 };
 
@@ -25,7 +25,7 @@ export const LeaderCard: React.FC<ILeaderCardProps> = ({ player, rank }) => {
 			<Card variant="interactive" className="overflow-hidden rounded-t-none p-0 transition-all hover:shadow-lg">
 				{/* Colored Top Bar */}
 				<div
-					className={`h-1 w-full ${rank === 1 ? "bg-yellow-500" : rank === 2 ? "bg-slate-400" : rank === 3 ? "bg-amber-600" : "bg-[var(--color-border)]"}`}
+					className={`h-1 w-full ${rank === 1 ? "bg-[var(--color-gold)]" : rank === 2 ? "bg-[var(--color-silver)]" : rank === 3 ? "bg-[var(--color-bronze)]" : "bg-[var(--color-border)]"}`}
 				/>
 
 				<div className="p-4">
