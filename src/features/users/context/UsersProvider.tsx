@@ -35,12 +35,31 @@ export const UsersProvider: React.FC<PropsWithChildren> = ({ children }) => {
 		const tempPassword = Math.random().toString(36).slice(-16) + "A1!";
 		const userCredential = await createUserWithEmailAndPassword(secondaryAuth, user.email, tempPassword);
 
-		// Create user document in Firestore using Auth UID as document ID
-		// Note: We don't store 'id' as a field - it's derived from the document ID
-		await setDoc(doc(db, "users", userCredential.user.uid), {
-			...user,
-			createdAt: new Date().toISOString(),
-		});
+		const userId = userCredential.user.uid;
+
+		// If linking to a player, use batch to update both documents atomically
+		if (user.linkedPlayerId) {
+			const batch = writeBatch(db);
+
+			// Create user document
+			batch.set(doc(db, "users", userId), {
+				...user,
+				createdAt: new Date().toISOString(),
+			});
+
+			// Update player document with linkedUserId
+			batch.update(doc(db, "players", user.linkedPlayerId), {
+				linkedUserId: userId,
+			});
+
+			await batch.commit();
+		} else {
+			// Create user document without linking
+			await setDoc(doc(db, "users", userId), {
+				...user,
+				createdAt: new Date().toISOString(),
+			});
+		}
 
 		// Send password reset email so user can set their own password
 		// Use primary auth for this since it doesn't affect session
