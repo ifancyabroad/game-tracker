@@ -13,13 +13,6 @@ const getTintBg = (rank: number) => {
 	return "";
 };
 
-const getTintBar = (rank: number) => {
-	if (rank === 1) return "gradient-gold-horizontal shadow-lg shadow-[var(--color-gold)]/50";
-	if (rank === 2) return "gradient-silver-horizontal shadow-lg shadow-[var(--color-silver)]/50";
-	if (rank === 3) return "gradient-bronze-horizontal shadow-lg shadow-[var(--color-bronze)]/50";
-	return "gradient-info-horizontal";
-};
-
 const getRankStyles = (rank: number) => {
 	if (rank === 1)
 		return {
@@ -51,10 +44,10 @@ export const PlayerCard: React.FC<{
 	const {
 		id,
 		pictureUrl,
+		color,
 		data: { points, wins, games, winRatePercent, name },
 	} = row;
 	const tintBg = getTintBg(rank);
-	const tintBar = getTintBar(rank);
 	const rankStyles = getRankStyles(rank);
 	const pct = calculateWinRatePercent(points, maxPoints);
 
@@ -118,7 +111,8 @@ export const PlayerCard: React.FC<{
 						{/* Progress Bar */}
 						<div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[var(--color-border)] shadow-inner sm:mt-2.5 sm:h-2">
 							<motion.div
-								className={`h-full rounded-full ${tintBar}`}
+								className="h-full rounded-full"
+								style={{ backgroundColor: color }}
 								initial={{ width: 0 }}
 								animate={{ width: `${pct}%` }}
 								transition={{
