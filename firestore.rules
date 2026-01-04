@@ -38,12 +38,14 @@ service cloud.firestore {
       allow read: if true;
       
       // Admins can do anything
-      // Users can update their own linked player (but not linkedUserId)
       allow create, delete: if isAdmin();
+      
+      // Users can update their own linked player
+      // Player must be linked to the authenticated user, and linkedUserId cannot be changed
       allow update: if isAdmin() || 
                        (isAuthenticated() && 
                         resource.data.linkedUserId == request.auth.uid &&
-                        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['linkedUserId']));
+                        request.resource.data.linkedUserId == request.auth.uid);
     }
     
     // Games collection
