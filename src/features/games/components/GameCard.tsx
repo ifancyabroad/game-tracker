@@ -42,7 +42,7 @@ export const GameCard: React.FC<IGameCardProps> = ({ game, canEdit, onEdit, onDe
 				/>
 				{canEdit && (
 					<div className="ml-auto flex items-center gap-1 opacity-70 transition-opacity group-hover:opacity-100">
-						<IconButton onClick={handleEditClick} icon={<Edit />} title="Edit" />
+						<IconButton onClick={handleEditClick} icon={<Edit />} variant="secondary" title="Edit" />
 						<IconButton onClick={handleDeleteClick} icon={<Trash2 />} variant="danger" title="Delete" />
 					</div>
 				)}

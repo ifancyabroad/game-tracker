@@ -21,7 +21,7 @@ export const Button: React.FC<IButtonProps> = ({
 		primary:
 			"bg-[var(--color-primary)] text-[var(--color-primary-contrast)] shadow-sm hover:opacity-90 hover:shadow-md focus:ring-[var(--color-primary)]/50",
 		secondary:
-			"border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] shadow-sm hover:bg-[var(--color-hover)] hover:border-[var(--color-border-strong)] hover:shadow focus:ring-[var(--color-primary)]/30",
+			"bg-[var(--color-secondary)] text-[var(--color-secondary-contrast)] shadow-sm hover:opacity-90 hover:shadow-md focus:ring-[var(--color-secondary)]/50",
 		ghost: "text-[var(--color-text-secondary)] hover:bg-[var(--color-hover)] hover:text-[var(--color-text)] focus:ring-[var(--color-border)]",
 		danger: "bg-[var(--color-danger)] text-[var(--color-danger-contrast)] shadow-sm hover:opacity-90 hover:shadow-md focus:ring-[var(--color-danger)]/50",
 	};

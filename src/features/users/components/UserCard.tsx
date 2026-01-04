@@ -54,7 +54,14 @@ export function UserCard({ user, onEdit, onDelete, canEdit }: UserCardProps) {
 
 				{canEdit && (
 					<div className="flex gap-1">
-						{onEdit && <IconButton icon={<Edit />} onClick={() => onEdit(user)} title="Edit user" />}
+						{onEdit && (
+							<IconButton
+								icon={<Edit />}
+								onClick={() => onEdit(user)}
+								variant="secondary"
+								title="Edit user"
+							/>
+						)}
 						{onDelete && (
 							<IconButton
 								icon={<Trash2 />}

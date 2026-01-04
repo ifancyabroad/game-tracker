@@ -2,17 +2,20 @@ import type { ButtonHTMLAttributes } from "react";
 
 interface IIconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	icon: React.ReactNode;
-	variant?: "default" | "danger";
+	variant?: "primary" | "secondary" | "ghost" | "danger";
 }
 
-export const IconButton: React.FC<IIconButtonProps> = ({ icon, variant = "default", className = "", ...props }) => {
+export const IconButton: React.FC<IIconButtonProps> = ({ icon, variant = "ghost", className = "", ...props }) => {
 	const baseStyles =
 		"rounded-lg p-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-1";
 
 	const variantStyles = {
-		default:
-			"border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] shadow-sm hover:bg-[var(--color-hover)] hover:border-[var(--color-border-strong)] hover:shadow focus:ring-[var(--color-primary)]/30",
-		danger: "border border-[var(--color-danger)]/20 bg-[var(--color-danger)]/10 text-[var(--color-danger)] shadow-sm hover:bg-[var(--color-danger)] hover:text-[var(--color-danger-contrast)] hover:border-[var(--color-danger)] hover:shadow-md focus:ring-[var(--color-danger)]/50",
+		primary:
+			"bg-[var(--color-primary)] text-[var(--color-primary-contrast)] shadow-sm hover:opacity-90 hover:shadow-md focus:ring-[var(--color-primary)]/50",
+		secondary:
+			"bg-[var(--color-secondary)] text-[var(--color-secondary-contrast)] shadow-sm hover:opacity-90 hover:shadow-md focus:ring-[var(--color-secondary)]/50",
+		ghost: "text-[var(--color-text-secondary)] hover:bg-[var(--color-hover)] hover:text-[var(--color-text)] focus:ring-[var(--color-border)]",
+		danger: "bg-[var(--color-danger)] text-[var(--color-danger-contrast)] shadow-sm hover:opacity-90 hover:shadow-md focus:ring-[var(--color-danger)]/50",
 	};
 
 	return (

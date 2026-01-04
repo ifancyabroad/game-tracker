@@ -55,6 +55,7 @@ export const EventCard: React.FC<IEventCardProps> = ({ event, canEdit, onEdit, o
 								onEdit?.(event);
 							}}
 							icon={<Edit />}
+							variant="secondary"
 							title="Edit"
 						/>
 						<IconButton

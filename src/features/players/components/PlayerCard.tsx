@@ -55,7 +55,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, canEdit, onEdit,
 
 				{canEdit && (
 					<div className="ml-auto flex items-center gap-1 opacity-70 transition-opacity group-hover:opacity-100">
-						<IconButton onClick={handleEdit} icon={<Edit />} title="Edit" />
+						<IconButton onClick={handleEdit} icon={<Edit />} variant="secondary" title="Edit" />
 						<IconButton onClick={handleDelete} icon={<Trash2 />} variant="danger" title="Delete" />
 					</div>
 				)}
