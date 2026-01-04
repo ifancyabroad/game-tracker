@@ -13,7 +13,7 @@ export const PageLoader: React.FC = () => {
 				}}
 				className="rounded-full bg-[var(--color-primary)] p-4"
 			>
-				<Dices className="h-8 w-8 text-white" />
+				<Dices className="h-8 w-8 text-[var(--color-primary-contrast)]" />
 			</motion.div>
 		</div>
 	);
