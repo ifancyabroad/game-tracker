@@ -52,7 +52,7 @@ export const GameStatsPage: React.FC = () => {
 			<Card className="flex flex-col gap-3 p-3 sm:gap-4 sm:p-4 lg:flex-row lg:items-center">
 				<div className="flex items-center gap-4">
 					<div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[var(--color-accent)]">
-						<GameTypeIcon type={game.type} className="h-8 w-8" style={{ color: game.color }} />
+						<GameTypeIcon type={game.type} className="h-8 w-8 text-[var(--color-primary)]" />
 					</div>
 					<div className="min-w-0">
 						<h1 className="truncate text-xl font-bold text-[var(--color-text)] md:text-2xl">
@@ -65,22 +65,22 @@ export const GameStatsPage: React.FC = () => {
 				</div>
 				<div className="grid grid-cols-2 gap-3 lg:ml-auto lg:grid-cols-4 lg:gap-4">
 					<KpiCard
-						icon={<GameTypeIcon type={game.type} className="h-4 w-4" style={{ color: game.color }} />}
+						icon={<GameTypeIcon type={game.type} className="h-4 w-4 text-[var(--color-primary)]" />}
 						label="Times Played"
 						value={game.data.timesPlayed}
 					/>
 					<KpiCard
-						icon={<Users className="h-4 w-4" style={{ color: game.color }} />}
+						icon={<Users className="h-4 w-4 text-[var(--color-primary)]" />}
 						label="Unique Players"
 						value={game.data.uniquePlayers}
 					/>
 					<KpiCard
-						icon={<Star className="h-4 w-4" style={{ color: game.color }} />}
+						icon={<Star className="h-4 w-4 text-[var(--color-primary)]" />}
 						label="Avg Players"
 						value={game.data.avgPlayersPerGame}
 					/>
 					<KpiCard
-						icon={<Award className="h-4 w-4" style={{ color: game.color }} />}
+						icon={<Award className="h-4 w-4 text-[var(--color-primary)]" />}
 						label="Points Awarded"
 						value={game.data.totalPointsAwarded}
 					/>
@@ -90,12 +90,12 @@ export const GameStatsPage: React.FC = () => {
 			<div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
 				<HighlightCard
 					title="Top Player (min 3 plays)"
-					icon={<TrendingUp className="h-4 w-4" style={{ color: game.color }} />}
+					icon={<TrendingUp className="h-4 w-4 text-[var(--color-primary)]" />}
 					lines={topPlayerLines}
 				/>
 				<HighlightCard
 					title="Bottom Player (min 3 plays)"
-					icon={<TrendingDown className="h-4 w-4" style={{ color: game.color }} />}
+					icon={<TrendingDown className="h-4 w-4 text-[var(--color-primary)]" />}
 					lines={bottomPlayerLines}
 				/>
 			</div>
