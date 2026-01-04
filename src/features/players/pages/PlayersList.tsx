@@ -20,8 +20,9 @@ const PlayersList: React.FC = () => {
 			await addPlayer(player);
 			toast.success("Player added successfully");
 			closeModal();
-		} catch {
+		} catch (error) {
 			toast.error("Failed to add player");
+			throw error;
 		}
 	};
 
@@ -30,8 +31,9 @@ const PlayersList: React.FC = () => {
 			await editPlayer(player.id, changes);
 			toast.success("Player updated successfully");
 			closeModal();
-		} catch {
+		} catch (error) {
 			toast.error("Failed to update player");
+			throw error;
 		}
 	};
 
@@ -46,7 +48,7 @@ const PlayersList: React.FC = () => {
 	};
 
 	const handleAdd = () => {
-		openModal(<PlayerForm onSubmit={(player) => handleAddPlayer(player)} />);
+		openModal(<PlayerForm onSubmit={handleAddPlayer} />);
 	};
 
 	const handleEdit = (player: IPlayer) => {

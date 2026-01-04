@@ -7,7 +7,7 @@ import { gameSchema, type GameFormData } from "common/utils/validation";
 
 interface IGameFormProps {
 	initialData?: IGame;
-	onSubmit: (game: Omit<IGame, "id">) => void;
+	onSubmit: (game: Omit<IGame, "id">) => Promise<void> | void;
 }
 
 export const GameForm: React.FC<IGameFormProps> = ({ initialData, onSubmit }) => {
@@ -32,7 +32,7 @@ export const GameForm: React.FC<IGameFormProps> = ({ initialData, onSubmit }) =>
 	const colorValue = watch("color");
 
 	const onFormSubmit = async (data: GameFormData) => {
-		await Promise.resolve(onSubmit(data));
+		await onSubmit(data);
 		if (!initialData) {
 			reset();
 		} else {

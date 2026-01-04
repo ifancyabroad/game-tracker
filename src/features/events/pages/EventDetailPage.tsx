@@ -41,8 +41,9 @@ export const EventDetailPage: React.FC = () => {
 			await editEvent(eventId, changes);
 			toast.success("Event updated successfully");
 			closeModal();
-		} catch {
+		} catch (error) {
 			toast.error("Failed to update event");
+			throw error;
 		}
 	};
 

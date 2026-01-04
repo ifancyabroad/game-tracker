@@ -12,7 +12,7 @@ interface IEventFormProps {
 	initialData?: IEvent;
 	players: IPlayer[];
 	games: IGame[];
-	onSubmit: (event: Omit<IEvent, "id">) => void;
+	onSubmit: (event: Omit<IEvent, "id">) => Promise<void> | void;
 }
 
 export const EventForm: React.FC<IEventFormProps> = ({ initialData, players, games, onSubmit }) => {
@@ -52,15 +52,13 @@ export const EventForm: React.FC<IEventFormProps> = ({ initialData, players, gam
 	};
 
 	const onFormSubmit = async (data: EventFormData) => {
-		await Promise.resolve(
-			onSubmit({
-				location: data.location,
-				date: data.date,
-				gameIds: data.gameIds,
-				playerIds: data.playerIds,
-				notes: data.notes?.trim() || null,
-			}),
-		);
+		await onSubmit({
+			location: data.location,
+			date: data.date,
+			gameIds: data.gameIds,
+			playerIds: data.playerIds,
+			notes: data.notes?.trim() || null,
+		});
 		if (!initialData) {
 			reset();
 		} else {

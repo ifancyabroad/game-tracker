@@ -20,6 +20,7 @@ export function UsersList() {
 		} catch (error) {
 			toast.error("Failed to create user");
 			console.error(error);
+			throw error;
 		}
 	}
 
@@ -50,6 +51,7 @@ export function UsersList() {
 							} catch (error) {
 								toast.error("Failed to update user");
 								console.error(error);
+								throw error;
 							}
 						}}
 						onCancel={closeModal}
@@ -63,6 +65,7 @@ export function UsersList() {
 		} catch (error) {
 			toast.error("Failed to update user");
 			console.error(error);
+			throw error;
 		}
 	}
 
