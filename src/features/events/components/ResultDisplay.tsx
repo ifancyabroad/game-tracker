@@ -75,7 +75,12 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({
 				</div>
 				{canEdit && (
 					<div className="flex items-center gap-1">
-						<IconButton onClick={() => onEdit(result)} icon={<Edit />} title="Edit Result" />
+						<IconButton
+							onClick={() => onEdit(result)}
+							icon={<Edit />}
+							variant="secondary"
+							title="Edit Result"
+						/>
 						<IconButton
 							onClick={() => onDelete(result.id)}
 							icon={<Trash2 />}
