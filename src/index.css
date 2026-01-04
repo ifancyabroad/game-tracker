@@ -6,32 +6,32 @@
 	--font-display: "Righteous", sans-serif;
 }
 
-/* Light mode - Parchment */
+/* Light mode - Game Table */
 :root {
-	--color-primary: #d97706;
-	--color-primary-contrast: #ffffff;
-	--color-secondary: #b45309;
+	--color-primary: #92400e;
+	--color-primary-contrast: #fef3c7;
+	--color-secondary: #ea580c;
 	--color-secondary-contrast: #ffffff;
-	--color-bg: #f5ece1;
-	--color-surface: #fef9f3;
-	--color-text: #3e2723;
-	--color-text-secondary: #5d4037;
-	--color-text-muted: #8d6e63;
-	--color-border: #ddc8b4;
-	--color-border-strong: #c4a584;
-	--color-hover: #f3e5d5;
-	--color-accent: #ffe9c5;
+	--color-bg: #e7dac8;
+	--color-surface: #f5ede0;
+	--color-text: #3c2a1a;
+	--color-text-secondary: #5a4432;
+	--color-text-muted: #78614f;
+	--color-border: #cfc1ad;
+	--color-border-strong: #b5a189;
+	--color-hover: #ebe2d1;
+	--color-accent: #d4c5ae;
 
 	/* Semantic colors */
-	--color-success: #047857;
+	--color-success: #16a34a;
 	--color-success-contrast: #ffffff;
-	--color-danger: #991b1b;
+	--color-danger: #b91c1c;
 	--color-danger-contrast: #ffffff;
-	--color-warning: #b45309;
+	--color-warning: #c2410c;
 	--color-warning-contrast: #ffffff;
 	--color-info: #0369a1;
 	--color-info-contrast: #ffffff;
-	--color-gold: #eab308;
+	--color-gold: #fbbf24;
 	--color-gold-contrast: #1c1917;
 	--color-silver: #94a3b8;
 	--color-silver-contrast: #1e293b;
