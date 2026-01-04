@@ -10,7 +10,7 @@ import { EventCard } from "features/events/components/EventCard";
 import { NavLink } from "react-router";
 import { useAuth } from "common/context/AuthContext";
 import { CalendarPlus, CalendarDays } from "lucide-react";
-import { useToast } from "common/utils/hooks";
+import { useToast } from "common/context/ToastContext";
 
 export const EventsPage: React.FC = () => {
 	const { addEvent, editEvent, deleteEvent } = useEvents();

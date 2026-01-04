@@ -8,7 +8,7 @@ import type { IGame } from "features/games/types";
 import { Gamepad2, Target } from "lucide-react";
 import { getDisplayName } from "features/players/utils/helpers";
 import { Button, Select, Label, Input, ErrorMessage } from "common/components";
-import { useToast } from "common/utils/hooks";
+import { useToast } from "common/context/ToastContext";
 import { resultSchema, type ResultFormData } from "common/utils/validation";
 
 interface ResultFormProps {

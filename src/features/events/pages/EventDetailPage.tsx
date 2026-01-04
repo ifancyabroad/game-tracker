@@ -14,7 +14,7 @@ import { EventGameCard } from "features/events/components/EventGameCard";
 import type { IEvent, IResult } from "features/events/types";
 import { useAuth } from "common/context/AuthContext";
 import { useEventPlayerStats, useEventGameStats, useEventTopScorers } from "features/events/utils/hooks";
-import { useToast } from "common/utils/hooks";
+import { useToast } from "common/context/ToastContext";
 
 export const EventDetailPage: React.FC = () => {
 	const { eventId: eventIdParam } = useParams();

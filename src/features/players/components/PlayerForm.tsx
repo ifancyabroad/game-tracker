@@ -7,7 +7,7 @@ import { usePlayers } from "features/players/context/PlayersContext";
 import { ColorPicker, Input, Label, Button, FormHeader, ErrorMessage, Switch } from "common/components";
 import { ImageCropper } from "common/components/ImageCropper";
 import { playerSchema, type PlayerFormData } from "common/utils/validation";
-import { useToast } from "common/utils/hooks";
+import { useToast } from "common/context/ToastContext";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
