@@ -23,15 +23,15 @@ export const EventPlayerCard: React.FC<IEventPlayerCardProps> = ({ stat }) => {
 			</div>
 			<div className="flex items-center gap-1.5">
 				{stat.points > 0 && (
-					<div className="flex items-center gap-1 rounded-md bg-green-500/10 px-2 py-1">
-						<TrendingUp className="h-3.5 w-3.5 text-green-500" />
-						<span className="text-xs font-semibold text-green-500">+{stat.points}</span>
+					<div className="flex items-center gap-1 rounded-md bg-[var(--color-success)]/10 px-2 py-1">
+						<TrendingUp className="h-3.5 w-3.5 text-[var(--color-success)]" />
+						<span className="text-xs font-semibold text-[var(--color-success)]">+{stat.points}</span>
 					</div>
 				)}
 				{stat.points < 0 && (
-					<div className="flex items-center gap-1 rounded-md bg-red-500/10 px-2 py-1">
-						<TrendingDown className="h-3.5 w-3.5 text-red-400" />
-						<span className="text-xs font-semibold text-red-400">{stat.points}</span>
+					<div className="flex items-center gap-1 rounded-md bg-[var(--color-danger)]/10 px-2 py-1">
+						<TrendingDown className="h-3.5 w-3.5 text-[var(--color-danger)]" />
+						<span className="text-xs font-semibold text-[var(--color-danger)]">{stat.points}</span>
 					</div>
 				)}
 			</div>

@@ -86,7 +86,7 @@ export const LoginForm: React.FC<ILoginFormProps> = ({ onSuccess }) => {
 			<ErrorMessage className="-mt-2">{error}</ErrorMessage>
 
 			{resetSent && (
-				<p className="-mt-2 text-sm text-green-600 dark:text-green-400">
+				<p className="-mt-2 text-sm text-[var(--color-success)]">
 					Password reset email sent! Check your inbox.
 				</p>
 			)}

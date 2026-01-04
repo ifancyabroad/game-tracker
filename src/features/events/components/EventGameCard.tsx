@@ -38,7 +38,7 @@ export const EventGameCard: React.FC<IEventGameCardProps> = ({ stat }) => {
 								</div>
 							))}
 							{stat.winners.length > DISPLAY_LIMITS.UI.EVENT_CARD_MAX_AVATARS && (
-								<div className="flex h-6 w-6 items-center justify-center rounded-full bg-yellow-500/20 text-xs font-semibold text-yellow-500 ring-2 ring-yellow-500">
+								<div className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-gold)]/20 text-xs font-semibold text-[var(--color-gold)] ring-2 ring-[var(--color-gold)]">
 									+{stat.winners.length - DISPLAY_LIMITS.UI.EVENT_CARD_MAX_AVATARS}
 								</div>
 							)}
@@ -49,7 +49,7 @@ export const EventGameCard: React.FC<IEventGameCardProps> = ({ stat }) => {
 							{stat.losers.slice(0, DISPLAY_LIMITS.UI.EVENT_CARD_MAX_AVATARS).map((loser, idx) => (
 								<div
 									key={`${stat.gameId}-loss-${loser?.id}-${idx}`}
-									className="rounded-full ring-2 ring-red-500"
+									className="rounded-full ring-2 ring-[var(--color-danger)]"
 									title={`Loser: ${getDisplayName(loser)}`}
 								>
 									<Avatar
@@ -60,7 +60,7 @@ export const EventGameCard: React.FC<IEventGameCardProps> = ({ stat }) => {
 								</div>
 							))}
 							{stat.losers.length > DISPLAY_LIMITS.UI.EVENT_CARD_MAX_AVATARS && (
-								<div className="flex h-6 w-6 items-center justify-center rounded-full bg-red-500/20 text-xs font-semibold text-red-400 ring-2 ring-red-500">
+								<div className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-danger)]/20 text-xs font-semibold text-[var(--color-danger)] ring-2 ring-[var(--color-danger)]">
 									+{stat.losers.length - DISPLAY_LIMITS.UI.EVENT_CARD_MAX_AVATARS}
 								</div>
 							)}

@@ -21,6 +21,22 @@
 	--color-border-strong: #c4a584;
 	--color-hover: #f3e5d5;
 	--color-accent: #ffe9c5;
+
+	/* Semantic colors */
+	--color-success: #047857;
+	--color-success-contrast: #ffffff;
+	--color-danger: #991b1b;
+	--color-danger-contrast: #ffffff;
+	--color-warning: #b45309;
+	--color-warning-contrast: #ffffff;
+	--color-info: #0369a1;
+	--color-info-contrast: #ffffff;
+	--color-gold: #eab308;
+	--color-gold-contrast: #1c1917;
+	--color-silver: #94a3b8;
+	--color-silver-contrast: #1e293b;
+	--color-bronze: #d97706;
+	--color-bronze-contrast: #ffffff;
 }
 
 /* Dark mode - Warm charcoal */
@@ -38,6 +54,22 @@
 	--color-border-strong: #4a4239;
 	--color-hover: #2b2620;
 	--color-accent: #1e1a16;
+
+	/* Semantic colors */
+	--color-success: #34d399;
+	--color-success-contrast: #1a1512;
+	--color-danger: #f87171;
+	--color-danger-contrast: #1a1512;
+	--color-warning: #fbbf24;
+	--color-warning-contrast: #1a1512;
+	--color-info: #38bdf8;
+	--color-info-contrast: #1a1512;
+	--color-gold: #fbbf24;
+	--color-gold-contrast: #1a1512;
+	--color-silver: #cbd5e1;
+	--color-silver-contrast: #1e293b;
+	--color-bronze: #fb923c;
+	--color-bronze-contrast: #1a1512;
 }
 
 html {
@@ -50,9 +82,74 @@ body {
 	-webkit-overflow-scrolling: touch;
 }
 
-/* Custom sidebar link style */
 @layer components {
+	/* Custom sidebar link style */
 	.nav-link {
 		@apply flex items-center gap-2 rounded p-2 transition-colors duration-200;
+	}
+
+	/* Gradient utilities for podium rankings */
+	.gradient-gold {
+		background: linear-gradient(
+			to bottom right,
+			color-mix(in srgb, var(--color-gold) 70%, white),
+			color-mix(in srgb, var(--color-gold) 85%, black)
+		);
+	}
+
+	.gradient-silver {
+		background: linear-gradient(
+			to bottom right,
+			color-mix(in srgb, var(--color-silver) 60%, white),
+			color-mix(in srgb, var(--color-silver) 80%, black)
+		);
+	}
+
+	.gradient-bronze {
+		background: linear-gradient(
+			to bottom right,
+			color-mix(in srgb, var(--color-bronze) 75%, white),
+			color-mix(in srgb, var(--color-bronze) 85%, black)
+		);
+	}
+
+	.gradient-info {
+		background: linear-gradient(
+			to bottom right,
+			color-mix(in srgb, var(--color-info) 80%, white),
+			color-mix(in srgb, var(--color-info) 85%, black)
+		);
+	}
+
+	.gradient-gold-horizontal {
+		background: linear-gradient(
+			to right,
+			color-mix(in srgb, var(--color-gold) 70%, white),
+			color-mix(in srgb, var(--color-gold) 85%, black)
+		);
+	}
+
+	.gradient-silver-horizontal {
+		background: linear-gradient(
+			to right,
+			color-mix(in srgb, var(--color-silver) 60%, white),
+			color-mix(in srgb, var(--color-silver) 80%, black)
+		);
+	}
+
+	.gradient-bronze-horizontal {
+		background: linear-gradient(
+			to right,
+			color-mix(in srgb, var(--color-bronze) 75%, white),
+			color-mix(in srgb, var(--color-bronze) 85%, black)
+		);
+	}
+
+	.gradient-info-horizontal {
+		background: linear-gradient(
+			to right,
+			color-mix(in srgb, var(--color-info) 80%, white),
+			color-mix(in srgb, var(--color-info) 85%, black)
+		);
 	}
 }

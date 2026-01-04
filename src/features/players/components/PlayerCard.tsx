@@ -40,7 +40,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, canEdit, onEdit,
 							</Badge>
 						)}
 						{player.linkedUserId && (
-							<Badge className="bg-blue-500/10 text-blue-500">
+							<Badge variant="info">
 								<UserCheck className="h-3 w-3" />
 							</Badge>
 						)}

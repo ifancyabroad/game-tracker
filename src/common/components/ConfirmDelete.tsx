@@ -17,7 +17,7 @@ export const ConfirmDelete: React.FC<IConfirmDeleteProps> = ({
 	return (
 		<div className="w-full max-w-md rounded-xl bg-[var(--color-surface)]">
 			<div className="mb-2 flex items-center gap-2">
-				<Trash2 className="h-4 w-4 text-red-400" />
+				<Trash2 className="h-4 w-4 text-[var(--color-danger)]" />
 				<h3 className="text-sm font-semibold text-[var(--color-text)]">{title}</h3>
 			</div>
 			<p className="mb-4 text-sm text-[var(--color-text)]">{message}</p>

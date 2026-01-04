@@ -1,7 +1,7 @@
 import { Card, IconButton, Badge, Avatar } from "common/components";
 import { Edit, Trash2, UserCircle, Link as LinkIcon, Unlink } from "lucide-react";
 import type { IUser } from "features/users/types";
-import { getRoleLabel, getRoleBadgeColor } from "features/users/utils/helpers";
+import { getRoleLabel, getRoleBadgeVariant } from "features/users/utils/helpers";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { getDisplayName } from "features/players/utils/helpers";
 
@@ -33,17 +33,17 @@ export function UserCard({ user, onEdit, onDelete, canEdit }: UserCardProps) {
 					)}
 					<div className="min-w-0 flex-1">
 						<h3 className="truncate text-lg font-semibold">{displayName}</h3>
-						<p className="truncate text-sm text-gray-500">{user.email}</p>
+						<p className="truncate text-sm text-[var(--color-text-muted)]">{user.email}</p>
 						<div className="mt-2 flex flex-wrap items-center gap-2">
-							<Badge className={getRoleBadgeColor(user.role)}>{getRoleLabel(user.role)}</Badge>
+							<Badge variant={getRoleBadgeVariant(user.role)}>{getRoleLabel(user.role)}</Badge>
 							{linkedPlayer && (
-								<Badge className="flex items-center gap-1 bg-green-500/10 text-green-500">
+								<Badge variant="success" className="flex items-center gap-1">
 									<LinkIcon className="h-3 w-3" />
 									Linked to player
 								</Badge>
 							)}
 							{!linkedPlayer && user.role === "user" && (
-								<Badge className="flex items-center gap-1 bg-yellow-500/10 text-yellow-500">
+								<Badge variant="warning" className="flex items-center gap-1">
 									<Unlink className="h-3 w-3" />
 									Not linked
 								</Badge>

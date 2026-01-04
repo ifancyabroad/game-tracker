@@ -7,27 +7,27 @@ import { ChampionshipBadge } from "./ChampionshipBadge";
 import { GameTypeIcon } from "features/games/components/GameTypeIcon";
 
 const getRankIcon = (rank: number) => {
-	if (rank === 1) return <Trophy className="h-4 w-4 shrink-0 text-yellow-500 sm:h-5 sm:w-5" />;
-	if (rank === 2) return <Medal className="h-4 w-4 shrink-0 text-slate-400 sm:h-5 sm:w-5" />;
-	if (rank === 3) return <Award className="h-4 w-4 shrink-0 text-amber-600 sm:h-5 sm:w-5" />;
+	if (rank === 1) return <Trophy className="h-4 w-4 shrink-0 text-[var(--color-gold)] sm:h-5 sm:w-5" />;
+	if (rank === 2) return <Medal className="h-4 w-4 shrink-0 text-[var(--color-silver)] sm:h-5 sm:w-5" />;
+	if (rank === 3) return <Award className="h-4 w-4 shrink-0 text-[var(--color-bronze)] sm:h-5 sm:w-5" />;
 	return (
 		<span className="inline-flex text-xs font-semibold text-[var(--color-text-secondary)] sm:text-sm">{rank}</span>
 	);
 };
 
 const getRankBorderColor = (rank: number) => {
-	if (rank === 1) return "bg-yellow-500";
-	if (rank === 2) return "bg-slate-400";
-	if (rank === 3) return "bg-amber-600";
+	if (rank === 1) return "bg-[var(--color-gold)]";
+	if (rank === 2) return "bg-[var(--color-silver)]";
+	if (rank === 3) return "bg-[var(--color-bronze)]";
 	return "";
 };
 
 const getFormColor = (points: number | null) => {
 	if (points === null) return "bg-gray-700 text-gray-400";
-	if (points >= 3) return "bg-green-600 text-white";
-	if (points > 0) return "bg-yellow-500 text-black";
+	if (points >= 3) return "bg-[var(--color-success)] text-[var(--color-success-contrast)]";
+	if (points > 0) return "bg-[var(--color-primary)] text-[var(--color-primary-contrast)]";
 	if (points === 0) return "bg-gray-500 text-white";
-	return "bg-red-600 text-white";
+	return "bg-[var(--color-danger)] text-[var(--color-danger-contrast)]";
 };
 
 const formatFormValue = (points: number | null) => {

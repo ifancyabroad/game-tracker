@@ -1,6 +1,6 @@
 interface IBadgeProps {
 	children: React.ReactNode;
-	variant?: "default" | "primary" | "success" | "warning" | "danger";
+	variant?: "default" | "primary" | "success" | "info" | "warning" | "danger";
 	className?: string;
 }
 
@@ -10,9 +10,10 @@ export const Badge: React.FC<IBadgeProps> = ({ children, variant = "default", cl
 	const variantStyles = {
 		default: "border border-[var(--color-border)] text-[var(--color-text-secondary)]",
 		primary: "bg-[var(--color-primary)]/10 text-[var(--color-primary)]",
-		success: "bg-green-500/10 text-green-400",
-		warning: "bg-yellow-500/10 text-yellow-400",
-		danger: "bg-red-500/10 text-red-400",
+		success: "bg-[var(--color-success)]/10 text-[var(--color-success)]",
+		info: "bg-[var(--color-info)]/10 text-[var(--color-info)]",
+		warning: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]",
+		danger: "bg-[var(--color-danger)]/10 text-[var(--color-danger)]",
 	};
 
 	return <span className={`${baseStyles} ${variantStyles[variant]} ${className}`}>{children}</span>;

@@ -8,7 +8,7 @@ export const Label: React.FC<ILabelProps> = ({ children, className = "", require
 	return (
 		<label className={`mb-1 block text-xs text-[var(--color-text-secondary)] ${className}`} {...props}>
 			{children}
-			{required && <span className="ml-0.5 text-red-400">*</span>}
+			{required && <span className="ml-0.5 text-[var(--color-danger)]">*</span>}
 		</label>
 	);
 };

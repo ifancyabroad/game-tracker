@@ -111,9 +111,9 @@ export const HomePage: React.FC = () => {
 						<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 							{/* Top Scorer(s) from Last Event */}
 							{topScorers.length > 0 ? (
-								<Card className="relative overflow-hidden border-2 border-green-500/30 bg-gradient-to-br from-green-500/10 via-green-500/5 to-transparent p-4">
-									<div className="mb-3 inline-flex rounded-lg bg-green-500/20 p-2">
-										<TrendingUp className="h-5 w-5 text-green-600" />
+								<Card className="relative overflow-hidden border-2 border-[var(--color-success)]/30 bg-gradient-to-br from-[var(--color-success)]/10 via-[var(--color-success)]/5 to-transparent p-4">
+									<div className="mb-3 inline-flex rounded-lg bg-[var(--color-success)]/20 p-2">
+										<TrendingUp className="h-5 w-5 text-[var(--color-success)]" />
 									</div>
 									<h3 className="mb-3 font-semibold text-[var(--color-text)]">
 										Last Event Top Scorer
@@ -124,7 +124,7 @@ export const HomePage: React.FC = () => {
 												<span className="text-sm text-[var(--color-text)]">
 													{getDisplayName(scorer.player)}
 												</span>
-												<span className="font-semibold text-green-600">
+												<span className="font-semibold text-[var(--color-success)]">
 													{scorer.points} {pluralize(scorer.points, "point")}
 												</span>
 											</div>
@@ -132,9 +132,9 @@ export const HomePage: React.FC = () => {
 									</div>
 								</Card>
 							) : (
-								<Card className="relative overflow-hidden border-2 border-green-500/20 bg-gradient-to-br from-green-500/5 via-green-500/5 to-transparent p-4">
-									<div className="mb-3 inline-flex rounded-lg bg-green-500/20 p-2">
-										<TrendingUp className="h-5 w-5 text-green-600" />
+								<Card className="relative overflow-hidden border-2 border-[var(--color-success)]/20 bg-gradient-to-br from-[var(--color-success)]/5 via-[var(--color-success)]/5 to-transparent p-4">
+									<div className="mb-3 inline-flex rounded-lg bg-[var(--color-success)]/20 p-2">
+										<TrendingUp className="h-5 w-5 text-[var(--color-success)]" />
 									</div>
 									<h3 className="mb-3 font-semibold text-[var(--color-text)]">
 										Last Event Top Scorer
@@ -147,9 +147,9 @@ export const HomePage: React.FC = () => {
 
 							{/* Longest Drought */}
 							{longestDrought ? (
-								<Card className="relative overflow-hidden border-2 border-orange-500/30 bg-gradient-to-br from-orange-500/10 via-orange-500/5 to-transparent p-4">
-									<div className="mb-3 inline-flex rounded-lg bg-orange-500/20 p-2">
-										<TrendingDown className="h-5 w-5 text-orange-600" />
+								<Card className="relative overflow-hidden border-2 border-[var(--color-warning)]/30 bg-gradient-to-br from-[var(--color-warning)]/10 via-[var(--color-warning)]/5 to-transparent p-4">
+									<div className="mb-3 inline-flex rounded-lg bg-[var(--color-warning)]/20 p-2">
+										<TrendingDown className="h-5 w-5 text-[var(--color-warning)]" />
 									</div>
 									<h3 className="mb-3 font-semibold text-[var(--color-text)]">Longest Drought</h3>
 									<div className="space-y-2">
@@ -163,16 +163,16 @@ export const HomePage: React.FC = () => {
 											<span className="text-sm text-[var(--color-text-secondary)]">
 												Games Since Win
 											</span>
-											<span className="font-semibold text-orange-600">
+											<span className="font-semibold text-[var(--color-warning)]">
 												{longestDrought.gamesSinceWin}
 											</span>
 										</div>
 									</div>
 								</Card>
 							) : (
-								<Card className="relative overflow-hidden border-2 border-orange-500/20 bg-gradient-to-br from-orange-500/5 via-orange-500/5 to-transparent p-4">
-									<div className="mb-3 inline-flex rounded-lg bg-orange-500/20 p-2">
-										<TrendingDown className="h-5 w-5 text-orange-600" />
+								<Card className="relative overflow-hidden border-2 border-[var(--color-warning)]/20 bg-gradient-to-br from-[var(--color-warning)]/5 via-[var(--color-warning)]/5 to-transparent p-4">
+									<div className="mb-3 inline-flex rounded-lg bg-[var(--color-warning)]/20 p-2">
+										<TrendingDown className="h-5 w-5 text-[var(--color-warning)]" />
 									</div>
 									<h3 className="mb-3 font-semibold text-[var(--color-text)]">Longest Drought</h3>
 									<p className="text-sm text-[var(--color-text-secondary)]">
@@ -183,9 +183,9 @@ export const HomePage: React.FC = () => {
 
 							{/* Top Rivalry */}
 							{topRivalry ? (
-								<Card className="relative overflow-hidden border-2 border-purple-500/30 bg-gradient-to-br from-purple-500/10 via-purple-500/5 to-transparent p-4">
-									<div className="mb-3 inline-flex rounded-lg bg-purple-500/20 p-2">
-										<Swords className="h-5 w-5 text-purple-600" />
+								<Card className="relative overflow-hidden border-2 border-[var(--color-info)]/30 bg-gradient-to-br from-[var(--color-info)]/10 via-[var(--color-info)]/5 to-transparent p-4">
+									<div className="mb-3 inline-flex rounded-lg bg-[var(--color-info)]/20 p-2">
+										<Swords className="h-5 w-5 text-[var(--color-info)]" />
 									</div>
 									<h3 className="mb-3 font-semibold text-[var(--color-text)]">Hottest Rivalry</h3>
 									<div className="space-y-2">
@@ -199,7 +199,7 @@ export const HomePage: React.FC = () => {
 											<span className="text-sm text-[var(--color-text-secondary)]">
 												Head-to-Head
 											</span>
-											<span className="font-semibold text-purple-600">
+											<span className="font-semibold text-[var(--color-info)]">
 												{topRivalry.player1Wins}-{topRivalry.player2Wins}
 											</span>
 										</div>
@@ -214,9 +214,9 @@ export const HomePage: React.FC = () => {
 									</div>
 								</Card>
 							) : (
-								<Card className="relative overflow-hidden border-2 border-purple-500/20 bg-gradient-to-br from-purple-500/5 via-purple-500/5 to-transparent p-4">
-									<div className="mb-3 inline-flex rounded-lg bg-purple-500/20 p-2">
-										<Swords className="h-5 w-5 text-purple-600" />
+								<Card className="relative overflow-hidden border-2 border-[var(--color-info)]/20 bg-gradient-to-br from-[var(--color-info)]/5 via-[var(--color-info)]/5 to-transparent p-4">
+									<div className="mb-3 inline-flex rounded-lg bg-[var(--color-info)]/20 p-2">
+										<Swords className="h-5 w-5 text-[var(--color-info)]" />
 									</div>
 									<h3 className="mb-3 font-semibold text-[var(--color-text)]">Hottest Rivalry</h3>
 									<p className="text-sm text-[var(--color-text-secondary)]">
@@ -234,10 +234,10 @@ export const HomePage: React.FC = () => {
 							<Link to="/leaderboard">
 								<Card
 									variant="interactive"
-									className="group relative overflow-hidden border-2 border-transparent p-5 transition-all hover:border-yellow-500/50 hover:bg-gradient-to-br hover:from-yellow-500/10 hover:to-transparent"
+									className="group relative overflow-hidden border-2 border-transparent p-5 transition-all hover:border-[var(--color-gold)]/50 hover:bg-gradient-to-br hover:from-[var(--color-gold)]/10 hover:to-transparent"
 								>
-									<div className="mb-3 inline-flex rounded-xl bg-yellow-500/20 p-3 transition-all group-hover:scale-110 group-hover:bg-yellow-500/30">
-										<Trophy className="h-6 w-6 text-yellow-600" />
+									<div className="mb-3 inline-flex rounded-xl bg-[var(--color-gold)]/20 p-3 transition-all group-hover:scale-110 group-hover:bg-[var(--color-gold)]/30">
+										<Trophy className="h-6 w-6 text-[var(--color-gold)]" />
 									</div>
 									<h3 className="mb-1 text-lg font-bold text-[var(--color-text)]">Leaderboard</h3>
 									<p className="text-sm text-[var(--color-text-secondary)]">
@@ -249,10 +249,10 @@ export const HomePage: React.FC = () => {
 							<Link to="/stats">
 								<Card
 									variant="interactive"
-									className="group relative overflow-hidden border-2 border-transparent p-5 transition-all hover:border-blue-500/50 hover:bg-gradient-to-br hover:from-blue-500/10 hover:to-transparent"
+									className="group relative overflow-hidden border-2 border-transparent p-5 transition-all hover:border-[var(--color-info)]/50 hover:bg-gradient-to-br hover:from-[var(--color-info)]/10 hover:to-transparent"
 								>
-									<div className="mb-3 inline-flex rounded-xl bg-blue-500/20 p-3 transition-all group-hover:scale-110 group-hover:bg-blue-500/30">
-										<BarChart3 className="h-6 w-6 text-blue-600" />
+									<div className="mb-3 inline-flex rounded-xl bg-[var(--color-info)]/20 p-3 transition-all group-hover:scale-110 group-hover:bg-[var(--color-info)]/30">
+										<BarChart3 className="h-6 w-6 text-[var(--color-info)]" />
 									</div>
 									<h3 className="mb-1 text-lg font-bold text-[var(--color-text)]">Stats</h3>
 									<p className="text-sm text-[var(--color-text-secondary)]">
@@ -264,10 +264,10 @@ export const HomePage: React.FC = () => {
 							<Link to="/events">
 								<Card
 									variant="interactive"
-									className="group relative overflow-hidden border-2 border-transparent p-5 transition-all hover:border-indigo-500/50 hover:bg-gradient-to-br hover:from-indigo-500/10 hover:to-transparent"
+									className="group relative overflow-hidden border-2 border-transparent p-5 transition-all hover:border-[var(--color-primary)]/50 hover:bg-gradient-to-br hover:from-[var(--color-primary)]/10 hover:to-transparent"
 								>
-									<div className="mb-3 inline-flex rounded-xl bg-indigo-500/20 p-3 transition-all group-hover:scale-110 group-hover:bg-indigo-500/30">
-										<Calendar className="h-6 w-6 text-indigo-600" />
+									<div className="mb-3 inline-flex rounded-xl bg-[var(--color-primary)]/20 p-3 transition-all group-hover:scale-110 group-hover:bg-[var(--color-primary)]/30">
+										<Calendar className="h-6 w-6 text-[var(--color-primary)]" />
 									</div>
 									<h3 className="mb-1 text-lg font-bold text-[var(--color-text)]">Events</h3>
 									<p className="text-sm text-[var(--color-text-secondary)]">

@@ -23,7 +23,7 @@ export const Button: React.FC<IButtonProps> = ({
 		secondary:
 			"border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] shadow-sm hover:bg-[var(--color-hover)] hover:border-[var(--color-border-strong)] hover:shadow focus:ring-[var(--color-primary)]/30",
 		ghost: "text-[var(--color-text-secondary)] hover:bg-[var(--color-hover)] hover:text-[var(--color-text)] focus:ring-[var(--color-border)]",
-		danger: "bg-red-600 text-white shadow-sm hover:bg-red-500 hover:shadow-md focus:ring-red-500/50",
+		danger: "bg-[var(--color-danger)] text-[var(--color-danger-contrast)] shadow-sm hover:opacity-90 hover:shadow-md focus:ring-[var(--color-danger)]/50",
 	};
 
 	const sizeStyles = {
