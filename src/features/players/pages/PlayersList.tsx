@@ -1,6 +1,6 @@
 import { useModal } from "common/context/ModalContext";
 import { usePlayers } from "features/players/context/PlayersContext";
-import { useToast } from "common/utils/hooks";
+import { useToast } from "common/context/ToastContext";
 import { PlayerCard } from "features/players/components/PlayerCard";
 import { PlayerForm } from "features/players/components/PlayerForm";
 import type { IPlayer } from "features/players/types";

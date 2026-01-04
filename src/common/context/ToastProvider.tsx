@@ -20,14 +20,14 @@ export function ToastProvider({ children }: IToastProviderProps) {
 					},
 					success: {
 						iconTheme: {
-							primary: "var(--color-primary)",
-							secondary: "white",
+							primary: "var(--color-success)",
+							secondary: "var(--color-success-contrast)",
 						},
 					},
 					error: {
 						iconTheme: {
-							primary: "#ef4444",
-							secondary: "white",
+							primary: "var(--color-danger)",
+							secondary: "var(--color-danger-contrast)",
 						},
 					},
 				}}

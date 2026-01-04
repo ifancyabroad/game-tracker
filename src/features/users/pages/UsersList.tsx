@@ -1,7 +1,7 @@
 import { Plus, UserCog } from "lucide-react";
 import { PageHeader, Button, EmptyState, ConfirmDelete } from "common/components";
 import { useModal } from "common/context/ModalContext";
-import { useToast } from "common/utils/hooks";
+import { useToast } from "common/context/ToastContext";
 import { useUsers } from "features/users/context/UsersContext";
 import { UserCard } from "features/users/components/UserCard";
 import { UserForm } from "features/users/components/UserForm";

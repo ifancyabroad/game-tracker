@@ -6,7 +6,7 @@ import { ConfirmDelete, Button, PageHeader, EmptyState } from "common/components
 import { GameCard } from "features/games/components/GameCard";
 import { useAuth } from "common/context/AuthContext";
 import { Gamepad2, Plus } from "lucide-react";
-import { useToast } from "common/utils/hooks";
+import { useToast } from "common/context/ToastContext";
 
 const GamesPage: React.FC = () => {
 	const { games, addGame, editGame, deleteGame } = useGames();
