@@ -1,5 +1,4 @@
 import { createContext, useContext } from "react";
-import type { Theme } from "common/utils/theme";
 
 interface IUIContext {
 	isSidebarOpen: boolean;
@@ -9,9 +8,6 @@ interface IUIContext {
 	selectedYear: number | null;
 	setSelectedYear: (year: number | null) => void;
 	availableYears: number[];
-	theme: Theme;
-	updateTheme: (theme: Theme) => void;
-	toggleTheme: () => void;
 }
 
 export const UIContext = createContext<IUIContext | null>(null);

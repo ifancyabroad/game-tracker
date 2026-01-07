@@ -53,3 +53,23 @@ export const DISPLAY_LIMITS = {
 		EVENT_CARD_MAX_AVATARS: 6,
 	},
 } as const;
+
+/**
+ * Default application settings
+ */
+export const APP_DEFAULTS = {
+	/** Default application name */
+	APP_NAME: "Game Tracker",
+	/** Default theme name */
+	THEME_NAME: "game-table",
+	/** Firestore document ID for settings */
+	SETTINGS_DOC_ID: "app",
+} as const;
+
+/**
+ * localStorage keys for caching
+ */
+export const STORAGE_KEYS = {
+	/** Cached app settings for instant load */
+	SETTINGS: "game-tracker:settings",
+} as const;
