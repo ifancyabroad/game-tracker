@@ -64,6 +64,15 @@ export const userSchema = z.object({
 	linkedPlayerId: z.string().nullable(),
 });
 
+export const brandingSettingsSchema = z.object({
+	appName: z.string().min(1, "App name is required").max(50, "App name must be 50 characters or less"),
+	logoUrl: z.string().nullable(),
+});
+
+export const themeSettingsSchema = z.object({
+	themeName: z.string().min(1, "Please select a theme"),
+});
+
 // ============================================
 // Type Inference from Schemas
 // ============================================
@@ -74,3 +83,5 @@ export type EventFormData = z.infer<typeof eventSchema>;
 export type ResultFormData = z.infer<typeof resultSchema>;
 export type PlayerResultFormData = z.infer<typeof playerResultSchema>;
 export type UserFormData = z.infer<typeof userSchema>;
+export type BrandingSettingsFormData = z.infer<typeof brandingSettingsSchema>;
+export type ThemeSettingsFormData = z.infer<typeof themeSettingsSchema>;

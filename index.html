@@ -7,7 +7,7 @@
 		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 		<link rel="manifest" href="/site.webmanifest" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>The Nightingames</title>
+		<title>Game Tracker</title>
 
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,13 +16,19 @@
 			rel="stylesheet"
 		/>
 
-		<!-- Prevent FOUC (flash of unstyled content) for dark mode -->
+		<!-- Set document title from cached settings before React loads -->
 		<script>
 			(function () {
-				const theme = localStorage.getItem("theme");
-				const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-				if (theme === "dark" || (!theme && prefersDark)) {
-					document.documentElement.classList.add("dark");
+				try {
+					const cached = localStorage.getItem("game-tracker:settings");
+					if (cached) {
+						const settings = JSON.parse(cached);
+						if (settings.appName) {
+							document.title = settings.appName;
+						}
+					}
+				} catch (e) {
+					// Ignore errors, keep default title
 				}
 			})();
 		</script>

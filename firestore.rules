@@ -74,5 +74,14 @@ service cloud.firestore {
       // Only admins can create, update, or delete results
       allow create, update, delete: if isAdmin();
     }
+    
+    // Settings collection
+    match /settings/{docId} {
+      // Anyone can read settings (needed for displaying app branding/theme)
+      allow read: if true;
+      
+      // Only admins can create or update settings
+      allow create, update: if isAdmin();
+    }
   }
 }

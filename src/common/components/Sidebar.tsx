@@ -9,21 +9,17 @@ import {
 	LogIn,
 	User,
 	CalendarRange,
-	Sun,
-	Moon,
 	Trophy,
 	UserCog,
 	ChevronRight,
+	Settings as SettingsIcon,
 } from "lucide-react";
 import { useUI } from "common/context/UIContext";
 import { useModal } from "common/context/ModalContext";
-import { LoginForm, Select, Button, Label, SegmentedControl } from "common/components";
-import type { SegmentedControlOption } from "common/components/SegmentedControl";
+import { LoginForm, Select, Button, Label, AppBranding } from "common/components";
 import { useAuth } from "common/context/AuthContext";
 import { Link } from "react-router";
-import Logo from "assets/logo.svg?react";
 import { useEffect } from "react";
-import type { Theme } from "common/utils/theme";
 import { useBodyScrollLock } from "common/utils/hooks";
 
 const navItems = [
@@ -35,15 +31,13 @@ const navItems = [
 	{ to: "/stats", label: "Stats", icon: BarChart },
 ];
 
-const adminNavItems = [{ to: "/users", label: "Users", icon: UserCog }];
-
-const themeOptions: SegmentedControlOption<Theme>[] = [
-	{ value: "light", label: "Light", icon: Sun },
-	{ value: "dark", label: "Dark", icon: Moon },
+const adminNavItems = [
+	{ to: "/users", label: "Users", icon: UserCog },
+	{ to: "/settings", label: "Settings", icon: SettingsIcon },
 ];
 
 export const Sidebar: React.FC = () => {
-	const { isSidebarOpen, closeSidebar, selectedYear, setSelectedYear, availableYears, theme, updateTheme } = useUI();
+	const { isSidebarOpen, closeSidebar, selectedYear, setSelectedYear, availableYears } = useUI();
 	const { openModal, closeModal } = useModal();
 	const { authUser, user, isAdmin } = useAuth();
 
@@ -89,15 +83,11 @@ export const Sidebar: React.FC = () => {
 				}`}
 			>
 				<div className="mb-4 flex items-center justify-between lg:mb-6">
-					<Link to="/" className="flex items-center gap-3" onClick={closeSidebar}>
-						<div className="flex h-9 w-9 items-center justify-center text-[var(--color-primary)]">
-							<Logo className="h-full w-full" />
-						</div>
-						<div>
-							<h1 className="font-display text-base leading-tight text-[var(--color-text)]">
-								THE NIGHTINGAMES
-							</h1>
-						</div>
+					<Link to="/" onClick={closeSidebar}>
+						<AppBranding
+							logoClassName="flex h-9 w-9 items-center justify-center text-[var(--color-primary)]"
+							textClassName="font-display text-base leading-tight text-[var(--color-text)] uppercase"
+						/>
 					</Link>
 					<button
 						onClick={closeSidebar}
@@ -175,7 +165,6 @@ export const Sidebar: React.FC = () => {
 				</nav>
 
 				<div className="mt-auto flex flex-col gap-3 border-t border-[var(--color-border)] pt-4">
-					<SegmentedControl value={theme} onChange={updateTheme} options={themeOptions} />
 					{authUser ? (
 						<Link
 							to="/profile"

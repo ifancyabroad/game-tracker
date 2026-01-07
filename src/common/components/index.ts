@@ -5,6 +5,7 @@ export * from "./Sidebar";
 export * from "./ReadyGate";
 export * from "./PageLoader";
 export * from "./ErrorBoundary";
+export * from "./AppBranding";
 
 // Form Components
 export * from "./Input";
