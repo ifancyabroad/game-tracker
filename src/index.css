@@ -6,8 +6,11 @@
 	--font-display: "Righteous", sans-serif;
 }
 
-/* Light mode - Game Table */
-:root {
+/* ===== LIGHT THEMES ===== */
+
+/* Game Table - Warm beige and brown tones reminiscent of a wooden game table */
+:root,
+:root[data-theme="game-table"] {
 	--color-primary: #92400e;
 	--color-primary-contrast: #fef3c7;
 	--color-secondary: #ea580c;
@@ -21,8 +24,6 @@
 	--color-border-strong: #b5a189;
 	--color-hover: #ebe2d1;
 	--color-accent: #d4c5ae;
-
-	/* Semantic colors */
 	--color-success: #16a34a;
 	--color-success-contrast: #ffffff;
 	--color-danger: #b91c1c;
@@ -39,8 +40,72 @@
 	--color-bronze-contrast: #ffffff;
 }
 
-/* Dark mode - Warm charcoal */
-:root.dark {
+/* Autumn Vineyard - Autumn theme with burgundy wine and golden fall tones */
+:root[data-theme="autumn-vineyard"] {
+	--color-primary: #9f1239;
+	--color-primary-contrast: #fff1f2;
+	--color-secondary: #d97706;
+	--color-secondary-contrast: #ffffff;
+	--color-bg: #f0ebe0;
+	--color-surface: #faf7f0;
+	--color-text: #1f2937;
+	--color-text-secondary: #4b5563;
+	--color-text-muted: #6b7280;
+	--color-border: #e0d7c8;
+	--color-border-strong: #cfc2ad;
+	--color-hover: #f5f1e8;
+	--color-accent: #fde68a;
+	--color-success: #16a34a;
+	--color-success-contrast: #ffffff;
+	--color-danger: #dc2626;
+	--color-danger-contrast: #ffffff;
+	--color-warning: #ea580c;
+	--color-warning-contrast: #ffffff;
+	--color-info: #0284c7;
+	--color-info-contrast: #ffffff;
+	--color-gold: #fbbf24;
+	--color-gold-contrast: #1c1917;
+	--color-silver: #94a3b8;
+	--color-silver-contrast: #1e293b;
+	--color-bronze: #d97706;
+	--color-bronze-contrast: #ffffff;
+}
+
+/* Forest Moss - Natural forest theme with earthy greens and browns */
+:root[data-theme="forest-moss"] {
+	--color-primary: #15803d;
+	--color-primary-contrast: #f0fdf4;
+	--color-secondary: #d97706;
+	--color-secondary-contrast: #ffffff;
+	--color-bg: #ddd8c8;
+	--color-surface: #ebe8db;
+	--color-text: #1f2937;
+	--color-text-secondary: #4b5563;
+	--color-text-muted: #6b7280;
+	--color-border: #c5bda8;
+	--color-border-strong: #ada589;
+	--color-hover: #e3dfcf;
+	--color-accent: #c8e6c9;
+	--color-success: #16a34a;
+	--color-success-contrast: #ffffff;
+	--color-danger: #dc2626;
+	--color-danger-contrast: #ffffff;
+	--color-warning: #ea580c;
+	--color-warning-contrast: #ffffff;
+	--color-info: #0284c7;
+	--color-info-contrast: #ffffff;
+	--color-gold: #fbbf24;
+	--color-gold-contrast: #1c1917;
+	--color-silver: #94a3b8;
+	--color-silver-contrast: #1e293b;
+	--color-bronze: #d97706;
+	--color-bronze-contrast: #ffffff;
+}
+
+/* ===== DARK THEMES ===== */
+
+/* Warm Charcoal - Dark and cozy theme with warm orange and yellow accents */
+:root[data-theme="warm-charcoal"] {
 	--color-primary: #fb923c;
 	--color-primary-contrast: #1a1512;
 	--color-secondary: #fbbf24;
@@ -54,8 +119,6 @@
 	--color-border-strong: #4a4239;
 	--color-hover: #2b2620;
 	--color-accent: #1e1a16;
-
-	/* Semantic colors */
 	--color-success: #34d399;
 	--color-success-contrast: #1a1512;
 	--color-danger: #f87171;
@@ -70,6 +133,68 @@
 	--color-silver-contrast: #1e293b;
 	--color-bronze: #fb923c;
 	--color-bronze-contrast: #1a1512;
+}
+
+/* Midnight Blue - Professional dark theme with deep blue tones */
+:root[data-theme="midnight-blue"] {
+	--color-primary: #60a5fa;
+	--color-primary-contrast: #172554;
+	--color-secondary: #38bdf8;
+	--color-secondary-contrast: #172554;
+	--color-bg: #0f172a;
+	--color-surface: #1e293b;
+	--color-text: #f1f5f9;
+	--color-text-secondary: #cbd5e1;
+	--color-text-muted: #94a3b8;
+	--color-border: #334155;
+	--color-border-strong: #475569;
+	--color-hover: #1e293b;
+	--color-accent: #0f1729;
+	--color-success: #34d399;
+	--color-success-contrast: #0f172a;
+	--color-danger: #f87171;
+	--color-danger-contrast: #0f172a;
+	--color-warning: #fbbf24;
+	--color-warning-contrast: #0f172a;
+	--color-info: #38bdf8;
+	--color-info-contrast: #0f172a;
+	--color-gold: #fbbf24;
+	--color-gold-contrast: #0f172a;
+	--color-silver: #cbd5e1;
+	--color-silver-contrast: #1e293b;
+	--color-bronze: #fb923c;
+	--color-bronze-contrast: #0f172a;
+}
+
+/* Violet Night - Elegant dark theme with violet accents on charcoal */
+:root[data-theme="violet-night"] {
+	--color-primary: #a78bfa;
+	--color-primary-contrast: #1e1b4b;
+	--color-secondary: #c4b5fd;
+	--color-secondary-contrast: #1e1b4b;
+	--color-bg: #18181b;
+	--color-surface: #27272a;
+	--color-text: #fafafa;
+	--color-text-secondary: #d4d4d8;
+	--color-text-muted: #a1a1aa;
+	--color-border: #3f3f46;
+	--color-border-strong: #52525b;
+	--color-hover: #27272a;
+	--color-accent: #1e1b4b;
+	--color-success: #34d399;
+	--color-success-contrast: #18181b;
+	--color-danger: #f87171;
+	--color-danger-contrast: #18181b;
+	--color-warning: #fbbf24;
+	--color-warning-contrast: #18181b;
+	--color-info: #38bdf8;
+	--color-info-contrast: #18181b;
+	--color-gold: #fbbf24;
+	--color-gold-contrast: #18181b;
+	--color-silver: #cbd5e1;
+	--color-silver-contrast: #1e293b;
+	--color-bronze: #fb923c;
+	--color-bronze-contrast: #18181b;
 }
 
 html {

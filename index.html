@@ -16,7 +16,7 @@
 			rel="stylesheet"
 		/>
 
-		<!-- Set document title from cached settings before React loads -->
+		<!-- Apply cached settings before React loads -->
 		<script>
 			(function () {
 				try {
@@ -26,9 +26,12 @@
 						if (settings.appName) {
 							document.title = settings.appName;
 						}
+						if (settings.themeName) {
+							document.documentElement.dataset.theme = settings.themeName;
+						}
 					}
 				} catch (e) {
-					// Ignore errors, keep default title
+					// Ignore errors, keep defaults
 				}
 			})();
 		</script>
