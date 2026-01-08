@@ -74,19 +74,15 @@ export const ThemeSettingsForm: React.FC = () => {
 									<div className="flex shrink-0 gap-1">
 										<div
 											className="h-10 w-2.5 rounded sm:h-12 sm:w-3"
-											style={{ backgroundColor: theme.colors.primary }}
+											style={{ backgroundColor: theme.preview.primary }}
 										/>
 										<div
 											className="h-10 w-2.5 rounded sm:h-12 sm:w-3"
-											style={{ backgroundColor: theme.colors.secondary }}
+											style={{ backgroundColor: theme.preview.bg }}
 										/>
 										<div
 											className="h-10 w-2.5 rounded sm:h-12 sm:w-3"
-											style={{ backgroundColor: theme.colors.bg }}
-										/>
-										<div
-											className="h-10 w-2.5 rounded sm:h-12 sm:w-3"
-											style={{ backgroundColor: theme.colors.surface }}
+											style={{ backgroundColor: theme.preview.surface }}
 										/>
 									</div>
 
