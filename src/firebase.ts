@@ -6,12 +6,12 @@ import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-	apiKey: "AIzaSyAmpt7bllpvaTxyt3QzZ-sUv5NOsAkL7_s",
-	authDomain: "game-tracker-1d562.firebaseapp.com",
-	projectId: "game-tracker-1d562",
-	storageBucket: "game-tracker-1d562.firebasestorage.app",
-	messagingSenderId: "126926780782",
-	appId: "1:126926780782:web:877f421797b232a760697f",
+	apiKey: "AIzaSyD_gll1yn2pcjJX2sKr6A9i5OtAdIS89r8",
+	authDomain: "game-tracker-platform.firebaseapp.com",
+	projectId: "game-tracker-platform",
+	storageBucket: "game-tracker-platform.firebasestorage.app",
+	messagingSenderId: "539376273880",
+	appId: "1:539376273880:web:c50855cbfd5eda9be08aad",
 };
 
 // Initialize Firebase
