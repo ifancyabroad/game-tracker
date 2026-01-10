@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router";
 import { Trophy, BarChart3, Calendar, TrendingUp, TrendingDown, Swords, ArrowRight } from "lucide-react";
 import { useCurrentPlayer } from "features/players/utils/hooks";
-import { usePlayerLeaderboard } from "features/leaderboard/utils/hooks";
+import { usePlayerLeaderboard, useDefaultLeaderboardFilters } from "features/leaderboard/utils/hooks";
 import { useLastEventTopScorers, useLongestDrought } from "features/dashboard/utils/hooks";
 import { useSortedEvents } from "features/events/utils/hooks";
 import { useTopRivalries } from "features/stats/utils/hooks";
@@ -15,8 +15,12 @@ import { pluralize } from "common/utils/helpers";
 export const HomePage: React.FC = () => {
 	const linkedPlayer = useCurrentPlayer();
 	const welcomeName = linkedPlayer ? getDisplayName(linkedPlayer) : null;
-	// Leaderboard data (current year)
-	const leaderboard = usePlayerLeaderboard();
+
+	// Get default leaderboard filters
+	const filters = useDefaultLeaderboardFilters();
+
+	// Leaderboard data (using default leaderboard config)
+	const leaderboard = usePlayerLeaderboard(filters);
 	const topThree = leaderboard.slice(0, 3);
 
 	// Recent activity

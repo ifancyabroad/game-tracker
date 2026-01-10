@@ -28,7 +28,8 @@ export const playerSchema = z.object({
 export const gameSchema = z.object({
 	name: z.string().min(1, "Game name is required").max(100, "Game name must be 100 characters or less").trim(),
 	points: z.number().min(1, "Points must be at least 1").max(3, "Points must be at most 3"),
-	type: z.enum(["board", "video"]),
+	type: z.enum(["board", "video"]), // Kept for backward compatibility
+	tags: z.array(z.string()).default([]),
 	color: z
 		.string()
 		.regex(/^#[0-9A-Fa-f]{6}$/, "Color must be a valid hex color (e.g., #6366f1)")

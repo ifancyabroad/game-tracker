@@ -1,9 +1,10 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { IGame, GameType } from "features/games/types";
-import { Gamepad2 } from "lucide-react";
-import { ColorPicker, Input, Label, Button, FormHeader, Radio, ErrorMessage } from "common/components";
+import type { IGame } from "features/games/types";
+import { Gamepad2, X } from "lucide-react";
+import { ColorPicker, Input, Label, Button, FormHeader, Radio, ErrorMessage, Chip } from "common/components";
 import { gameSchema, type GameFormData } from "common/utils/validation";
+import { useSettings } from "common/context/SettingsContext";
 
 interface IGameFormProps {
 	initialData?: IGame;
@@ -11,6 +12,7 @@ interface IGameFormProps {
 }
 
 export const GameForm: React.FC<IGameFormProps> = ({ initialData, onSubmit }) => {
+	const { settings } = useSettings();
 	const {
 		register,
 		handleSubmit,
@@ -18,18 +20,35 @@ export const GameForm: React.FC<IGameFormProps> = ({ initialData, onSubmit }) =>
 		watch,
 		reset,
 		formState: { errors, isDirty, isSubmitting },
-	} = useForm<GameFormData>({
+	} = useForm({
 		resolver: zodResolver(gameSchema),
 		defaultValues: {
 			name: initialData?.name || "",
 			points: initialData?.points || 1,
-			type: initialData?.type || "board",
+			type: (initialData?.type || "board") as "board" | "video",
+			tags: initialData?.tags || [],
 			color: initialData?.color || "#6366f1",
 		},
 	});
 
 	const typeValue = watch("type");
+	const tagsValue = watch("tags");
 	const colorValue = watch("color");
+
+	const availableTags = settings?.gameTags || [];
+
+	const toggleTag = (tag: string) => {
+		const currentTags = tagsValue || [];
+		if (currentTags.includes(tag)) {
+			setValue(
+				"tags",
+				currentTags.filter((t) => t !== tag),
+				{ shouldDirty: true },
+			);
+		} else {
+			setValue("tags", [...currentTags, tag], { shouldDirty: true });
+		}
+	};
 
 	const onFormSubmit = async (data: GameFormData) => {
 		await onSubmit(data);
@@ -67,19 +86,41 @@ export const GameForm: React.FC<IGameFormProps> = ({ initialData, onSubmit }) =>
 			</div>
 
 			<div>
-				<Label>Type</Label>
+				<Label>Tags</Label>
+				{availableTags.length > 0 ? (
+					<div className="flex flex-wrap gap-2">
+						{availableTags.map((tag) => (
+							<Chip
+								key={tag}
+								label={tag}
+								active={tagsValue?.includes(tag)}
+								onClick={() => toggleTag(tag)}
+								icon={tagsValue?.includes(tag) ? <X className="h-3 w-3" /> : undefined}
+							/>
+						))}
+					</div>
+				) : (
+					<p className="text-sm text-[var(--color-text-secondary)]">
+						No tags available. Admins can add tags in Settings.
+					</p>
+				)}
+				{errors.tags && <ErrorMessage>{errors.tags.message}</ErrorMessage>}
+			</div>
+
+			<div>
+				<Label>Type (Legacy)</Label>
 				<div className="flex gap-4">
 					<Radio
 						label="Board Game"
 						value="board"
 						checked={typeValue === "board"}
-						onChange={(e) => setValue("type", e.target.value as GameType)}
+						onChange={(e) => setValue("type", e.target.value as "board" | "video")}
 					/>
 					<Radio
 						label="Video Game"
 						value="video"
 						checked={typeValue === "video"}
-						onChange={(e) => setValue("type", e.target.value as GameType)}
+						onChange={(e) => setValue("type", e.target.value as "board" | "video")}
 					/>
 				</div>
 				{errors.type && <ErrorMessage>{errors.type.message}</ErrorMessage>}

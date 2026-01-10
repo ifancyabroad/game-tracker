@@ -1,13 +1,18 @@
 import { useMemo } from "react";
 import { useAuth } from "common/context/AuthContext";
-import { getPlayerEntries, aggregatePlayerStatsForPage, computeStreaks, computePlayerData } from "./calculations";
+import {
+	getPlayerEntries,
+	aggregatePlayerStatsForPage,
+	computeStreaks,
+	computePlayerData,
+	type LeaderboardFilters,
+} from "./calculations";
 import type { PlayerWithData } from "features/players/types";
 import { useGames } from "features/games/context/GamesContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useSortedResults } from "features/events/utils/hooks";
 import { useFilteredData } from "common/utils/hooks";
 import { useEvents } from "features/events/context/EventsContext";
-import type { GameType } from "features/games/types";
 
 /**
  * Hook to get the linked player profile for the current authenticated user
@@ -20,19 +25,19 @@ export function useCurrentPlayer() {
 	return user?.linkedPlayerId ? playerById.get(user.linkedPlayerId) || null : null;
 }
 
-export function usePlayerData(gameType?: GameType): PlayerWithData[] {
+export function usePlayerData(filters: LeaderboardFilters = {}): PlayerWithData[] {
 	const { players } = usePlayers();
 	const { results } = useFilteredData();
 	const { events } = useEvents();
 	const { gameById } = useGames();
 	return useMemo(
-		() => computePlayerData(players, results, gameById, events, gameType),
-		[players, results, gameById, events, gameType],
+		() => computePlayerData(players, results, gameById, events, filters),
+		[players, results, gameById, events, filters],
 	);
 }
 
-export function usePlayerDataById(playerId: string): PlayerWithData | undefined {
-	const allData = usePlayerData();
+export function usePlayerDataById(playerId: string, filters: LeaderboardFilters = {}): PlayerWithData | undefined {
+	const allData = usePlayerData(filters);
 	return useMemo(() => allData.find((data) => data.id === playerId), [allData, playerId]);
 }
 

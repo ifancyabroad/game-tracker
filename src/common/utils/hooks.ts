@@ -1,12 +1,10 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "common/context/AuthContext";
 import { useUsers } from "features/users/context/UsersContext";
 import { usePlayers } from "features/players/context/PlayersContext";
 import { useGames } from "features/games/context/GamesContext";
 import { useEvents } from "features/events/context/EventsContext";
 import { useResults } from "features/events/context/ResultsContext";
-import { useUI } from "common/context/UIContext";
-import { filterEventsByYear, filterResultsByYear } from "common/utils/yearFilter";
 
 export function useAppReady() {
 	const a = useAuth();
@@ -36,23 +34,17 @@ export function useIsMobile(breakpoint = 768) {
 }
 
 /**
- * Hook to get events and results filtered by the currently selected year
+ * Hook to get events and results from contexts
+ * Note: Previously filtered by year, now returns unfiltered data.
+ * Individual features (like leaderboards) apply their own filters.
  */
 export function useFilteredData() {
 	const { events } = useEvents();
 	const { results } = useResults();
-	const { selectedYear } = useUI();
-
-	const filteredEvents = useMemo(() => filterEventsByYear(events, selectedYear), [events, selectedYear]);
-
-	const filteredResults = useMemo(
-		() => filterResultsByYear(results, events, selectedYear),
-		[results, events, selectedYear],
-	);
 
 	return {
-		events: filteredEvents,
-		results: filteredResults,
+		events,
+		results,
 	};
 }
 

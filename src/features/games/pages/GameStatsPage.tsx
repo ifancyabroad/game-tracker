@@ -1,13 +1,12 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router";
-import { BackButton, Card, KpiCard, HighlightCard, DataTable } from "common/components";
-import { Award, Users, TrendingUp, TrendingDown, Star } from "lucide-react";
+import { BackButton, Card, KpiCard, HighlightCard, DataTable, Chip } from "common/components";
+import { Award, Users, TrendingUp, TrendingDown, Star, Gamepad2 } from "lucide-react";
 import { formatPct } from "common/utils/helpers";
 import { DISPLAY_LIMITS } from "common/utils/constants";
 import { useGameDataById, useGamePageStats } from "features/games/utils/hooks";
 import { PlayerWinRateChart } from "features/games/components/PlayerWinRateChart";
 import { PlayFrequencyChart } from "features/games/components/PlayFrequencyChart";
-import { GameTypeIcon } from "features/games/components/GameTypeIcon";
 import type { PlayerGameStats } from "features/games/types";
 
 const getPlayerLines = (player?: { name: string; winRate: number; games: number; wins: number }) => {
@@ -26,13 +25,13 @@ export const GameStatsPage: React.FC = () => {
 	const { id: gameIdParam } = useParams<{ id: string }>();
 	const gameId = String(gameIdParam || "");
 	const navigate = useNavigate();
-	const game = useGameDataById(gameId);
+	const gameWithData = useGameDataById(gameId);
 	const { topPlayer, bottomPlayer, playerStats } = useGamePageStats(gameId);
 
 	const topPlayerLines = getPlayerLines(topPlayer);
 	const bottomPlayerLines = getPlayerLines(bottomPlayer);
 
-	if (!game) {
+	if (!gameWithData) {
 		return (
 			<div className="mx-auto max-w-5xl p-4">
 				<div className="mb-4">
@@ -51,38 +50,42 @@ export const GameStatsPage: React.FC = () => {
 
 			<Card className="flex flex-col gap-3 p-3 sm:gap-4 sm:p-4 lg:flex-row lg:items-center">
 				<div className="flex items-center gap-4">
-					<div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[var(--color-accent)]">
-						<GameTypeIcon type={game.type} className="h-8 w-8 text-[var(--color-primary)]" />
-					</div>
-					<div className="min-w-0">
+					<div className="min-w-0 flex-1">
 						<h1 className="truncate text-xl font-bold text-[var(--color-text)] md:text-2xl">
-							{game.data.name}
+							{gameWithData.name}
 						</h1>
-						<p className="truncate text-sm text-[var(--color-text-secondary)]">
-							{game.data.points} points per win
+						<p className="mt-1 text-sm text-[var(--color-text-secondary)]">
+							{gameWithData.points} {gameWithData.points === 1 ? "point" : "points"} per win
 						</p>
+						{gameWithData.tags && gameWithData.tags.length > 0 && (
+							<div className="mt-2 flex flex-wrap gap-1">
+								{gameWithData.tags.map((tag) => (
+									<Chip key={tag} label={tag} className="pointer-events-none" />
+								))}
+							</div>
+						)}
 					</div>
 				</div>
 				<div className="grid grid-cols-2 gap-3 lg:ml-auto lg:grid-cols-4 lg:gap-4">
 					<KpiCard
-						icon={<GameTypeIcon type={game.type} className="h-4 w-4 text-[var(--color-primary)]" />}
+						icon={<Gamepad2 className="h-4 w-4 text-[var(--color-primary)]" />}
 						label="Times Played"
-						value={game.data.timesPlayed}
+						value={gameWithData.data.timesPlayed}
 					/>
 					<KpiCard
 						icon={<Users className="h-4 w-4 text-[var(--color-primary)]" />}
 						label="Unique Players"
-						value={game.data.uniquePlayers}
+						value={gameWithData.data.uniquePlayers}
 					/>
 					<KpiCard
 						icon={<Star className="h-4 w-4 text-[var(--color-primary)]" />}
 						label="Avg Players"
-						value={game.data.avgPlayersPerGame}
+						value={gameWithData.data.avgPlayersPerGame}
 					/>
 					<KpiCard
 						icon={<Award className="h-4 w-4 text-[var(--color-primary)]" />}
 						label="Points Awarded"
-						value={game.data.totalPointsAwarded}
+						value={gameWithData.data.totalPointsAwarded}
 					/>
 				</div>
 			</Card>

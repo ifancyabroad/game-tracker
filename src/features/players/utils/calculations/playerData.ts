@@ -1,16 +1,24 @@
 import type { IResult, IEvent } from "features/events/types";
 import type { BestGame, IPlayer, PlayerData, PlayerWithData } from "features/players/types";
-import type { GameType, IGame } from "features/games/types";
+import type { IGame } from "features/games/types";
 import { getColorForPlayer, getDisplayName, getFullName } from "../helpers";
 import { isPlayerWinner } from "common/utils/gameHelpers";
 import { calculateWinRate, calculateWinRatePercent } from "common/utils/calculations";
 import { sortEventsByDate } from "common/utils/sorting";
 import { DISPLAY_LIMITS } from "common/utils/constants";
+import { isAfter, isBefore, parseISO } from "date-fns";
 
 interface PlayerStatsAccumulator {
 	wins: number;
 	games: number;
 	points: number;
+}
+
+export interface LeaderboardFilters {
+	gameTags?: string[]; // Empty or undefined = all games
+	playerIds?: string[]; // Empty or undefined = all players
+	startDate?: string; // ISO string
+	endDate?: string; // ISO string
 }
 
 /**
@@ -21,12 +29,47 @@ function createStatsAccumulator(): PlayerStatsAccumulator {
 }
 
 /**
- * Check if game matches type filter
+ * Check if game matches tag filter
  */
-function shouldIncludeGame(game: IGame | undefined, gameType: GameType | undefined): boolean {
-	if (!gameType) return true;
+function shouldIncludeGame(game: IGame | undefined, filters: LeaderboardFilters): boolean {
 	if (!game) return false;
-	return game.type === gameType;
+
+	// If no tag filter or empty array, include all games
+	if (!filters.gameTags || filters.gameTags.length === 0) return true;
+
+	// Check if game has any of the filter tags
+	if (!game.tags || game.tags.length === 0) return false;
+	return game.tags.some((tag) => filters.gameTags!.includes(tag));
+}
+
+/**
+ * Check if player should be included
+ */
+function shouldIncludePlayer(playerId: string, filters: LeaderboardFilters): boolean {
+	// If no player filter or empty array, include all players
+	if (!filters.playerIds || filters.playerIds.length === 0) return true;
+	return filters.playerIds.includes(playerId);
+}
+
+/**
+ * Check if event is within date range
+ */
+function shouldIncludeEvent(event: IEvent, filters: LeaderboardFilters): boolean {
+	if (!filters.startDate && !filters.endDate) return true;
+
+	const eventDate = parseISO(event.date);
+
+	if (filters.startDate) {
+		const start = parseISO(filters.startDate);
+		if (isBefore(eventDate, start)) return false;
+	}
+
+	if (filters.endDate) {
+		const end = parseISO(filters.endDate);
+		if (isAfter(eventDate, end)) return false;
+	}
+
+	return true;
 }
 
 /**
@@ -59,9 +102,11 @@ function calculateRecentForm(
 	events: IEvent[],
 	results: IResult[],
 	gameById: Map<string, IGame>,
-	gameType?: GameType,
+	filters: LeaderboardFilters,
 ): (number | null)[] {
-	const sortedEvents = sortEventsByDate(events, true); // Sort descending (newest first)
+	// Filter events by date range first
+	const filteredEvents = events.filter((event) => shouldIncludeEvent(event, filters));
+	const sortedEvents = sortEventsByDate(filteredEvents, true); // Sort descending (newest first)
 	const recentEvents = sortedEvents.slice(0, DISPLAY_LIMITS.UI.RECENT_EVENTS);
 
 	return recentEvents.map((event) => {
@@ -72,7 +117,7 @@ function calculateRecentForm(
 			if (result.eventId !== event.id) return;
 
 			const game = gameById.get(result.gameId);
-			if (!shouldIncludeGame(game, gameType)) return;
+			if (!shouldIncludeGame(game, filters)) return;
 
 			const playerResult = result.playerResults.find((pr) => pr.playerId === playerId);
 			if (!playerResult) return;
@@ -98,14 +143,14 @@ function findBestGame(
 	playerId: string,
 	results: IResult[],
 	gameById: Map<string, IGame>,
-	gameType?: GameType,
+	filters: LeaderboardFilters,
 ): BestGame | null {
 	// Track total points per game
 	const gamePoints = new Map<string, number>();
 
 	results.forEach((result) => {
 		const game = gameById.get(result.gameId);
-		if (!shouldIncludeGame(game, gameType)) return;
+		if (!shouldIncludeGame(game, filters)) return;
 		if (!game) return;
 
 		const playerResult = result.playerResults.find((pr) => pr.playerId === playerId);
@@ -117,7 +162,7 @@ function findBestGame(
 	});
 
 	// Find game with highest total points
-	let bestGame: { gameId: string; gameName: string; gameType: "board" | "video"; points: number } | null = null;
+	let bestGame: BestGame | null = null;
 	let maxPoints = 0;
 
 	gamePoints.forEach((points, gameId) => {
@@ -128,7 +173,6 @@ function findBestGame(
 				bestGame = {
 					gameId: game.id,
 					gameName: game.name,
-					gameType: game.type,
 					points: points,
 				};
 			}
@@ -173,19 +217,28 @@ export function computePlayerData(
 	results: IResult[],
 	gameById: Map<string, IGame>,
 	events: IEvent[],
-	gameType?: GameType,
+	filters: LeaderboardFilters = {},
 ): PlayerWithData[] {
 	const statsMap = new Map<string, PlayerStatsAccumulator>();
 
+	// Filter events by date range
+	const filteredEventIds = new Set(events.filter((event) => shouldIncludeEvent(event, filters)).map((e) => e.id));
+
 	results.forEach((result) => {
+		// Skip results from events outside date range
+		if (!filteredEventIds.has(result.eventId)) return;
+
 		const game = gameById.get(result.gameId);
 
-		// Filter by game type if specified
-		if (!shouldIncludeGame(game, gameType)) {
+		// Filter by game tags
+		if (!shouldIncludeGame(game, filters)) {
 			return;
 		}
 
 		result.playerResults.forEach((pr) => {
+			// Filter by player IDs
+			if (!shouldIncludePlayer(pr.playerId, filters)) return;
+
 			let stats = statsMap.get(pr.playerId);
 			if (!stats) {
 				stats = createStatsAccumulator();
@@ -196,10 +249,13 @@ export function computePlayerData(
 		});
 	});
 
-	return players.map((player) => {
+	// Filter players list
+	const filteredPlayers = players.filter((p) => shouldIncludePlayer(p.id, filters));
+
+	return filteredPlayers.map((player) => {
 		const stats = statsMap.get(player.id) || createStatsAccumulator();
-		const recentForm = calculateRecentForm(player.id, events, results, gameById, gameType);
-		const bestGame = findBestGame(player.id, results, gameById, gameType);
+		const recentForm = calculateRecentForm(player.id, events, results, gameById, filters);
+		const bestGame = findBestGame(player.id, results, gameById, filters);
 		return {
 			...player,
 			data: convertToPlayerData(player, stats, recentForm, bestGame),

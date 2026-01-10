@@ -4,7 +4,6 @@ import type { PlayerWithData } from "features/players/types";
 import { Avatar } from "common/components";
 import { formatPct } from "common/utils/helpers";
 import { ChampionshipBadge } from "./ChampionshipBadge";
-import { GameTypeIcon } from "features/games/components/GameTypeIcon";
 
 const getRankIcon = (rank: number) => {
 	if (rank === 1) return <Trophy className="h-4 w-4 shrink-0 text-[var(--color-gold)] sm:h-5 sm:w-5" />;
@@ -185,10 +184,6 @@ export const LeaderboardTable: React.FC<{
 									<td className="border-b border-[var(--color-border)] px-3 py-3 sm:px-4">
 										{row.data.bestGame ? (
 											<div className="flex items-center gap-2">
-												<GameTypeIcon
-													type={row.data.bestGame.gameType}
-													className="h-3.5 w-3.5 shrink-0 text-[var(--color-primary)]"
-												/>
 												<span
 													className="text-xs whitespace-nowrap text-[var(--color-text)] sm:text-sm"
 													title={row.data.bestGame.gameName}
