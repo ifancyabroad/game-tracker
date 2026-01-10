@@ -2,10 +2,9 @@ import { Award, Edit, Frown, Hash, Trash2 } from "lucide-react";
 import type { IGame } from "features/games/types";
 import type { IPlayer } from "features/players/types";
 import type { IResult, IPlayerResult } from "features/events/types";
-import { Avatar, IconButton, Card } from "common/components";
+import { Avatar, IconButton, Card, Chip } from "common/components";
 import { getDisplayName, getFullName } from "features/players/utils/helpers";
 import { useNavigate, Link } from "react-router";
-import { GameTypeIcon } from "features/games/components/GameTypeIcon";
 import { pluralize } from "common/utils/helpers";
 
 interface IResultDisplayProps {
@@ -54,23 +53,31 @@ export const ResultDisplay: React.FC<IResultDisplayProps> = ({
 		<Card className="p-3 sm:p-4">
 			<div className="mb-2.5 flex items-start justify-between gap-2 sm:mb-3">
 				<div className="flex min-w-0 items-center gap-2">
-					<div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--color-accent)]">
-						{game && <GameTypeIcon type={game.type} className="h-5 w-5 text-[var(--color-primary)]" />}
-					</div>
-					<div className="min-w-0">
+					<div className="min-w-0 flex-1">
 						{game ? (
-							<Link
-								to={`/games/${result.gameId}`}
-								className="block truncate text-sm font-semibold text-[var(--color-text)] hover:text-[var(--color-primary)]"
-							>
-								{game.name}
-							</Link>
+							<>
+								<Link
+									to={`/games/${result.gameId}`}
+									className="block truncate text-sm font-semibold text-[var(--color-text)] hover:text-[var(--color-primary)]"
+								>
+									{game.name}
+								</Link>
+								<div className="mt-1 flex items-center gap-2">
+									<p className="text-xs text-[var(--color-text-secondary)]">
+										{rows.length} {pluralize(rows.length, "player")}
+									</p>
+									{game.tags && game.tags.length > 0 && (
+										<div className="flex flex-wrap gap-1">
+											{game.tags.map((tag) => (
+												<Chip key={tag} label={tag} className="pointer-events-none" />
+											))}
+										</div>
+									)}
+								</div>
+							</>
 						) : (
 							<p className="truncate text-sm font-semibold text-[var(--color-text)]">Unknown Game</p>
 						)}
-						<p className="text-xs text-[var(--color-text-secondary)]">
-							{rows.length} {pluralize(rows.length, "player")}
-						</p>
 					</div>
 				</div>
 				{canEdit && (

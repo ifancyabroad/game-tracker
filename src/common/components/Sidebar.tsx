@@ -8,7 +8,6 @@ import {
 	X,
 	LogIn,
 	User,
-	CalendarRange,
 	Trophy,
 	UserCog,
 	ChevronRight,
@@ -16,7 +15,7 @@ import {
 } from "lucide-react";
 import { useUI } from "common/context/UIContext";
 import { useModal } from "common/context/ModalContext";
-import { LoginForm, Select, Button, Label, AppBranding } from "common/components";
+import { LoginForm, Button, AppBranding } from "common/components";
 import { useAuth } from "common/context/AuthContext";
 import { Link } from "react-router";
 import { useEffect } from "react";
@@ -37,7 +36,7 @@ const adminNavItems = [
 ];
 
 export const Sidebar: React.FC = () => {
-	const { isSidebarOpen, closeSidebar, selectedYear, setSelectedYear, availableYears } = useUI();
+	const { isSidebarOpen, closeSidebar } = useUI();
 	const { openModal, closeModal } = useModal();
 	const { authUser, user, isAdmin } = useAuth();
 
@@ -97,30 +96,6 @@ export const Sidebar: React.FC = () => {
 						<X size={20} />
 					</button>
 				</div>
-
-				{availableYears.length > 0 && (
-					<>
-						<div className="mb-4">
-							<Label htmlFor="year-filter">Year</Label>
-							<Select
-								id="year-filter"
-								icon={CalendarRange}
-								value={selectedYear ?? "all"}
-								onChange={(e) =>
-									setSelectedYear(e.target.value === "all" ? null : Number(e.target.value))
-								}
-							>
-								<option value="all">All Years</option>
-								{availableYears.map((year) => (
-									<option key={year} value={year}>
-										{year}
-									</option>
-								))}
-							</Select>
-						</div>
-						<div className="mb-4 border-t border-[var(--color-border)]" />
-					</>
-				)}
 
 				<nav className="flex flex-col gap-1">
 					{navItems.map(({ to, label, icon: Icon }) => (

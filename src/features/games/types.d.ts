@@ -4,7 +4,8 @@ export interface IGame {
 	id: string;
 	name: string;
 	points: number;
-	type: GameType;
+	type: GameType; // Kept for backward compatibility, will be phased out
+	tags: string[];
 	color: string;
 }
 

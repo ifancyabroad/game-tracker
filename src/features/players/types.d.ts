@@ -12,7 +12,6 @@ export interface IPlayer {
 export interface BestGame {
 	gameId: string;
 	gameName: string;
-	gameType: "board" | "video";
 	points: number;
 }
 

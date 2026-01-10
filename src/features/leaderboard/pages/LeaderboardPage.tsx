@@ -1,18 +1,20 @@
 import React, { useState } from "react";
-import { Trophy, Dices, Gamepad2, LayoutGrid, List } from "lucide-react";
-import { usePlayerLeaderboard, usePlayerChampionships } from "features/leaderboard/utils/hooks";
+import { Trophy, LayoutGrid, List } from "lucide-react";
+import {
+	usePlayerLeaderboard,
+	useDefaultLeaderboard,
+	useLeaderboardById,
+	useLeaderboardFilters,
+	useChampionshipMap,
+} from "features/leaderboard/utils/hooks";
 import { PlayerCard } from "features/leaderboard/components/PlayerCard";
 import { LeaderboardTable } from "features/leaderboard/components/LeaderboardTable";
-import { SegmentedControl, PageHeader } from "common/components";
+import { SegmentedControl, PageHeader, Select, Badge } from "common/components";
 import type { SegmentedControlOption } from "common/components/SegmentedControl";
-import type { GameType } from "features/games/types";
+import { useSettings } from "common/context/SettingsContext";
+import { formatDateRange } from "features/leaderboard/utils/calculations";
 
 type ViewMode = "card" | "table";
-
-const gameTypeOptions: SegmentedControlOption<GameType>[] = [
-	{ value: "board", label: "Board", icon: Dices },
-	{ value: "video", label: "Video", icon: Gamepad2 },
-];
 
 const viewModeOptions: SegmentedControlOption<ViewMode>[] = [
 	{ value: "card", label: "Cards", icon: LayoutGrid },
@@ -20,12 +22,27 @@ const viewModeOptions: SegmentedControlOption<ViewMode>[] = [
 ];
 
 export const LeaderboardPage: React.FC = () => {
-	const [gameType, setGameType] = useState<GameType>("board");
+	const { settings } = useSettings();
 	const [viewMode, setViewMode] = useState<ViewMode>("card");
-	const leaderboard = usePlayerLeaderboard(gameType);
-	const championships = usePlayerChampionships(gameType);
+
+	const leaderboards = settings?.leaderboards || [];
+	const defaultLeaderboard = useDefaultLeaderboard();
+
+	const [selectedLeaderboardId, setSelectedLeaderboardId] = useState<string>(defaultLeaderboard?.id || "");
+
+	const selectedLeaderboard = useLeaderboardById(selectedLeaderboardId) || defaultLeaderboard;
+	const filters = useLeaderboardFilters(selectedLeaderboardId);
+
+	const leaderboard = usePlayerLeaderboard(filters);
+	const championshipMap = useChampionshipMap(filters);
+
 	const hasData = leaderboard.length > 0;
 	const maxPoints = hasData ? leaderboard[0].data.points : 0;
+	const champion = leaderboard.length > 0 ? leaderboard[0] : null;
+
+	const dateRangeText = selectedLeaderboard
+		? formatDateRange(selectedLeaderboard.startDate, selectedLeaderboard.endDate)
+		: null;
 
 	return (
 		<div className="mx-auto max-w-6xl">
@@ -40,23 +57,52 @@ export const LeaderboardPage: React.FC = () => {
 							options={viewModeOptions}
 							hideLabelsOnMobile
 						/>
-						<SegmentedControl
-							value={gameType}
-							onChange={setGameType}
-							options={gameTypeOptions}
-							hideLabelsOnMobile
-						/>
+						{leaderboards.length > 1 && (
+							<Select
+								value={selectedLeaderboardId}
+								onChange={(e) => setSelectedLeaderboardId(e.target.value)}
+								className="min-w-[150px]"
+							>
+								{leaderboards
+									.sort((a, b) => a.name.localeCompare(b.name))
+									.map((lb) => (
+										<option key={lb.id} value={lb.id}>
+											{lb.name}
+										</option>
+									))}
+							</Select>
+						)}
 					</div>
 				}
 			/>
 
+			{selectedLeaderboard && dateRangeText && (
+				<div className="mt-2 flex items-center gap-2">
+					<Badge variant="default">{dateRangeText}</Badge>
+				</div>
+			)}
+
+			{champion && (
+				<div className="mt-3 rounded-lg bg-[var(--color-accent)] p-3 text-center">
+					<p className="text-sm text-[var(--color-text-secondary)]">
+						<Trophy className="inline h-4 w-4 text-[var(--color-gold)]" /> Champion:{" "}
+						<span className="font-semibold text-[var(--color-text)]">
+							{champion.preferredName || champion.firstName}
+						</span>{" "}
+						with {champion.data.points} points
+					</p>
+				</div>
+			)}
+
 			<div className="mt-3 sm:mt-4">
 				{!hasData ? (
 					<div className="rounded-xl border border-dashed border-[var(--color-border)] bg-[var(--color-surface)] p-6 text-center text-sm text-[var(--color-text-secondary)] sm:p-8">
-						No results yet. Play some games to populate the board!
+						{leaderboards.length === 0
+							? "No leaderboards configured. Admins can configure leaderboards in Settings."
+							: "No results match this leaderboard's filters."}
 					</div>
 				) : viewMode === "table" ? (
-					<LeaderboardTable leaderboard={leaderboard} championships={championships} />
+					<LeaderboardTable leaderboard={leaderboard} championships={championshipMap} />
 				) : (
 					<div className="space-y-3 sm:space-y-4">
 						{leaderboard.map((row, idx) => (
@@ -65,7 +111,7 @@ export const LeaderboardPage: React.FC = () => {
 								row={row}
 								rank={idx + 1}
 								maxPoints={maxPoints}
-								championshipYears={championships.get(row.id) || []}
+								championshipYears={championshipMap.get(row.id) || []}
 							/>
 						))}
 					</div>
