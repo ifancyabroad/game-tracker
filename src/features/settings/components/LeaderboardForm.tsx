@@ -137,17 +137,15 @@ export const LeaderboardForm: React.FC<ILeaderboardFormProps> = ({ initialData, 
 				<Label>Players</Label>
 				<p className="mb-2 text-xs text-[var(--color-text-secondary)]">Leave empty to include all players</p>
 				{sortedPlayers.length > 0 ? (
-					<div className="max-h-48 overflow-y-auto rounded border border-[var(--color-border)] p-2">
-						<div className="flex flex-wrap gap-2">
-							{sortedPlayers.map((player) => (
-								<Chip
-									key={player.id}
-									label={getDisplayName(player)}
-									active={playerIdsValue?.includes(player.id)}
-									onClick={() => togglePlayer(player.id)}
-								/>
-							))}
-						</div>
+					<div className="flex flex-wrap gap-2">
+						{sortedPlayers.map((player) => (
+							<Chip
+								key={player.id}
+								label={getDisplayName(player)}
+								active={playerIdsValue?.includes(player.id)}
+								onClick={() => togglePlayer(player.id)}
+							/>
+						))}
 					</div>
 				) : (
 					<p className="text-sm text-[var(--color-text-secondary)]">No players available</p>
