@@ -6,9 +6,9 @@ import {
 	getDefaultLeaderboard,
 	getLeaderboardById,
 	leaderboardToFilters,
-	getLeaderboardStatus,
 	sortLeaderboards,
 } from "./calculations";
+import { getLeaderboardStatus } from "./helpers";
 import { usePlayerData } from "features/players/utils/hooks";
 import type { LeaderboardFilters } from "features/players/utils/calculations";
 import type { ILeaderboard } from "features/settings/types";

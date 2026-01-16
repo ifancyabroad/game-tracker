@@ -9,3 +9,11 @@ export const createMapBy = <T, K extends keyof T>(items: T[], key: K): Map<T[K],
 	}
 	return map;
 };
+
+/**
+ * Calculate win rate as a percentage (0-100), rounded to nearest integer
+ * Used for displaying win percentages in UI components
+ */
+export const calculateWinRatePercent = (wins: number, games: number): number => {
+	return games > 0 ? Math.round((wins / games) * 100) : 0;
+};

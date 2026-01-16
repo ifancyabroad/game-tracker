@@ -4,7 +4,7 @@ import { useSettings } from "common/context/SettingsContext";
 import { useToast } from "common/context/ToastContext";
 import { useModal } from "common/context/ModalContext";
 import { LeaderboardForm } from "./LeaderboardForm";
-import { format } from "date-fns";
+import { formatDateRange } from "features/leaderboard/utils/helpers";
 import type { ILeaderboard } from "features/settings/types";
 
 export const LeaderboardsManager: React.FC = () => {
@@ -76,16 +76,6 @@ export const LeaderboardsManager: React.FC = () => {
 		}
 	};
 
-	const formatDateRange = (startDate?: string, endDate?: string) => {
-		if (!startDate && !endDate) return "All time";
-		if (startDate && endDate) {
-			return `${format(new Date(startDate), "MMM d, yyyy")} - ${format(new Date(endDate), "MMM d, yyyy")}`;
-		}
-		if (startDate) return `From ${format(new Date(startDate), "MMM d, yyyy")}`;
-		if (endDate) return `Until ${format(new Date(endDate), "MMM d, yyyy")}`;
-		return "All time";
-	};
-
 	return (
 		<div className="space-y-4">
 			<div className="flex items-center justify-between">
@@ -136,7 +126,7 @@ export const LeaderboardsManager: React.FC = () => {
 								<div className="flex-1 space-y-2 text-xs text-[var(--color-text-secondary)]">
 									<div>
 										<span className="font-medium">Date Range:</span>{" "}
-										{formatDateRange(leaderboard.startDate, leaderboard.endDate)}
+										{formatDateRange(leaderboard.startDate, leaderboard.endDate) || "All time"}
 									</div>
 									<div>
 										<span className="font-medium">Game Tags:</span>{" "}
