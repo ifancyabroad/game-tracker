@@ -6,13 +6,14 @@ import {
 	useLeaderboardById,
 	useLeaderboardFilters,
 	useChampionshipMap,
+	useLeaderboardStatus,
 } from "features/leaderboard/utils/hooks";
 import { PlayerCard } from "features/leaderboard/components/PlayerCard";
 import { LeaderboardTable } from "features/leaderboard/components/LeaderboardTable";
-import { SegmentedControl, PageHeader, Select, Badge } from "common/components";
+import { LeaderboardSelector } from "features/leaderboard/components/LeaderboardSelector";
+import { SegmentedControl, PageHeader } from "common/components";
 import type { SegmentedControlOption } from "common/components/SegmentedControl";
 import { useSettings } from "common/context/SettingsContext";
-import { formatDateRange } from "features/leaderboard/utils/calculations";
 
 type ViewMode = "card" | "table";
 
@@ -37,14 +38,10 @@ export const LeaderboardPage: React.FC = () => {
 
 	const leaderboard = usePlayerLeaderboard(filters);
 	const championshipMap = useChampionshipMap(filters, selectedLeaderboard);
+	const leaderboardStatus = useLeaderboardStatus(selectedLeaderboard);
 
 	const hasData = leaderboard.length > 0;
 	const maxPoints = hasData ? leaderboard[0].data.points : 0;
-	const champion = leaderboard.length > 0 ? leaderboard[0] : null;
-
-	const dateRangeText = selectedLeaderboard
-		? formatDateRange(selectedLeaderboard.startDate, selectedLeaderboard.endDate)
-		: null;
 
 	return (
 		<div className="mx-auto max-w-6xl">
@@ -52,51 +49,28 @@ export const LeaderboardPage: React.FC = () => {
 				icon={<Trophy />}
 				title="Leaderboard"
 				action={
-					<div className="flex items-center gap-2 sm:gap-3">
-						{leaderboards.length > 1 && (
-							<Select
-								value={selectedLeaderboardId}
-								onChange={(e) => setSelectedLeaderboardId(e.target.value)}
-								className="min-w-[150px]"
-							>
-								{leaderboards
-									.sort((a, b) => a.name.localeCompare(b.name))
-									.map((lb) => (
-										<option key={lb.id} value={lb.id}>
-											{lb.name}
-										</option>
-									))}
-							</Select>
-						)}
-						<SegmentedControl
-							value={viewMode}
-							onChange={setViewMode}
-							options={viewModeOptions}
-							hideLabelsOnMobile
-						/>
-					</div>
+					<SegmentedControl
+						value={viewMode}
+						onChange={setViewMode}
+						options={viewModeOptions}
+						hideLabelsOnMobile
+					/>
 				}
 			/>
 
-			{selectedLeaderboard && dateRangeText && (
-				<div className="mt-2 flex items-center gap-2">
-					<Badge variant="default">{dateRangeText}</Badge>
+			{/* Leaderboard Selector */}
+			{leaderboards.length > 0 && (
+				<div className="mb-4">
+					<LeaderboardSelector
+						leaderboards={leaderboards}
+						selectedLeaderboardId={selectedLeaderboardId}
+						onSelectLeaderboard={setSelectedLeaderboardId}
+						selectedStatus={leaderboardStatus}
+					/>
 				</div>
 			)}
 
-			{champion && (
-				<div className="mt-3 rounded-lg bg-[var(--color-accent)] p-3 text-center">
-					<p className="text-sm text-[var(--color-text-secondary)]">
-						<Trophy className="inline h-4 w-4 text-[var(--color-gold)]" /> Champion:{" "}
-						<span className="font-semibold text-[var(--color-text)]">
-							{champion.preferredName || champion.firstName}
-						</span>{" "}
-						with {champion.data.points} points
-					</p>
-				</div>
-			)}
-
-			<div className="mt-3 sm:mt-4">
+			<div className="mt-4 sm:mt-6">
 				{!hasData ? (
 					<div className="rounded-xl border border-dashed border-[var(--color-border)] bg-[var(--color-surface)] p-6 text-center text-sm text-[var(--color-text-secondary)] sm:p-8">
 						{leaderboards.length === 0

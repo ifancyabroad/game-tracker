@@ -7,6 +7,7 @@ import {
 	getLeaderboardById,
 	leaderboardToFilters,
 	getLeaderboardStatus,
+	sortLeaderboards,
 } from "./calculations";
 import { usePlayerData } from "features/players/utils/hooks";
 import type { LeaderboardFilters } from "features/players/utils/calculations";
@@ -115,4 +116,12 @@ export function useChampionshipMap(
  */
 export function useLeaderboardStatus(leaderboard: ILeaderboard | null) {
 	return useMemo(() => getLeaderboardStatus(leaderboard), [leaderboard]);
+}
+
+/**
+ * Hook to get sorted leaderboards
+ * Sorted by status (scheduled -> active -> complete), then dates, then alphabetically
+ */
+export function useSortedLeaderboards(leaderboards: ILeaderboard[]) {
+	return useMemo(() => sortLeaderboards(leaderboards), [leaderboards]);
 }

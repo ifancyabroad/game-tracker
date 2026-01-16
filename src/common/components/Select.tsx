@@ -5,11 +5,19 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 	icon?: LucideIcon;
 	label?: string;
 	children: ReactNode;
+	wrapperClassName?: string;
 }
 
-export const Select: React.FC<SelectProps> = ({ icon: Icon, label, children, className = "", ...props }) => {
+export const Select: React.FC<SelectProps> = ({
+	icon: Icon,
+	label,
+	children,
+	className = "",
+	wrapperClassName = "",
+	...props
+}) => {
 	return (
-		<div>
+		<div className={wrapperClassName}>
 			{label && <label className="mb-1 block text-xs text-[var(--color-text-secondary)]">{label}</label>}
 			<div className="relative">
 				{Icon && (
