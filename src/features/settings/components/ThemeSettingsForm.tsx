@@ -50,8 +50,6 @@ export const ThemeSettingsForm: React.FC = () => {
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-			<p className="mb-4 text-sm text-[var(--color-text-secondary)]">Choose a color scheme for your site</p>
-
 			<div className="grid gap-2 sm:gap-3 lg:grid-cols-2 xl:grid-cols-3">
 				{Object.values(THEMES).map((theme) => {
 					const isSelected = selectedTheme === theme.name;
@@ -118,7 +116,7 @@ export const ThemeSettingsForm: React.FC = () => {
 				})}
 			</div>
 
-			<Button type="submit" disabled={!isDirty || isSubmitting} className="w-full">
+			<Button type="submit" disabled={!isDirty || isSubmitting} className="w-full sm:w-auto">
 				{isSubmitting ? "Saving..." : "Save Changes"}
 			</Button>
 		</form>

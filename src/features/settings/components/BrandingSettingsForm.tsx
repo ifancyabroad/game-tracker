@@ -80,7 +80,7 @@ export const BrandingSettingsForm: React.FC = () => {
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-			<div>
+			<div className="max-w-md">
 				<Label htmlFor="appName" required>
 					App Name
 				</Label>
@@ -149,7 +149,7 @@ export const BrandingSettingsForm: React.FC = () => {
 				</div>
 			</div>
 
-			<Button type="submit" disabled={!isDirty || isSubmitting} className="w-full">
+			<Button type="submit" disabled={!isDirty || isSubmitting} className="w-full sm:w-auto">
 				{isSubmitting ? "Saving..." : "Save Changes"}
 			</Button>
 		</form>

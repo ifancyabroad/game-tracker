@@ -79,7 +79,6 @@ export const LeaderboardsManager: React.FC = () => {
 	return (
 		<div className="space-y-4">
 			<div className="flex items-center justify-between">
-				<p className="text-sm text-[var(--color-text-secondary)]">{leaderboards.length} configured</p>
 				<Button onClick={handleAdd}>
 					<Plus className="h-4 w-4" />
 					Add Leaderboard
