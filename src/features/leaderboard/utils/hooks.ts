@@ -6,6 +6,7 @@ import {
 	getDefaultLeaderboard,
 	getLeaderboardById,
 	leaderboardToFilters,
+	getLeaderboardStatus,
 } from "./calculations";
 import { usePlayerData } from "features/players/utils/hooks";
 import type { LeaderboardFilters } from "features/players/utils/calculations";
@@ -87,15 +88,31 @@ export function useLeaderboardFilters(leaderboardId: string | null): Leaderboard
 /**
  * Hook to get championship map for displaying champion badges
  * Returns a Map of playerId -> [1] for the champion
+ * Only returns champions for completed leaderboards
  */
-export function useChampionshipMap(filters: LeaderboardFilters = {}): Map<string, number[]> {
+export function useChampionshipMap(
+	filters: LeaderboardFilters = {},
+	leaderboard: ILeaderboard | null,
+): Map<string, number[]> {
 	const champion = useLeaderboardChampion(filters);
 
 	return useMemo(() => {
 		const map = new Map<string, number[]>();
-		if (champion) {
-			map.set(champion.playerId, [1]);
+		// Only show championship badge for completed leaderboards
+		if (champion && leaderboard && leaderboard.endDate) {
+			const endDate = new Date(leaderboard.endDate);
+			const now = new Date();
+			if (now > endDate) {
+				map.set(champion.playerId, [1]);
+			}
 		}
 		return map;
-	}, [champion]);
+	}, [champion, leaderboard]);
+}
+
+/**
+ * Hook to get the status of a leaderboard
+ */
+export function useLeaderboardStatus(leaderboard: ILeaderboard | null) {
+	return useMemo(() => getLeaderboardStatus(leaderboard), [leaderboard]);
 }

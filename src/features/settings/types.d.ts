@@ -1,3 +1,5 @@
+export type LeaderboardStatus = "scheduled" | "active" | "complete";
+
 export interface ILeaderboard {
 	id: string;
 	name: string;
