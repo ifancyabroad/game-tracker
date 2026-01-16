@@ -39,8 +39,9 @@ export const PlayerCard: React.FC<{
 	row: PlayerWithData;
 	rank: number;
 	maxPoints: number;
-	championshipYears?: number[];
-}> = ({ row, rank, maxPoints, championshipYears = [] }) => {
+	isChampion?: boolean;
+}> = ({ row, rank, maxPoints, isChampion = false }) => {
+	const championshipYears = isChampion ? [1] : [];
 	const {
 		id,
 		pictureUrl,
@@ -72,13 +73,7 @@ export const PlayerCard: React.FC<{
 								<h3 className="truncate text-sm font-semibold text-[var(--color-text)] sm:text-lg">
 									{name}
 								</h3>
-								{championshipYears.length > 0 && (
-									<div className="flex flex-wrap items-center gap-0.5 sm:gap-1">
-										{championshipYears.map((year) => (
-											<ChampionshipBadge key={year} year={year} />
-										))}
-									</div>
-								)}
+								{championshipYears.length > 0 && <ChampionshipBadge />}
 							</div>
 							<div className="flex shrink-0 items-baseline gap-0.5 sm:gap-1">
 								<span className="text-lg font-bold text-[var(--color-text)] tabular-nums sm:text-2xl">

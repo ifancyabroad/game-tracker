@@ -91,7 +91,7 @@ export const LeaderboardTable: React.FC<{
 						{leaderboard.map((row, idx) => {
 							const rank = idx + 1;
 							const rankBorderColor = getRankBorderColor(rank);
-							const championshipYears = championships.get(row.id) || [];
+							const isChampion = championships.has(row.id);
 
 							return (
 								<tr
@@ -122,11 +122,9 @@ export const LeaderboardTable: React.FC<{
 												<div className="truncate text-sm font-semibold text-[var(--color-text)]">
 													{row.data.name}
 												</div>
-												{championshipYears.length > 0 && (
-													<div className="mt-0.5 flex flex-wrap items-center gap-0.5">
-														{championshipYears.map((year) => (
-															<ChampionshipBadge key={year} year={year} />
-														))}
+												{isChampion && (
+													<div className="mt-0.5">
+														<ChampionshipBadge />
 													</div>
 												)}
 											</div>

@@ -36,7 +36,7 @@ export const LeaderboardPage: React.FC = () => {
 	const filters = useLeaderboardFilters(selectedLeaderboardId);
 
 	const leaderboard = usePlayerLeaderboard(filters);
-	const championshipMap = useChampionshipMap(filters);
+	const championshipMap = useChampionshipMap(filters, selectedLeaderboard);
 
 	const hasData = leaderboard.length > 0;
 	const maxPoints = hasData ? leaderboard[0].data.points : 0;
@@ -113,7 +113,7 @@ export const LeaderboardPage: React.FC = () => {
 								row={row}
 								rank={idx + 1}
 								maxPoints={maxPoints}
-								championshipYears={championshipMap.get(row.id) || []}
+								isChampion={championshipMap.has(row.id)}
 							/>
 						))}
 					</div>
