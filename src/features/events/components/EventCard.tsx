@@ -2,7 +2,7 @@ import { CalendarDays, MapPin, Edit, Trash2 } from "lucide-react";
 import type { IEvent } from "features/events/types";
 import type { IPlayer } from "features/players/types";
 import type { IGame } from "features/games/types";
-import { Avatar, IconButton, Card } from "common/components";
+import { Avatar, IconButton, Card, Badge } from "common/components";
 import { getDisplayName } from "features/players/utils/helpers";
 import { pluralize } from "common/utils/helpers";
 
@@ -75,18 +75,7 @@ export const EventCard: React.FC<IEventCardProps> = ({ event, canEdit, onEdit, o
 			{games.length > 0 ? (
 				<div className="mb-2 flex flex-wrap items-center gap-1.5 sm:mb-3">
 					{games.map((game) => (
-						<span
-							key={game.id}
-							className="inline-flex items-center gap-1 rounded-md border border-[var(--color-border)] bg-[var(--color-accent)] px-2 py-1 text-xs font-medium text-[var(--color-text)]"
-							style={{
-								borderLeftWidth: "3px",
-								borderLeftColor: game.color,
-								borderTopLeftRadius: 0,
-								borderBottomLeftRadius: 0,
-							}}
-						>
-							{game.name}
-						</span>
+						<Badge key={game.id}>{game.name}</Badge>
 					))}
 				</div>
 			) : (
