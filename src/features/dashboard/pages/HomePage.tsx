@@ -16,24 +16,24 @@ export const HomePage: React.FC = () => {
 	const linkedPlayer = useCurrentPlayer();
 	const welcomeName = linkedPlayer ? getDisplayName(linkedPlayer) : null;
 
-	// Get default leaderboard filters
-	const filters = useDefaultLeaderboardFilters();
+	// Get default leaderboard filters (ONLY for LeaderCards)
+	const defaultLeaderboardFilters = useDefaultLeaderboardFilters();
 
-	// Leaderboard data (using default leaderboard config)
-	const leaderboard = usePlayerLeaderboard(filters);
+	// Leaderboard data (using default leaderboard config for top 3 leaders only)
+	const leaderboard = usePlayerLeaderboard(defaultLeaderboardFilters);
 	const topThree = leaderboard.slice(0, 3);
 
-	// Recent activity
+	// Recent activity (unfiltered - dashboard should show all data)
 	const sortedEvents = useSortedEvents();
 	const latestEvents = sortedEvents.slice(0, 3);
 
-	// Insights
+	// Insights (unfiltered - dashboard should show all data)
 	const topScorers = useLastEventTopScorers();
 	const longestDrought = useLongestDrought();
 	const topRivalries = useTopRivalries();
 	const topRivalry = topRivalries.length > 0 ? topRivalries[0] : null;
 
-	const hasData = leaderboard.length > 0;
+	const hasData = sortedEvents.length > 0;
 
 	return (
 		<div className="mx-auto max-w-6xl">
@@ -62,29 +62,27 @@ export const HomePage: React.FC = () => {
 			) : (
 				<div className="space-y-6 sm:space-y-8">
 					{/* Current Year Leaders */}
-					<section>
-						<div className="mb-4 flex items-center justify-between">
-							<h2 className="text-base font-bold text-[var(--color-text)] md:text-lg">Current Leaders</h2>
-							<Link
-								to="/leaderboard"
-								className="flex items-center gap-1 text-sm font-medium text-[var(--color-primary)] hover:underline"
-							>
-								<span>View All</span>
-								<ArrowRight className="h-3.5 w-3.5" />
-							</Link>
-						</div>
-						{topThree.length > 0 ? (
+					{topThree.length > 0 && (
+						<section>
+							<div className="mb-4 flex items-center justify-between">
+								<h2 className="text-base font-bold text-[var(--color-text)] md:text-lg">
+									Current Leaders
+								</h2>
+								<Link
+									to="/leaderboard"
+									className="flex items-center gap-1 text-sm font-medium text-[var(--color-primary)] hover:underline"
+								>
+									<span>View All</span>
+									<ArrowRight className="h-3.5 w-3.5" />
+								</Link>
+							</div>
 							<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 								{topThree.map((player, idx) => (
 									<LeaderCard key={player.id} player={player} rank={idx + 1} />
 								))}
 							</div>
-						) : (
-							<Card className="p-6 text-center">
-								<p className="text-sm text-[var(--color-text-secondary)]">No data for current year</p>
-							</Card>
-						)}
-					</section>
+						</section>
+					)}
 
 					{/* Latest Events */}
 					{latestEvents.length > 0 && (
