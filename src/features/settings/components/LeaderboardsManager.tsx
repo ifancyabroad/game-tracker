@@ -108,12 +108,7 @@ export const LeaderboardsManager: React.FC = () => {
 											<h3 className="text-sm font-semibold text-[var(--color-text)]">
 												{leaderboard.name}
 											</h3>
-											{leaderboard.isDefault && (
-												<Badge variant="success">
-													<Star className="h-3 w-3" />
-													Default
-												</Badge>
-											)}
+											{leaderboard.isDefault && <Badge variant="success">Default</Badge>}
 										</div>
 
 										<div className="text-xs text-[var(--color-text-secondary)]">
