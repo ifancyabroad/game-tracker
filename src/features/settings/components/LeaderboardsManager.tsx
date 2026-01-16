@@ -97,49 +97,27 @@ export const LeaderboardsManager: React.FC = () => {
 			</div>
 
 			{leaderboards.length > 0 ? (
-				<div className="space-y-3">
+				<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 					{leaderboards
 						.sort((a, b) => a.name.localeCompare(b.name))
 						.map((leaderboard) => (
-							<Card key={leaderboard.id} className="p-4">
-								<div className="flex items-start justify-between gap-3">
-									<div className="min-w-0 flex-1 space-y-2">
-										<div className="flex items-center gap-2">
-											<h3 className="text-sm font-semibold text-[var(--color-text)]">
-												{leaderboard.name}
-											</h3>
-											{leaderboard.isDefault && <Badge variant="success">Default</Badge>}
-										</div>
-
-										<div className="text-xs text-[var(--color-text-secondary)]">
-											<div className="mb-1">
-												<span className="font-medium">Date Range:</span>{" "}
-												{formatDateRange(leaderboard.startDate, leaderboard.endDate)}
-											</div>
-											<div className="mb-1">
-												<span className="font-medium">Game Tags:</span>{" "}
-												{leaderboard.gameTags.length > 0
-													? leaderboard.gameTags.join(", ")
-													: "All games"}
-											</div>
-											<div>
-												<span className="font-medium">Players:</span>{" "}
-												{leaderboard.playerIds.length > 0
-													? `${leaderboard.playerIds.length} selected`
-													: "All players"}
-											</div>
-										</div>
+							<Card key={leaderboard.id} className="flex flex-col p-4">
+								<div className="mb-3 flex items-start justify-between gap-3">
+									<div className="flex items-center gap-2">
+										<h3 className="text-base font-semibold text-[var(--color-text)]">
+											{leaderboard.name}
+										</h3>
+										{leaderboard.isDefault && <Badge variant="success">Default</Badge>}
 									</div>
 
 									<div className="flex items-center gap-1">
-										{!leaderboard.isDefault && (
-											<IconButton
-												onClick={() => handleSetDefault(leaderboard)}
-												icon={<Star />}
-												variant="secondary"
-												title="Set as default"
-											/>
-										)}
+										<IconButton
+											onClick={() => handleSetDefault(leaderboard)}
+											icon={<Star />}
+											variant="warning"
+											title={leaderboard.isDefault ? "Default leaderboard" : "Set as default"}
+											disabled={leaderboard.isDefault}
+										/>
 										<IconButton
 											onClick={() => handleEdit(leaderboard)}
 											icon={<Edit />}
@@ -152,6 +130,25 @@ export const LeaderboardsManager: React.FC = () => {
 											variant="danger"
 											title="Delete"
 										/>
+									</div>
+								</div>
+
+								<div className="flex-1 space-y-2 text-xs text-[var(--color-text-secondary)]">
+									<div>
+										<span className="font-medium">Date Range:</span>{" "}
+										{formatDateRange(leaderboard.startDate, leaderboard.endDate)}
+									</div>
+									<div>
+										<span className="font-medium">Game Tags:</span>{" "}
+										{leaderboard.gameTags.length > 0
+											? leaderboard.gameTags.join(", ")
+											: "All games"}
+									</div>
+									<div>
+										<span className="font-medium">Players:</span>{" "}
+										{leaderboard.playerIds.length > 0
+											? `${leaderboard.playerIds.length} selected`
+											: "All players"}
 									</div>
 								</div>
 							</Card>
