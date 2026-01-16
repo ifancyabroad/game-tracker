@@ -3,7 +3,7 @@ import { Trophy, Medal, Award, Target, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
 import type { PlayerWithData } from "features/players/types";
 import { Avatar, Card } from "common/components";
-import { calculateWinRatePercent } from "common/utils/calculations";
+import { calculateWinRatePercent } from "common/utils/helpers";
 import { ChampionshipBadge } from "./ChampionshipBadge";
 
 const getTintBg = (rank: number) => {

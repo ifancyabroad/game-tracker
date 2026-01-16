@@ -3,7 +3,8 @@ import type { BestGame, IPlayer, PlayerData, PlayerWithData } from "features/pla
 import type { IGame } from "features/games/types";
 import { getColorForPlayer, getDisplayName, getFullName } from "../helpers";
 import { isPlayerWinner } from "common/utils/gameHelpers";
-import { calculateWinRate, calculateWinRatePercent } from "common/utils/calculations";
+import { calculateWinRate } from "common/utils/calculations";
+import { calculateWinRatePercent } from "common/utils/helpers";
 import { sortEventsByDate } from "common/utils/sorting";
 import { DISPLAY_LIMITS } from "common/utils/constants";
 import { isAfter, isBefore, parseISO } from "date-fns";

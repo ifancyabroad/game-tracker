@@ -1,30 +1,5 @@
-import { format } from "date-fns";
 import type { ILeaderboard } from "features/settings/types";
 import type { LeaderboardFilters } from "features/players/utils/calculations";
-
-/**
- * Format a date range for display
- * @param startDate Optional start date ISO string
- * @param endDate Optional end date ISO string
- * @returns Formatted date range string or null if no dates
- */
-export const formatDateRange = (startDate?: string, endDate?: string): string | null => {
-	if (!startDate && !endDate) return null;
-
-	if (startDate && endDate) {
-		return `${format(new Date(startDate), "MMM d, yyyy")} - ${format(new Date(endDate), "MMM d, yyyy")}`;
-	}
-
-	if (startDate) {
-		return `From ${format(new Date(startDate), "MMM d, yyyy")}`;
-	}
-
-	if (endDate) {
-		return `Until ${format(new Date(endDate), "MMM d, yyyy")}`;
-	}
-
-	return null;
-};
 
 /**
  * Get the default leaderboard from settings

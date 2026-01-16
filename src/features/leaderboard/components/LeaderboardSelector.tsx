@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ChevronDown, CheckCircle2, Clock, Zap, Calendar } from "lucide-react";
 import type { ILeaderboard, LeaderboardStatus } from "features/settings/types";
-import { formatDateRange, getLeaderboardStatus } from "features/leaderboard/utils/calculations";
+import { formatDateRange, getLeaderboardStatus } from "features/leaderboard/utils/helpers";
 import { useSortedLeaderboards } from "features/leaderboard/utils/hooks";
 
 interface LeaderboardSelectorProps {

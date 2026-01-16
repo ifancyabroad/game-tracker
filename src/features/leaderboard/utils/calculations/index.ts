@@ -2,5 +2,4 @@ export * from "./featured";
 export * from "./filtering";
 export * from "./championships";
 export * from "./leaderboardHelpers";
-export * from "./status";
 export * from "./sorting";

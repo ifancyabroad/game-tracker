@@ -1,7 +1,7 @@
 import type { PlayerEntry, GameWinRateRow, PlayerAggregates } from "features/players/types";
 import type { IGame } from "features/games/types";
 import { isPlayerWinner } from "common/utils/gameHelpers";
-import { calculateWinRatePercent } from "common/utils/calculations";
+import { calculateWinRatePercent } from "common/utils/helpers";
 import { getColorForGame, getDisplayName } from "features/games/utils/helpers";
 import { STATS_THRESHOLDS, DISPLAY_LIMITS } from "common/utils/constants";
 

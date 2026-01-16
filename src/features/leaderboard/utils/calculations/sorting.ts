@@ -1,5 +1,5 @@
 import type { ILeaderboard } from "features/settings/types";
-import { getLeaderboardStatus } from "./status";
+import { getLeaderboardStatus } from "../helpers";
 
 /**
  * Sort leaderboards by status (scheduled -> active -> complete),
