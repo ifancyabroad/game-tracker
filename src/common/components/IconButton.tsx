@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes } from "react";
 
 interface IIconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	icon: React.ReactNode;
-	variant?: "primary" | "secondary" | "ghost" | "danger";
+	variant?: "primary" | "secondary" | "ghost" | "danger" | "warning" | "info";
 }
 
 export const IconButton: React.FC<IIconButtonProps> = ({ icon, variant = "ghost", className = "", ...props }) => {
@@ -16,6 +16,9 @@ export const IconButton: React.FC<IIconButtonProps> = ({ icon, variant = "ghost"
 			"bg-[var(--color-secondary)] text-[var(--color-secondary-contrast)] shadow-sm hover:opacity-90 hover:shadow-md focus:ring-[var(--color-secondary)]/50",
 		ghost: "text-[var(--color-text-secondary)] hover:bg-[var(--color-hover)] hover:text-[var(--color-text)] focus:ring-[var(--color-border)]",
 		danger: "bg-[var(--color-danger)] text-[var(--color-danger-contrast)] shadow-sm hover:opacity-90 hover:shadow-md focus:ring-[var(--color-danger)]/50",
+		warning:
+			"bg-[var(--color-warning)] text-[var(--color-warning-contrast)] shadow-sm hover:opacity-90 hover:shadow-md focus:ring-[var(--color-warning)]/50",
+		info: "bg-[var(--color-info)] text-[var(--color-info-contrast)] shadow-sm hover:opacity-90 hover:shadow-md focus:ring-[var(--color-info)]/50",
 	};
 
 	return (
