@@ -66,7 +66,7 @@ export const GameTagsManager: React.FC = () => {
 
 	return (
 		<div className="space-y-4">
-			<div className="flex gap-2">
+			<div className="flex max-w-md gap-2">
 				<Input
 					type="text"
 					value={newTagName}
