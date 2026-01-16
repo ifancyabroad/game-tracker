@@ -53,12 +53,6 @@ export const LeaderboardPage: React.FC = () => {
 				title="Leaderboard"
 				action={
 					<div className="flex items-center gap-2 sm:gap-3">
-						<SegmentedControl
-							value={viewMode}
-							onChange={setViewMode}
-							options={viewModeOptions}
-							hideLabelsOnMobile
-						/>
 						{leaderboards.length > 1 && (
 							<Select
 								value={selectedLeaderboardId}
@@ -74,6 +68,12 @@ export const LeaderboardPage: React.FC = () => {
 									))}
 							</Select>
 						)}
+						<SegmentedControl
+							value={viewMode}
+							onChange={setViewMode}
+							options={viewModeOptions}
+							hideLabelsOnMobile
+						/>
 					</div>
 				}
 			/>
