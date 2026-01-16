@@ -28,7 +28,9 @@ export const LeaderboardPage: React.FC = () => {
 	const leaderboards = settings?.leaderboards || [];
 	const defaultLeaderboard = useDefaultLeaderboard();
 
-	const [selectedLeaderboardId, setSelectedLeaderboardId] = useState<string>(defaultLeaderboard?.id || "");
+	const [selectedLeaderboardId, setSelectedLeaderboardId] = useState<string>(
+		() => defaultLeaderboard?.id || leaderboards[0]?.id || "",
+	);
 
 	const selectedLeaderboard = useLeaderboardById(selectedLeaderboardId) || defaultLeaderboard;
 	const filters = useLeaderboardFilters(selectedLeaderboardId);

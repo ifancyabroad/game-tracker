@@ -218,14 +218,21 @@ export const SettingsProvider: React.FC<PropsWithChildren> = ({ children }) => {
 			id: `lb-${Date.now()}`,
 		};
 
-		const updatedLeaderboards = [...settings.leaderboards, newLeaderboard];
+		// If new leaderboard is default, clear isDefault from all existing leaderboards
+		const updatedLeaderboards = newLeaderboard.isDefault
+			? [...settings.leaderboards.map((lb) => ({ ...lb, isDefault: false })), newLeaderboard]
+			: [...settings.leaderboards, newLeaderboard];
+
 		await updateSettings({ leaderboards: updatedLeaderboards });
 	}
 
 	async function editLeaderboard(id: string, updates: Partial<Omit<ILeaderboard, "id">>) {
 		if (!settings) return;
 
-		const updatedLeaderboards = settings.leaderboards.map((lb) => (lb.id === id ? { ...lb, ...updates } : lb));
+		// If setting this leaderboard as default, clear isDefault from all others
+		const updatedLeaderboards = settings.leaderboards.map((lb) =>
+			lb.id === id ? { ...lb, ...updates } : updates.isDefault === true ? { ...lb, isDefault: false } : lb,
+		);
 		await updateSettings({ leaderboards: updatedLeaderboards });
 	}
 
