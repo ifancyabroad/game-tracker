@@ -25,34 +25,33 @@ export const GameCard: React.FC<IGameCardProps> = ({ game, canEdit, onEdit, onDe
 
 	return (
 		<Link to={`/games/${game.id}`} aria-label={`View stats for ${game.name}`}>
-			<Card variant="interactive" className="group relative flex items-center gap-3 p-3 sm:p-4">
-				<div className="min-w-0 flex-1">
-					<div className="flex items-center gap-2">
+			<Card variant="interactive" className="group relative p-3 sm:p-4">
+				<div className="flex items-center gap-3">
+					<div className="min-w-0 flex-1">
 						<p className="truncate text-sm font-bold text-[var(--color-text)] md:text-base">{game.name}</p>
+						<p className="mt-1 text-xs text-[var(--color-text-secondary)]">
+							{game.points} {game.points === 1 ? "point" : "points"} per win
+						</p>
 					</div>
 
-					<p className="mt-1 text-xs text-[var(--color-text-secondary)]">
-						{game.points} {game.points === 1 ? "point" : "points"} per win
-					</p>
+					<div
+						className="h-4 w-4 flex-shrink-0 rounded-full border border-[var(--color-border)]"
+						style={{ backgroundColor: game.color }}
+					/>
 
-					{game.tags && game.tags.length > 0 && (
-						<div className="mt-2 flex flex-wrap gap-1">
-							{game.tags.map((tag) => (
-								<Chip key={tag} label={tag} className="pointer-events-none" />
-							))}
+					{canEdit && (
+						<div className="flex items-center gap-1 opacity-70 transition-opacity group-hover:opacity-100">
+							<IconButton onClick={handleEditClick} icon={<Edit />} variant="secondary" title="Edit" />
+							<IconButton onClick={handleDeleteClick} icon={<Trash2 />} variant="danger" title="Delete" />
 						</div>
 					)}
 				</div>
 
-				<div
-					className="h-4 w-4 flex-shrink-0 rounded-full border border-[var(--color-border)]"
-					style={{ backgroundColor: game.color }}
-				/>
-
-				{canEdit && (
-					<div className="ml-auto flex items-center gap-1 opacity-70 transition-opacity group-hover:opacity-100">
-						<IconButton onClick={handleEditClick} icon={<Edit />} variant="secondary" title="Edit" />
-						<IconButton onClick={handleDeleteClick} icon={<Trash2 />} variant="danger" title="Delete" />
+				{game.tags && game.tags.length > 0 && (
+					<div className="mt-3 flex flex-wrap gap-1">
+						{game.tags.map((tag) => (
+							<Chip key={tag} label={tag} className="pointer-events-none" />
+						))}
 					</div>
 				)}
 			</Card>
