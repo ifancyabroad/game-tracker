@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { IGame } from "features/games/types";
 import { Gamepad2, X } from "lucide-react";
-import { ColorPicker, Input, Label, Button, FormHeader, Radio, ErrorMessage, Chip } from "common/components";
+import { ColorPicker, Input, Label, Button, FormHeader, ErrorMessage, Chip } from "common/components";
 import { gameSchema, type GameFormData } from "common/utils/validation";
 import { useSettings } from "common/context/SettingsContext";
 
@@ -25,13 +25,11 @@ export const GameForm: React.FC<IGameFormProps> = ({ initialData, onSubmit }) =>
 		defaultValues: {
 			name: initialData?.name || "",
 			points: initialData?.points || 1,
-			type: (initialData?.type || "board") as "board" | "video",
 			tags: initialData?.tags || [],
 			color: initialData?.color || "#6366f1",
 		},
 	});
 
-	const typeValue = watch("type");
 	const tagsValue = watch("tags");
 	const colorValue = watch("color");
 
@@ -108,29 +106,10 @@ export const GameForm: React.FC<IGameFormProps> = ({ initialData, onSubmit }) =>
 			</div>
 
 			<div>
-				<Label>Type (Legacy)</Label>
-				<div className="flex gap-4">
-					<Radio
-						label="Board Game"
-						value="board"
-						checked={typeValue === "board"}
-						onChange={(e) => setValue("type", e.target.value as "board" | "video")}
-					/>
-					<Radio
-						label="Video Game"
-						value="video"
-						checked={typeValue === "video"}
-						onChange={(e) => setValue("type", e.target.value as "board" | "video")}
-					/>
-				</div>
-				{errors.type && <ErrorMessage>{errors.type.message}</ErrorMessage>}
-			</div>
-
-			<div>
 				<ColorPicker
 					label="Game colour"
 					value={colorValue}
-					onChange={(newColor) => setValue("color", newColor)}
+					onChange={(newColor) => setValue("color", newColor, { shouldDirty: true })}
 					showInput
 				/>
 				{errors.color && <ErrorMessage>{errors.color.message}</ErrorMessage>}

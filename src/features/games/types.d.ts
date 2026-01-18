@@ -1,10 +1,7 @@
-export type GameType = "board" | "video";
-
 export interface IGame {
 	id: string;
 	name: string;
 	points: number;
-	type: GameType; // Kept for backward compatibility, will be phased out
 	tags: string[];
 	color: string;
 }
